@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class ListFragment extends Fragment {
+public class MatchListFragment extends Fragment {
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
