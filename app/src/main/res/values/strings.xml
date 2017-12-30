@@ -1,3 +1,11 @@
 <resources>
   <string name="app_name">Trendo</string>
+  <string name="scoring">Match Scoring</string>
+  <string name="default_score">0</string>
+  <string name="add_event">Add event</string>
+  <string name="edit_event">Edit event</string>
+  <string name="trend">Trend</string>
+  <string name="finalize">Finalize Match</string>
+  <string name="placeholder">TBD</string> <!-- if this string is shown, something needs updating -->
+  <string name="delete_match">Delete</string>
 </resources>
