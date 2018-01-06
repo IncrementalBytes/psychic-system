@@ -1,19 +1,24 @@
-package net.frostedbytes.android.trendo;
+package net.frostedbytes.android.trendo.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
-import java.util.UUID;
+import net.frostedbytes.android.trendo.MatchCenter;
+import net.frostedbytes.android.trendo.R;
+import net.frostedbytes.android.trendo.models.Match;
+import net.frostedbytes.android.trendo.models.Team;
 
 public class MatchFragment extends Fragment {
 
@@ -33,9 +38,9 @@ public class MatchFragment extends Fragment {
   private Team mAway;
   private Team mHome;
 
-  public static MatchFragment newInstance(UUID matchId) {
+  public static MatchFragment newInstance(String matchId) {
 
-    System.out.println("++" + TAG + "::newInstance(UUID)");
+    Log.d(TAG, "++" + TAG + "::newInstance(UUID)");
     Bundle args = new Bundle();
     args.putSerializable(ARG_MATCH_ID, matchId);
 
@@ -48,14 +53,14 @@ public class MatchFragment extends Fragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    System.out.println("++" + TAG + "::onCreate(Bundle)");
+    Log.d(TAG, "++" + TAG + "::onCreate(Bundle)");
     if (getArguments() != null) {
-      UUID matchId = (UUID) getArguments().getSerializable(ARG_MATCH_ID);
-      mMatch = MatchCenter.get(getActivity()).getMatch(matchId);
-      mHome = MatchCenter.get(getActivity()).getTeam(mMatch.getHomeId());
-      mAway = MatchCenter.get(getActivity()).getTeam(mMatch.getAwayId());
+      String matchId = (String) getArguments().getSerializable(ARG_MATCH_ID);
+      mMatch = MatchCenter.get().getMatch(matchId);
+      mHome = MatchCenter.get().getTeam(mMatch.HomeId);
+      mAway = MatchCenter.get().getTeam(mMatch.AwayId);
     } else {
-      System.out.println("getArguments() is null.");
+      Log.d(TAG, "getArguments() is null.");
     }
   }
 
@@ -63,17 +68,17 @@ public class MatchFragment extends Fragment {
   public void onPause() {
     super.onPause();
 
-    mMatch = MatchCenter.get(getActivity()).getMatch(mMatch.getId());
+    mMatch = MatchCenter.get().getMatch(mMatch.Id);
   }
 
+  @SuppressLint("ClickableViewAccessibility")
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-    System.out.println("++" + TAG + "::onCreateView(LayoutInflater,ViewGroup, Bundle)");
+    Log.d(TAG, "++" + TAG + "::onCreateView(LayoutInflater,ViewGroup, Bundle)");
     View view = inflater.inflate(R.layout.activity_match, container, false);
 
-    TouchableTextView homeText = view.findViewById(R.id.scoring_text_home_team);
-    homeText.setText(mHome.getShortName());
+    TextView homeText = view.findViewById(R.id.scoring_text_home_team);
     homeText.setOnTouchListener(new OnTouchListener() {
       @Override
       public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -92,8 +97,7 @@ public class MatchFragment extends Fragment {
     });
 
     mHomeScoreText = view.findViewById(R.id.scoring_text_home_team_score);
-    TouchableTextView awayText = view.findViewById(R.id.scoring_text_away_team);
-    awayText.setText(mAway.getShortName());
+    TextView awayText = view.findViewById(R.id.scoring_text_away_team);
     awayText.setOnTouchListener(new OnTouchListener() {
       @Override
       public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -118,15 +122,16 @@ public class MatchFragment extends Fragment {
     updateScores();
 
     // setup event increase/decrease buttons
-    TouchableImageView increaseHomeImageView = view.findViewById(R.id.event_button_increase_home);
-    if (!mMatch.getIsMatchFinal()) {
+    ImageView increaseHomeImageView = view.findViewById(R.id.event_button_increase_home);
+    if (!mMatch.IsFinal) {
       increaseHomeImageView.setOnTouchListener(new OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
 
           switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
-              addEvent(mMatch.getHomeId());
+              addEvent(mMatch.HomeId);
+//              addEvent(UUID.fromString(mMatch.getHomeId()));
               return true;
             case MotionEvent.ACTION_UP:
               view.performClick();
@@ -138,15 +143,16 @@ public class MatchFragment extends Fragment {
       });
     }
 
-    TouchableImageView decreaseHomeImageView = view.findViewById(R.id.event_button_decrease_home);
-    if (!mMatch.getIsMatchFinal()) {
+    ImageView decreaseHomeImageView = view.findViewById(R.id.event_button_decrease_home);
+    if (!mMatch.IsFinal) {
       decreaseHomeImageView.setOnTouchListener(new OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
 
           switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
-              editEvent(mMatch.getHomeId());
+              addEvent(mMatch.HomeId);
+//              editEvent(UUID.fromString(mMatch.getHomeId()));
               return true;
             case MotionEvent.ACTION_UP:
               view.performClick();
@@ -158,15 +164,16 @@ public class MatchFragment extends Fragment {
       });
     }
 
-    TouchableImageView increaseAwayImageView = view.findViewById(R.id.event_button_increase_away);
-    if (!mMatch.getIsMatchFinal()) {
+    ImageView increaseAwayImageView = view.findViewById(R.id.event_button_increase_away);
+    if (!mMatch.IsFinal) {
       increaseAwayImageView.setOnTouchListener(new OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
 
           switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
-              addEvent(mMatch.getAwayId());
+              addEvent(mMatch.AwayId);
+//              addEvent(UUID.fromString(mMatch.getAwayId()));
               return true;
             case MotionEvent.ACTION_UP:
               view.performClick();
@@ -178,15 +185,16 @@ public class MatchFragment extends Fragment {
       });
     }
 
-    TouchableImageView decreaseAwayImageView = view.findViewById(R.id.event_button_decrease_away);
-    if (!mMatch.getIsMatchFinal()) {
+    ImageView decreaseAwayImageView = view.findViewById(R.id.event_button_decrease_away);
+    if (!mMatch.IsFinal) {
       decreaseAwayImageView.setOnTouchListener(new OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
 
           switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
-              editEvent(mMatch.getAwayId());
+              addEvent(mMatch.AwayId);
+//              editEvent(UUID.fromString(mMatch.getAwayId()));
               return true;
             case MotionEvent.ACTION_UP:
               view.performClick();
@@ -204,7 +212,7 @@ public class MatchFragment extends Fragment {
 
     // initialize the finalize button
     Button finalizeMatch = view.findViewById(R.id.match_button_finalize);
-    if (mMatch.getIsMatchFinal()) {
+    if (!mMatch.IsFinal) {
       finalizeMatch.setEnabled(false);
     } else {
       finalizeMatch.setOnClickListener(new View.OnClickListener() {
@@ -219,15 +227,15 @@ public class MatchFragment extends Fragment {
     return view;
   }
 
-  private void addEvent(UUID teamId) {
+  private void addEvent(String teamId) {
 
-    System.out.println("++" + TAG + "::addEvent(UUID)");
+    Log.d(TAG, "++" + TAG + "::addEvent(String)");
     // TODO: present user with event submission form to send to server
   }
 
-  private void editEvent(UUID teamId) {
+  private void editEvent(String teamId) {
 
-    System.out.println("++" + TAG + "::editEvent(UUID)");
+    Log.d(TAG, "++" + TAG + "::editEvent(String)");
     // TODO: list current events for team/match for user to remove/edit
 
     updateScores();
@@ -235,14 +243,14 @@ public class MatchFragment extends Fragment {
 
   private void finalizeMatch() {
 
-    System.out.println("++" + TAG + "::finalizeMatch()");
+    Log.d(TAG, "++" + TAG + "::finalizeMatch()");
     // TODO: present user with event submission form to send to server
     populateTrend(mHome, mAway);
   }
 
   private void populateTrend(Team targetTeam, Team opponentTeam) {
 
-    System.out.println("++" + TAG + "::populateTrend(Team, Team)");
+    Log.d(TAG, "++" + TAG + "::populateTrend(Team, Team)");
 
     // clear the tables before proceeding
     mTrendTable.removeAllViews();
@@ -251,7 +259,7 @@ public class MatchFragment extends Fragment {
 
   private void updateScores() {
 
-    System.out.println("++" + TAG + "::updateScores()");
+    Log.d(TAG, "++" + TAG + "::updateScores()");
     // TODO: get events for this match and calculate goals for each team
     int homeScore = 0;
     int awayScore = 0;
@@ -265,9 +273,9 @@ public class MatchFragment extends Fragment {
     protected Void doInBackground(Void... params) {
 
       try {
-        System.out.println("In doInBackground");
+        Log.d(TAG, "In doInBackground");
       } catch (Exception e) {
-        System.out.println("Failed in doInBackground: " + e.toString());
+        Log.d(TAG, "Failed in doInBackground: " + e.toString());
       }
 
       return null;

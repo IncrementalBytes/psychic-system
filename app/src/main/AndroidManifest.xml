@@ -10,17 +10,16 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme"
     android:fullBackupContent="@xml/backup_descriptor">
-    <activity android:name=".MatchListActivity">
+    <activity
+      android:name=".MainActivity"
+      android:label="@string/app_name"
+      android:theme="@style/AppTheme" />
+    <activity android:name=".SignInActivity">
       <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-        <category android:name="android.intent.category.LAUNCHER"/>
+        <action android:name="android.intent.action.MAIN" />
+
+        <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
-    </activity>
-    <activity android:name=".MatchPagerActivity"
-      android:parentActivityName=".MatchListActivity">
-      <meta-data
-        android:name="android.support.PARENT_ACTIVITY"
-        android:value=".MatchListActivity"/>
     </activity>
   </application>
 

@@ -7,5 +7,13 @@
   <string name="trend">Trend</string>
   <string name="finalize">Finalize Match</string>
   <string name="placeholder">TBD</string> <!-- if this string is shown, something needs updating -->
-  <string name="delete_match">Delete</string>
+  <string name="delete_match">Delete match</string>
+  <string name="delete_team">Delete team</string>
+  <string name="menu_refresh">Refresh Data</string>
+  <string name="menu_settings">Settings</string>
+  <string name="menu_logout">Logout</string>
+  <string name="hint_email">email</string>
+  <string name="hint_password">password</string>
+  <string name="sign_in">Sign-In</string>
+  <string name="sign_up">Sign Up</string>
 </resources>

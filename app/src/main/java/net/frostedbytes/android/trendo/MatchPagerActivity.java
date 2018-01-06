@@ -9,7 +9,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import java.util.List;
-import java.util.UUID;
+import net.frostedbytes.android.trendo.fragment.MatchFragment;
+import net.frostedbytes.android.trendo.models.Match;
 
 public class MatchPagerActivity extends AppCompatActivity {
 
@@ -17,7 +18,7 @@ public class MatchPagerActivity extends AppCompatActivity {
 
   private List<Match> mMatches;
 
-  public static Intent newIntent(Context packageContext, UUID matchId) {
+  public static Intent newIntent(Context packageContext, String matchId) {
 
     Intent intent = new Intent(packageContext, MatchPagerActivity.class);
     intent.putExtra(EXTRA_MATCH_ID, matchId);
@@ -29,10 +30,10 @@ public class MatchPagerActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_match_pager);
 
-    UUID matchId = (UUID) getIntent().getSerializableExtra(EXTRA_MATCH_ID);
+    String matchId = (String) getIntent().getSerializableExtra(EXTRA_MATCH_ID);
     ViewPager viewPager = findViewById(R.id.match_view_pager);
 
-    mMatches = MatchCenter.get(this).getMatches();
+    mMatches = MatchCenter.get().getMatches();
     FragmentManager fragmentManager = getSupportFragmentManager();
     viewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
 
@@ -40,7 +41,7 @@ public class MatchPagerActivity extends AppCompatActivity {
       public Fragment getItem(int position) {
 
         Match match = mMatches.get(position);
-        return MatchFragment.newInstance(match.getId());
+        return MatchFragment.newInstance(match.Id);
       }
 
       @Override
@@ -50,7 +51,7 @@ public class MatchPagerActivity extends AppCompatActivity {
     });
 
     for (int i = 0; i < mMatches.size(); i++) {
-      if (mMatches.get(i).getId().equals(matchId)) {
+      if (mMatches.get(i).Id.equals(matchId)) {
         viewPager.setCurrentItem(i);
         break;
       }
