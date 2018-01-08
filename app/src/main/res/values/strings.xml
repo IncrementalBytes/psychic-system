@@ -12,8 +12,14 @@
   <string name="menu_refresh">Refresh Data</string>
   <string name="menu_settings">Settings</string>
   <string name="menu_logout">Logout</string>
-  <string name="hint_email">email</string>
-  <string name="hint_password">password</string>
+  <string name="hint_email">Type email</string>
+  <string name="hint_password">Type password</string>
   <string name="sign_in">Sign-In</string>
   <string name="sign_up">Sign Up</string>
+  <string name="title_match_list">Matches</string>
+  <string name="title_match">Match</string>
+  <string name="title_settings">Settings</string>
+  <string name="desc_match_list">TBD</string>
+  <string name="desc_match">TBD</string>
+  <string name="desc_settings">TBD</string>
 </resources>

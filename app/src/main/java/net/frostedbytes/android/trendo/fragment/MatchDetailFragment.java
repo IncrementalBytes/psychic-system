@@ -15,16 +15,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
-import net.frostedbytes.android.trendo.MatchCenter;
 import net.frostedbytes.android.trendo.R;
 import net.frostedbytes.android.trendo.models.Match;
 import net.frostedbytes.android.trendo.models.Team;
 
-public class MatchFragment extends Fragment {
+public class MatchDetailFragment extends Fragment {
 
-  private static final String TAG = "MatchFragment";
+  private static final String TAG = "MatchDetailFragment";
 
-  private static final String ARG_MATCH_ID = "match_id";
+  public static final String ARG_MATCH_ID = "match_id";
 
   public static final int REQUEST_MATCH = 0;
 
@@ -34,50 +33,27 @@ public class MatchFragment extends Fragment {
   private TableLayout mTrendTable;
   private TableLayout mRecordAgainstTable;
 
+  private String mMatchId;
   private Match mMatch;
   private Team mAway;
   private Team mHome;
 
-  public static MatchFragment newInstance(String matchId) {
-
-    Log.d(TAG, "++" + TAG + "::newInstance(UUID)");
-    Bundle args = new Bundle();
-    args.putSerializable(ARG_MATCH_ID, matchId);
-
-    MatchFragment fragment = new MatchFragment();
-    fragment.setArguments(args);
-    return fragment;
-  }
-
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-
-    Log.d(TAG, "++" + TAG + "::onCreate(Bundle)");
-    if (getArguments() != null) {
-      String matchId = (String) getArguments().getSerializable(ARG_MATCH_ID);
-      mMatch = MatchCenter.get().getMatch(matchId);
-      mHome = MatchCenter.get().getTeam(mMatch.HomeId);
-      mAway = MatchCenter.get().getTeam(mMatch.AwayId);
-    } else {
-      Log.d(TAG, "getArguments() is null.");
-    }
-  }
-
-  @Override
-  public void onPause() {
-    super.onPause();
-
-    mMatch = MatchCenter.get().getMatch(mMatch.Id);
-  }
-
-  @SuppressLint("ClickableViewAccessibility")
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-    Log.d(TAG, "++" + TAG + "::onCreateView(LayoutInflater,ViewGroup, Bundle)");
-    View view = inflater.inflate(R.layout.activity_match, container, false);
+    Log.d(TAG, "++onCreateView(LayoutInflater,ViewGroup, Bundle)");
+    Bundle arguments = getArguments();
+    if (arguments == null) {
+      Log.d(TAG, "matchId has not been set.");
+    } else {
+      mMatchId = getArguments().getString(ARG_MATCH_ID);
+      Log.d(TAG, "matchId: " + mMatchId);
+      // TODO: get match
+      // TODO: get home team
+      // TODO: get away team
+    }
 
+    View view = inflater.inflate(R.layout.fragment_match_details, container, false);
     TextView homeText = view.findViewById(R.id.scoring_text_home_team);
     homeText.setOnTouchListener(new OnTouchListener() {
       @Override
@@ -123,7 +99,7 @@ public class MatchFragment extends Fragment {
 
     // setup event increase/decrease buttons
     ImageView increaseHomeImageView = view.findViewById(R.id.event_button_increase_home);
-    if (!mMatch.IsFinal) {
+    if (mMatch != null && !mMatch.IsFinal) {
       increaseHomeImageView.setOnTouchListener(new OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -144,7 +120,7 @@ public class MatchFragment extends Fragment {
     }
 
     ImageView decreaseHomeImageView = view.findViewById(R.id.event_button_decrease_home);
-    if (!mMatch.IsFinal) {
+    if (mMatch != null && !mMatch.IsFinal) {
       decreaseHomeImageView.setOnTouchListener(new OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -165,7 +141,7 @@ public class MatchFragment extends Fragment {
     }
 
     ImageView increaseAwayImageView = view.findViewById(R.id.event_button_increase_away);
-    if (!mMatch.IsFinal) {
+    if (mMatch != null && !mMatch.IsFinal) {
       increaseAwayImageView.setOnTouchListener(new OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -186,7 +162,7 @@ public class MatchFragment extends Fragment {
     }
 
     ImageView decreaseAwayImageView = view.findViewById(R.id.event_button_decrease_away);
-    if (!mMatch.IsFinal) {
+    if (mMatch != null && !mMatch.IsFinal) {
       decreaseAwayImageView.setOnTouchListener(new OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -212,7 +188,7 @@ public class MatchFragment extends Fragment {
 
     // initialize the finalize button
     Button finalizeMatch = view.findViewById(R.id.match_button_finalize);
-    if (!mMatch.IsFinal) {
+    if (mMatch != null && !mMatch.IsFinal) {
       finalizeMatch.setEnabled(false);
     } else {
       finalizeMatch.setOnClickListener(new View.OnClickListener() {
@@ -229,13 +205,13 @@ public class MatchFragment extends Fragment {
 
   private void addEvent(String teamId) {
 
-    Log.d(TAG, "++" + TAG + "::addEvent(String)");
+    Log.d(TAG, "++addEvent(String)");
     // TODO: present user with event submission form to send to server
   }
 
   private void editEvent(String teamId) {
 
-    Log.d(TAG, "++" + TAG + "::editEvent(String)");
+    Log.d(TAG, "++editEvent(String)");
     // TODO: list current events for team/match for user to remove/edit
 
     updateScores();
@@ -243,14 +219,14 @@ public class MatchFragment extends Fragment {
 
   private void finalizeMatch() {
 
-    Log.d(TAG, "++" + TAG + "::finalizeMatch()");
+    Log.d(TAG, "++finalizeMatch()");
     // TODO: present user with event submission form to send to server
     populateTrend(mHome, mAway);
   }
 
   private void populateTrend(Team targetTeam, Team opponentTeam) {
 
-    Log.d(TAG, "++" + TAG + "::populateTrend(Team, Team)");
+    Log.d(TAG, "++populateTrend(Team, Team)");
 
     // clear the tables before proceeding
     mTrendTable.removeAllViews();
@@ -259,7 +235,7 @@ public class MatchFragment extends Fragment {
 
   private void updateScores() {
 
-    Log.d(TAG, "++" + TAG + "::updateScores()");
+    Log.d(TAG, "++updateScores()");
     // TODO: get events for this match and calculate goals for each team
     int homeScore = 0;
     int awayScore = 0;

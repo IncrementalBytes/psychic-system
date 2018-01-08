@@ -18,7 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import net.frostedbytes.android.trendo.models.User;
 
-public class SignInActivity extends MainActivity implements View.OnClickListener {
+public class SignInActivity extends BaseActivity implements View.OnClickListener {
 
   private static final String TAG = "SignInActivity";
 
@@ -68,6 +68,11 @@ public class SignInActivity extends MainActivity implements View.OnClickListener
     }
   }
 
+  @Override
+  public void onPointerCaptureChanged(boolean hasCapture) {
+
+  }
+
   private void signIn() {
 
     System.out.println("++" + TAG + "::signIn()");
@@ -75,7 +80,7 @@ public class SignInActivity extends MainActivity implements View.OnClickListener
       return;
     }
 
-    //showProgressDialog();
+    showProgressDialog();
     String email = mEmailField.getText().toString();
     String password = mPasswordField.getText().toString();
     mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -83,7 +88,7 @@ public class SignInActivity extends MainActivity implements View.OnClickListener
           public void onComplete(@NonNull Task<AuthResult> task) {
 
             System.out.println("Sign-In complete: " + task.isSuccessful());
-            //hideProgressDialog();
+            hideProgressDialog();
 
             if (task.isSuccessful()) {
               onAuthSuccess(task.getResult().getUser());
@@ -101,7 +106,7 @@ public class SignInActivity extends MainActivity implements View.OnClickListener
       return;
     }
 
-    //showProgressDialog();
+    showProgressDialog();
     String email = mEmailField.getText().toString();
     String password = mPasswordField.getText().toString();
     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -109,7 +114,7 @@ public class SignInActivity extends MainActivity implements View.OnClickListener
           public void onComplete(@NonNull Task<AuthResult> task) {
 
             System.out.println("Create user complete: " + task.isSuccessful());
-            //hideProgressDialog();
+            hideProgressDialog();
 
             if (task.isSuccessful()) {
               onAuthSuccess(task.getResult().getUser());
@@ -127,7 +132,7 @@ public class SignInActivity extends MainActivity implements View.OnClickListener
     // write new user
     writeNewUser(user.getUid(), username, user.getEmail());
 
-    // go to MainActivity
+    // go to MatchListFragment
     startActivity(new Intent(SignInActivity.this, MainActivity.class));
     finish();
   }
