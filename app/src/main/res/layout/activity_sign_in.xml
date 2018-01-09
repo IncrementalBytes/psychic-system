@@ -16,7 +16,8 @@
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="true"
     android:layout_marginBottom="@dimen/activity_vertical_margin"
-    android:src="@drawable/ic_lock" />
+    android:src="@drawable/ic_lock"
+    android:contentDescription="@string/desc_locked" />
 
   <LinearLayout
     android:id="@+id/layout_email_password"

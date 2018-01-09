@@ -1,8 +1,8 @@
-package net.frostedbytes.android.trendo.fragment;
+package net.frostedbytes.android.trendo.fragments;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;

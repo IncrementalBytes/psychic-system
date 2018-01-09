@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,20 +30,18 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
   private EditText mPasswordField;
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_sign_in);
 
+    setContentView(R.layout.activity_sign_in);
     mDatabase = FirebaseDatabase.getInstance().getReference();
     mAuth = FirebaseAuth.getInstance();
 
-    // Views
     mEmailField = findViewById(R.id.field_email);
     mPasswordField = findViewById(R.id.field_password);
     Button signInButton = findViewById(R.id.button_sign_in);
     Button signUpButton = findViewById(R.id.button_sign_up);
 
-    // Click listeners
     signInButton.setOnClickListener(this);
     signUpButton.setOnClickListener(this);
   }
@@ -51,7 +50,6 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
   public void onStart() {
     super.onStart();
 
-    // Check auth on Activity start
     if (mAuth.getCurrentUser() != null) {
       onAuthSuccess(mAuth.getCurrentUser());
     }
@@ -60,11 +58,13 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
   @Override
   public void onClick(View v) {
 
-    int i = v.getId();
-    if (i == R.id.button_sign_in) {
-      signIn();
-    } else if (i == R.id.button_sign_up) {
-      signUp();
+    switch (v.getId()) {
+      case R.id.button_sign_in:
+        signIn();
+        break;
+      case R.id.button_sign_up:
+        signUp();
+        break;
     }
   }
 
@@ -75,7 +75,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
   private void signIn() {
 
-    System.out.println("++" + TAG + "::signIn()");
+    Log.d(TAG, "++::signIn()");
     if (!validateForm()) {
       return;
     }
@@ -87,7 +87,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
           @Override
           public void onComplete(@NonNull Task<AuthResult> task) {
 
-            System.out.println("Sign-In complete: " + task.isSuccessful());
+            Log.d(TAG, "Sign-In complete: " + task.isSuccessful());
             hideProgressDialog();
 
             if (task.isSuccessful()) {
@@ -101,7 +101,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
   private void signUp() {
 
-    System.out.println("++" + TAG + "::signUp()");
+    Log.d(TAG, "++signUp()");
     if (!validateForm()) {
       return;
     }
@@ -113,7 +113,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
           @Override
           public void onComplete(@NonNull Task<AuthResult> task) {
 
-            System.out.println("Create user complete: " + task.isSuccessful());
+            Log.d(TAG, "Create user complete: " + task.isSuccessful());
             hideProgressDialog();
 
             if (task.isSuccessful()) {
@@ -128,22 +128,14 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
   private void onAuthSuccess(FirebaseUser user) {
 
     String username = usernameFromEmail(user.getEmail());
-
-    // write new user
     writeNewUser(user.getUid(), username, user.getEmail());
-
-    // go to MatchListFragment
-    startActivity(new Intent(SignInActivity.this, MainActivity.class));
+    startActivity(new Intent(SignInActivity.this, GatheringActivity.class));
     finish();
   }
 
   private String usernameFromEmail(String email) {
 
-    if (email.contains("@")) {
-      return email.split("@")[0];
-    } else {
-      return email;
-    }
+    return email.contains("@") ? email.split("@")[0] : email;
   }
 
   private boolean validateForm() {

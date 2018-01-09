@@ -22,7 +22,8 @@
     app:layout_constraintTop_toTopOf="parent"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
-    app:layout_constraintRight_toRightOf="parent"/>
+    app:layout_constraintRight_toRightOf="parent"
+    android:maxLines="1"/>
   <TextView
     android:id="@+id/match_item_date"
     android:layout_width="0dp"
@@ -44,7 +45,7 @@
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintLeft_toRightOf="@+id/match_item_date"
     app:layout_constraintTop_toBottomOf="@+id/match_item_title"/>
-  <ImageView
+  <net.frostedbytes.android.trendo.views.TouchableImageView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/match_item_delete"

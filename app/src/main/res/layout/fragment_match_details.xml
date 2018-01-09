@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-  android:id="@+id/activity_match"
+  android:id="@+id/fragment_match_details"
   android:layout_height="match_parent"
   android:layout_width="match_parent"
   android:paddingBottom="@dimen/activity_vertical_margin"
@@ -28,7 +28,7 @@
       android:layout_below="@+id/scoring_text"
       android:layout_centerHorizontal="true"
       android:gravity="center">
-      <TextView
+      <net.frostedbytes.android.trendo.views.TouchableTextView
         android:id="@+id/scoring_text_home_team"
         android:textStyle="bold"
         android:layout_width="wrap_content"
@@ -48,7 +48,7 @@
         android:ems="4"
         android:text="@string/default_score"/>
 
-      <ImageView
+      <net.frostedbytes.android.trendo.views.TouchableImageView
         android:id="@+id/event_button_increase_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
         app:srcCompat="@drawable/ic_add_item"
         android:contentDescription="@string/add_event"/>
 
-      <ImageView
+      <net.frostedbytes.android.trendo.views.TouchableImageView
         android:id="@+id/event_button_decrease_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
       android:layout_below="@+id/scoring_layout_home_team"
       android:layout_centerHorizontal="true"
       android:gravity="center">
-      <TextView
+      <net.frostedbytes.android.trendo.views.TouchableTextView
         android:id="@+id/scoring_text_away_team"
         android:textStyle="bold"
         android:layout_width="wrap_content"
@@ -100,7 +100,7 @@
         android:ems="4"
         android:text="@string/default_score"/>
 
-      <ImageView
+      <net.frostedbytes.android.trendo.views.TouchableImageView
         android:id="@+id/event_button_increase_away"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
         app:srcCompat="@drawable/ic_add_item"
         android:contentDescription="@string/add_event"/>
 
-      <ImageView
+      <net.frostedbytes.android.trendo.views.TouchableImageView
         android:id="@+id/event_button_decrease_away"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -1,6 +1,5 @@
-package net.frostedbytes.android.trendo.fragment;
+package net.frostedbytes.android.trendo.fragments;
 
-import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,9 +14,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import net.frostedbytes.android.trendo.MatchCenter;
 import net.frostedbytes.android.trendo.R;
 import net.frostedbytes.android.trendo.models.Match;
 import net.frostedbytes.android.trendo.models.Team;
+import net.frostedbytes.android.trendo.views.TouchableImageView;
+import net.frostedbytes.android.trendo.views.TouchableTextView;
 
 public class MatchDetailFragment extends Fragment {
 
@@ -39,22 +41,36 @@ public class MatchDetailFragment extends Fragment {
   private Team mHome;
 
   @Override
-  public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
 
-    Log.d(TAG, "++onCreateView(LayoutInflater,ViewGroup, Bundle)");
-    Bundle arguments = getArguments();
-    if (arguments == null) {
+    Log.d(TAG, "++onCreate(Bundle)");
+    if (getArguments() == null) {
       Log.d(TAG, "matchId has not been set.");
     } else {
       mMatchId = getArguments().getString(ARG_MATCH_ID);
       Log.d(TAG, "matchId: " + mMatchId);
-      // TODO: get match
-      // TODO: get home team
-      // TODO: get away team
+      mMatch = MatchCenter.get(getActivity()).getMatch(mMatchId);
+      mHome = MatchCenter.get(getActivity()).getTeam(mMatch.HomeId);
+      mAway = MatchCenter.get(getActivity()).getTeam(mMatch.AwayId);
     }
+  }
 
+  @Override
+  public void onPause() {
+    super.onPause();
+
+    Log.d(TAG, "++onPause()");
+    mMatch = MatchCenter.get(getActivity()).getMatch(mMatch.Id);
+  }
+
+  @Override
+  public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+    Log.d(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
     View view = inflater.inflate(R.layout.fragment_match_details, container, false);
-    TextView homeText = view.findViewById(R.id.scoring_text_home_team);
+    TouchableTextView homeText = view.findViewById(R.id.scoring_text_home_team);
+    homeText.setText(mHome.ShortName);
     homeText.setOnTouchListener(new OnTouchListener() {
       @Override
       public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -73,7 +89,48 @@ public class MatchDetailFragment extends Fragment {
     });
 
     mHomeScoreText = view.findViewById(R.id.scoring_text_home_team_score);
-    TextView awayText = view.findViewById(R.id.scoring_text_away_team);
+    TouchableImageView increaseHomeImageView = view.findViewById(R.id.event_button_increase_home);
+    if (mMatch != null && !mMatch.IsFinal) {
+      increaseHomeImageView.setOnTouchListener(new OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+
+          switch (motionEvent.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+              addEvent(mMatch.HomeId);
+              return true;
+            case MotionEvent.ACTION_UP:
+              view.performClick();
+              return true;
+          }
+
+          return false;
+        }
+      });
+    }
+
+    TouchableImageView decreaseHomeImageView = view.findViewById(R.id.event_button_decrease_home);
+    if (mMatch != null && !mMatch.IsFinal) {
+      decreaseHomeImageView.setOnTouchListener(new OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+
+          switch (motionEvent.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+              addEvent(mMatch.HomeId);
+              return true;
+            case MotionEvent.ACTION_UP:
+              view.performClick();
+              return true;
+          }
+
+          return false;
+        }
+      });
+    }
+
+    TouchableTextView awayText = view.findViewById(R.id.scoring_text_away_team);
+    awayText.setText(mAway.ShortName);
     awayText.setOnTouchListener(new OnTouchListener() {
       @Override
       public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -92,55 +149,7 @@ public class MatchDetailFragment extends Fragment {
     });
 
     mAwayScoreText = view.findViewById(R.id.scoring_text_away_team_score);
-    mTrendTable = view.findViewById(R.id.trend_table_past_matches);
-    mRecordAgainstTable = view.findViewById(R.id.record_table_opponent);
-
-    updateScores();
-
-    // setup event increase/decrease buttons
-    ImageView increaseHomeImageView = view.findViewById(R.id.event_button_increase_home);
-    if (mMatch != null && !mMatch.IsFinal) {
-      increaseHomeImageView.setOnTouchListener(new OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-
-          switch (motionEvent.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-              addEvent(mMatch.HomeId);
-//              addEvent(UUID.fromString(mMatch.getHomeId()));
-              return true;
-            case MotionEvent.ACTION_UP:
-              view.performClick();
-              return true;
-          }
-
-          return false;
-        }
-      });
-    }
-
-    ImageView decreaseHomeImageView = view.findViewById(R.id.event_button_decrease_home);
-    if (mMatch != null && !mMatch.IsFinal) {
-      decreaseHomeImageView.setOnTouchListener(new OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-
-          switch (motionEvent.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-              addEvent(mMatch.HomeId);
-//              editEvent(UUID.fromString(mMatch.getHomeId()));
-              return true;
-            case MotionEvent.ACTION_UP:
-              view.performClick();
-              return true;
-          }
-
-          return false;
-        }
-      });
-    }
-
-    ImageView increaseAwayImageView = view.findViewById(R.id.event_button_increase_away);
+    TouchableImageView increaseAwayImageView = view.findViewById(R.id.event_button_increase_away);
     if (mMatch != null && !mMatch.IsFinal) {
       increaseAwayImageView.setOnTouchListener(new OnTouchListener() {
         @Override
@@ -149,7 +158,6 @@ public class MatchDetailFragment extends Fragment {
           switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
               addEvent(mMatch.AwayId);
-//              addEvent(UUID.fromString(mMatch.getAwayId()));
               return true;
             case MotionEvent.ACTION_UP:
               view.performClick();
@@ -161,7 +169,7 @@ public class MatchDetailFragment extends Fragment {
       });
     }
 
-    ImageView decreaseAwayImageView = view.findViewById(R.id.event_button_decrease_away);
+    TouchableImageView decreaseAwayImageView = view.findViewById(R.id.event_button_decrease_away);
     if (mMatch != null && !mMatch.IsFinal) {
       decreaseAwayImageView.setOnTouchListener(new OnTouchListener() {
         @Override
@@ -170,7 +178,6 @@ public class MatchDetailFragment extends Fragment {
           switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
               addEvent(mMatch.AwayId);
-//              editEvent(UUID.fromString(mMatch.getAwayId()));
               return true;
             case MotionEvent.ACTION_UP:
               view.performClick();
@@ -182,7 +189,11 @@ public class MatchDetailFragment extends Fragment {
       });
     }
 
+    updateScores();
+
     // query information for trending section (using home team as default; user can toggle to away)
+    mTrendTable = view.findViewById(R.id.trend_table_past_matches);
+    mRecordAgainstTable = view.findViewById(R.id.record_table_opponent);
     populateTrend(mHome, mAway);
     new PopulateTrendTask().execute();
 

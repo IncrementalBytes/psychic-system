@@ -2,16 +2,21 @@ package net.frostedbytes.android.trendo;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.google.firebase.auth.FirebaseAuth;
-import net.frostedbytes.android.trendo.fragment.MatchListFragment;
+import net.frostedbytes.android.trendo.fragments.MatchDetailFragment;
+import net.frostedbytes.android.trendo.fragments.MatchListFragment;
+import net.frostedbytes.android.trendo.fragments.SettingsFragment;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends BaseActivity implements MatchListFragment.OnMatchSelectedListener {
 
   private static final String TAG = "MainActivity";
+
+  MatchListFragment mMatchListFragment;
+  MatchDetailFragment mMatchDetailFragment;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -20,27 +25,32 @@ public class MainActivity extends FragmentActivity {
     Log.d(TAG, "++onCreate(Bundle)");
     setContentView(R.layout.activity_main);
 
-    // Check that the activity is using the layout version with
-    // the fragment_container FrameLayout
     if (findViewById(R.id.fragment_container) != null) {
-
-      // However, if we're being restored from a previous state,
-      // then we don't need to do anything and should return or else
-      // we could end up with overlapping fragments.
       if (savedInstanceState != null) {
         return;
       }
 
-      // Create a new Fragment to be placed in the activity layout
-      MatchListFragment matchListFragment = new MatchListFragment();
-
-      // In case this activity was started with special instructions from an
-      // Intent, pass the Intent's extras to the fragment as arguments
-      matchListFragment.setArguments(getIntent().getExtras());
-
-      // Add the fragment to the 'fragment_container' FrameLayout
-      getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, matchListFragment).commit();
+      mMatchListFragment = new MatchListFragment();
+      FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+      transaction.replace(R.id.fragment_container, mMatchListFragment);
+      transaction.addToBackStack(null);
+      transaction.commit();
     }
+  }
+
+  @Override
+  public void onMatchSelected(String matchId) {
+
+    Log.d(TAG, "++onMatchSelected(String)");
+    mMatchDetailFragment = new MatchDetailFragment();
+    Bundle args = new Bundle();
+    args.putString(MatchDetailFragment.ARG_MATCH_ID, matchId);
+    mMatchDetailFragment.setArguments(args);
+
+    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+    transaction.replace(R.id.fragment_container, mMatchDetailFragment);
+    transaction.addToBackStack(matchId);
+    transaction.commit();
   }
 
   @Override
@@ -71,10 +81,25 @@ public class MainActivity extends FragmentActivity {
         Log.d(TAG, "Refresh known data.");
         return true;
       case R.id.action_settings:
-        Log.d(TAG, "Show user options");
+        SettingsFragment settingsFragment = new SettingsFragment();
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, settingsFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
         return true;
       default:
         return super.onOptionsItemSelected(item);
+    }
+  }
+
+  @Override
+  public void onBackPressed() {
+
+    if (getFragmentManager().getBackStackEntryCount() > 0 ){
+      getFragmentManager().popBackStack();
+    } else {
+      super.onBackPressed();
     }
   }
 }
