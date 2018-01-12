@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -11,12 +12,15 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import java.util.ArrayList;
+import java.util.List;
 import net.frostedbytes.android.trendo.MatchCenter;
 import net.frostedbytes.android.trendo.R;
+import net.frostedbytes.android.trendo.models.Event;
 import net.frostedbytes.android.trendo.models.Match;
+import net.frostedbytes.android.trendo.models.MatchEvent;
 import net.frostedbytes.android.trendo.models.Team;
 import net.frostedbytes.android.trendo.views.TouchableImageView;
 import net.frostedbytes.android.trendo.views.TouchableTextView;
@@ -27,7 +31,11 @@ public class MatchDetailFragment extends Fragment {
 
   public static final String ARG_MATCH_ID = "match_id";
 
+  private static final String DIALOG_EVENT = "DialogEvent";
+
   public static final int REQUEST_MATCH = 0;
+  public static final int REQUEST_DATE = 1;
+  public static final int REQUEST_MATCH_EVENT = 2;
 
   private TextView mHomeScoreText;
   private TextView mAwayScoreText;
@@ -217,7 +225,10 @@ public class MatchDetailFragment extends Fragment {
   private void addEvent(String teamId) {
 
     Log.d(TAG, "++addEvent(String)");
-    // TODO: present user with event submission form to send to server
+    FragmentManager manager = getFragmentManager();
+    EventDetailFragment dialog = EventDetailFragment.newInstance(mMatch.Id, teamId);
+    dialog.setTargetFragment(MatchDetailFragment.this, REQUEST_MATCH_EVENT);
+    dialog.show(manager, DIALOG_EVENT);
   }
 
   private void editEvent(String teamId) {
@@ -247,9 +258,35 @@ public class MatchDetailFragment extends Fragment {
   private void updateScores() {
 
     Log.d(TAG, "++updateScores()");
-    // TODO: get events for this match and calculate goals for each team
+    String ownGoalId = null;
+    List<String> goalEventIds = new ArrayList<>();
+    for (Event event : MatchCenter.get(getActivity()).getEvents()) {
+      switch(event.Name) {
+        case "Own Goal":
+          ownGoalId = event.Id;
+          goalEventIds.add(event.Id);
+          break;
+        case "Goal":
+        case "Goal (Penalty)":
+          goalEventIds.add(event.Id);
+          break;
+      }
+    }
+
     int homeScore = 0;
     int awayScore = 0;
+    for (MatchEvent matchEvent : MatchCenter.get(getActivity()).getMatchEvents(mMatchId)){
+      if (goalEventIds.contains(matchEvent.EventId)) {
+        if ((matchEvent.TeamId.equals(mHome.Id) && !matchEvent.EventId.equals(ownGoalId)) ||
+            (matchEvent.TeamId.equals(mAway.Id) && matchEvent.EventId.equals(ownGoalId))) {
+          homeScore++;
+        } else if ((matchEvent.TeamId.equals(mAway.Id) && !matchEvent.EventId.equals(ownGoalId)) ||
+            (matchEvent.TeamId.equals(mAway.Id) && matchEvent.EventId.equals(ownGoalId))) {
+          awayScore++;
+        }
+      }
+    }
+
     mHomeScoreText.setText(String.valueOf(homeScore));
     mAwayScoreText.setText(String.valueOf(awayScore));
   }

@@ -14,7 +14,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.List;
 import net.frostedbytes.android.trendo.MatchCenter;
@@ -25,10 +24,6 @@ import net.frostedbytes.android.trendo.views.TouchableImageView;
 public class MatchListFragment extends Fragment {
 
   private static final String TAG = "MatchListFragment";
-
-  private LinearLayoutManager mLinearLayoutManager;
-  private RecyclerView mMatchRecyclerView;
-  private MatchAdapter mMatchAdapter;
 
   OnMatchSelectedListener mCallback;
 
@@ -42,19 +37,14 @@ public class MatchListFragment extends Fragment {
 
     Log.d(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
     View view = inflater.inflate(R.layout.fragment_match_list, container, false);
-
-    mLinearLayoutManager = new LinearLayoutManager(getActivity());
-    mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-    mMatchRecyclerView = view.findViewById(R.id.match_list);
-    mMatchRecyclerView.setLayoutManager(mLinearLayoutManager);
+    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+    linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+    RecyclerView matchRecyclerView = view.findViewById(R.id.match_list);
+    matchRecyclerView.setLayoutManager(linearLayoutManager);
     List<Match> matches = MatchCenter.get(getActivity()).getMatches();
-    if (mMatchAdapter == null) {
-      mMatchAdapter = new MatchAdapter(matches);
-      mMatchRecyclerView.setAdapter(mMatchAdapter);
-    } else {
-      mMatchAdapter.setMatches(matches);
-      mMatchAdapter.notifyDataSetChanged();
-    }
+    MatchAdapter matchAdapter = new MatchAdapter(matches);
+    matchRecyclerView.setAdapter(matchAdapter);
+    matchAdapter.notifyDataSetChanged();
 
     return view;
   }
@@ -103,11 +93,6 @@ public class MatchListFragment extends Fragment {
     public int getItemCount() {
       return mMatches.size();
     }
-
-    void setMatches(List<Match> matches) {
-
-      mMatches = matches;
-    }
   }
 
   private class MatchHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -127,6 +112,24 @@ public class MatchListFragment extends Fragment {
       mMatchDateTextView = itemView.findViewById(R.id.match_item_date);
       mMatchStatusTextView = itemView.findViewById(R.id.match_item_status);
       mMatchImageView = itemView.findViewById(R.id.match_item_delete);
+    }
+
+    void bind(Match match) {
+
+      mMatch = match;
+      if (mMatch.HomeId != null && mMatch.AwayId != null) {
+        mTitleTextView.setText(
+            String.format(
+                "%1s vs %2s",
+                MatchCenter.get(getActivity()).getTeam(mMatch.HomeId).FullName,
+                MatchCenter.get(getActivity()).getTeam(mMatch.AwayId).FullName)
+        );
+      } else {
+        mTitleTextView.setText("N/A");
+      }
+
+      mMatchDateTextView.setText(Match.formatDateForDisplay(mMatch.MatchDate));
+      mMatchStatusTextView.setText(mMatch.IsFinal ? "FT" : "In Progress");
       mMatchImageView.setOnTouchListener(new OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -168,24 +171,6 @@ public class MatchListFragment extends Fragment {
           return true;
         }
       });
-    }
-
-    void bind(Match match) {
-
-      mMatch = match;
-      if (mMatch.HomeId != null && mMatch.AwayId != null) {
-        mTitleTextView.setText(
-            String.format(
-                "%1s vs %2s",
-                MatchCenter.get(getActivity()).getTeam(mMatch.HomeId).FullName,
-                MatchCenter.get(getActivity()).getTeam(mMatch.AwayId).FullName)
-        );
-      } else {
-        mTitleTextView.setText("N/A");
-      }
-
-      mMatchDateTextView.setText(Match.formatDateForDisplay(mMatch.MatchDate));
-      mMatchStatusTextView.setText(mMatch.IsFinal ? "FT" : "In Progress");
     }
 
     @Override

@@ -61,7 +61,7 @@ public class Match {
           return true;
         }
       } catch (ClassCastException cce) {
-        Log.e(TAG, "Could not cast object to Team class: " + cce.getMessage());
+        Log.e(TAG, "Could not cast object to Match class: " + cce.getMessage());
       }
 
     return false;

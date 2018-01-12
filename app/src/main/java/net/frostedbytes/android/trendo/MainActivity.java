@@ -78,7 +78,8 @@ public class MainActivity extends BaseActivity implements MatchListFragment.OnMa
         finish();
         return true;
       case R.id.action_refresh:
-        Log.d(TAG, "Refresh known data.");
+        startActivity(new Intent(this, GatheringActivity.class));
+        finish();
         return true;
       case R.id.action_settings:
         SettingsFragment settingsFragment = new SettingsFragment();

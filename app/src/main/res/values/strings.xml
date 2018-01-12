@@ -23,4 +23,11 @@
   <string name="desc_match">Match details will go here.</string>
   <string name="desc_settings">Settings will go here.</string>
   <string name="desc_locked">App requires authentication before proceeding</string>
+  <string name="additional_extra_time">Additional Extra-time</string>
+  <string name="stoppage_time">Stoppage Time</string>
+  <string name="additional_details">More Details</string>
+  <string name="event_minute">Minute:</string>
+  <string name="event_name">Event:</string>
+  <string name="player_name">Player Name:</string>
+  <string name="team_name">Team:</string>
 </resources>

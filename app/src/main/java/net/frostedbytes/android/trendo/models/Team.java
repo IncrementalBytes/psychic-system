@@ -31,7 +31,7 @@ public class Team {
     this.ShortName = "";
   }
 
-  public Team(String conferenceId, int createDateUTC, String fullName, String id, boolean isDefunct, String parentId, String shortName) {
+  public Team(String conferenceId, long createDateUTC, String fullName, String id, boolean isDefunct, String parentId, String shortName) {
 
     this.ConferenceId = conferenceId;
     this.CreateDateUTC = createDateUTC;
