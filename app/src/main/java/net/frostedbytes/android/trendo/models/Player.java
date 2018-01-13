@@ -1,6 +1,7 @@
 package net.frostedbytes.android.trendo.models;
 
 import android.util.Log;
+import net.frostedbytes.android.trendo.BaseActivity;
 
 public class Player {
 
@@ -19,10 +20,10 @@ public class Player {
     // Default constructor required for calls to DataSnapshot.getValue(MatchEvent.class)
     this.CreateDateUTC = 0;
     this.FirstName = "";
-    this.Id = "000000000-0000-0000-0000-000000000000";
+    this.Id = BaseActivity.DEFAULT_ID;
     this.IsDefunct= false;
     this.LastName = "";
-    this.TeamId = "000000000-0000-0000-0000-000000000000";
+    this.TeamId = BaseActivity.DEFAULT_ID;
   }
 
   public Player(long createDateUTC, String firstName, String id, boolean isDefunct, String lastName, String teamId) {

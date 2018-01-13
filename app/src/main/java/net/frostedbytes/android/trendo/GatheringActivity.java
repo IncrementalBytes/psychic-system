@@ -15,6 +15,7 @@ import net.frostedbytes.android.trendo.models.Conference;
 import net.frostedbytes.android.trendo.models.Event;
 import net.frostedbytes.android.trendo.models.Match;
 import net.frostedbytes.android.trendo.models.MatchEvent;
+import net.frostedbytes.android.trendo.models.Player;
 import net.frostedbytes.android.trendo.models.Team;
 
 public class GatheringActivity extends BaseActivity {
@@ -25,12 +26,14 @@ public class GatheringActivity extends BaseActivity {
   private boolean mEventsDone;
   private boolean mMatchesDone;
   private boolean mMatchEventsDone;
+  private boolean mPlayersDone;
   private boolean mTeamsDone;
 
   private List<Conference> mConferences;
   private List<Event> mEvents;
   private List<Match> mMatches;
   private List<MatchEvent> mMatchEvents;
+  private List<Player> mPlayers;
   private List<Team> mTeams;
 
   @Override
@@ -45,6 +48,7 @@ public class GatheringActivity extends BaseActivity {
     mEvents = new ArrayList<>();
     mMatches = new ArrayList<>();
     mMatchEvents = new ArrayList<>();
+    mPlayers = new ArrayList<>();
     mTeams = new ArrayList<>();
     DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
@@ -100,7 +104,7 @@ public class GatheringActivity extends BaseActivity {
       }
     });
 
-    Query matchesQuery = database.child("matches").orderByChild("matchdate");
+    Query matchesQuery = database.child("matches").orderByChild("MatchDate");
     matchesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
 
       private static final String TAG = "matchesQuery";
@@ -154,7 +158,34 @@ public class GatheringActivity extends BaseActivity {
       }
     });
 
-    Query teamsQuery = database.child("teams").orderByChild("shortname");
+    Query playersQuery = database.child("players").orderByChild("FirstName");
+    playersQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+
+      private static final String TAG = "playersQuery";
+
+      @Override
+      public void onDataChange(DataSnapshot dataSnapshot) {
+        for (DataSnapshot data : dataSnapshot.getChildren()) {
+          Player player = data.getValue(Player.class);
+          if (player != null) {
+            player.Id = data.getKey();
+            mPlayers.add(player);
+          }
+        }
+
+        onGatheringPlayersComplete();
+      }
+
+      @Override
+      public void onCancelled(DatabaseError databaseError) {
+
+        Log.d(TAG, "++onCancelled(DatabaseError)");
+        Log.e(TAG, databaseError.getMessage());
+        hideProgressDialog();
+      }
+    });
+
+    Query teamsQuery = database.child("teams").orderByChild("ShortName");
     teamsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
 
       private static final String TAG = "teamsQuery";
@@ -210,6 +241,13 @@ public class GatheringActivity extends BaseActivity {
     gatheringCheck();
   }
 
+  void onGatheringPlayersComplete() {
+
+    Log.d(TAG, "++onGatheringPlayersComplete()");
+    mPlayersDone = true;
+    gatheringCheck();
+  }
+
   void onGatheringTeamsComplete() {
 
     Log.d(TAG, "++onGatheringTeamsComplete()");
@@ -221,11 +259,12 @@ public class GatheringActivity extends BaseActivity {
 
     Log.d(TAG, "++gatheringCheck()");
     if (mMatchesDone && mTeamsDone && mEventsDone && mConferencesDone && mMatchEventsDone) {
-      MatchCenter.get(this).setConferences(mConferences);
-      MatchCenter.get(this).setEvents(mEvents);
-      MatchCenter.get(this).setMatches(mMatches);
-      MatchCenter.get(this).setMatchEvents(mMatchEvents);
-      MatchCenter.get(this).setTeams(mTeams);
+      MatchCenter.get().setConferences(mConferences);
+      MatchCenter.get().setEvents(mEvents);
+      MatchCenter.get().setMatches(mMatches);
+      MatchCenter.get().setMatchEvents(mMatchEvents);
+      MatchCenter.get().setPlayers(mPlayers);
+      MatchCenter.get().setTeams(mTeams);
 
       startActivity(new Intent(GatheringActivity.this, MainActivity.class));
       hideProgressDialog();

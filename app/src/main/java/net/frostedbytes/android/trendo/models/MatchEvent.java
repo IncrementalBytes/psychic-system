@@ -2,6 +2,7 @@ package net.frostedbytes.android.trendo.models;
 
 import android.util.Log;
 import com.google.firebase.database.IgnoreExtraProperties;
+import net.frostedbytes.android.trendo.BaseActivity;
 
 @IgnoreExtraProperties
 public class MatchEvent {
@@ -15,6 +16,7 @@ public class MatchEvent {
   public boolean IsStoppageTime;
   public String MatchId;
   public int MinuteOfEvent;
+  public String PlayerId;
   public String TeamId;
 
   @SuppressWarnings("unused")
@@ -22,16 +24,17 @@ public class MatchEvent {
 
     // Default constructor required for calls to DataSnapshot.getValue(MatchEvent.class)
     this.CreateDateUTC = 0;
-    this.EventId = "000000000-0000-0000-0000-000000000000";
-    this.Id = "000000000-0000-0000-0000-000000000000";
+    this.EventId = BaseActivity.DEFAULT_ID;
+    this.Id = BaseActivity.DEFAULT_ID;
     this.IsAdditionalExtraTime = false;
     this.IsStoppageTime = false;
-    this.MatchId = "000000000-0000-0000-0000-000000000000";
+    this.MatchId = BaseActivity.DEFAULT_ID;
     this.MinuteOfEvent = 0;
-    this.TeamId = "000000000-0000-0000-0000-000000000000";
+    this.PlayerId = BaseActivity.DEFAULT_ID;
+    this.TeamId = BaseActivity.DEFAULT_ID;
   }
 
-  public MatchEvent(long createDateUTC, String eventId, String id, boolean isAdditionalExtraTime, boolean isStoppageTime, String matchId, int minuteOfEvent, String teamId) {
+  public MatchEvent(long createDateUTC, String eventId, String id, boolean isAdditionalExtraTime, boolean isStoppageTime, String matchId, int minuteOfEvent, String playerId, String teamId) {
 
     this.CreateDateUTC = createDateUTC;
     this.EventId = eventId;
@@ -40,6 +43,7 @@ public class MatchEvent {
     this.IsStoppageTime = isStoppageTime;
     this.MatchId = matchId;
     this.MinuteOfEvent = minuteOfEvent;
+    this.PlayerId = playerId;
     this.TeamId = teamId;
   }
 
@@ -62,6 +66,7 @@ public class MatchEvent {
             this.EventId.equals(compareToMatchEvent.EventId) &&
             this.MatchId.equals(compareToMatchEvent.MatchId) &&
             this.TeamId.equals(compareToMatchEvent.TeamId) &&
+            (this.PlayerId != null && this.PlayerId.equals(compareToMatchEvent.PlayerId)) &&
             this.MinuteOfEvent == compareToMatchEvent.MinuteOfEvent &&
             this.IsAdditionalExtraTime == compareToMatchEvent.IsAdditionalExtraTime &&
             this.IsStoppageTime == compareToMatchEvent.IsStoppageTime) {

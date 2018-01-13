@@ -2,6 +2,7 @@ package net.frostedbytes.android.trendo.models;
 
 import android.util.Log;
 import java.util.Locale;
+import net.frostedbytes.android.trendo.BaseActivity;
 
 public class Event {
 
@@ -17,7 +18,7 @@ public class Event {
 
     // Default constructor required for calls to DataSnapshot.getValue(Event.class)
     this.CreateDateUTC = 0;
-    this.Id = "000000000-0000-0000-0000-000000000000";
+    this.Id = BaseActivity.DEFAULT_ID;
     this.IsDefunct = false;
     this.Name = "";
   }

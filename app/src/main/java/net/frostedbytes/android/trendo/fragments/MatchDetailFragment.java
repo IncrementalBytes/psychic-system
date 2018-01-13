@@ -16,6 +16,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
+import net.frostedbytes.android.trendo.BaseActivity;
 import net.frostedbytes.android.trendo.MatchCenter;
 import net.frostedbytes.android.trendo.R;
 import net.frostedbytes.android.trendo.models.Event;
@@ -55,12 +56,14 @@ public class MatchDetailFragment extends Fragment {
     Log.d(TAG, "++onCreate(Bundle)");
     if (getArguments() == null) {
       Log.d(TAG, "matchId has not been set.");
+      mMatchId = BaseActivity.DEFAULT_ID;
     } else {
       mMatchId = getArguments().getString(ARG_MATCH_ID);
       Log.d(TAG, "matchId: " + mMatchId);
-      mMatch = MatchCenter.get(getActivity()).getMatch(mMatchId);
-      mHome = MatchCenter.get(getActivity()).getTeam(mMatch.HomeId);
-      mAway = MatchCenter.get(getActivity()).getTeam(mMatch.AwayId);
+
+      mMatch = MatchCenter.get().getMatch(mMatchId);
+      mHome = MatchCenter.get().getTeam(mMatch.HomeId);
+      mAway = MatchCenter.get().getTeam(mMatch.AwayId);
     }
   }
 
@@ -69,7 +72,7 @@ public class MatchDetailFragment extends Fragment {
     super.onPause();
 
     Log.d(TAG, "++onPause()");
-    mMatch = MatchCenter.get(getActivity()).getMatch(mMatch.Id);
+    mMatch = MatchCenter.get().getMatch(mMatch.Id);
   }
 
   @Override
@@ -78,7 +81,10 @@ public class MatchDetailFragment extends Fragment {
     Log.d(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
     View view = inflater.inflate(R.layout.fragment_match_details, container, false);
     TouchableTextView homeText = view.findViewById(R.id.scoring_text_home_team);
-    homeText.setText(mHome.ShortName);
+    if (mHome != null) {
+      homeText.setText(mHome.ShortName);
+    }
+
     homeText.setOnTouchListener(new OnTouchListener() {
       @Override
       public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -138,7 +144,10 @@ public class MatchDetailFragment extends Fragment {
     }
 
     TouchableTextView awayText = view.findViewById(R.id.scoring_text_away_team);
-    awayText.setText(mAway.ShortName);
+    if (mAway != null) {
+      awayText.setText(mAway.ShortName);
+    }
+
     awayText.setOnTouchListener(new OnTouchListener() {
       @Override
       public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -225,18 +234,24 @@ public class MatchDetailFragment extends Fragment {
   private void addEvent(String teamId) {
 
     Log.d(TAG, "++addEvent(String)");
-    FragmentManager manager = getFragmentManager();
-    EventDetailFragment dialog = EventDetailFragment.newInstance(mMatch.Id, teamId);
-    dialog.setTargetFragment(MatchDetailFragment.this, REQUEST_MATCH_EVENT);
-    dialog.show(manager, DIALOG_EVENT);
+    if (teamId != null && !teamId.equals(BaseActivity.DEFAULT_ID)) {
+      EventDetailFragment dialog = EventDetailFragment.newInstance(mMatch.Id, teamId);
+      dialog.show(getChildFragmentManager(), DIALOG_EVENT);
+    } else {
+      Log.e(TAG, "Cannot add event; team is not known.");
+    }
   }
 
   private void editEvent(String teamId) {
 
     Log.d(TAG, "++editEvent(String)");
-    // TODO: list current events for team/match for user to remove/edit
+    if (teamId != null && !teamId.equals(BaseActivity.DEFAULT_ID)) {
+      // TODO: list current events for team/match for user to remove/edit
 
-    updateScores();
+      updateScores();
+    } else {
+      Log.e(TAG, "Cannot edit event; team is not known.");
+    }
   }
 
   private void finalizeMatch() {
@@ -249,10 +264,13 @@ public class MatchDetailFragment extends Fragment {
   private void populateTrend(Team targetTeam, Team opponentTeam) {
 
     Log.d(TAG, "++populateTrend(Team, Team)");
-
-    // clear the tables before proceeding
-    mTrendTable.removeAllViews();
-    mRecordAgainstTable.removeAllViews();
+    if (targetTeam != null && opponentTeam != null) {
+      // clear the tables before proceeding
+      mTrendTable.removeAllViews();
+      mRecordAgainstTable.removeAllViews();
+    } else {
+      Log.e(TAG, "Cannot populate trend; teams are not known.");
+    }
   }
 
   private void updateScores() {
@@ -260,7 +278,7 @@ public class MatchDetailFragment extends Fragment {
     Log.d(TAG, "++updateScores()");
     String ownGoalId = null;
     List<String> goalEventIds = new ArrayList<>();
-    for (Event event : MatchCenter.get(getActivity()).getEvents()) {
+    for (Event event : MatchCenter.get().getEvents()) {
       switch(event.Name) {
         case "Own Goal":
           ownGoalId = event.Id;
@@ -275,14 +293,16 @@ public class MatchDetailFragment extends Fragment {
 
     int homeScore = 0;
     int awayScore = 0;
-    for (MatchEvent matchEvent : MatchCenter.get(getActivity()).getMatchEvents(mMatchId)){
-      if (goalEventIds.contains(matchEvent.EventId)) {
-        if ((matchEvent.TeamId.equals(mHome.Id) && !matchEvent.EventId.equals(ownGoalId)) ||
-            (matchEvent.TeamId.equals(mAway.Id) && matchEvent.EventId.equals(ownGoalId))) {
-          homeScore++;
-        } else if ((matchEvent.TeamId.equals(mAway.Id) && !matchEvent.EventId.equals(ownGoalId)) ||
-            (matchEvent.TeamId.equals(mAway.Id) && matchEvent.EventId.equals(ownGoalId))) {
-          awayScore++;
+    if (!mMatchId.equals(BaseActivity.DEFAULT_ID)) {
+      for (MatchEvent matchEvent : MatchCenter.get().getMatchEvents(mMatchId)) {
+        if (goalEventIds.contains(matchEvent.EventId)) {
+          if (mHome != null && (matchEvent.TeamId.equals(mHome.Id) && !matchEvent.EventId.equals(ownGoalId)) ||
+              mAway != null && (matchEvent.TeamId.equals(mAway.Id) && matchEvent.EventId.equals(ownGoalId))) {
+            homeScore++;
+          } else if (mAway != null && (matchEvent.TeamId.equals(mAway.Id) && !matchEvent.EventId.equals(ownGoalId)) ||
+              mHome != null && (matchEvent.TeamId.equals(mHome.Id) && matchEvent.EventId.equals(ownGoalId))) {
+            awayScore++;
+          }
         }
       }
     }

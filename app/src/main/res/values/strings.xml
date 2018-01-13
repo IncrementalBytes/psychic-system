@@ -30,4 +30,8 @@
   <string name="event_name">Event:</string>
   <string name="player_name">Player Name:</string>
   <string name="team_name">Team:</string>
+  <string name="away_team">Away:</string>
+  <string name="home_team">Home:</string>
+  <string name="date_picker_title">Match Date:</string>
+  <string name="match_create_header">Create a new match</string>
 </resources>

@@ -43,8 +43,7 @@
       android:layout_marginBottom="3dp"
       android:layout_marginEnd="12dp"
       android:layout_weight=".3"
-      android:text="@string/player_name"
-      android:visibility="invisible"/>
+      android:text="@string/player_name"/>
   </TableRow>
   <TableRow>
     <Spinner
@@ -54,8 +53,7 @@
       android:spinnerMode="dialog"
       android:gravity="center_vertical"
       android:layout_weight="1"
-      android:layout_margin="8dp"
-      android:visibility="invisible"/>
+      android:layout_margin="8dp"/>
   </TableRow>
   <TableRow
     android:layout_width="match_parent"

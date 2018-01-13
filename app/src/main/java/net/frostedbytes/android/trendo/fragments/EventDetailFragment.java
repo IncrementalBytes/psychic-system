@@ -4,8 +4,10 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,14 +19,19 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
 import android.widget.TextView;
+import java.io.Serializable;
 import java.util.List;
+import net.frostedbytes.android.trendo.BaseActivity;
 import net.frostedbytes.android.trendo.MatchCenter;
 import net.frostedbytes.android.trendo.R;
 import net.frostedbytes.android.trendo.models.Event;
 import net.frostedbytes.android.trendo.models.MatchEvent;
+import net.frostedbytes.android.trendo.models.Player;
 import net.frostedbytes.android.trendo.models.Team;
 
 public class EventDetailFragment extends DialogFragment {
+
+  private static final String TAG = "EventDetailFragment";
 
   public static final String EXTRA_MATCH_EVENT = "matchevent";
 
@@ -55,10 +62,22 @@ public class EventDetailFragment extends DialogFragment {
     return fragment;
   }
 
-  public Dialog onCreateDialog(Bundle savedInstanceState) {
+  @NonNull
+  public Dialog onCreateDialog(Bundle savedInstanceState) throws NullPointerException {
 
-    final String matchId = (String) getArguments().getSerializable(ARG_MATCH);
-    final String teamId = (String) getArguments().getSerializable(ARG_TEAM); // use this to filter player list
+    String matchId = BaseActivity.DEFAULT_ID;
+    String teamId = BaseActivity.DEFAULT_ID;
+    Bundle arguments = getArguments();
+    if (arguments != null) {
+      Serializable value = arguments.getSerializable(ARG_MATCH);
+      if (value != null) {
+        matchId = (String)value;
+      }
+      value = arguments.getSerializable(ARG_TEAM);
+      if (value != null) {
+        teamId = (String)value;
+      }
+    }
 
     mMatchEvent = new MatchEvent();
     mMatchEvent.MatchId = matchId;
@@ -66,46 +85,46 @@ public class EventDetailFragment extends DialogFragment {
 
     final View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_event_detail, null);
 
-    Team team = MatchCenter.get(getActivity()).getTeam(teamId);
+    Team team = MatchCenter.get().getTeam(teamId);
 
     // update UI components
-    mTeamNameText = (TextView) v.findViewById(R.id.event_text_team_name);
+    mTeamNameText = v.findViewById(R.id.event_text_team_name);
     mTeamNameText.setText(team.ShortName);
-    mPlayerNameSpinner = (Spinner) v.findViewById(R.id.event_spinner_player_name);
-    mEventNameSpinner = (Spinner) v.findViewById(R.id.event_spinner_event_name);
-    mMinuteSeekBar = (SeekBar) v.findViewById(R.id.event_seek_minute);
-    mMinuteOfEventText = (TextView) v.findViewById(R.id.event_text_time_of_event);
+    mPlayerNameSpinner = v.findViewById(R.id.event_spinner_player_name);
+    mEventNameSpinner = v.findViewById(R.id.event_spinner_event_name);
+    mMinuteSeekBar = v.findViewById(R.id.event_seek_minute);
+    mMinuteOfEventText = v.findViewById(R.id.event_text_time_of_event);
 
     // get a list of players (specific to passed team) for the object adapter used by the spinner controls
-//    List<String> playerNames = MatchCenter.get(getActivity()).getPlayerNames(teamId);
-//    ArrayAdapter<String> adapter = new ArrayAdapter<>(
-//        getActivity(),
-//        android.R.layout.simple_list_item_1,
-//        playerNames);
+    List<String> playerNames = MatchCenter.get().getPlayerNames(teamId);
+    ArrayAdapter<String> adapter = new ArrayAdapter<>(
+        getActivity(),
+        android.R.layout.simple_list_item_1,
+        playerNames);
 
     // specify the layout to use when the list of choices appears
-//    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
     // apply the adapter to the spinner
-//    mPlayerNameSpinner.setAdapter(adapter);
-//    mPlayerNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//
-//      @Override
-//      public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//
-//        Player player = MatchCenter.get(getActivity()).getPlayer(mPlayerNameSpinner.getSelectedItem().toString());
-//        mMatchEvent.setPlayerId(player.getId());
-//      }
-//
-//      @Override
-//      public void onNothingSelected(AdapterView<?> parent) {
-//
-//      }
-//    });
+    mPlayerNameSpinner.setAdapter(adapter);
+    mPlayerNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+      @Override
+      public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+        Player player = MatchCenter.get().getPlayer(mPlayerNameSpinner.getSelectedItem().toString());
+        mMatchEvent.PlayerId = player.Id;
+      }
+
+      @Override
+      public void onNothingSelected(AdapterView<?> parent) {
+
+      }
+    });
 
     // get a list of events for the object adapter used by the spinner controls
-    List<String> eventNames = MatchCenter.get(getActivity()).getEventNames();
-    ArrayAdapter<String> adapter = new ArrayAdapter<>(
+    List<String> eventNames = MatchCenter.get().getEventNames();
+    adapter = new ArrayAdapter<>(
         getActivity(),
         android.R.layout.simple_list_item_1,
         eventNames);
@@ -120,7 +139,7 @@ public class EventDetailFragment extends DialogFragment {
       @Override
       public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        Event event = MatchCenter.get(getActivity()).getEvent(mEventNameSpinner.getSelectedItem().toString());
+        Event event = MatchCenter.get().getEvent(mEventNameSpinner.getSelectedItem().toString());
         mMatchEvent.EventId = event.Id;
       }
 
@@ -149,7 +168,7 @@ public class EventDetailFragment extends DialogFragment {
           }
         });
 
-    mAETCheckBox = (CheckBox) v.findViewById(R.id.event_check_aet);
+    mAETCheckBox = v.findViewById(R.id.event_check_aet);
     mAETCheckBox.setOnCheckedChangeListener(
         new OnCheckedChangeListener() {
 
@@ -167,10 +186,10 @@ public class EventDetailFragment extends DialogFragment {
         }
     );
 
-    mMinuteAETSeekBar = (SeekBar) v.findViewById(R.id.event_seek_minute_aet);
+    mMinuteAETSeekBar = v.findViewById(R.id.event_seek_minute_aet);
     mMinuteAETSeekBar.setProgress(0);
     mMinuteAETSeekBar.setEnabled(false);
-    mMinuteOfEventAETText = (TextView) v.findViewById(R.id.event_text_time_of_event_aet);
+    mMinuteOfEventAETText = v.findViewById(R.id.event_text_time_of_event_aet);
     mMinuteOfEventAETText.setText("");
     mMinuteOfEventAETText.setEnabled(false);
     mMinuteAETSeekBar.setOnSeekBarChangeListener(
@@ -199,7 +218,7 @@ public class EventDetailFragment extends DialogFragment {
 
               @Override
               public void onClick(DialogInterface dialog, int which) {
-                //MatchCenter.get(getActivity()).deleteEvent(mMatchEvent.getId());
+                //MatchCenter.get().deleteEvent(mMatchEvent.getId());
                 //sendResult(MatchFragment.REQUEST_MATCH_EVENT, new UUID(0,0));
               }
             })
@@ -208,24 +227,24 @@ public class EventDetailFragment extends DialogFragment {
 
               @Override
               public void onClick(DialogInterface dialog, int which) {
-                SeekBar seekBar = (SeekBar) v.findViewById(R.id.event_seek_minute);
+                SeekBar seekBar = v.findViewById(R.id.event_seek_minute);
                 if (seekBar != null) {
                   mMatchEvent.MinuteOfEvent = seekBar.getProgress();
                 }
 
-                CheckBox checkBox = (CheckBox) v.findViewById(R.id.event_check_aet);
+                CheckBox checkBox = v.findViewById(R.id.event_check_aet);
                 if (checkBox != null && checkBox.isChecked()) {
                   mMatchEvent.IsAdditionalExtraTime = checkBox.isChecked();
                 }
 
-                checkBox = (CheckBox) v.findViewById(R.id.event_check_stoppage_time);
+                checkBox = v.findViewById(R.id.event_check_stoppage_time);
                 if (checkBox != null) {
                   mMatchEvent.IsStoppageTime = checkBox.isChecked();
                 }
 
                 // TODO: add additional extra time value
 
-//                MatchCenter.get(getActivity()).addMatchEvent(mMatchEvent);
+//                MatchCenter.get().addMatchEvent(mMatchEvent);
 //                sendResult(MatchFragment.REQUEST_MATCH_EVENT, mMatchEvent.getId());
               }
             })

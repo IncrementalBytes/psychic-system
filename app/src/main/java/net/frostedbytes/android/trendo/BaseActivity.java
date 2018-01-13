@@ -7,6 +7,8 @@ import com.google.firebase.crash.FirebaseCrash;
 
 public class BaseActivity extends AppCompatActivity {
 
+  public static final String DEFAULT_ID = "000000000-0000-0000-0000-000000000000";
+
   private static final String TAG = "BaseActivity";
 
   private ProgressDialog mProgressDialog;

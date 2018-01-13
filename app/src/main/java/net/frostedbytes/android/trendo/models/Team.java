@@ -4,6 +4,7 @@ import android.util.Log;
 import java.util.Locale;
 
 import com.google.firebase.database.IgnoreExtraProperties;
+import net.frostedbytes.android.trendo.BaseActivity;
 
 @IgnoreExtraProperties
 public class Team {
@@ -22,12 +23,12 @@ public class Team {
   public Team() {
 
     // Default constructor required for calls to DataSnapshot.getValue(Team.class)
-    this.ConferenceId = "000000000-0000-0000-0000-000000000000";
+    this.ConferenceId = BaseActivity.DEFAULT_ID;
     this.CreateDateUTC = 0;
     this.FullName = "";
-    this.Id = "000000000-0000-0000-0000-000000000000";
+    this.Id = BaseActivity.DEFAULT_ID;
     this.IsDefunct = false;
-    this.ParentId = "000000000-0000-0000-0000-000000000000";
+    this.ParentId = BaseActivity.DEFAULT_ID;
     this.ShortName = "";
   }
 

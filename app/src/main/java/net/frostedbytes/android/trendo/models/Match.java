@@ -4,8 +4,10 @@ import android.util.Log;
 import com.google.firebase.database.IgnoreExtraProperties;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import net.frostedbytes.android.trendo.BaseActivity;
 
 @IgnoreExtraProperties
 public class Match {
@@ -22,11 +24,11 @@ public class Match {
   public Match() {
 
     // Default constructor required for calls to DataSnapshot.getValue(Match.class)
-    this.AwayId = "000000000-0000-0000-0000-000000000000";
-    this.HomeId = "000000000-0000-0000-0000-000000000000";
-    this.Id = "000000000-0000-0000-0000-000000000000";
+    this.AwayId = BaseActivity.DEFAULT_ID;
+    this.HomeId = BaseActivity.DEFAULT_ID;
+    this.Id = BaseActivity.DEFAULT_ID;
     this.IsFinal = false;
-    this.MatchDate = 0;
+    this.MatchDate = Calendar.getInstance().getTimeInMillis();
   }
 
   public Match(String awayId, String homeId, String id, boolean isFinal, long matchDate) {

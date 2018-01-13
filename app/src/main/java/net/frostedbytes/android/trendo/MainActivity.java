@@ -15,9 +15,6 @@ public class MainActivity extends BaseActivity implements MatchListFragment.OnMa
 
   private static final String TAG = "MainActivity";
 
-  MatchListFragment mMatchListFragment;
-  MatchDetailFragment mMatchDetailFragment;
-
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -30,9 +27,9 @@ public class MainActivity extends BaseActivity implements MatchListFragment.OnMa
         return;
       }
 
-      mMatchListFragment = new MatchListFragment();
+      MatchListFragment matchListFragment = new MatchListFragment();
       FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-      transaction.replace(R.id.fragment_container, mMatchListFragment);
+      transaction.replace(R.id.fragment_container, matchListFragment);
       transaction.addToBackStack(null);
       transaction.commit();
     }
@@ -42,13 +39,17 @@ public class MainActivity extends BaseActivity implements MatchListFragment.OnMa
   public void onMatchSelected(String matchId) {
 
     Log.d(TAG, "++onMatchSelected(String)");
-    mMatchDetailFragment = new MatchDetailFragment();
+
+    // grab updates from the database
+    startActivity(new Intent(this, GatheringActivity.class));
+
+    MatchDetailFragment matchDetailFragment = new MatchDetailFragment();
     Bundle args = new Bundle();
     args.putString(MatchDetailFragment.ARG_MATCH_ID, matchId);
-    mMatchDetailFragment.setArguments(args);
+    matchDetailFragment.setArguments(args);
 
     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-    transaction.replace(R.id.fragment_container, mMatchDetailFragment);
+    transaction.replace(R.id.fragment_container, matchDetailFragment);
     transaction.addToBackStack(matchId);
     transaction.commit();
   }
@@ -63,6 +64,7 @@ public class MainActivity extends BaseActivity implements MatchListFragment.OnMa
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
 
+    Log.d(TAG, "++onCreateOptionsMenu(Menu)");
     getMenuInflater().inflate(R.menu.menu_main, menu);
     return true;
   }
@@ -70,6 +72,7 @@ public class MainActivity extends BaseActivity implements MatchListFragment.OnMa
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
 
+    Log.d(TAG, "++onOptionsItemSelected(MenuItem)");
     int i = item.getItemId();
     switch (i) {
       case R.id.action_logout:
@@ -97,6 +100,7 @@ public class MainActivity extends BaseActivity implements MatchListFragment.OnMa
   @Override
   public void onBackPressed() {
 
+    Log.d(TAG, "++onBackPressed()");
     if (getFragmentManager().getBackStackEntryCount() > 0 ){
       getFragmentManager().popBackStack();
     } else {

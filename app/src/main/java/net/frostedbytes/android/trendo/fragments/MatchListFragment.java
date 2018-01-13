@@ -1,9 +1,9 @@
 package net.frostedbytes.android.trendo.fragments;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,15 +21,28 @@ import net.frostedbytes.android.trendo.R;
 import net.frostedbytes.android.trendo.models.Match;
 import net.frostedbytes.android.trendo.views.TouchableImageView;
 
-public class MatchListFragment extends Fragment {
+public class MatchListFragment extends Fragment implements MatchCreationFragment.OnMatchCreatedListener {
 
   private static final String TAG = "MatchListFragment";
 
+  private static final String DIALOG_MATCH = "Create Match dialog";
+
   OnMatchSelectedListener mCallback;
+
+  public interface OnMatchSelectedListener {
+
+    void onMatchSelected(String matchId);
+  }
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    try {
+      mCallback = (OnMatchSelectedListener) getTargetFragment();
+    } catch (ClassCastException e) {
+      throw new ClassCastException("Error in retrieving data. Please try again");
+    }
   }
 
   @Override
@@ -41,29 +54,29 @@ public class MatchListFragment extends Fragment {
     linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
     RecyclerView matchRecyclerView = view.findViewById(R.id.match_list);
     matchRecyclerView.setLayoutManager(linearLayoutManager);
-    List<Match> matches = MatchCenter.get(getActivity()).getMatches();
+
+    List<Match> matches = MatchCenter.get().getMatches();
     MatchAdapter matchAdapter = new MatchAdapter(matches);
     matchRecyclerView.setAdapter(matchAdapter);
     matchAdapter.notifyDataSetChanged();
+
+    FloatingActionButton fab = view.findViewById(R.id.fab_new_match);
+    fab.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        MatchCreationFragment dialog = MatchCreationFragment.newInstance();
+        dialog.show(getChildFragmentManager(), DIALOG_MATCH);
+      }
+    });
 
     return view;
   }
 
   @Override
-  public void onAttach(Context context) {
-    super.onAttach(context);
+  public void onMatchCreated(String matchId) {
 
-    Log.d(TAG, "++onAttach(Context)");
-    try {
-      mCallback = (OnMatchSelectedListener) context;
-    } catch (ClassCastException e) {
-      throw new ClassCastException("Error in retrieving data. Please try again");
-    }
-  }
-
-  public interface OnMatchSelectedListener {
-
-    void onMatchSelected(String matchId);
+    Log.d(TAG, "++onMatchCreated(String)");
+    mCallback.onMatchSelected(matchId);
   }
 
   private class MatchAdapter extends RecyclerView.Adapter<MatchHolder> {
@@ -121,8 +134,8 @@ public class MatchListFragment extends Fragment {
         mTitleTextView.setText(
             String.format(
                 "%1s vs %2s",
-                MatchCenter.get(getActivity()).getTeam(mMatch.HomeId).FullName,
-                MatchCenter.get(getActivity()).getTeam(mMatch.AwayId).FullName)
+                MatchCenter.get().getTeam(mMatch.HomeId).FullName,
+                MatchCenter.get().getTeam(mMatch.AwayId).FullName)
         );
       } else {
         mTitleTextView.setText("N/A");
@@ -137,8 +150,8 @@ public class MatchListFragment extends Fragment {
           switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
               if (getActivity() != null) {
-                AlertDialog dialog = new AlertDialog.Builder(getActivity())
-                    .setTitle("Delete this match?")
+                AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                dialog.setTitle("Delete this match?")
                     .setPositiveButton(android.R.string.ok,
                         new DialogInterface.OnClickListener() {
 
@@ -156,8 +169,8 @@ public class MatchListFragment extends Fragment {
                           @Override
                           public void onClick(DialogInterface dialog, int which) {
                           }
-                        })
-                    .create();
+                        });
+                dialog.create();
                 dialog.show();
               } else {
                 System.out.println("getActivity() is null.");

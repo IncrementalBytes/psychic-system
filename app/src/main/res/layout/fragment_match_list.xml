@@ -3,6 +3,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   tools:context=".MainActivity">
 
   <android.support.v7.widget.RecyclerView
@@ -13,4 +14,13 @@
     android:padding="5dp"
     android:scrollbars="vertical"
     tools:listitem="@layout/match_item" />
+
+  <android.support.design.widget.FloatingActionButton
+    android:id="@+id/fab_new_match"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/fab_margin"
+    android:layout_gravity="bottom|end"
+    app:srcCompat="@drawable/ic_add_match"/>
+
 </FrameLayout>
