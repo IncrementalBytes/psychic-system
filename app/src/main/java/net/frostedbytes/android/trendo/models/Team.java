@@ -1,45 +1,43 @@
 package net.frostedbytes.android.trendo.models;
 
 import android.util.Log;
+import com.google.firebase.database.Exclude;
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Locale;
 
 import com.google.firebase.database.IgnoreExtraProperties;
+import java.util.Map;
 import net.frostedbytes.android.trendo.BaseActivity;
 
 @IgnoreExtraProperties
-public class Team {
+public class Team implements Serializable {
 
   private static final String TAG = "Team";
 
-  public String ConferenceId;
-  public long CreateDateUTC;
   public String FullName;
   public String Id;
   public boolean IsDefunct;
-  public String ParentId;
+  public Map<String, Player> Rosters;
   public String ShortName;
 
   @SuppressWarnings("unused")
   public Team() {
 
     // Default constructor required for calls to DataSnapshot.getValue(Team.class)
-    this.ConferenceId = BaseActivity.DEFAULT_ID;
-    this.CreateDateUTC = 0;
     this.FullName = "";
     this.Id = BaseActivity.DEFAULT_ID;
     this.IsDefunct = false;
-    this.ParentId = BaseActivity.DEFAULT_ID;
+    this.Rosters = new HashMap<>();
     this.ShortName = "";
   }
 
-  public Team(String conferenceId, long createDateUTC, String fullName, String id, boolean isDefunct, String parentId, String shortName) {
+  public Team(String fullName, String id, boolean isDefunct, Map<String, Player> rosters, String shortName) {
 
-    this.ConferenceId = conferenceId;
-    this.CreateDateUTC = createDateUTC;
     this.FullName = fullName;
     this.Id = id;
     this.IsDefunct = isDefunct;
-    this.ParentId = parentId;
+    this.Rosters = rosters;
     this.ShortName = shortName;
   }
 
@@ -59,12 +57,10 @@ public class Team {
       //cast to native object is now safe
       try {
         Team compareToTeam = (Team) compareTo;
-        if (this.Id.equals(compareToTeam.Id) &&
-            this.ParentId.equals(compareToTeam.ParentId) &&
-            this.ConferenceId.equals(compareToTeam.ConferenceId) &&
-            this.FullName.equals(compareToTeam.FullName) &&
-            this.ShortName.equals(compareToTeam.ShortName) &&
-            this.IsDefunct == compareToTeam.IsDefunct) {
+        if (this.FullName.equals(compareToTeam.FullName) &&
+          this.ShortName.equals(compareToTeam.ShortName) &&
+          this.Id.equals(compareToTeam.Id) &&
+          this.IsDefunct == compareToTeam.IsDefunct) {
           return true;
         }
       } catch (ClassCastException cce) {
@@ -78,10 +74,23 @@ public class Team {
   @Override
   public String toString() {
     return String.format(
-        Locale.getDefault(),
-        "%s (%s)%s",
-        this.FullName,
-        this.ShortName,
-        this.IsDefunct ? " (DEFUNCT)" : "");
+      Locale.getDefault(),
+      "%s (%s)%s",
+      this.FullName,
+      this.ShortName,
+      this.IsDefunct ? " (DEFUNCT)" : "");
+  }
+
+  @Exclude
+  public Map<String, Object> toMap() {
+
+    HashMap<String, Object> result = new HashMap<>();
+    result.put("FullName", FullName);
+    result.put("Id", Id);
+    result.put("IsDefunct", IsDefunct);
+    result.put("Rosters", Rosters);
+    result.put("ShortName", ShortName);
+
+    return result;
   }
 }

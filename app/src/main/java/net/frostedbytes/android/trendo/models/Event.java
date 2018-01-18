@@ -1,34 +1,30 @@
 package net.frostedbytes.android.trendo.models;
 
 import android.util.Log;
-import java.util.Locale;
+import com.google.firebase.database.Exclude;
+import java.util.HashMap;
+import java.util.Map;
 import net.frostedbytes.android.trendo.BaseActivity;
 
 public class Event {
 
   private static final String TAG = "Event";
 
-  public long CreateDateUTC;
-  public String Id;
-  public boolean IsDefunct;
   public String Name;
+  public String Id;
 
   @SuppressWarnings("unused")
   public Event() {
 
     // Default constructor required for calls to DataSnapshot.getValue(Event.class)
-    this.CreateDateUTC = 0;
-    this.Id = BaseActivity.DEFAULT_ID;
-    this.IsDefunct = false;
     this.Name = "";
+    this.Id = BaseActivity.DEFAULT_ID;
   }
 
-  public Event(long createDateUTC, String id, boolean isDefunct, String name) {
+  public Event(String name, String id) {
 
-    this.CreateDateUTC = createDateUTC;
-    this.Id = id;
-    this.IsDefunct = isDefunct;
     this.Name = name;
+    this.Id = id;
   }
 
   @Override
@@ -48,8 +44,7 @@ public class Event {
       try {
         Event compareToEvent = (Event) compareTo;
         if (this.Id.equals(compareToEvent.Id) &&
-            this.Name.equals(compareToEvent.Name) &&
-            this.IsDefunct == compareToEvent.IsDefunct) {
+          this.Name.equals(compareToEvent.Name)) {
           return true;
         }
       } catch (ClassCastException cce) {
@@ -62,10 +57,17 @@ public class Event {
 
   @Override
   public String toString() {
-    return String.format(
-        Locale.getDefault(),
-        "%s %s",
-        this.Name,
-        this.IsDefunct ? " (DEFUNCT)" : "");
+
+    return this.Name;
+  }
+
+  @Exclude
+  public Map<String, Object> toMap() {
+
+    HashMap<String, Object> result = new HashMap<>();
+    result.put("Name", Name);
+    result.put("Id", Id);
+
+    return result;
   }
 }

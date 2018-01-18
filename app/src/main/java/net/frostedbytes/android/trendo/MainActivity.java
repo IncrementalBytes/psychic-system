@@ -7,11 +7,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.google.firebase.auth.FirebaseAuth;
+import net.frostedbytes.android.trendo.fragments.EventDetailFragment;
+import net.frostedbytes.android.trendo.fragments.MatchCreationFragment;
 import net.frostedbytes.android.trendo.fragments.MatchDetailFragment;
 import net.frostedbytes.android.trendo.fragments.MatchListFragment;
 import net.frostedbytes.android.trendo.fragments.SettingsFragment;
+import net.frostedbytes.android.trendo.models.Team;
 
-public class MainActivity extends BaseActivity implements MatchListFragment.OnMatchSelectedListener {
+public class MainActivity extends BaseActivity implements
+  MatchListFragment.MatchListListener,
+  MatchCreationFragment.MatchCreationListener,
+  MatchDetailFragment.MatchDetailListener,
+  EventDetailFragment.EventDetailListener {
 
   private static final String TAG = "MainActivity";
 
@@ -36,13 +43,21 @@ public class MainActivity extends BaseActivity implements MatchListFragment.OnMa
   }
 
   @Override
+  public void onCreateMatchRequest() {
+
+    Log.d(TAG, "++onCreateMatchRequest()");
+    MatchCreationFragment createMatchFragment = new MatchCreationFragment();
+
+    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+    transaction.replace(R.id.fragment_container, createMatchFragment);
+    transaction.addToBackStack(null);
+    transaction.commit();
+  }
+
+  @Override
   public void onMatchSelected(String matchId) {
 
     Log.d(TAG, "++onMatchSelected(String)");
-
-    // grab updates from the database
-    startActivity(new Intent(this, GatheringActivity.class));
-
     MatchDetailFragment matchDetailFragment = new MatchDetailFragment();
     Bundle args = new Bundle();
     args.putString(MatchDetailFragment.ARG_MATCH_ID, matchId);
@@ -52,6 +67,43 @@ public class MainActivity extends BaseActivity implements MatchListFragment.OnMa
     transaction.replace(R.id.fragment_container, matchDetailFragment);
     transaction.addToBackStack(matchId);
     transaction.commit();
+  }
+
+  @Override
+  public void onMatchCreated(String matchId) {
+
+    Log.d(TAG, "++onMatchCreated(String)");
+    onMatchSelected(matchId);
+  }
+
+  @Override
+  public void onCreateMatchEventRequest(String matchId, Team team) {
+
+    Log.d(TAG, "++onCreateMatchEventRequest()");
+    EventDetailFragment eventDetailFragment = new EventDetailFragment();
+    Bundle args = new Bundle();
+    args.putString(MatchDetailFragment.ARG_MATCH_ID, matchId);
+    args.putSerializable(MatchDetailFragment.ARG_TEAM, team);
+    eventDetailFragment.setArguments(args);
+
+    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+    transaction.replace(R.id.fragment_container, eventDetailFragment);
+    transaction.addToBackStack(null);
+    transaction.commit();
+  }
+
+  @Override
+  public void onEditMatchEventRequest(String matchId, String teamShortName) {
+
+    Log.d(TAG, "++onCreateMatchEventRequest()");
+    // TODO: implement
+  }
+
+  @Override
+  public void onMatchEventCreated(String matchId) {
+
+    Log.d(TAG, "++onMatchEventCreated(String)");
+    onMatchSelected(matchId);
   }
 
   @Override
@@ -81,8 +133,6 @@ public class MainActivity extends BaseActivity implements MatchListFragment.OnMa
         finish();
         return true;
       case R.id.action_refresh:
-        startActivity(new Intent(this, GatheringActivity.class));
-        finish();
         return true;
       case R.id.action_settings:
         SettingsFragment settingsFragment = new SettingsFragment();
@@ -101,7 +151,7 @@ public class MainActivity extends BaseActivity implements MatchListFragment.OnMa
   public void onBackPressed() {
 
     Log.d(TAG, "++onBackPressed()");
-    if (getFragmentManager().getBackStackEntryCount() > 0 ){
+    if (getFragmentManager().getBackStackEntryCount() > 0) {
       getFragmentManager().popBackStack();
     } else {
       super.onBackPressed();

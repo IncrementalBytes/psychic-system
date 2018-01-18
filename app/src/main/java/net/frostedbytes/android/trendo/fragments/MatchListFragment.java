@@ -1,5 +1,6 @@
 package net.frostedbytes.android.trendo.fragments;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,33 +16,42 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import java.util.List;
-import net.frostedbytes.android.trendo.MatchCenter;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.DatabaseReference.CompletionListener;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import net.frostedbytes.android.trendo.R;
 import net.frostedbytes.android.trendo.models.Match;
 import net.frostedbytes.android.trendo.views.TouchableImageView;
 
-public class MatchListFragment extends Fragment implements MatchCreationFragment.OnMatchCreatedListener {
+public class MatchListFragment extends Fragment {
 
   private static final String TAG = "MatchListFragment";
 
-  private static final String DIALOG_MATCH = "Create Match dialog";
+  private RecyclerView mRecyclerView;
 
-  OnMatchSelectedListener mCallback;
+  protected static final Query sMatchQuery = FirebaseDatabase.getInstance().getReference().child("matches");
 
-  public interface OnMatchSelectedListener {
+  MatchListListener mCallback;
 
+  public interface MatchListListener {
+
+    void onCreateMatchRequest();
     void onMatchSelected(String matchId);
   }
 
   @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+  public void onAttach(Context context) {
+    super.onAttach(context);
 
+    Log.d(TAG, "++onAttach(Context)");
     try {
-      mCallback = (OnMatchSelectedListener) getTargetFragment();
+      mCallback = (MatchListListener) context;
     } catch (ClassCastException e) {
-      throw new ClassCastException("Error in retrieving data. Please try again");
+      throw new ClassCastException("Calling activity/fragment must implement MatchListListener.");
     }
   }
 
@@ -50,22 +60,24 @@ public class MatchListFragment extends Fragment implements MatchCreationFragment
 
     Log.d(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
     View view = inflater.inflate(R.layout.fragment_match_list, container, false);
-    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-    linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-    RecyclerView matchRecyclerView = view.findViewById(R.id.match_list);
-    matchRecyclerView.setLayoutManager(linearLayoutManager);
+    mRecyclerView = view.findViewById(R.id.match_list);
+    mRecyclerView.setHasFixedSize(true);
+    mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-    List<Match> matches = MatchCenter.get().getMatches();
-    MatchAdapter matchAdapter = new MatchAdapter(matches);
-    matchRecyclerView.setAdapter(matchAdapter);
-    matchAdapter.notifyDataSetChanged();
+    attachRecyclerViewAdapter();
 
     FloatingActionButton fab = view.findViewById(R.id.fab_new_match);
     fab.setOnClickListener(new View.OnClickListener() {
+
       @Override
       public void onClick(View view) {
-        MatchCreationFragment dialog = MatchCreationFragment.newInstance();
-        dialog.show(getChildFragmentManager(), DIALOG_MATCH);
+
+        Log.d(TAG, "++onClick(View)");
+        if (mCallback != null) {
+          mCallback.onCreateMatchRequest();
+        } else {
+          Log.e(TAG, "Callback was null.");
+        }
       }
     });
 
@@ -73,39 +85,63 @@ public class MatchListFragment extends Fragment implements MatchCreationFragment
   }
 
   @Override
-  public void onMatchCreated(String matchId) {
+  public void onStart() {
+    super.onStart();
 
-    Log.d(TAG, "++onMatchCreated(String)");
-    mCallback.onMatchSelected(matchId);
+    Log.d(TAG, "++onStart()");
   }
 
-  private class MatchAdapter extends RecyclerView.Adapter<MatchHolder> {
+  @Override
+  public void onStop() {
+    super.onStop();
 
-    private List<Match> mMatches;
+    Log.d(TAG, "++onStop()");
+  }
 
-    MatchAdapter(List<Match> matches) {
+  private void attachRecyclerViewAdapter() {
 
-      mMatches = matches;
-    }
+    Log.d(TAG, "++attachRecyclerViewAdapter()");
+    final RecyclerView.Adapter adapter = newAdapter();
 
-    @Override
-    public MatchHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    // scroll to bottom on new messages
+    adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
 
-      LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-      return new MatchHolder(layoutInflater, parent);
-    }
+      @Override
+      public void onItemRangeInserted(int positionStart, int itemCount) {
 
-    @Override
-    public void onBindViewHolder(MatchHolder holder, int position) {
+        mRecyclerView.smoothScrollToPosition(adapter.getItemCount());
+      }
+    });
 
-      Match match = mMatches.get(position);
-      holder.bind(match);
-    }
+    mRecyclerView.setAdapter(adapter);
+  }
 
-    @Override
-    public int getItemCount() {
-      return mMatches.size();
-    }
+  protected RecyclerView.Adapter newAdapter() {
+
+    FirebaseRecyclerOptions<Match> options = new FirebaseRecyclerOptions.Builder<Match>()
+        .setQuery(sMatchQuery, Match.class)
+        .setLifecycleOwner(this)
+        .build();
+
+    return new FirebaseRecyclerAdapter<Match, MatchHolder>(options) {
+
+      @Override
+      public MatchHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        return new MatchHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.match_item, parent, false));
+      }
+
+      @Override
+      protected void onBindViewHolder(@NonNull MatchHolder holder, int position, @NonNull Match model) {
+
+        holder.bind(model);
+      }
+
+      @Override
+      public void onDataChanged() {
+
+      }
+    };
   }
 
   private class MatchHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -117,8 +153,8 @@ public class MatchListFragment extends Fragment implements MatchCreationFragment
 
     private Match mMatch;
 
-    MatchHolder(LayoutInflater inflater, ViewGroup parent) {
-      super(inflater.inflate(R.layout.match_item, parent, false));
+    MatchHolder(View itemView) {
+      super(itemView);
 
       itemView.setOnClickListener(this);
       mTitleTextView = itemView.findViewById(R.id.match_item_title);
@@ -130,16 +166,11 @@ public class MatchListFragment extends Fragment implements MatchCreationFragment
     void bind(Match match) {
 
       mMatch = match;
-      if (mMatch.HomeId != null && mMatch.AwayId != null) {
-        mTitleTextView.setText(
-            String.format(
-                "%1s vs %2s",
-                MatchCenter.get().getTeam(mMatch.HomeId).FullName,
-                MatchCenter.get().getTeam(mMatch.AwayId).FullName)
-        );
-      } else {
-        mTitleTextView.setText("N/A");
-      }
+      mTitleTextView.setText(
+        String.format(
+          "%1s vs %2s",
+          mMatch.HomeTeam.FullName,
+          mMatch.AwayTeam.FullName));
 
       mMatchDateTextView.setText(Match.formatDateForDisplay(mMatch.MatchDate));
       mMatchStatusTextView.setText(mMatch.IsFinal ? "FT" : "In Progress");
@@ -152,28 +183,37 @@ public class MatchListFragment extends Fragment implements MatchCreationFragment
               if (getActivity() != null) {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                 dialog.setTitle("Delete this match?")
-                    .setPositiveButton(android.R.string.ok,
-                        new DialogInterface.OnClickListener() {
+                  .setPositiveButton(android.R.string.ok,
+                    new DialogInterface.OnClickListener() {
 
-                          @Override
-                          public void onClick(DialogInterface dialog, int which) {
+                      @Override
+                      public void onClick(DialogInterface dialog, int which) {
 
-                            if (mMatch != null && mMatch.Id != null) {
-                              // TODO: submit request to web service to remove the match
+                        if (mMatch != null && mMatch.Id != null) {
+                          DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+                          Query matchQuery = database.child("matches").child(mMatch.Id);
+                          matchQuery.getRef().removeValue(new CompletionListener() {
+
+                            @Override
+                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                              Log.d(TAG, "++matchQuery::onComplete(DatabaseError, DatabaseReference)");
                             }
-                          }
-                        })
-                    .setNegativeButton(android.R.string.cancel,
-                        new DialogInterface.OnClickListener() {
+                          });
+                        }
+                      }
+                    })
+                  .setNegativeButton(android.R.string.cancel,
+                    new DialogInterface.OnClickListener() {
 
-                          @Override
-                          public void onClick(DialogInterface dialog, int which) {
-                          }
-                        });
+                      @Override
+                      public void onClick(DialogInterface dialog, int which) {
+                      }
+                    });
                 dialog.create();
                 dialog.show();
               } else {
-                System.out.println("getActivity() is null.");
+                Log.d(TAG, "getActivity() is null.");
               }
               break;
             case MotionEvent.ACTION_UP:
@@ -189,7 +229,10 @@ public class MatchListFragment extends Fragment implements MatchCreationFragment
     @Override
     public void onClick(View view) {
 
-      mCallback.onMatchSelected(mMatch.Id);
+      Log.d(TAG, "++MatchHolder::onClick(View)");
+      if (mCallback != null) {
+        mCallback.onMatchSelected(mMatch.Id);
+      }
     }
   }
 }

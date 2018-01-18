@@ -3,6 +3,7 @@ package net.frostedbytes.android.trendo;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import com.google.firebase.crash.FirebaseCrash;
 
 public class BaseActivity extends AppCompatActivity {
@@ -17,11 +18,13 @@ public class BaseActivity extends AppCompatActivity {
   public void onCreate(Bundle saved) {
     super.onCreate(saved);
 
+    Log.d(TAG, "++onCreate(Bundle)");
     FirebaseCrash.setCrashCollectionEnabled(false); // re-enable on release
   }
 
   public void showProgressDialog() {
 
+    Log.d(TAG, "++showProgressDialog()");
     if (mProgressDialog == null) {
       mProgressDialog = new ProgressDialog(this);
       mProgressDialog.setCancelable(false);
@@ -33,6 +36,7 @@ public class BaseActivity extends AppCompatActivity {
 
   public void hideProgressDialog() {
 
+    Log.d(TAG, "++hideProgressDialog()");
     if (mProgressDialog != null && mProgressDialog.isShowing()) {
       mProgressDialog.dismiss();
     }

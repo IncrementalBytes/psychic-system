@@ -1,39 +1,37 @@
 package net.frostedbytes.android.trendo.models;
 
 import android.util.Log;
+import com.google.firebase.database.Exclude;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 import net.frostedbytes.android.trendo.BaseActivity;
 
 public class Player {
 
   private static final String TAG = "Player";
 
-  public long CreateDateUTC;
-  public String FirstName;
   public String Id;
   public boolean IsDefunct;
-  public String LastName;
-  public String TeamId;
+  public String Name;
+  public Team Team;
 
   @SuppressWarnings("unused")
   public Player() {
 
     // Default constructor required for calls to DataSnapshot.getValue(MatchEvent.class)
-    this.CreateDateUTC = 0;
-    this.FirstName = "";
     this.Id = BaseActivity.DEFAULT_ID;
-    this.IsDefunct= false;
-    this.LastName = "";
-    this.TeamId = BaseActivity.DEFAULT_ID;
+    this.IsDefunct = false;
+    this.Name = "";
+    this.Team = new Team();
   }
 
-  public Player(long createDateUTC, String firstName, String id, boolean isDefunct, String lastName, String teamId) {
+  public Player(String id, boolean isDefunct, String name, Team team) {
 
-    this.CreateDateUTC = createDateUTC;
-    this.FirstName = firstName;
     this.Id = id;
     this.IsDefunct = isDefunct;
-    this.LastName = lastName;
-    this.TeamId = teamId;
+    this.Name = name;
+    this.Team = team;
   }
 
   @Override
@@ -51,11 +49,10 @@ public class Player {
     if ((compareTo instanceof Player))
       try {
         Player compareToPlayer = (Player) compareTo;
-        if (this.Id.equals(compareToPlayer .Id) &&
-            this.FirstName.equals(compareToPlayer.FirstName) &&
-            this.LastName.equals(compareToPlayer.LastName) &&
-            this.TeamId.equals(compareToPlayer .TeamId) &&
-            this.IsDefunct == compareToPlayer .IsDefunct) {
+        if (this.Id.equals(compareToPlayer.Id) &&
+          this.Name.equals(compareToPlayer.Name) &&
+          this.Team.ShortName.equals(compareToPlayer.Team.ShortName) &&
+          this.IsDefunct == compareToPlayer.IsDefunct) {
           return true;
         }
       } catch (ClassCastException cce) {
@@ -63,5 +60,28 @@ public class Player {
       }
 
     return false;
+  }
+
+  @Override
+  public String toString() {
+
+    return String.format(
+      Locale.getDefault(),
+      "%s (%s)%s",
+      this.Name,
+      this.Team.ShortName,
+      this.IsDefunct ? " (DEFUNCT)" : "");
+  }
+
+  @Exclude
+  public Map<String, Object> toMap() {
+
+    HashMap<String, Object> result = new HashMap<>();
+    result.put("Id", Id);
+    result.put("IsDefunct", IsDefunct);
+    result.put("Name", Name);
+    result.put("Team", Team);
+
+    return result;
   }
 }

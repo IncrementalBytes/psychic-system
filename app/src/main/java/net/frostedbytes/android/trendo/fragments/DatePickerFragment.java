@@ -3,6 +3,7 @@ package net.frostedbytes.android.trendo.fragments;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -67,25 +68,24 @@ public class DatePickerFragment extends DialogFragment {
       }
     }
 
-    View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_date_picker, null);
+    View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_date_picker, null);
 
-    mDatePicker = v.findViewById(R.id.dialog_date_picker);
+    mDatePicker = view.findViewById(R.id.dialog_date_picker);
     mDatePicker.init(
-        calendar.get(Calendar.YEAR),
-        calendar.get(Calendar.MONTH),
-        calendar.get(Calendar.DAY_OF_MONTH),
-        null);
+      calendar.get(Calendar.YEAR),
+      calendar.get(Calendar.MONTH),
+      calendar.get(Calendar.DAY_OF_MONTH),
+      null);
 
-    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-    builder.setView(v)
+    if (getActivity() != null) {
+      AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+      builder.setView(view)
         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-
-          private static final String TAG = "setPositiveButton";
 
           @Override
           public void onClick(DialogInterface dialog, int which) {
 
-            Log.d(TAG, "++onClick(DialogInterface, int)");
+            Log.d(TAG, "++setPositiveButton::onClick(DialogInterface, int)");
             int year = mDatePicker.getYear();
             int month = mDatePicker.getMonth();
             int day = mDatePicker.getDayOfMonth();
@@ -94,7 +94,25 @@ public class DatePickerFragment extends DialogFragment {
           }
         });
 
-    return builder.create();
+      return builder.create();
+    }
+
+    Log.e(TAG, "GetActivity() was null.");
+    return null;
+  }
+
+  @Override
+  public void onStart() {
+    super.onStart();
+
+    Log.d(TAG, "++onStart()");
+  }
+
+  @Override
+  public void onStop() {
+    super.onStop();
+
+    Log.d(TAG, "++onStop()");
   }
 
   private void sendResult(long date) {

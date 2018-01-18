@@ -1,14 +1,14 @@
 package net.frostedbytes.android.trendo.fragments;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,27 +17,28 @@ import android.widget.Toast;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import net.frostedbytes.android.trendo.BaseActivity;
-import net.frostedbytes.android.trendo.MatchCenter;
 import net.frostedbytes.android.trendo.R;
 import net.frostedbytes.android.trendo.models.Match;
 import net.frostedbytes.android.trendo.models.Team;
 
-public class MatchCreationFragment extends DialogFragment implements DatePickerFragment.OnMatchDateSetListener {
+public class MatchCreationFragment extends Fragment implements DatePickerFragment.OnMatchDateSetListener {
 
   private static final String TAG = "MatchCreationFragment";
 
   private static final String DIALOG_DATE = "Match Date dialog";
 
-  private OnMatchCreatedListener mCallback;
+  private MatchCreationListener mCallback;
 
-  public interface OnMatchCreatedListener {
+  public interface MatchCreationListener {
 
     void onMatchCreated(String matchId);
   }
@@ -47,192 +48,137 @@ public class MatchCreationFragment extends DialogFragment implements DatePickerF
   private Button mDateButton;
   private Spinner mHomeSpinner;
   private Spinner mAwaySpinner;
+  private Button mCancel;
+  private Button mCreate;
 
-  public static MatchCreationFragment newInstance() {
-
-    Log.d(TAG, "++newInstance()");
-    Bundle args = new Bundle();
-    MatchCreationFragment fragment = new MatchCreationFragment();
-    fragment.setArguments(args);
-    return fragment;
-  }
+  private Query mTeamsQuery;
+  private ValueEventListener mTeamsValueListener;
 
   @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+  public void onAttach(Context context) {
+    super.onAttach(context);
 
-    Log.d(TAG, "++onCreate(Bundle)");
+    Log.d(TAG, "++onAttach(Context)");
     try {
-      mCallback = (OnMatchCreatedListener) getTargetFragment();
+      mCallback = (MatchCreationListener) context;
     } catch (ClassCastException e) {
-      throw new ClassCastException("Calling Fragment must implement OnMatchCreatedListener.");
+      throw new ClassCastException("Calling activity/fragment must implement MatchCreationListener.");
     }
   }
 
   @Override
-  public Dialog onCreateDialog(Bundle savedInstanceState) {
-    super.onCreateDialog(savedInstanceState);
+  public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-    Log.d(TAG, "++onCreateDialog(Bundle");
-    final View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_match_creation, null);
-    mDateButton = v.findViewById(R.id.match_button_date);
-    mHomeSpinner = v.findViewById(R.id.match_spinner_home_team);
-    mAwaySpinner = v.findViewById(R.id.match_spinner_away_team);
+    Log.d(TAG, "++onCreateDialog(Bundle)");
+    View view = inflater.inflate(R.layout.fragment_match_creation, container, false);
+    mDateButton = view.findViewById(R.id.match_button_date);
+    mHomeSpinner = view.findViewById(R.id.match_spinner_home_team);
+    mAwaySpinner = view.findViewById(R.id.match_spinner_away_team);
+    mCancel = view.findViewById(R.id.match_button_cancel);
+    mCreate = view.findViewById(R.id.match_button_create);
 
     mMatch = new Match();
 
     updateDate();
     mDateButton.setOnClickListener(new View.OnClickListener() {
 
-      private static final String TAG = "mDateButton";
-
       @Override
       public void onClick(View v) {
 
-        Log.d(TAG, "++onClick(View)");
-        FragmentManager manager = getFragmentManager();
-        DatePickerFragment dialog = DatePickerFragment.newInstance(mMatch.MatchDate);
-        dialog.setTargetFragment(MatchCreationFragment.this, MatchDetailFragment.REQUEST_DATE);
-        dialog.show(manager, DIALOG_DATE);
-      }
-    });
-
-    // get a list of teams for the object adapter used by the spinner controls
-    List<String> teamNames = MatchCenter.get().getTeamNames();
-    ArrayAdapter<String> adapter = new ArrayAdapter<>(
-        getActivity(),
-        android.R.layout.simple_list_item_1,
-        teamNames);
-
-    // specify the layout to use when the list of choices appears
-    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-    // apply the adapter to the spinner
-    mHomeSpinner.setAdapter(adapter);
-    mHomeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-      private static final String TAG = "mHomeSpinner";
-
-      @Override
-      public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-        Log.d(TAG, "++onItemSelected(AdapterView<?>, View, int, long)");
-        Team home = MatchCenter.get().getTeam(mHomeSpinner.getSelectedItem().toString());
-        if (home != null) {
-          mMatch.HomeId = home.Id;
+        Log.d(TAG, "++mDateButton::onClick(View)");
+        if (getActivity() != null) {
+          FragmentManager manager = getActivity().getSupportFragmentManager();
+          DatePickerFragment dialog = DatePickerFragment.newInstance(mMatch.MatchDate);
+          dialog.setTargetFragment(MatchCreationFragment.this, MatchDetailFragment.REQUEST_DATE);
+          dialog.show(manager, DIALOG_DATE);
+        } else {
+          Log.e(TAG, "GetActivity() was null");
         }
       }
-
-      @Override
-      public void onNothingSelected(AdapterView<?> parent) {
-
-        Log.d(TAG, "++onNothingSelected(AdapterView<?>)");
-      }
     });
 
-    adapter = new ArrayAdapter<>(
-        getActivity(),
-        android.R.layout.simple_list_item_1,
-        teamNames);
-
-    // specify the layout to use when the list of choices appears
-    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-    // apply the adapter to the spinner
-    mAwaySpinner.setAdapter(adapter);
-    mAwaySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-      private static final String TAG = "mAwaySpinner";
+    final List<Team> teams = new ArrayList<>();
+    mTeamsQuery = FirebaseDatabase.getInstance().getReference().child("teams").orderByChild("ShortName");
+    mTeamsValueListener = new ValueEventListener() {
 
       @Override
-      public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+      public void onDataChange(DataSnapshot dataSnapshot) {
 
-        Log.d(TAG, "++onItemSelected(AdapterView<?>, View, int, long)");
-        Team away = MatchCenter.get().getTeam(mAwaySpinner.getSelectedItem().toString());
-        if (away != null) {
-          mMatch.AwayId = away.Id;
+        for (DataSnapshot data : dataSnapshot.getChildren()) {
+          Team team = data.getValue(Team.class);
+          if (team != null) {
+            team.Id = data.getKey();
+            teams.add(team);
+          }
         }
+
+        onGatheringTeamsComplete(teams);
       }
 
       @Override
-      public void onNothingSelected(AdapterView<?> parent) {
+      public void onCancelled(DatabaseError databaseError) {
 
-        Log.d(TAG, "++onNothingSelected(AdapterView<?>)");
+        Log.d(TAG, "++onCancelled(DatabaseError)");
+        Log.e(TAG, databaseError.getMessage());
+      }
+    };
+
+    mTeamsQuery.addValueEventListener(mTeamsValueListener);
+    mCancel.setOnClickListener(new View.OnClickListener() {
+
+      @Override
+      public void onClick(View view) {
+
+        Log.d(TAG, "++mCancel::onClick(View");
+        Log.d(TAG, "User cancelled match creation");
+        sendResult(BaseActivity.DEFAULT_ID);
+
       }
     });
 
-    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-    builder.setView(v)
-        .setPositiveButton(android.R.string.ok,
-            new DialogInterface.OnClickListener() {
+    mCreate.setOnClickListener(new View.OnClickListener() {
 
-              private static final String TAG = "setPositiveButton";
+      @Override
+      public void onClick(View view) {
+        Log.d(TAG, "++mCreate::onClick(View");
 
-              @Override
-              public void onClick(DialogInterface dialog, int which) {
+        if (mMatch.Id.equals(BaseActivity.DEFAULT_ID)) {
+          mMatch.Id = UUID.randomUUID().toString();
+          try {
+            Map<String, Object> postValues = mMatch.toMap();
+            Map<String, Object> childUpdates = new HashMap<>();
+            childUpdates.put("/matches/" + mMatch.Id, postValues);
+            FirebaseDatabase.getInstance().getReference().updateChildren(childUpdates);
+          } catch (DatabaseException dex) {
+            Log.d(TAG, dex.getLocalizedMessage());
+            Toast.makeText(getActivity(), "Could not create match. Permissions?", Toast.LENGTH_SHORT).show();
+          }
+        } else {
+          Log.d(TAG, "Found existing match in database");
+        }
 
-                Log.d(TAG, "++onClick(DialogInterface, int");
-                List<Match> matches = MatchCenter.get().getMatches();
-                boolean found = false;
-                for (Match match : matches) {
-                  if (mMatch.AwayId.equals(match.AwayId) &&
-                      mMatch.HomeId.equals(match.HomeId) &&
-                      mMatch.MatchDate == match.MatchDate) {
-                    sendResult(match.Id);
-                    found = true;
-                    break;
-                  }
-                }
+        sendResult(mMatch.Id);
+      }
+    });
 
-                if (!found) {
-                  // match isn't local, run a check against database
-                  DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-                  Query matchesQuery = database.child("matches").orderByChild("HomeTeam").equalTo(mMatch.HomeId);
-                  matchesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+    return view;
+  }
 
-                    private static final String TAG = "matchesQuery";
+  @Override
+  public void onStart() {
+    super.onStart();
 
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
+    Log.d(TAG, "++onStart()");
+  }
 
-                      Log.d(TAG, "++onDataChange(DataSnapshot)");
-                      for (DataSnapshot data : dataSnapshot.getChildren()) {
-                        Match match = data.getValue(Match.class);
-                        if (match != null) {
-                          match.Id = data.getKey();
-                          if (match.AwayId.equals(mMatch.AwayId) && match.MatchDate == mMatch.MatchDate) {
-                            onQueryingMatchesComplete(match);
-                          }
-                        }
-                      }
+  @Override
+  public void onStop() {
+    super.onStop();
 
-                      onQueryingMatchesComplete(mMatch);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                      Log.d(TAG, "++onCancelled(DatabaseError)");
-                      Log.e(TAG, databaseError.getMessage());
-                    }
-                  });
-                }
-              }
-            })
-        .setNegativeButton(android.R.string.cancel,
-            new DialogInterface.OnClickListener() {
-
-              private static final String TAG = "setNegativeButton";
-
-              @Override
-              public void onClick(DialogInterface dialog, int which) {
-
-                Log.d(TAG, "User cancelled match creation");
-                sendResult(BaseActivity.DEFAULT_ID);
-              }
-            });
-
-    return builder.create();
+    Log.d(TAG, "++onStop()");
+    if (mTeamsQuery != null && mTeamsValueListener != null) {
+      mTeamsQuery.removeEventListener(mTeamsValueListener);
+    }
   }
 
   @Override
@@ -247,30 +193,90 @@ public class MatchCreationFragment extends DialogFragment implements DatePickerF
     }
   }
 
-  void onQueryingMatchesComplete(Match match) {
+  void onGatheringTeamsComplete(final List<Team> teams) {
 
-    Log.d(TAG, "++onQueryingMatchesComplete(Match)");
-    if (match.Id.equals(BaseActivity.DEFAULT_ID)) {
-      match.Id = UUID.randomUUID().toString();
-      try {
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        database.child("matches").child(match.Id).setValue(match);
-      } catch (DatabaseException dex) {
-        Log.d(TAG, dex.getLocalizedMessage());
-        Toast.makeText(getActivity(), "Could not create match. Permissions?", Toast.LENGTH_SHORT).show();
-      }
-    } else {
-      Log.d(TAG, "Found existing match in database");
+    Log.d(TAG, "++onGatheringTeamsComplete(List<Team>)");
+    List<String> teamNames = new ArrayList<>();
+    for (Team team : teams) {
+      teamNames.add(team.FullName);
     }
 
-    sendResult(match.Id);
+    // get a list of teams for the object adapter used by the spinner controls
+    if (getActivity() != null) {
+      ArrayAdapter<String> adapter = new ArrayAdapter<>(
+        getActivity(),
+        android.R.layout.simple_list_item_1,
+        teamNames);
+
+      // specify the layout to use when the list of choices appears
+      adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+      // apply the adapter to the spinner
+      mHomeSpinner.setAdapter(adapter);
+      mHomeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+          Log.d(TAG, "++mHomeSpinner::onItemSelected(AdapterView<?>, View, int, long)");
+          for (Team team : teams) {
+            if (team.FullName.equals(mHomeSpinner.getSelectedItem().toString())) {
+              mMatch.HomeTeam = team;
+              break;
+            }
+          }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+          Log.d(TAG, "++mHomeSpinner::onNothingSelected(AdapterView<?>)");
+        }
+      });
+
+      adapter = new ArrayAdapter<>(
+        getActivity(),
+        android.R.layout.simple_list_item_1,
+        teamNames);
+
+      // specify the layout to use when the list of choices appears
+      adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+      // apply the adapter to the spinner
+      mAwaySpinner.setAdapter(adapter);
+      mAwaySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+          Log.d(TAG, "++mAwaySpinner::onItemSelected(AdapterView<?>, View, int, long)");
+          for (Team team : teams) {
+            if (team.FullName.equals(mAwaySpinner.getSelectedItem().toString())) {
+              mMatch.AwayTeam = team;
+              break;
+            }
+          }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+          Log.d(TAG, "++mAwaySpinner::onNothingSelected(AdapterView<?>)");
+        }
+      });
+    } else {
+      Log.e(TAG, "GetActivity() was null.");
+    }
   }
 
   private void sendResult(String matchId) {
 
     Log.d(TAG, "++sendResult(String)");
-    mCallback.onMatchCreated(matchId);
-    dismiss();
+    if (mCallback != null) {
+      mCallback.onMatchCreated(matchId);
+    } else {
+      Log.e(TAG, "Unable to process callback.");
+    }
   }
 
   private void updateDate() {

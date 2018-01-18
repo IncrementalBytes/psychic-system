@@ -37,10 +37,10 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     mDatabase = FirebaseDatabase.getInstance().getReference();
     mAuth = FirebaseAuth.getInstance();
 
-    mEmailField = findViewById(R.id.field_email);
-    mPasswordField = findViewById(R.id.field_password);
-    Button signInButton = findViewById(R.id.button_sign_in);
-    Button signUpButton = findViewById(R.id.button_sign_up);
+    mEmailField = findViewById(R.id.signin_edit_email);
+    mPasswordField = findViewById(R.id.signin_edit_password);
+    Button signInButton = findViewById(R.id.signin_button_sign_in);
+    Button signUpButton = findViewById(R.id.signin_button_sign_up);
 
     signInButton.setOnClickListener(this);
     signUpButton.setOnClickListener(this);
@@ -56,13 +56,13 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
   }
 
   @Override
-  public void onClick(View v) {
+  public void onClick(View view) {
 
-    switch (v.getId()) {
-      case R.id.button_sign_in:
+    switch (view.getId()) {
+      case R.id.signin_button_sign_in:
         signIn();
         break;
-      case R.id.button_sign_up:
+      case R.id.signin_button_sign_up:
         signUp();
         break;
     }
@@ -129,7 +129,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     String username = usernameFromEmail(user.getEmail());
     writeNewUser(user.getUid(), username, user.getEmail());
-    startActivity(new Intent(SignInActivity.this, GatheringActivity.class));
+    startActivity(new Intent(SignInActivity.this, MainActivity.class));
     finish();
   }
 
