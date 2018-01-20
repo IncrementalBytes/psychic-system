@@ -66,7 +66,7 @@ public class MatchListFragment extends Fragment {
 
     attachRecyclerViewAdapter();
 
-    FloatingActionButton fab = view.findViewById(R.id.fab_new_match);
+    FloatingActionButton fab = view.findViewById(R.id.match_fab_new);
     fab.setOnClickListener(new View.OnClickListener() {
 
       @Override

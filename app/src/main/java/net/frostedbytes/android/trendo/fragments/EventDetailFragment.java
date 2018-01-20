@@ -17,7 +17,6 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
@@ -47,7 +46,9 @@ public class EventDetailFragment extends Fragment {
     void onMatchEventCreated(String matchId);
   }
 
+  private boolean mMatchEventsDone;
   private MatchEvent mMatchEvent;
+  private List<MatchEvent> mMatchEvents;
   private String mMatchId;
   private Team mTeam;
 
@@ -58,12 +59,15 @@ public class EventDetailFragment extends Fragment {
   private NumberPicker mSecondDigitPicker;
   private CheckBox mStoppageCheckBox;
   private CheckBox mAETCheckBox;
+  private TextView mErrorMessageText;
   private Button mCancel;
   private Button mCreate;
 
   private Query mEventsQuery;
+  private Query mMatchEventsQuery;
   private Query mPlayersQuery;
   private ValueEventListener mEventsValueListener;
+  private ValueEventListener mMatchEventsValueListner;
   private ValueEventListener mPlayersValueListener;
 
   @Override
@@ -86,22 +90,49 @@ public class EventDetailFragment extends Fragment {
     mMatchId = BaseActivity.DEFAULT_ID;
     mTeam = new Team();
     if (arguments != null) {
-      mMatchId = arguments.getString(MatchDetailFragment.ARG_MATCH_ID);
-      mTeam = (Team)arguments.getSerializable(MatchDetailFragment.ARG_TEAM);
+      mMatchId = arguments.getString(BaseActivity.ARG_MATCH_ID);
+      mTeam = (Team)arguments.getSerializable(BaseActivity.ARG_TEAM);
     }
 
     mMatchEvent = new MatchEvent();
     mMatchEvent.Id = UUID.randomUUID().toString();
     mMatchEvent.TeamShortName = mTeam.ShortName;
 
+    mMatchEvents = new ArrayList<>();
+    mMatchEventsQuery = FirebaseDatabase.getInstance().getReference().child("matches/" + mMatchId + "/MatchEvents").orderByChild("MinuteOfEvent");
+    mMatchEventsValueListner = new ValueEventListener() {
+
+      @Override
+      public void onDataChange(DataSnapshot dataSnapshot) {
+
+        for (DataSnapshot data : dataSnapshot.getChildren()) {
+          MatchEvent matchEvent = data.getValue(MatchEvent.class);
+          if (matchEvent != null) {
+            mMatchEvents.add(matchEvent);
+          }
+        }
+
+        onGatheringMatchEventsComplete();
+      }
+
+      @Override
+      public void onCancelled(DatabaseError databaseError) {
+
+        Log.d(TAG, "++onCancelled(DatabaseError)");
+        Log.e(TAG, databaseError.getMessage());
+      }
+    };
+    mMatchEventsQuery.addValueEventListener(mMatchEventsValueListner);
+
     View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_event_detail, null);
     mTeamNameText = view.findViewById(R.id.event_text_team_name);
     mPlayerNameSpinner = view.findViewById(R.id.event_spinner_player_name);
     mEventNameSpinner = view.findViewById(R.id.event_spinner_event_name);
-    mFirstDigitPicker = view.findViewById(R.id.picker_first_digit);
-    mSecondDigitPicker = view.findViewById(R.id.picker_second_digit);
+    mFirstDigitPicker = view.findViewById(R.id.event_picker_first_digit);
+    mSecondDigitPicker = view.findViewById(R.id.event_picker_second_digit);
     mStoppageCheckBox = view.findViewById(R.id.event_check_stoppage_time);
-    mAETCheckBox = view.findViewById(R.id.event_check_aet);
+    mAETCheckBox = view.findViewById(R.id.event_check_add_extra_time);
+    mErrorMessageText = view.findViewById(R.id.event_text_error_message);
     mCancel = view.findViewById(R.id.event_button_cancel);
     mCreate = view.findViewById(R.id.event_button_create);
 
@@ -109,6 +140,7 @@ public class EventDetailFragment extends Fragment {
 
     final List<String> players = new ArrayList<>();
     players.add("");
+    // TODO: remove hard-coded 2017 and replace with user setting (default to current year)
     mPlayersQuery = FirebaseDatabase.getInstance().getReference().child("teams/" + mTeam.Id + "/Rosters/2017").orderByChild("Name");
     mPlayersValueListener = new ValueEventListener() {
 
@@ -223,17 +255,18 @@ public class EventDetailFragment extends Fragment {
       public void onClick(View view) {
         Log.d(TAG, "++mCreate::onClick(View");
 
-        try {
-          Map<String, Object> postValues = mMatchEvent.toMap();
-          Map<String, Object> childUpdates = new HashMap<>();
-          childUpdates.put("/matches/" + mMatchId + "/MatchEvents/" + mMatchEvent.Id, postValues);
-          FirebaseDatabase.getInstance().getReference().updateChildren(childUpdates);
-        } catch (DatabaseException dex) {
-          Log.d(TAG, dex.getLocalizedMessage());
-          Toast.makeText(getActivity(), "Could not create match event. Permissions?", Toast.LENGTH_SHORT).show();
+        if (validateForm()) {
+          try {
+            Map<String, Object> postValues = mMatchEvent.toMap();
+            Map<String, Object> childUpdates = new HashMap<>();
+            childUpdates.put("/matches/" + mMatchId + "/MatchEvents/" + mMatchEvent.Id, postValues);
+            FirebaseDatabase.getInstance().getReference().updateChildren(childUpdates);
+            sendResult();
+          } catch (DatabaseException dex) {
+            Log.d(TAG, dex.getLocalizedMessage());
+            mErrorMessageText.setText(R.string.err_event_permissions);
+          }
         }
-
-        sendResult();
       }
     });
 
@@ -258,6 +291,10 @@ public class EventDetailFragment extends Fragment {
 
     if (mEventsQuery != null && mEventsValueListener != null) {
       mEventsQuery.removeEventListener(mEventsValueListener);
+    }
+
+    if (mMatchEventsQuery != null && mMatchEventsValueListner != null) {
+      mMatchEventsQuery.removeEventListener(mMatchEventsValueListner);
     }
   }
 
@@ -291,6 +328,12 @@ public class EventDetailFragment extends Fragment {
     } else {
       Log.e(TAG, "GetActivity() was null");
     }
+  }
+
+  void onGatheringMatchEventsComplete() {
+
+    Log.d(TAG, "++onGatheringMatchEventsComplete()");
+    mMatchEventsDone = true;
   }
 
   void onGatheringPlayersComplete(List<String> playerNames) {
@@ -337,13 +380,32 @@ public class EventDetailFragment extends Fragment {
 
   boolean validateForm() {
 
-    // TODO: plug validate form into code flow (probably add message to new text view and disable create on failure)
+    Log.d(TAG, "++validateForm()");
+    mErrorMessageText.setText("");
     if (mEventNameSpinner.getSelectedItem().toString().isEmpty()) {
+      mErrorMessageText.setText(R.string.err_event_missing);
       return false;
     }
 
     if (mFirstDigitPicker.getValue() == 0 && mSecondDigitPicker.getValue() == 0) {
+      mErrorMessageText.setText(R.string.err_event_time_missing);
       return false;
+    }
+
+    while (!mMatchEventsDone) {
+      try {
+        wait(100);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    }
+
+    for (MatchEvent matchEvent : mMatchEvents) {
+      if (matchEvent.EventName.equals(mEventNameSpinner.getSelectedItem().toString()) &&
+        matchEvent.MinuteOfEvent == ((mFirstDigitPicker.getValue() * 10) + mSecondDigitPicker.getValue())){
+        mErrorMessageText.setText(matchEvent.toString() + " already exists.");
+        return false;
+      }
     }
 
     return true;

@@ -22,6 +22,30 @@
       </intent-filter>
     </activity>
     <activity android:name=".BaseActivity"/>
+    <activity android:name=".MatchCreationActivity"
+      android:parentActivityName=".MainActivity">
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".MatchCreationActivity"/>
+    </activity>
+    <activity android:name=".MatchDetailActivity"
+      android:parentActivityName=".MainActivity">
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".MatchDetailActivity"/>
+    </activity>
+    <activity android:name=".SettingsActivity"
+      android:parentActivityName=".MainActivity">
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".SettingsActivity"/>
+    </activity>
+    <activity android:name=".EventDetailActivity"
+      android:parentActivityName=".MatchDetailActivity">
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".EventDetailActivity"/>
+    </activity>
   </application>
 
 </manifest>

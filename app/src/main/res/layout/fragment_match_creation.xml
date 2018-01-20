@@ -9,134 +9,170 @@
   android:paddingRight="@dimen/activity_horizontal_margin"
   android:paddingTop="@dimen/activity_vertical_margin">
 
-  <TableRow
-    android:id="@+id/match_row_header"
+  <android.support.constraint.ConstraintLayout
+    android:id="@+id/create_match_row_header"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="4dp"
+    android:layout_marginBottom="8dp"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="parent">
     <TextView
-      android:id="@+id/match_text_header"
+      android:id="@+id/create_match_text_header"
       android:textStyle="bold"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/match_create_header"
+      android:layout_height="match_parent"
+      android:layout_marginTop="4dp"
+      android:layout_marginBottom="4dp"
+      android:layout_marginStart="4dp"
+      android:layout_marginEnd="4dp"
+      android:gravity="center_vertical"
+      android:text="@string/create_match_header"
       android:textSize="18sp"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"/>
-  </TableRow>
+      app:layout_constraintEnd_toStartOf="@id/create_match_imageview_cancel"/>
+    <net.frostedbytes.android.trendo.views.TouchableImageView
+      android:id="@+id/create_match_imageview_cancel"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_marginBottom="4dp"
+      android:layout_marginTop="4dp"
+      android:layout_marginEnd="4dp"
+      android:contentDescription="@string/cancel"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:srcCompat="@drawable/ic_cancel"/>
+  </android.support.constraint.ConstraintLayout>
 
-  <TableRow
-    android:id="@+id/match_row_date"
+  <android.support.constraint.ConstraintLayout
+    android:id="@+id/create_match_row_date"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
-    android:gravity="center_vertical"
-    app:layout_constraintTop_toBottomOf="@+id/match_row_header"
+    android:layout_marginBottom="8dp"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent">
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/create_match_row_header">
     <TextView
-      android:id="@+id/match_text_date"
+      android:id="@+id/create_match_text_date"
       android:textStyle="bold"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_marginTop="4dp"
+      android:layout_marginBottom="4dp"
+      android:layout_marginStart="4dp"
+      android:layout_marginEnd="4dp"
+      android:gravity="center_vertical"
       android:text="@string/date_picker_title"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toStartOf="@+id/match_button_date"/>
+      app:layout_constraintEnd_toStartOf="@id/create_match_button_date"/>
     <Button
-      android:id="@+id/match_button_date"
+      android:id="@+id/create_match_button_date"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+      android:layout_height="match_parent"
       android:textAlignment="center"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toEndOf="@+id/match_text_date"/>
-  </TableRow>
+      app:layout_constraintStart_toEndOf="@id/create_match_text_date"
+      app:layout_constraintEnd_toEndOf="parent"/>
+  </android.support.constraint.ConstraintLayout>
 
-  <TableRow
-    android:id="@+id/match_row_home"
+  <android.support.constraint.ConstraintLayout
+    android:id="@+id/create_match_row_home"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
-    android:gravity="center_vertical"
-    app:layout_constraintTop_toBottomOf="@+id/match_row_date"
+    android:layout_marginBottom="8dp"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent">
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/create_match_row_date">
     <TextView
-      android:id="@+id/match_text_home_team"
+      android:id="@+id/create_match_text_home_team"
       android:textStyle="bold"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:paddingStart="0dp"
-      android:paddingEnd="8dp"
+      android:layout_height="match_parent"
+      android:layout_marginTop="4dp"
+      android:layout_marginBottom="4dp"
+      android:layout_marginStart="4dp"
+      android:layout_marginEnd="4dp"
+      android:gravity="center_vertical"
       android:text="@string/home_team"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toStartOf="@+id/match_spinner_home_team"/>
+      app:layout_constraintEnd_toStartOf="@id/create_match_spinner_home_team"/>
     <Spinner
-      android:id="@+id/match_spinner_home_team"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:id="@+id/create_match_spinner_home_team"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_marginTop="4dp"
+      android:layout_marginBottom="4dp"
       android:maxLines="1"
       android:spinnerMode="dialog"
-      app:layout_constraintStart_toEndOf="@+id/match_text_home_team"
+      app:layout_constraintStart_toEndOf="@id/create_match_text_home_team"
       app:layout_constraintEnd_toEndOf="parent"/>
-  </TableRow>
+  </android.support.constraint.ConstraintLayout>
 
-  <TableRow
-    android:id="@+id/match_row_away"
+  <android.support.constraint.ConstraintLayout
+    android:id="@+id/create_match_row_away"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
-    android:gravity="center_vertical"
-    app:layout_constraintTop_toBottomOf="@+id/match_row_home"
+    android:layout_marginBottom="8dp"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent">
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/create_match_row_home">
     <TextView
-      android:id="@+id/match_text_away_team"
+      android:id="@+id/create_match_text_away_team"
       android:textStyle="bold"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:paddingStart="0dp"
-      android:paddingEnd="8dp"
+      android:layout_height="match_parent"
+      android:layout_marginTop="4dp"
+      android:layout_marginBottom="4dp"
+      android:layout_marginStart="4dp"
+      android:layout_marginEnd="4dp"
+      android:gravity="center_vertical"
       android:text="@string/away_team"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toStartOf="@id/match_spinner_away_team"/>
+      app:layout_constraintEnd_toStartOf="@id/create_match_spinner_away_team"/>
     <Spinner
-      android:id="@+id/match_spinner_away_team"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:id="@+id/create_match_spinner_away_team"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_marginTop="4dp"
+      android:layout_marginBottom="4dp"
       android:maxLines="1"
       android:spinnerMode="dialog"
-      app:layout_constraintStart_toEndOf="@+id/match_text_away_team"
-      app:layout_constraintEnd_toEndOf="parent"/>
-  </TableRow>
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/create_match_text_away_team"/>
+  </android.support.constraint.ConstraintLayout>
 
-  <TableRow
-    android:id="@+id/match_row_buttons"
+  <android.support.constraint.ConstraintLayout
+    android:id="@+id/create_match_row_error_message"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
-    android:gravity="end"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent">
-    <Button
-      android:id="@+id/match_button_cancel"
-      style="@style/Widget.AppCompat.Button.Borderless"
+    android:layout_marginBottom="8dp"
+    app:layout_constraintBottom_toTopOf="@id/create_match_row_buttons"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
+    <TextView
+      android:id="@+id/create_match_text_error_message"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/cancel"
-      android:textColor="@color/colorAccent_transparent"
-      app:layout_constraintEnd_toStartOf="@id/match_button_create"/>
+      android:layout_height="match_parent"
+      android:layout_marginTop="4dp"
+      android:layout_marginBottom="4dp"
+      android:textColor="@color/colorError"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"/>
+  </android.support.constraint.ConstraintLayout>
+
+  <android.support.constraint.ConstraintLayout
+    android:id="@+id/create_match_row_buttons"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="end"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent">
     <Button
-      android:id="@+id/match_button_create"
+      android:id="@+id/create_match_button_create"
       style="@style/Widget.AppCompat.Button.Borderless"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/create"
-      android:textColor="@color/colorAccent_transparent"
-      app:layout_constraintStart_toEndOf="@+id/match_button_cancel"
       app:layout_constraintEnd_toEndOf="parent"/>
-  </TableRow>
+  </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

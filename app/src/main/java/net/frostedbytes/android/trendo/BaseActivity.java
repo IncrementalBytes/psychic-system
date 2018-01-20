@@ -8,6 +8,8 @@ import com.google.firebase.crash.FirebaseCrash;
 
 public class BaseActivity extends AppCompatActivity {
 
+  public static final String ARG_MATCH_ID = "match_id";
+  public static final String ARG_TEAM = "team";
   public static final String DEFAULT_ID = "000000000-0000-0000-0000-000000000000";
 
   private static final String TAG = "BaseActivity";

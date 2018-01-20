@@ -36,7 +36,7 @@
     android:paddingBottom="8dp"
     android:gravity="center"
     app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/signin_row_header">
+    app:layout_constraintTop_toBottomOf="@id/signin_row_header">
     <EditText
       android:id="@+id/signin_edit_email"
       android:layout_width="150dp"
@@ -65,7 +65,7 @@
     android:layout_below="@+id/signin_row_email_password"
     android:gravity="center"
     app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/signin_row_email_password">
+    app:layout_constraintTop_toBottomOf="@id/signin_row_email_password">
     <Button
       android:id="@+id/signin_button_sign_in"
       android:layout_width="wrap_content"

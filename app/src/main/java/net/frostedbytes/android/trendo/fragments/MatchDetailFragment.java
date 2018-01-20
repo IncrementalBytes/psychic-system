@@ -32,9 +32,6 @@ public class MatchDetailFragment extends Fragment {
 
   private static final String TAG = "MatchDetailFragment";
 
-  public static final String ARG_MATCH_ID = "match_id";
-  public static final String ARG_TEAM = "team";
-
   public static final int REQUEST_DATE = 0;
 
   private MatchDetailListener mCallback;
@@ -42,13 +39,15 @@ public class MatchDetailFragment extends Fragment {
   public interface MatchDetailListener {
 
     void onCreateMatchEventRequest(String matchId, Team team);
-    void onEditMatchEventRequest(String matchId, String teamShortName);
+    void onEditMatchEventRequest(String matchId, Team team);
+    //void onMatchFinalized(String matchId);
   }
 
   private TouchableTextView mHomeText;
   private TextView mHomeScoreText;
   private TouchableTextView mAwayText;
   private TextView mAwayScoreText;
+  private Button mFinalizeButton;
 
   private TableLayout mTrendTable;
   private TableLayout mRecordAgainstTable;
@@ -77,7 +76,7 @@ public class MatchDetailFragment extends Fragment {
     Bundle arguments = getArguments();
     String matchId = BaseActivity.DEFAULT_ID;
     if (arguments != null) {
-      matchId = getArguments().getString(ARG_MATCH_ID);
+      matchId = getArguments().getString(BaseActivity.ARG_MATCH_ID);
     }
 
     mMatchQuery = FirebaseDatabase.getInstance().getReference().child("matches");
@@ -112,16 +111,17 @@ public class MatchDetailFragment extends Fragment {
     mMatchQuery.addValueEventListener(mMatchesValueListener);
 
     View view = inflater.inflate(R.layout.fragment_match_details, container, false);
-    mHomeText = view.findViewById(R.id.scoring_text_home_team);
-    mHomeScoreText = view.findViewById(R.id.scoring_text_home_team_score);
-    TouchableImageView addHomeEventImageView = view.findViewById(R.id.button_add_home_event);
-    TouchableImageView editHomeEventImageView = view.findViewById(R.id.button_edit_home_event);
-    mAwayText = view.findViewById(R.id.scoring_text_away_team);
-    mAwayScoreText = view.findViewById(R.id.scoring_text_away_team_score);
-    TouchableImageView addAwayEditImageView = view.findViewById(R.id.button_add_away_event);
-    TouchableImageView editAwayEditImageView = view.findViewById(R.id.button_edit_away_event);
-    mTrendTable = view.findViewById(R.id.trend_table_past_matches);
-    mRecordAgainstTable = view.findViewById(R.id.record_table_opponent);
+    mHomeText = view.findViewById(R.id.details_text_home_team);
+    mHomeScoreText = view.findViewById(R.id.details_text_home_team_score);
+    TouchableImageView addHomeEventImageView = view.findViewById(R.id.details_imageview_add_home_event);
+    TouchableImageView editHomeEventImageView = view.findViewById(R.id.details_imageview_edit_home_event);
+    mAwayText = view.findViewById(R.id.details_text_away_team);
+    mAwayScoreText = view.findViewById(R.id.details_text_away_team_score);
+    TouchableImageView addAwayEditImageView = view.findViewById(R.id.details_imageview_add_away_event);
+    TouchableImageView editAwayEditImageView = view.findViewById(R.id.details_imageview_edit_away_event);
+    mTrendTable = view.findViewById(R.id.details_table_past_matches);
+    mRecordAgainstTable = view.findViewById(R.id.details_table_opponent);
+    mFinalizeButton = view.findViewById(R.id.details_button_finalize);
 
     mHomeText.setOnTouchListener(new OnTouchListener() {
       @Override
@@ -148,7 +148,6 @@ public class MatchDetailFragment extends Fragment {
         if (mMatch != null && !mMatch.IsFinal) {
           switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
-              //addEvent(mMatch.HomeTeam.Id);
               addEvent(mMatch.HomeTeam);
               return true;
             case MotionEvent.ACTION_UP:
@@ -167,7 +166,7 @@ public class MatchDetailFragment extends Fragment {
         if (mMatch != null && !mMatch.IsFinal) {
           switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
-              editEvent(mMatch.HomeTeam.Id);
+              editEvent(mMatch.HomeTeam);
               return true;
             case MotionEvent.ACTION_UP:
               view.performClick();
@@ -203,7 +202,6 @@ public class MatchDetailFragment extends Fragment {
         if (mMatch != null && !mMatch.IsFinal) {
           switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
-              //addEvent(mMatch.AwayTeam.Id);
               addEvent(mMatch.AwayTeam);
               return true;
             case MotionEvent.ACTION_UP:
@@ -223,7 +221,7 @@ public class MatchDetailFragment extends Fragment {
         if (mMatch != null && !mMatch.IsFinal) {
           switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
-              editEvent(mMatch.AwayTeam.Id);
+              editEvent(mMatch.AwayTeam);
               return true;
             case MotionEvent.ACTION_UP:
               view.performClick();
@@ -240,21 +238,6 @@ public class MatchDetailFragment extends Fragment {
     if (mMatch != null && mMatch.HomeTeam != null && mMatch.AwayTeam != null) {
       populateTrend(mMatch.HomeTeam, mMatch.AwayTeam);
       new PopulateTrendTask().execute();
-    }
-
-    // initialize the finalize button
-    Button finalizeMatch = view.findViewById(R.id.match_button_finalize);
-    if (mMatch != null && mMatch.IsFinal) {
-      finalizeMatch.setEnabled(false);
-    } else {
-      finalizeMatch.setEnabled(true);
-      finalizeMatch.setOnClickListener(new View.OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-          finalizeMatch();
-        }
-      });
     }
 
     return view;
@@ -287,11 +270,11 @@ public class MatchDetailFragment extends Fragment {
     }
   }
 
-  private void editEvent(String teamId) {
+  private void editEvent(Team team) {
 
     Log.d(TAG, "++editEvent(String)");
     if (mCallback != null) {
-      mCallback.onEditMatchEventRequest(mMatch.Id, teamId);
+      mCallback.onEditMatchEventRequest(mMatch.Id, team);
     } else {
       Log.e(TAG, "Callback was null.");
     }
@@ -300,7 +283,10 @@ public class MatchDetailFragment extends Fragment {
   private void finalizeMatch() {
 
     Log.d(TAG, "++finalizeMatch()");
-    // TODO: present user with event submission form to send to server
+    // TODO: add as an event instead of a button
+    mMatch.IsFinal = true;
+    mFinalizeButton.setEnabled(false);
+    FirebaseDatabase.getInstance().getReference().child("matches/" + mMatch.Id + "/IsFinal").setValue(mMatch.IsFinal);
     populateTrend(mMatch.HomeTeam, mMatch.AwayTeam);
   }
 
@@ -314,6 +300,21 @@ public class MatchDetailFragment extends Fragment {
 
       if (match.AwayTeam != null) {
         mAwayText.setText(match.AwayTeam.ShortName);
+      }
+
+      // initialize the finalize button
+      if (mMatch != null && mMatch.IsFinal) {
+        mFinalizeButton.setEnabled(false);
+      } else {
+        mFinalizeButton.setEnabled(true);
+        mFinalizeButton.setOnClickListener(new View.OnClickListener() {
+
+          @Override
+          public void onClick(View v) {
+
+            finalizeMatch();
+          }
+        });
       }
 
       updateScores();

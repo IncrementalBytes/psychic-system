@@ -20,7 +20,7 @@
   <string name="desc_locked">App requires authentication before proceeding</string>
   <string name="additional_extra_time">Additional Extra-time</string>
   <string name="stoppage_time">Stoppage Time</string>
-  <string name="additional_details">More Details</string>
+  <string name="additional_details">More Details:</string>
   <string name="event_minute">Minute:</string>
   <string name="event_name">Event:</string>
   <string name="player_name">Player:</string>
@@ -28,7 +28,12 @@
   <string name="away_team">Away:</string>
   <string name="home_team">Home:</string>
   <string name="date_picker_title">Match Date:</string>
-  <string name="match_create_header">Create a new match</string>
+  <string name="create_match_header">Create a new match</string>
   <string name="cancel">Cancel</string>
   <string name="create">Create</string>
+  <string name="err_event_missing">Must select an event before continuing.</string>
+  <string name="err_event_time_missing">Must select the time of the event (in minutes) before continuing.</string>
+  <string name="err_event_permissions">Could not create match event. Permissions?</string>
+  <string name="close">Close</string>
+  <string name="new_match">Create a new match</string>
 </resources>
