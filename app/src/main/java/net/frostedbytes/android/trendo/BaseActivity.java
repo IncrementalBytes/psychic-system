@@ -16,6 +16,7 @@ public class BaseActivity extends AppCompatActivity {
 
   private ProgressDialog mProgressDialog;
 
+
   @Override
   public void onCreate(Bundle saved) {
     super.onCreate(saved);

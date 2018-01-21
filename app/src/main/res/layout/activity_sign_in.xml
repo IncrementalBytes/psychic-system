@@ -11,73 +11,91 @@
   android:paddingRight="@dimen/activity_horizontal_margin"
   tools:context="net.frostedbytes.android.trendo.SignInActivity">
 
-
-  <TableRow
+  <android.support.constraint.ConstraintLayout
     android:id="@+id/signin_row_header"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="8dp"
-    android:gravity="center_horizontal"
-    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
     <ImageView
-      android:id="@+id/signin_image_lock"
+      android:id="@+id/signin_imageview_lock"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginBottom="@dimen/activity_vertical_margin"
+      android:layout_height="match_parent"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="8dp"
       android:contentDescription="@string/desc_locked"
-      android:src="@drawable/ic_lock"/>
-  </TableRow>
+      android:src="@drawable/ic_lock"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"/>
+  </android.support.constraint.ConstraintLayout>
 
-  <TableRow
+  <android.support.constraint.ConstraintLayout
     android:id="@+id/signin_row_email_password"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="8dp"
-    android:gravity="center"
-    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toBottomOf="@id/signin_row_header">
     <EditText
       android:id="@+id/signin_edit_email"
       android:layout_width="150dp"
-      android:layout_height="wrap_content"
-      android:ellipsize="end"
+      android:layout_height="match_parent"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="8dp"
       android:gravity="center_horizontal"
+      android:ellipsize="end"
       android:hint="@string/hint_email"
       android:inputType="textEmailAddress"
-      android:maxLines="1" />
-
+      android:maxLines="1"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/signin_edit_password"/>
     <EditText
       android:id="@+id/signin_edit_password"
       android:layout_width="150dp"
-      android:layout_height="wrap_content"
-      android:ellipsize="end"
+      android:layout_height="match_parent"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="8dp"
       android:gravity="center_horizontal"
+      android:ellipsize="end"
       android:hint="@string/hint_password"
       android:inputType="textPassword"
-      android:maxLines="1" />
-  </TableRow>
+      android:maxLines="1"
+      app:layout_constraintStart_toEndOf="@id/signin_edit_email"
+      app:layout_constraintEnd_toEndOf="parent"/>
+  </android.support.constraint.ConstraintLayout>
 
-  <TableRow
+  <android.support.constraint.ConstraintLayout
     android:id="@+id/signin_row_buttons"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_below="@+id/signin_row_email_password"
     android:gravity="center"
-    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toBottomOf="@id/signin_row_email_password">
     <Button
       android:id="@+id/signin_button_sign_in"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
       style="@style/Widget.AppCompat.Button.Borderless"
-      android:text="@string/sign_in" />
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="8dp"
+      android:text="@string/sign_in"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/signin_button_sign_up"/>
     <Button
       android:id="@+id/signin_button_sign_up"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
       style="@style/Widget.AppCompat.Button.Borderless"
-      android:text="@string/sign_up" />
-  </TableRow>
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="8dp"
+      android:text="@string/sign_up"
+      app:layout_constraintStart_toEndOf="@id/signin_button_sign_in"
+      app:layout_constraintEnd_toEndOf="parent"/>
+  </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

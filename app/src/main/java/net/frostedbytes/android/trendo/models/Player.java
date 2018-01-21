@@ -2,12 +2,13 @@ package net.frostedbytes.android.trendo.models;
 
 import android.util.Log;
 import com.google.firebase.database.Exclude;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import net.frostedbytes.android.trendo.BaseActivity;
 
-public class Player {
+public class Player implements Serializable {
 
   private static final String TAG = "Player";
 

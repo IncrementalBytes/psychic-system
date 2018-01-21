@@ -33,6 +33,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
+    Log.d(TAG, "++onCreate(Bundle)");
     setContentView(R.layout.activity_sign_in);
     mDatabase = FirebaseDatabase.getInstance().getReference();
     mAuth = FirebaseAuth.getInstance();
@@ -50,6 +51,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
   public void onStart() {
     super.onStart();
 
+    Log.d(TAG, "++onStart()");
     if (mAuth.getCurrentUser() != null) {
       onAuthSuccess(mAuth.getCurrentUser());
     }
@@ -58,6 +60,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
   @Override
   public void onClick(View view) {
 
+    Log.d(TAG, "++onClick()");
     switch (view.getId()) {
       case R.id.signin_button_sign_in:
         signIn();
@@ -66,11 +69,6 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         signUp();
         break;
     }
-  }
-
-  @Override
-  public void onPointerCaptureChanged(boolean hasCapture) {
-
   }
 
   private void signIn() {
@@ -129,7 +127,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     String username = usernameFromEmail(user.getEmail());
     writeNewUser(user.getUid(), username, user.getEmail());
-    startActivity(new Intent(SignInActivity.this, MainActivity.class));
+    startActivity(new Intent(SignInActivity.this, MatchListActivity.class));
     finish();
   }
 

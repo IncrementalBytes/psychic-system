@@ -48,12 +48,13 @@ public class DatePickerFragment extends DialogFragment {
 
     Log.d(TAG, "++onCreate(Bundle)");
     try {
-      mCallback = (OnMatchDateSetListener) getTargetFragment();
+      mCallback = (OnMatchDateSetListener) getActivity();
     } catch (ClassCastException e) {
       throw new ClassCastException("Calling Fragment must implement OnMatchDateSetListener.");
     }
   }
 
+  @NonNull
   @Override
   public Dialog onCreateDialog(Bundle savedInstanceState) {
     super.onCreateDialog(savedInstanceState);
@@ -77,28 +78,23 @@ public class DatePickerFragment extends DialogFragment {
       calendar.get(Calendar.DAY_OF_MONTH),
       null);
 
-    if (getActivity() != null) {
-      AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-      builder.setView(view)
-        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+    builder.setView(view)
+      .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 
-          @Override
-          public void onClick(DialogInterface dialog, int which) {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
 
-            Log.d(TAG, "++setPositiveButton::onClick(DialogInterface, int)");
-            int year = mDatePicker.getYear();
-            int month = mDatePicker.getMonth();
-            int day = mDatePicker.getDayOfMonth();
-            Date date = new GregorianCalendar(year, month, day).getTime();
-            sendResult(date.getTime());
-          }
-        });
+          Log.d(TAG, "++setPositiveButton::onClick(DialogInterface, int)");
+          int year = mDatePicker.getYear();
+          int month = mDatePicker.getMonth();
+          int day = mDatePicker.getDayOfMonth();
+          Date date = new GregorianCalendar(year, month, day).getTime();
+          sendResult(date.getTime());
+        }
+      });
 
-      return builder.create();
-    }
-
-    Log.e(TAG, "GetActivity() was null.");
-    return null;
+    return builder.create();
   }
 
   @Override
