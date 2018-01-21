@@ -9,7 +9,7 @@
   tools:layout_editor_absoluteX="0dp">
 
   <TextView
-    android:id="@+id/list_item_title"
+    android:id="@+id/match_item_title"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
@@ -22,9 +22,10 @@
     app:layout_constraintTop_toTopOf="parent"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
-    app:layout_constraintRight_toRightOf="parent"/>
+    app:layout_constraintRight_toRightOf="parent"
+    android:maxLines="1"/>
   <TextView
-    android:id="@+id/list_item_match_date"
+    android:id="@+id/match_item_date"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
@@ -34,27 +35,27 @@
     android:text="@string/placeholder"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/list_item_title"/>
+    app:layout_constraintTop_toBottomOf="@id/match_item_title"/>
   <TextView
-    android:id="@+id/list_item_match_status"
+    android:id="@+id/match_item_status"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:text="@string/placeholder"
     android:layout_marginStart="16dp"
     app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintLeft_toRightOf="@+id/list_item_match_date"
-    app:layout_constraintTop_toBottomOf="@+id/list_item_title"/>
-  <net.frostedbytes.android.trendo.TouchableImageView
+    app:layout_constraintLeft_toRightOf="@id/match_item_date"
+    app:layout_constraintTop_toBottomOf="@id/match_item_title"/>
+  <net.frostedbytes.android.trendo.views.TouchableImageView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:id="@+id/list_item_delete"
+    android:id="@+id/match_item_delete"
     app:srcCompat="@drawable/ic_delete"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintRight_toRightOf="parent"
     android:layout_marginBottom="4dp"
     android:layout_marginEnd="8dp"
     android:layout_marginTop="4dp"
-    app:layout_constraintTop_toBottomOf="@+id/list_item_title"
+    app:layout_constraintTop_toBottomOf="@id/match_item_title"
     app:layout_constraintVertical_bias="0.0"
     android:contentDescription="@string/delete_match"/>
 

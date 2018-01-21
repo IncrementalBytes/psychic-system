@@ -2,6 +2,7 @@ package net.frostedbytes.android.trendo;
 
 import android.content.Context;
 import java.util.List;
+import net.frostedbytes.android.trendo.models.Match;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
