@@ -39,6 +39,7 @@ public class EventDetailActivity extends BaseActivity {
   private String mMatchId;
   private Team mTeam;
 
+  private Button mCancelImageView;
   private TextView mTeamShortNameText;
   private Spinner mPlayerNameSpinner;
   private Spinner mEventNameSpinner;
@@ -47,7 +48,6 @@ public class EventDetailActivity extends BaseActivity {
   private CheckBox mStoppageCheckBox;
   private CheckBox mAETCheckBox;
   private TextView mErrorMessageText;
-  private Button mCancel;
   private Button mCreate;
 
   private Query mEventsQuery;
@@ -104,7 +104,7 @@ public class EventDetailActivity extends BaseActivity {
     mStoppageCheckBox = findViewById(R.id.event_check_stoppage_time);
     mAETCheckBox = findViewById(R.id.event_check_add_extra_time);
     mErrorMessageText = findViewById(R.id.event_text_error_message);
-    mCancel = findViewById(R.id.event_button_cancel);
+    mCancelImageView = findViewById(R.id.event_imageview_cancel);
     mCreate = findViewById(R.id.event_button_create);
 
     mTeamShortNameText.setText(mTeam.ShortName);
@@ -208,7 +208,7 @@ public class EventDetailActivity extends BaseActivity {
       }
     );
 
-    mCancel.setOnClickListener(new View.OnClickListener() {
+    mCancelImageView.setOnClickListener(new View.OnClickListener() {
 
       @Override
       public void onClick(View view) {
