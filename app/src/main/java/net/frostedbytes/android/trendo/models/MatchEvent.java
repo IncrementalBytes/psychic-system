@@ -3,17 +3,19 @@ package net.frostedbytes.android.trendo.models;
 import android.util.Log;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import net.frostedbytes.android.trendo.BaseActivity;
 
 @IgnoreExtraProperties
-public class MatchEvent {
+public class MatchEvent implements Serializable {
 
   private static final String TAG = "MatchEvent";
 
   public String EventName;
+  @Exclude
   public String Id;
   public boolean IsAdditionalExtraTime;
   public boolean IsStoppageTime;
@@ -34,7 +36,19 @@ public class MatchEvent {
     this.TeamShortName = "";
   }
 
-  public MatchEvent(String eventName, String id, boolean isAdditionalExtraTime, boolean isStoppageTime, int minuteOfEvent, String playerName, String teamShortName) {
+  public MatchEvent(String eventName, int minuteOfEvent, String teamShortName) {
+    this(eventName, BaseActivity.DEFAULT_ID, minuteOfEvent, false, false, "", teamShortName);
+  }
+
+  public MatchEvent(String eventName, int minuteOfEvent, String playerName, String teamShortName) {
+    this(eventName, BaseActivity.DEFAULT_ID, minuteOfEvent, false, false, playerName, teamShortName);
+  }
+
+  public MatchEvent(String eventName, int minuteOfEvent, boolean isStoppageTime, boolean isAdditionalExtraTime, String playerName, String teamShortName) {
+    this(eventName, BaseActivity.DEFAULT_ID, minuteOfEvent, isStoppageTime, isAdditionalExtraTime, playerName, teamShortName);
+  }
+
+  public MatchEvent(String eventName, String id, int minuteOfEvent, boolean isStoppageTime, boolean isAdditionalExtraTime, String playerName, String teamShortName) {
 
     this.EventName = eventName;
     this.Id = id;
@@ -92,11 +106,19 @@ public class MatchEvent {
 
     HashMap<String, Object> result = new HashMap<>();
     result.put("EventName", EventName);
-    result.put("Id", Id);
-    result.put("IsAdditionalExtraTime", IsAdditionalExtraTime);
-    result.put("IsStoppageTime", IsStoppageTime);
+    if (IsAdditionalExtraTime) {
+      result.put("IsAdditionalExtraTime", IsAdditionalExtraTime);
+    }
+
+    if (IsStoppageTime) {
+      result.put("IsStoppageTime", IsStoppageTime);
+    }
+
     result.put("MinuteOfEvent", MinuteOfEvent);
-    result.put("PlayerName", PlayerName);
+    if (!PlayerName.isEmpty()) {
+      result.put("PlayerName", PlayerName);
+    }
+
     result.put("TeamShortName", TeamShortName);
 
     return result;

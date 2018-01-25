@@ -8,8 +8,14 @@ import com.google.firebase.crash.FirebaseCrash;
 
 public class BaseActivity extends AppCompatActivity {
 
-  public static final String ARG_MATCH_ID = "match_id";
-  public static final String ARG_TEAM = "team";
+  static final String ARG_MATCH = "match";
+  static final String ARG_MATCH_ID = "match_id";
+  static final String ARG_TEAM_NAME = "team_name";
+
+  static final int RESULT_MATCH_CREATE = 0;
+  static final int RESULT_MATCH_SELECT = 1;
+  static final int RESULT_SETTINGS = 2;
+
   public static final String DEFAULT_ID = "000000000-0000-0000-0000-000000000000";
 
   private static final String TAG = "BaseActivity";
@@ -25,19 +31,19 @@ public class BaseActivity extends AppCompatActivity {
     FirebaseCrash.setCrashCollectionEnabled(false); // re-enable on release
   }
 
-  public void showProgressDialog() {
+  void showProgressDialog(String message) {
 
     Log.d(TAG, "++showProgressDialog()");
     if (mProgressDialog == null) {
       mProgressDialog = new ProgressDialog(this);
       mProgressDialog.setCancelable(false);
-      mProgressDialog.setMessage("Loading...");
+      mProgressDialog.setMessage(message);
     }
 
     mProgressDialog.show();
   }
 
-  public void hideProgressDialog() {
+  void hideProgressDialog() {
 
     Log.d(TAG, "++hideProgressDialog()");
     if (mProgressDialog != null && mProgressDialog.isShowing()) {

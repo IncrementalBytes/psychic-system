@@ -1,6 +1,5 @@
 package net.frostedbytes.android.trendo;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +9,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -24,38 +24,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import net.frostedbytes.android.trendo.models.Event;
+import net.frostedbytes.android.trendo.models.Match;
 import net.frostedbytes.android.trendo.models.MatchEvent;
-import net.frostedbytes.android.trendo.models.Player;
-import net.frostedbytes.android.trendo.models.Team;
 
 public class EventDetailActivity extends BaseActivity {
 
   private static final String TAG = "EventDetailActivity";
 
-  private boolean mMatchEventsDone;
   private MatchEvent mMatchEvent;
-  private List<MatchEvent> mMatchEvents;
-  private String mMatchId;
-  private Team mTeam;
+  private Match mMatch;
 
-  private Button mCancelImageView;
-  private TextView mTeamShortNameText;
   private Spinner mPlayerNameSpinner;
   private Spinner mEventNameSpinner;
   private NumberPicker mFirstDigitPicker;
   private NumberPicker mSecondDigitPicker;
-  private CheckBox mStoppageCheckBox;
-  private CheckBox mAETCheckBox;
   private TextView mErrorMessageText;
-  private Button mCreate;
 
   private Query mEventsQuery;
-  private Query mMatchEventsQuery;
-  private Query mPlayersQuery;
+  private Query mTeamQuery;
   private ValueEventListener mEventsValueListener;
-  private ValueEventListener mMatchEventsValueListner;
-  private ValueEventListener mPlayersValueListener;
+  private ValueEventListener mTeamValueListener;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -63,92 +51,67 @@ public class EventDetailActivity extends BaseActivity {
 
     Log.d(TAG, "++onCreate(Bundle)");
     setContentView(R.layout.activity_event_detail);
-    mMatchId = getIntent().getStringExtra(ARG_MATCH_ID);
-    mTeam = (Team)getIntent().getSerializableExtra(ARG_TEAM);
+    mMatch = (Match)getIntent().getSerializableExtra(ARG_MATCH);
+    String teamShortName = getIntent().getStringExtra(ARG_TEAM_NAME);
 
     mMatchEvent = new MatchEvent();
     mMatchEvent.Id = UUID.randomUUID().toString();
-    mMatchEvent.TeamShortName = mTeam.ShortName;
+    mMatchEvent.TeamShortName = teamShortName;
 
-    mMatchEvents = new ArrayList<>();
-    mMatchEventsQuery = FirebaseDatabase.getInstance().getReference().child("matches/" + mMatchId + "/MatchEvents").orderByChild("MinuteOfEvent");
-    mMatchEventsValueListner = new ValueEventListener() {
-
-      @Override
-      public void onDataChange(DataSnapshot dataSnapshot) {
-
-        for (DataSnapshot data : dataSnapshot.getChildren()) {
-          MatchEvent matchEvent = data.getValue(MatchEvent.class);
-          if (matchEvent != null) {
-            mMatchEvents.add(matchEvent);
-          }
-        }
-
-        onGatheringMatchEventsComplete();
-      }
-
-      @Override
-      public void onCancelled(DatabaseError databaseError) {
-
-        Log.d(TAG, "++onCancelled(DatabaseError)");
-        Log.e(TAG, databaseError.getMessage());
-      }
-    };
-    mMatchEventsQuery.addValueEventListener(mMatchEventsValueListner);
-
-    mTeamShortNameText = findViewById(R.id.event_text_team_short_name);
+    TextView teamShortNameText = findViewById(R.id.event_text_team_short_name);
     mPlayerNameSpinner = findViewById(R.id.event_spinner_player_name);
     mEventNameSpinner = findViewById(R.id.event_spinner_event_name);
     mFirstDigitPicker = findViewById(R.id.event_picker_first_digit);
     mSecondDigitPicker = findViewById(R.id.event_picker_second_digit);
-    mStoppageCheckBox = findViewById(R.id.event_check_stoppage_time);
-    mAETCheckBox = findViewById(R.id.event_check_add_extra_time);
+    CheckBox stoppageCheckBox = findViewById(R.id.event_check_stoppage_time);
+    CheckBox AETCheckBox = findViewById(R.id.event_check_add_extra_time);
     mErrorMessageText = findViewById(R.id.event_text_error_message);
-    mCancelImageView = findViewById(R.id.event_imageview_cancel);
-    mCreate = findViewById(R.id.event_button_create);
+    ImageView cancelImageView = findViewById(R.id.event_imageview_cancel);
+    Button create = findViewById(R.id.event_button_create);
 
-    mTeamShortNameText.setText(mTeam.ShortName);
+    teamShortNameText.setText(teamShortName);
 
-    final List<String> players = new ArrayList<>();
-    players.add("");
-    // TODO: remove hard-coded 2017 and replace with user setting (default to current year)
-    mPlayersQuery = FirebaseDatabase.getInstance().getReference().child("teams/" + mTeam.Id + "/Rosters/2017").orderByChild("Name");
-    mPlayersValueListener = new ValueEventListener() {
+    final List<String> playerNames = new ArrayList<>();
+    playerNames.add("");
+    // TODO: remove hard-coded year and replace with user setting
+    mTeamQuery = FirebaseDatabase.getInstance().getReference().child("teams/" + teamShortName + "/Rosters/2017");
+    mTeamValueListener = new ValueEventListener() {
 
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
 
+        Log.d(TAG, "++mTeamValueListener::onDataChange(DataSnapshot)");
         for (DataSnapshot data : dataSnapshot.getChildren()) {
-          Player player = data.getValue(Player.class);
-          if (player != null) {
-            players.add(player.Name);
+          String playerName = data.getValue(String.class);
+          if (playerName!= null) {
+            playerNames.add(playerName);
           }
         }
 
-        onGatheringPlayersComplete(players);
+        onGatheringPlayerNamesComplete(playerNames);
       }
 
       @Override
       public void onCancelled(DatabaseError databaseError) {
 
-        Log.d(TAG, "++onCancelled(DatabaseError)");
+        Log.d(TAG, "++mTeamValueListener::onCancelled(DatabaseError)");
         Log.e(TAG, databaseError.getMessage());
       }
     };
-    mPlayersQuery.addValueEventListener(mPlayersValueListener);
+    mTeamQuery.addValueEventListener(mTeamValueListener);
 
     final List<String> events = new ArrayList<>();
-    events.add("");
-    mEventsQuery = FirebaseDatabase.getInstance().getReference().child("events").orderByChild("Name");
+    mEventsQuery = FirebaseDatabase.getInstance().getReference().child("events");
     mEventsValueListener = new ValueEventListener() {
 
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
 
+        Log.d(TAG, "++mEventsValueListener::onDataChange(DataSnapshot)");
         for (DataSnapshot data : dataSnapshot.getChildren()) {
-          Event event = data.getValue(Event.class);
-          if (event != null) {
-            events.add(event.Name);
+          String eventName = data.getValue(String.class);
+          if (eventName!= null) {
+            events.add(eventName);
           }
         }
 
@@ -158,7 +121,7 @@ public class EventDetailActivity extends BaseActivity {
       @Override
       public void onCancelled(DatabaseError databaseError) {
 
-        Log.d(TAG, "++onCancelled(DatabaseError)");
+        Log.d(TAG, "++mEventsValueListener::onCancelled(DatabaseError)");
         Log.e(TAG, databaseError.getMessage());
       }
     };
@@ -186,7 +149,7 @@ public class EventDetailActivity extends BaseActivity {
       }
     });
 
-    mStoppageCheckBox.setOnCheckedChangeListener(
+    stoppageCheckBox.setOnCheckedChangeListener(
       new OnCheckedChangeListener() {
 
         @Override
@@ -197,7 +160,7 @@ public class EventDetailActivity extends BaseActivity {
       }
     );
 
-    mAETCheckBox.setOnCheckedChangeListener(
+    AETCheckBox.setOnCheckedChangeListener(
       new OnCheckedChangeListener() {
 
         @Override
@@ -208,7 +171,7 @@ public class EventDetailActivity extends BaseActivity {
       }
     );
 
-    mCancelImageView.setOnClickListener(new View.OnClickListener() {
+    cancelImageView.setOnClickListener(new View.OnClickListener() {
 
       @Override
       public void onClick(View view) {
@@ -220,7 +183,7 @@ public class EventDetailActivity extends BaseActivity {
       }
     });
 
-    mCreate.setOnClickListener(new View.OnClickListener() {
+    create.setOnClickListener(new View.OnClickListener() {
 
       @Override
       public void onClick(View view) {
@@ -230,7 +193,7 @@ public class EventDetailActivity extends BaseActivity {
           try {
             Map<String, Object> postValues = mMatchEvent.toMap();
             Map<String, Object> childUpdates = new HashMap<>();
-            childUpdates.put("/matches/" + mMatchId + "/MatchEvents/" + mMatchEvent.Id, postValues);
+            childUpdates.put("/matches/" + mMatch.Id + "/MatchEvents/" + mMatchEvent.Id, postValues);
             FirebaseDatabase.getInstance().getReference().updateChildren(childUpdates);
             setResult(RESULT_OK);
             finish();
@@ -258,26 +221,23 @@ public class EventDetailActivity extends BaseActivity {
   }
 
   @Override
-  public void onStop() {
-    super.onStop();
+  public void onDestroy() {
+    super.onDestroy();
 
-    Log.d(TAG, "++onStop()");
-    if (mPlayersQuery != null && mPlayersValueListener != null) {
-      mPlayersQuery.removeEventListener(mPlayersValueListener);
-    }
-
+    Log.d(TAG, "++onDestroy()");
     if (mEventsQuery != null && mEventsValueListener != null) {
       mEventsQuery.removeEventListener(mEventsValueListener);
     }
 
-    if (mMatchEventsQuery != null && mMatchEventsValueListner != null) {
-      mMatchEventsQuery.removeEventListener(mMatchEventsValueListner);
+    if (mTeamQuery != null && mTeamValueListener != null) {
+      mTeamQuery.removeEventListener(mTeamValueListener);
     }
   }
 
-  void onGatheringEventsComplete(List<String> eventNames) {
+  private void onGatheringEventsComplete(List<String> eventNames) {
 
     Log.d(TAG, "++onGatheringEventsComplete(List<String>)");
+    java.util.Collections.sort(eventNames);
     ArrayAdapter<String> adapter = new ArrayAdapter<>(
       this,
       android.R.layout.simple_list_item_1,
@@ -303,41 +263,40 @@ public class EventDetailActivity extends BaseActivity {
     });
   }
 
-  void onGatheringMatchEventsComplete() {
+  private void onGatheringPlayerNamesComplete(List<String> playerNames) {
 
-    Log.d(TAG, "++onGatheringMatchEventsComplete()");
-    mMatchEventsDone = true;
+    Log.d(TAG, "++onGatheringPlayerNamesComplete(List<String>)");
+    if (playerNames.size() > 1) {
+      java.util.Collections.sort(playerNames);
+      ArrayAdapter<String> adapter = new ArrayAdapter<>(
+        this,
+        android.R.layout.simple_list_item_1,
+        playerNames);
+
+      // specify the layout to use when the list of choices appears
+      adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+      // apply the adapter to the spinner
+      mPlayerNameSpinner.setAdapter(adapter);
+      mPlayerNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+          mMatchEvent.PlayerName = mPlayerNameSpinner.getSelectedItem().toString();
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+      });
+    } else {
+      mPlayerNameSpinner.setEnabled(false);
+    }
   }
 
-  void onGatheringPlayersComplete(List<String> playerNames) {
-
-    Log.d(TAG, "++onGatheringPlayersComplete(List<String>)");
-    ArrayAdapter<String> adapter = new ArrayAdapter<>(
-      this,
-      android.R.layout.simple_list_item_1,
-      playerNames);
-
-    // specify the layout to use when the list of choices appears
-    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-    // apply the adapter to the spinner
-    mPlayerNameSpinner.setAdapter(adapter);
-    mPlayerNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-      @Override
-      public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-        mMatchEvent.PlayerName = mPlayerNameSpinner.getSelectedItem().toString();
-      }
-
-      @Override
-      public void onNothingSelected(AdapterView<?> parent) {
-
-      }
-    });
-  }
-
-  boolean validateForm() {
+  private boolean validateForm() {
 
     Log.d(TAG, "++validateForm()");
     mErrorMessageText.setText("");
@@ -351,15 +310,8 @@ public class EventDetailActivity extends BaseActivity {
       return false;
     }
 
-    while (!mMatchEventsDone) {
-      try {
-        wait(100);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-    }
-
-    for (MatchEvent matchEvent : mMatchEvents) {
+    for (Map.Entry<String, Object> entry : mMatch.MatchEvents.entrySet()) {
+      MatchEvent matchEvent = (MatchEvent) entry;
       if (matchEvent.EventName.equals(mEventNameSpinner.getSelectedItem().toString()) &&
         matchEvent.MinuteOfEvent == ((mFirstDigitPicker.getValue() * 10) + mSecondDigitPicker.getValue())){
         mErrorMessageText.setText(matchEvent.toString() + " already exists.");

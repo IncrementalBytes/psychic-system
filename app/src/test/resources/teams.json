@@ -1,0 +1,74 @@
+{
+  "teams" : {
+    "ATL" : {
+      "FullName" : "Atlanta United FC"
+    },
+    "CHI" : {
+      "FullName" : "Chicago Fire"
+    },
+    "CLB" : {
+      "FullName" : "Columbus Crew SC"
+    },
+    "COL" : {
+      "FullName" : "Colorado Rapids"
+    },
+    "DAL" : {
+      "FullName" : "FC Dallas"
+    },
+    "DC" : {
+      "FullName" : "D.C. United"
+    },
+    "HOU" : {
+      "FullName" : "Houston Dynamo"
+    },
+    "LA" : {
+      "FullName" : "LA Galaxy"
+    },
+    "MIN" : {
+      "FullName" : "Minnesota United FC"
+    },
+    "MON" : {
+      "FullName" : "Montreal Impact"
+    },
+    "NE" : {
+      "FullName" : "New England Revolution"
+    },
+    "NY" : {
+      "FullName" : "New York Red Bulls"
+    },
+    "NYC" : {
+      "FullName" : "New York City FC"
+    },
+    "ORL" : {
+      "FullName" : "Orlando City SC"
+    },
+    "PHI" : {
+      "FullName" : "Philadelphia Union"
+    },
+    "POR" : {
+      "FullName" : "Portland Timbers"
+    },
+    "RSL" : {
+      "FullName" : "Real Salt Lake"
+    },
+    "SEA" : {
+      "FullName" : "Seattle Sounders FC",
+      "Rosters" : {
+        "2017" : [ "Harry Shipp", "Tyler Miller", "Kelvin Leerdam", "Lamar Neagle", "Jordy Delem", "Bryan Meredith", "Aaron Kovar", "Nouhou Tolo", "Henry Wingo", "Tony Alfaro", "Joevin Jones", "Oniel Fisher", "Román Torres", "Gustav Svensson", "Stefan Frei", "Osvaldo Alonso", "Seyi Adekoya", "Brad Evans", "Zach Mathers", "Víctor Rodríguez", "Calum Mallace", "Will Bruin", "Chad Marshall", "Cristian Roldan", "Jordan Morris", "Nicolás Lodeiro", "Clint Dempsey", "Álvaro Fernández" ],
+        "2018" : [ "Harry Shipp", "Kelvin Leerdam", "Lamar Neagle", "Jordy Delem", "Bryan Meredith", "Nouhou Tolo", "Henry Wingo", "Tony Alfaro", "Oniel Fisher", "Román Torres", "Gustav Svensson", "Stefan Frei", "Osvaldo Alonso", "Seyi Adekoya", "Brad Evans", "Zach Mathers", "Víctor Rodríguez", "Will Bruin", "Chad Marshall", "Cristian Roldan", "Jordan Morris", "Nicolás Lodeiro", "Clint Dempsey" ]
+      }
+    },
+    "SJ" : {
+      "FullName" : "San Jose Earthquakes"
+    },
+    "SKC" : {
+      "FullName" : "Sporting Kansas City"
+    },
+    "TOR" : {
+      "FullName" : "Toronto FC"
+    },
+    "VAN" : {
+      "FullName" : "Vancouver Whitecaps FC"
+    }
+  }
+}

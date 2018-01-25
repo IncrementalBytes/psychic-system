@@ -19,14 +19,4 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="parent"/>
 
-  <android.support.design.widget.FloatingActionButton
-    android:id="@+id/match_fab_new"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/fab_margin"
-    app:srcCompat="@drawable/ic_add_match"
-    android:contentDescription="@string/new_match"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"/>
-
 </android.support.constraint.ConstraintLayout>

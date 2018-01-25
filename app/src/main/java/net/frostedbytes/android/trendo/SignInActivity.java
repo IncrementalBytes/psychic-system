@@ -26,8 +26,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
   private DatabaseReference mDatabase;
   private FirebaseAuth mAuth;
 
-  private EditText mEmailField;
-  private EditText mPasswordField;
+  private EditText mEmailEdit;
+  private EditText mPasswordEdit;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -38,8 +38,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     mDatabase = FirebaseDatabase.getInstance().getReference();
     mAuth = FirebaseAuth.getInstance();
 
-    mEmailField = findViewById(R.id.signin_edit_email);
-    mPasswordField = findViewById(R.id.signin_edit_password);
+    mEmailEdit = findViewById(R.id.signin_edit_email);
+    mPasswordEdit = findViewById(R.id.signin_edit_password);
     Button signInButton = findViewById(R.id.signin_button_sign_in);
     Button signUpButton = findViewById(R.id.signin_button_sign_up);
 
@@ -78,9 +78,9 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
       return;
     }
 
-    showProgressDialog();
-    String email = mEmailField.getText().toString();
-    String password = mPasswordField.getText().toString();
+    showProgressDialog("Authenticating...");
+    String email = mEmailEdit.getText().toString();
+    String password = mPasswordEdit.getText().toString();
     mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
           @Override
           public void onComplete(@NonNull Task<AuthResult> task) {
@@ -104,9 +104,9 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
       return;
     }
 
-    showProgressDialog();
-    String email = mEmailField.getText().toString();
-    String password = mPasswordField.getText().toString();
+    showProgressDialog("Processing...");
+    String email = mEmailEdit.getText().toString();
+    String password = mPasswordEdit.getText().toString();
     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
           @Override
           public void onComplete(@NonNull Task<AuthResult> task) {
@@ -139,18 +139,18 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
   private boolean validateForm() {
 
     boolean result = true;
-    if (TextUtils.isEmpty(mEmailField.getText().toString())) {
-      mEmailField.setError("Required");
+    if (TextUtils.isEmpty(mEmailEdit.getText().toString())) {
+      mEmailEdit.setError("Required");
       result = false;
     } else {
-      mEmailField.setError(null);
+      mEmailEdit.setError(null);
     }
 
-    if (TextUtils.isEmpty(mPasswordField.getText().toString())) {
-      mPasswordField.setError("Required");
+    if (TextUtils.isEmpty(mPasswordEdit.getText().toString())) {
+      mPasswordEdit.setError("Required");
       result = false;
     } else {
-      mPasswordField.setError(null);
+      mPasswordEdit.setError(null);
     }
 
     return result;

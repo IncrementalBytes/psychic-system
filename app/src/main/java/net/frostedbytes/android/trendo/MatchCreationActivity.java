@@ -39,9 +39,7 @@ public class MatchCreationActivity extends BaseActivity implements DatePickerFra
   private Button mDateButton;
   private Spinner mHomeSpinner;
   private Spinner mAwaySpinner;
-  private TouchableImageView mCancelImageView;
   private TextView mErrorMessageText;
-  private Button mCreateButton;
 
   private Query mTeamsQuery;
   private ValueEventListener mTeamsValueListener;
@@ -53,12 +51,12 @@ public class MatchCreationActivity extends BaseActivity implements DatePickerFra
     Log.d(TAG, "++onCreate(Bundle)");
     setContentView(R.layout.activity_match_creation);
 
-    mCancelImageView = findViewById(R.id.create_match_imageview_cancel);
+    TouchableImageView cancelImageView = findViewById(R.id.create_match_imageview_cancel);
     mDateButton = findViewById(R.id.create_match_button_date);
     mHomeSpinner = findViewById(R.id.create_match_spinner_home_team);
     mAwaySpinner = findViewById(R.id.create_match_spinner_away_team);
     mErrorMessageText = findViewById(R.id.create_match_text_error_message);
-    mCreateButton = findViewById(R.id.create_match_button_create);
+    Button createButton = findViewById(R.id.create_match_button_create);
 
     mMatch = new Match();
 
@@ -70,7 +68,12 @@ public class MatchCreationActivity extends BaseActivity implements DatePickerFra
 
         Log.d(TAG, "++mDateButton::onClick(View)");
         FragmentManager manager = getSupportFragmentManager();
-        DatePickerFragment dialog = DatePickerFragment.newInstance(mMatch.MatchDate);
+        long defaultDate = mMatch.MatchDate;
+        if (defaultDate == 0) {
+
+        }
+
+        DatePickerFragment dialog = DatePickerFragment.newInstance(defaultDate);
         dialog.show(manager, DIALOG_DATE);
       }
     });
@@ -85,7 +88,7 @@ public class MatchCreationActivity extends BaseActivity implements DatePickerFra
         for (DataSnapshot data : dataSnapshot.getChildren()) {
           Team team = data.getValue(Team.class);
           if (team != null) {
-            team.Id = data.getKey();
+            team.ShortName = data.getKey();
             teams.add(team);
           }
         }
@@ -100,9 +103,9 @@ public class MatchCreationActivity extends BaseActivity implements DatePickerFra
         Log.e(TAG, databaseError.getMessage());
       }
     };
-
     mTeamsQuery.addValueEventListener(mTeamsValueListener);
-    mCancelImageView.setOnTouchListener(new OnTouchListener() {
+
+    cancelImageView.setOnTouchListener(new OnTouchListener() {
       @Override
       public boolean onTouch(View view, MotionEvent motionEvent) {
 
@@ -122,14 +125,14 @@ public class MatchCreationActivity extends BaseActivity implements DatePickerFra
       }
     });
 
-    mCreateButton.setOnClickListener(new View.OnClickListener() {
+    createButton.setOnClickListener(new View.OnClickListener() {
 
       @Override
       public void onClick(View view) {
         Log.d(TAG, "++mCreateButton::onClick(View");
 
         if (validateForm()) {
-          showProgressDialog();
+          showProgressDialog("Loading...");
           Query matchesQuery = FirebaseDatabase.getInstance().getReference().child("matches").orderByChild("MatchDate");
           matchesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -140,8 +143,8 @@ public class MatchCreationActivity extends BaseActivity implements DatePickerFra
               for (DataSnapshot data : dataSnapshot.getChildren()) {
                 Match match = data.getValue(Match.class);
                 if (match != null &&
-                  match.HomeTeam.FullName.equals(mMatch.HomeTeam.FullName) &&
-                  match.AwayTeam.FullName.equals(mMatch.AwayTeam.FullName) &&
+                  match.HomeTeamShortName.equals(mMatch.HomeTeamShortName) &&
+                  match.AwayTeamShortName.equals(mMatch.AwayTeamShortName) &&
                   match.MatchDate == mMatch.MatchDate) {
                   matchExists = true;
                   break;
@@ -164,10 +167,10 @@ public class MatchCreationActivity extends BaseActivity implements DatePickerFra
   }
 
   @Override
-  public void onStop() {
-    super.onStop();
+  public void onDestroy() {
+    super.onDestroy();
 
-    Log.d(TAG, "++onStop()");
+    Log.d(TAG, "++onDestroy()");
     if (mTeamsQuery != null && mTeamsValueListener != null) {
       mTeamsQuery.removeEventListener(mTeamsValueListener);
     }
@@ -185,7 +188,7 @@ public class MatchCreationActivity extends BaseActivity implements DatePickerFra
     }
   }
 
-  void onGatheringTeamsComplete(final List<Team> teams) {
+  private void onGatheringTeamsComplete(final List<Team> teams) {
 
     Log.d(TAG, "++onGatheringTeamsComplete(List<Team>)");
     List<String> teamNames = new ArrayList<>();
@@ -212,7 +215,7 @@ public class MatchCreationActivity extends BaseActivity implements DatePickerFra
         Log.d(TAG, "++mHomeSpinner::onItemSelected(AdapterView<?>, View, int, long)");
         for (Team team : teams) {
           if (team.FullName.equals(mHomeSpinner.getSelectedItem().toString())) {
-            mMatch.HomeTeam = team;
+            mMatch.HomeTeamShortName = team.ShortName;
             break;
           }
         }
@@ -243,7 +246,7 @@ public class MatchCreationActivity extends BaseActivity implements DatePickerFra
         Log.d(TAG, "++mAwaySpinner::onItemSelected(AdapterView<?>, View, int, long)");
         for (Team team : teams) {
           if (team.FullName.equals(mAwaySpinner.getSelectedItem().toString())) {
-            mMatch.AwayTeam = team;
+            mMatch.AwayTeamShortName = team.ShortName;
             break;
           }
         }
@@ -257,7 +260,7 @@ public class MatchCreationActivity extends BaseActivity implements DatePickerFra
     });
   }
 
-  void onQueryMatchesComplete(boolean matchExists) {
+  private void onQueryMatchesComplete(boolean matchExists) {
 
     Log.d(TAG, "++onQueryMatchesComplete(boolean)");
     if (!matchExists) {
@@ -287,7 +290,7 @@ public class MatchCreationActivity extends BaseActivity implements DatePickerFra
     hideProgressDialog();
   }
 
-  void updateDate() {
+  private void updateDate() {
 
     Log.d(TAG, "++updateDate()");
     if (mMatch != null) {
@@ -295,12 +298,12 @@ public class MatchCreationActivity extends BaseActivity implements DatePickerFra
     }
   }
 
-  boolean validateForm() {
+  private boolean validateForm() {
 
     Log.d(TAG, "++validateForm()");
     mErrorMessageText.setText("");
-    if (mMatch.HomeTeam.FullName.equals(mMatch.AwayTeam.FullName)) {
-      mErrorMessageText.setText(mMatch.HomeTeam.FullName + " cannot play itself.");
+    if (mMatch.HomeTeamShortName.equals(mMatch.AwayTeamShortName)) {
+      mErrorMessageText.setText(mMatch.HomeTeamShortName + " cannot play itself.");
       return false;
     }
 

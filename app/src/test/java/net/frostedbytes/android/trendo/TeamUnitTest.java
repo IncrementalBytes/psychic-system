@@ -1,9 +1,9 @@
 package net.frostedbytes.android.trendo;
 
-import static junit.framework.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 import net.frostedbytes.android.trendo.models.Team;
 import org.junit.Test;
@@ -11,29 +11,20 @@ import org.junit.Test;
 public class TeamUnitTest {
 
   @Test
-  public void constructor_idIsSet() {
-
-    UUID testUUID = UUID.randomUUID();
-    Team newTeam = new Team();
-    assertNotEquals(newTeam.Id, testUUID);
-  }
-
-  @Test
-  public void constructor_defaults() {
+  public void constructor_Defaults() {
 
     Team newTeam = new Team();
-    assertNotNull(newTeam.ConferenceId);
-    assertEquals(newTeam.IsDefunct, false);
     assertEquals(newTeam.FullName, "");
-    assertNotNull(newTeam.ParentId);
     assertEquals(newTeam.ShortName, "");
   }
 
   @Test
-  public void team_isNotEqual() {
+  public void constructor_WithParameters() {
 
-    Team team1 = new Team();
-    Team team2 = new Team();
-    assertEquals(team1.equals(team2), false);
+    String fullName = UUID.randomUUID().toString();
+    String shortName = UUID.randomUUID().toString();
+    Team newTeam = new Team(fullName, new HashMap<String, List<String>>(), shortName);
+    assertEquals(newTeam.FullName, fullName);
+    assertEquals(newTeam.ShortName, shortName);
   }
 }

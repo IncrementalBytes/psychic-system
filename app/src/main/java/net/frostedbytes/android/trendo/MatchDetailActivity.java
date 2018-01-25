@@ -3,21 +3,24 @@ package net.frostedbytes.android.trendo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
+import java.util.HashMap;
 import java.util.Map;
 import net.frostedbytes.android.trendo.models.Match;
 import net.frostedbytes.android.trendo.models.MatchEvent;
-import net.frostedbytes.android.trendo.models.Team;
 import net.frostedbytes.android.trendo.views.TouchableImageView;
 import net.frostedbytes.android.trendo.views.TouchableTextView;
 
@@ -27,9 +30,7 @@ public class MatchDetailActivity extends BaseActivity {
 
   private static final int EVENT_CREATE_RESULT = 0;
 
-  private TouchableTextView mHomeText;
   private TextView mHomeScoreText;
-  private TouchableTextView mAwayText;
   private TextView mAwayScoreText;
   private Button mFinalizeButton;
 
@@ -37,9 +38,10 @@ public class MatchDetailActivity extends BaseActivity {
   private TableLayout mRecordAgainstTable;
 
   private Match mMatch;
+  private Map<String, MatchEvent> mMatchEvents;
 
-  private Query mMatchQuery;
-  private ValueEventListener mMatchesValueListener;
+  private Query mMatchEventsQuery;
+  private ChildEventListener mMatchEventsListener;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -48,25 +50,40 @@ public class MatchDetailActivity extends BaseActivity {
     Log.d(TAG, "++onCreate(Bundle)");
     setContentView(R.layout.activity_match_detail);
 
-    mMatchQuery = FirebaseDatabase.getInstance().getReference().child("matches");
-    final String finalMatchId = getIntent().getStringExtra(BaseActivity.ARG_MATCH_ID);
-    mMatchesValueListener = new ValueEventListener() {
+    mMatch = (Match)getIntent().getSerializableExtra(BaseActivity.ARG_MATCH);
+
+    mMatchEvents = new HashMap<>();
+    mMatchEventsQuery = FirebaseDatabase.getInstance().getReference().child("matches/" + mMatch.Id + "/MatchEvents");
+    mMatchEventsListener = new ChildEventListener() {
 
       @Override
-      public void onDataChange(DataSnapshot dataSnapshot) {
+      public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-        mMatch = new Match();
-        for (DataSnapshot data : dataSnapshot.getChildren()) {
-          if (data.getKey().equals(finalMatchId)) {
-            Match match = data.getValue(Match.class);
-            if (match != null) {
-              mMatch = match;
-              mMatch.Id = data.getKey();
-            }
-          }
+        Log.d(TAG, "++onChildAdded(DataSnapshot, String)");
+        MatchEvent matchEvent = dataSnapshot.getValue(MatchEvent.class);
+        if (matchEvent != null) {
+          mMatchEvents.put(dataSnapshot.getKey(), matchEvent);
         }
 
-        onGatheringMatchComplete(mMatch);
+        updateScores();
+      }
+
+      @Override
+      public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+        Log.d(TAG, "++onChildChanged(DataSnapshot, String)");
+      }
+
+      @Override
+      public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+        Log.d(TAG, "++onChildRemoved(DataSnapshot)");
+      }
+
+      @Override
+      public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+        Log.d(TAG, "++onChildMoved(DataSnapshot)");
       }
 
       @Override
@@ -76,14 +93,13 @@ public class MatchDetailActivity extends BaseActivity {
         Log.e(TAG, databaseError.getMessage());
       }
     };
+    mMatchEventsQuery.addChildEventListener(mMatchEventsListener);
 
-    mMatchQuery.addValueEventListener(mMatchesValueListener);
-
-    mHomeText = findViewById(R.id.details_text_home_team);
+    TouchableTextView homeText = findViewById(R.id.details_text_home_team);
     mHomeScoreText = findViewById(R.id.details_text_home_team_score);
     TouchableImageView addHomeEventImageView = findViewById(R.id.details_imageview_add_home_event);
     TouchableImageView editHomeEventImageView = findViewById(R.id.details_imageview_edit_home_event);
-    mAwayText = findViewById(R.id.details_text_away_team);
+    TouchableTextView awayText = findViewById(R.id.details_text_away_team);
     mAwayScoreText = findViewById(R.id.details_text_away_team_score);
     TouchableImageView addAwayEditImageView = findViewById(R.id.details_imageview_add_away_event);
     TouchableImageView editAwayEditImageView = findViewById(R.id.details_imageview_edit_away_event);
@@ -91,13 +107,14 @@ public class MatchDetailActivity extends BaseActivity {
     mRecordAgainstTable = findViewById(R.id.details_table_opponent);
     mFinalizeButton = findViewById(R.id.details_button_finalize);
 
-    mHomeText.setOnTouchListener(new OnTouchListener() {
+    homeText.setText(mMatch.HomeTeamShortName);
+    homeText.setOnTouchListener(new OnTouchListener() {
       @Override
       public boolean onTouch(View view, MotionEvent motionEvent) {
 
         switch (motionEvent.getAction()) {
           case MotionEvent.ACTION_DOWN:
-            populateTrend(mMatch.HomeTeam, mMatch.AwayTeam);
+            populateTrend(mMatch.HomeTeamShortName, mMatch.AwayTeamShortName);
             return true;
           case MotionEvent.ACTION_UP:
             view.performClick();
@@ -116,7 +133,7 @@ public class MatchDetailActivity extends BaseActivity {
         if (mMatch != null && !mMatch.IsFinal) {
           switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
-              addEvent(mMatch.HomeTeam);
+              addEvent(mMatch.HomeTeamShortName);
               return true;
             case MotionEvent.ACTION_UP:
               view.performClick();
@@ -134,7 +151,7 @@ public class MatchDetailActivity extends BaseActivity {
         if (mMatch != null && !mMatch.IsFinal) {
           switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
-              editEvent(mMatch.HomeTeam);
+              editEvent(mMatch.HomeTeamShortName);
               return true;
             case MotionEvent.ACTION_UP:
               view.performClick();
@@ -145,13 +162,14 @@ public class MatchDetailActivity extends BaseActivity {
       }
     });
 
-    mAwayText.setOnTouchListener(new OnTouchListener() {
+    awayText.setText(mMatch.AwayTeamShortName);
+    awayText.setOnTouchListener(new OnTouchListener() {
       @Override
       public boolean onTouch(View view, MotionEvent motionEvent) {
 
         switch (motionEvent.getAction()) {
           case MotionEvent.ACTION_DOWN:
-            populateTrend(mMatch.AwayTeam, mMatch.HomeTeam);
+            populateTrend(mMatch.AwayTeamShortName, mMatch.HomeTeamShortName);
             return true;
           case MotionEvent.ACTION_UP:
             view.performClick();
@@ -170,7 +188,7 @@ public class MatchDetailActivity extends BaseActivity {
         if (mMatch != null && !mMatch.IsFinal) {
           switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
-              addEvent(mMatch.AwayTeam);
+              addEvent(mMatch.AwayTeamShortName);
               return true;
             case MotionEvent.ACTION_UP:
               view.performClick();
@@ -189,7 +207,7 @@ public class MatchDetailActivity extends BaseActivity {
         if (mMatch != null && !mMatch.IsFinal) {
           switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
-              editEvent(mMatch.AwayTeam);
+              editEvent(mMatch.AwayTeamShortName);
               return true;
             case MotionEvent.ACTION_UP:
               view.performClick();
@@ -200,16 +218,58 @@ public class MatchDetailActivity extends BaseActivity {
       }
     });
 
+    // initialize the finalize button
+    if (mMatch != null && mMatch.IsFinal) {
+      mFinalizeButton.setEnabled(false);
+    } else {
+      mFinalizeButton.setEnabled(true);
+      mFinalizeButton.setOnClickListener(new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+
+          finalizeMatch();
+        }
+      });
+    }
+
     updateScores();
   }
 
   @Override
-  public void onStop() {
-    super.onStop();
+  public void onDestroy() {
+    super.onDestroy();
 
-    Log.d(TAG, "++onStop()");
-    if (mMatchQuery != null && mMatchesValueListener != null) {
-      mMatchQuery.removeEventListener(mMatchesValueListener);
+    Log.d(TAG, "++onDestroy()");
+    if (mMatchEventsQuery != null && mMatchEventsListener != null) {
+      mMatchEventsQuery.removeEventListener(mMatchEventsListener);
+    }
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+
+    Log.d(TAG, "++onCreateOptionsMenu(Menu)");
+    getMenuInflater().inflate(R.menu.menu_main, menu);
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+
+    Log.d(TAG, "++onOptionsItemSelected(MenuItem)");
+    int i = item.getItemId();
+    switch (i) {
+      case R.id.action_logout:
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(this, SignInActivity.class));
+        finish();
+        return true;
+      case R.id.action_settings:
+        startActivityForResult(new Intent(this, SettingsActivity.class), BaseActivity.RESULT_SETTINGS);
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
     }
   }
 
@@ -222,24 +282,20 @@ public class MatchDetailActivity extends BaseActivity {
     }
 
     if (requestCode == EVENT_CREATE_RESULT) {
-      if (data == null) {
-        Log.d(TAG, "Result data is null.");
-      }
-
-      // TODO: refresh to pick up new event
+      //updateScores();
     }
   }
 
-  private void addEvent(Team team) {
+  private void addEvent(String teamShortName) {
 
-    Log.d(TAG, "++addEvent(Team)");
+    Log.d(TAG, "++addEvent(String)");
     Intent intent = new Intent(getApplicationContext(), EventDetailActivity.class);
-    intent.putExtra(BaseActivity.ARG_MATCH_ID, mMatch.Id);
-    intent.putExtra(BaseActivity.ARG_TEAM, team);
+    intent.putExtra(BaseActivity.ARG_MATCH, mMatch);
+    intent.putExtra(BaseActivity.ARG_TEAM_NAME, teamShortName);
     startActivityForResult(intent, EVENT_CREATE_RESULT);
   }
 
-  private void editEvent(Team team) {
+  private void editEvent(String teamShortName) {
 
     Log.d(TAG, "++editEvent(String)");
     // TODO: figure out editing of match events
@@ -252,41 +308,10 @@ public class MatchDetailActivity extends BaseActivity {
     mMatch.IsFinal = true;
     mFinalizeButton.setEnabled(false);
     FirebaseDatabase.getInstance().getReference().child("matches/" + mMatch.Id + "/IsFinal").setValue(mMatch.IsFinal);
-    populateTrend(mMatch.HomeTeam, mMatch.AwayTeam);
+    populateTrend(mMatch.HomeTeamShortName, mMatch.AwayTeamShortName);
   }
 
-  void onGatheringMatchComplete(Match match) {
-
-    Log.d(TAG, "++onGatheringMatchComplete(Match)");
-    if (match != null) {
-      if (match.HomeTeam != null) {
-        mHomeText.setText(match.HomeTeam.ShortName);
-      }
-
-      if (match.AwayTeam != null) {
-        mAwayText.setText(match.AwayTeam.ShortName);
-      }
-
-      // initialize the finalize button
-      if (mMatch != null && mMatch.IsFinal) {
-        mFinalizeButton.setEnabled(false);
-      } else {
-        mFinalizeButton.setEnabled(true);
-        mFinalizeButton.setOnClickListener(new View.OnClickListener() {
-
-          @Override
-          public void onClick(View v) {
-
-            finalizeMatch();
-          }
-        });
-      }
-
-      updateScores();
-    }
-  }
-
-  private void populateTrend(Team targetTeam, Team opponentTeam) {
+  private void populateTrend(String targetTeam, String opponentTeam) {
 
     Log.d(TAG, "++populateTrend(Team, Team)");
     if (targetTeam != null && opponentTeam != null) {
@@ -303,21 +328,21 @@ public class MatchDetailActivity extends BaseActivity {
     Log.d(TAG, "++updateScores()");
     int homeScore = 0;
     int awayScore = 0;
-    if (mMatch != null && mMatch.MatchEvents != null) {
-      for (Map.Entry<String, MatchEvent> matchEvent : mMatch.MatchEvents.entrySet()) {
+    if (mMatchEvents != null) {
+      for (Map.Entry<String, MatchEvent> matchEvent : mMatchEvents.entrySet()) {
         switch (matchEvent.getValue().EventName) {
           case "Own Goal":
-            if (matchEvent.getValue().TeamShortName.equals(mMatch.HomeTeam.ShortName)) {
+            if (matchEvent.getValue().TeamShortName.equals(mMatch.HomeTeamShortName)) {
               awayScore++;
-            } else if (matchEvent.getValue().TeamShortName.equals(mMatch.AwayTeam.ShortName)) {
+            } else if (matchEvent.getValue().TeamShortName.equals(mMatch.AwayTeamShortName)) {
               homeScore++;
             }
             break;
           case "Goal":
           case "Goal (Penalty)":
-            if (matchEvent.getValue().TeamShortName.equals(mMatch.HomeTeam.ShortName)) {
+            if (matchEvent.getValue().TeamShortName.equals(mMatch.HomeTeamShortName)) {
               homeScore++;
-            } else if (matchEvent.getValue().TeamShortName.equals(mMatch.AwayTeam.ShortName)) {
+            } else if (matchEvent.getValue().TeamShortName.equals(mMatch.AwayTeamShortName)) {
               awayScore++;
             }
             break;

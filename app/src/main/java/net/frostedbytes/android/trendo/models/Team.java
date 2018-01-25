@@ -4,11 +4,11 @@ import android.util.Log;
 import com.google.firebase.database.Exclude;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 import java.util.Map;
-import net.frostedbytes.android.trendo.BaseActivity;
 
 @IgnoreExtraProperties
 public class Team implements Serializable {
@@ -16,27 +16,22 @@ public class Team implements Serializable {
   private static final String TAG = "Team";
 
   public String FullName;
-  public String Id;
-  public boolean IsDefunct;
-  public Map<String, Player> Rosters;
-  public String ShortName;
+  @Exclude
+  public String ShortName; // acts as identifier
+  public Map<String, List<String>> Rosters;
 
   @SuppressWarnings("unused")
   public Team() {
 
     // Default constructor required for calls to DataSnapshot.getValue(Team.class)
     this.FullName = "";
-    this.Id = BaseActivity.DEFAULT_ID;
-    this.IsDefunct = false;
-    this.Rosters = new HashMap<>();
     this.ShortName = "";
+    this.Rosters = new HashMap<>();
   }
 
-  public Team(String fullName, String id, boolean isDefunct, Map<String, Player> rosters, String shortName) {
+  public Team(String fullName, Map<String, List<String>> rosters, String shortName) {
 
     this.FullName = fullName;
-    this.Id = id;
-    this.IsDefunct = isDefunct;
     this.Rosters = rosters;
     this.ShortName = shortName;
   }
@@ -57,10 +52,7 @@ public class Team implements Serializable {
       //cast to native object is now safe
       try {
         Team compareToTeam = (Team) compareTo;
-        if (this.FullName.equals(compareToTeam.FullName) &&
-          this.ShortName.equals(compareToTeam.ShortName) &&
-          this.Id.equals(compareToTeam.Id) &&
-          this.IsDefunct == compareToTeam.IsDefunct) {
+        if (this.FullName.equals(compareToTeam.FullName) && this.ShortName.equals(compareToTeam.ShortName)) {
           return true;
         }
       } catch (ClassCastException cce) {
@@ -75,10 +67,9 @@ public class Team implements Serializable {
   public String toString() {
     return String.format(
       Locale.getDefault(),
-      "%s (%s)%s",
+      "%s (%s)",
       this.FullName,
-      this.ShortName,
-      this.IsDefunct ? " (DEFUNCT)" : "");
+      this.ShortName);
   }
 
   @Exclude
@@ -86,10 +77,9 @@ public class Team implements Serializable {
 
     HashMap<String, Object> result = new HashMap<>();
     result.put("FullName", FullName);
-    result.put("Id", Id);
-    result.put("IsDefunct", IsDefunct);
-    result.put("Rosters", Rosters);
-    result.put("ShortName", ShortName);
+    if (!Rosters.isEmpty()) {
+      result.put("Rosters", Rosters);
+    }
 
     return result;
   }

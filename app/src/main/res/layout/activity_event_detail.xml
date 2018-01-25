@@ -90,6 +90,7 @@
       android:layout_marginTop="4dp"
       android:layout_marginBottom="4dp"
       android:layout_marginEnd="8dp"
+      android:gravity="center"
       android:text="@string/player_name"
       app:layout_constraintEnd_toStartOf="@id/event_spinner_player_name"
       app:layout_constraintStart_toStartOf="parent"/>

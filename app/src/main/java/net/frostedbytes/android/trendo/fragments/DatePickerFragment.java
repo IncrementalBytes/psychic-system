@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
-import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -35,7 +34,7 @@ public class DatePickerFragment extends DialogFragment {
 
     Log.d(TAG, "++newInstance(long)");
     Bundle args = new Bundle();
-    args.putSerializable(ARG_DATE, date);
+    args.putLong(ARG_DATE, date);
 
     DatePickerFragment fragment = new DatePickerFragment();
     fragment.setArguments(args);
@@ -63,9 +62,9 @@ public class DatePickerFragment extends DialogFragment {
     Calendar calendar = Calendar.getInstance();
     Bundle bundle = getArguments();
     if (bundle != null) {
-      Serializable value = bundle.getSerializable(ARG_DATE);
-      if (value != null && (long) value > 0) {
-        calendar.setTimeInMillis((long) value);
+      long value = bundle.getLong(ARG_DATE);
+      if (value > 0) {
+        calendar.setTimeInMillis(value);
       }
     }
 
@@ -89,7 +88,7 @@ public class DatePickerFragment extends DialogFragment {
           int year = mDatePicker.getYear();
           int month = mDatePicker.getMonth();
           int day = mDatePicker.getDayOfMonth();
-          Date date = new GregorianCalendar(year, month, day).getTime();
+          Date date = new GregorianCalendar(year, month, day, 0, 0, 0).getTime();
           sendResult(date.getTime());
         }
       });
