@@ -132,7 +132,9 @@ public class MatchCreationActivity extends BaseActivity implements DatePickerFra
         Log.d(TAG, "++mCreateButton::onClick(View");
 
         if (validateForm()) {
-          showProgressDialog("Loading...");
+          showProgressDialog("Validating...");
+          // make sure match does not exist under either team (it shouldn't)
+
           Query matchesQuery = FirebaseDatabase.getInstance().getReference().child("matches").orderByChild("MatchDate");
           matchesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
 

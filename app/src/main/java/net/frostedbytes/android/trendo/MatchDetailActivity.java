@@ -2,6 +2,7 @@ package net.frostedbytes.android.trendo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.renderscript.Sampler.Value;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,10 +18,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import net.frostedbytes.android.trendo.models.Match;
 import net.frostedbytes.android.trendo.models.MatchEvent;
+import net.frostedbytes.android.trendo.models.MatchSummary;
 import net.frostedbytes.android.trendo.views.TouchableImageView;
 import net.frostedbytes.android.trendo.views.TouchableTextView;
 
@@ -30,7 +35,9 @@ public class MatchDetailActivity extends BaseActivity {
 
   private static final int EVENT_CREATE_RESULT = 0;
 
+  private TouchableTextView mHomeText;
   private TextView mHomeScoreText;
+  private TouchableTextView mAwayText;
   private TextView mAwayScoreText;
   private Button mFinalizeButton;
 
@@ -38,10 +45,9 @@ public class MatchDetailActivity extends BaseActivity {
   private TableLayout mRecordAgainstTable;
 
   private Match mMatch;
-  private Map<String, MatchEvent> mMatchEvents;
 
-  private Query mMatchEventsQuery;
-  private ChildEventListener mMatchEventsListener;
+  private Query mMatchQuery;
+  private ValueEventListener mMatchListener;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -50,40 +56,18 @@ public class MatchDetailActivity extends BaseActivity {
     Log.d(TAG, "++onCreate(Bundle)");
     setContentView(R.layout.activity_match_detail);
 
-    mMatch = (Match)getIntent().getSerializableExtra(BaseActivity.ARG_MATCH);
+    String matchId = getIntent().getStringExtra(BaseActivity.ARG_MATCH_ID);
+    int year = getIntent().getIntExtra(BaseActivity.ARG_YEAR_SETTING, -1);
 
-    mMatchEvents = new HashMap<>();
-    mMatchEventsQuery = FirebaseDatabase.getInstance().getReference().child("matches/" + mMatch.Id + "/MatchEvents");
-    mMatchEventsListener = new ChildEventListener() {
+    mMatch = new Match();
+    mMatchQuery = FirebaseDatabase.getInstance().getReference().child("matches/" + String.valueOf(year) + "/" + matchId);
+    mMatchListener = new ValueEventListener() {
 
       @Override
-      public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+      public void onDataChange(DataSnapshot dataSnapshot) {
 
-        Log.d(TAG, "++onChildAdded(DataSnapshot, String)");
-        MatchEvent matchEvent = dataSnapshot.getValue(MatchEvent.class);
-        if (matchEvent != null) {
-          mMatchEvents.put(dataSnapshot.getKey(), matchEvent);
-        }
-
+        mMatch = dataSnapshot.getValue(Match.class);
         updateScores();
-      }
-
-      @Override
-      public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-        Log.d(TAG, "++onChildChanged(DataSnapshot, String)");
-      }
-
-      @Override
-      public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-        Log.d(TAG, "++onChildRemoved(DataSnapshot)");
-      }
-
-      @Override
-      public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-        Log.d(TAG, "++onChildMoved(DataSnapshot)");
       }
 
       @Override
@@ -93,13 +77,13 @@ public class MatchDetailActivity extends BaseActivity {
         Log.e(TAG, databaseError.getMessage());
       }
     };
-    mMatchEventsQuery.addChildEventListener(mMatchEventsListener);
+    mMatchQuery.addValueEventListener(mMatchListener);
 
-    TouchableTextView homeText = findViewById(R.id.details_text_home_team);
+    mHomeText = findViewById(R.id.details_text_home_team);
     mHomeScoreText = findViewById(R.id.details_text_home_team_score);
     TouchableImageView addHomeEventImageView = findViewById(R.id.details_imageview_add_home_event);
     TouchableImageView editHomeEventImageView = findViewById(R.id.details_imageview_edit_home_event);
-    TouchableTextView awayText = findViewById(R.id.details_text_away_team);
+    mAwayText = findViewById(R.id.details_text_away_team);
     mAwayScoreText = findViewById(R.id.details_text_away_team_score);
     TouchableImageView addAwayEditImageView = findViewById(R.id.details_imageview_add_away_event);
     TouchableImageView editAwayEditImageView = findViewById(R.id.details_imageview_edit_away_event);
@@ -107,8 +91,7 @@ public class MatchDetailActivity extends BaseActivity {
     mRecordAgainstTable = findViewById(R.id.details_table_opponent);
     mFinalizeButton = findViewById(R.id.details_button_finalize);
 
-    homeText.setText(mMatch.HomeTeamShortName);
-    homeText.setOnTouchListener(new OnTouchListener() {
+    mHomeText.setOnTouchListener(new OnTouchListener() {
       @Override
       public boolean onTouch(View view, MotionEvent motionEvent) {
 
@@ -162,8 +145,7 @@ public class MatchDetailActivity extends BaseActivity {
       }
     });
 
-    awayText.setText(mMatch.AwayTeamShortName);
-    awayText.setOnTouchListener(new OnTouchListener() {
+    mAwayText.setOnTouchListener(new OnTouchListener() {
       @Override
       public boolean onTouch(View view, MotionEvent motionEvent) {
 
@@ -241,8 +223,8 @@ public class MatchDetailActivity extends BaseActivity {
     super.onDestroy();
 
     Log.d(TAG, "++onDestroy()");
-    if (mMatchEventsQuery != null && mMatchEventsListener != null) {
-      mMatchEventsQuery.removeEventListener(mMatchEventsListener);
+    if (mMatchQuery != null && mMatchListener != null) {
+      mMatchQuery.removeEventListener(mMatchListener);
     }
   }
 
@@ -328,25 +310,50 @@ public class MatchDetailActivity extends BaseActivity {
     Log.d(TAG, "++updateScores()");
     int homeScore = 0;
     int awayScore = 0;
-    if (mMatchEvents != null) {
-      for (Map.Entry<String, MatchEvent> matchEvent : mMatchEvents.entrySet()) {
-        switch (matchEvent.getValue().EventName) {
+    if (mMatch.MatchEvents != null) {
+      mHomeText.setText(mMatch.HomeTeamShortName);
+      mAwayText.setText(mMatch.AwayTeamShortName);
+      for (Map.Entry<String, MatchEvent> eventObject : mMatch.MatchEvents.entrySet()) {
+        MatchEvent matchEvent = eventObject.getValue();
+        switch (matchEvent.EventName) {
           case "Own Goal":
-            if (matchEvent.getValue().TeamShortName.equals(mMatch.HomeTeamShortName)) {
+            if (matchEvent.TeamShortName.equals(mMatch.HomeTeamShortName)) {
               awayScore++;
-            } else if (matchEvent.getValue().TeamShortName.equals(mMatch.AwayTeamShortName)) {
+            } else if (matchEvent.TeamShortName.equals(mMatch.AwayTeamShortName)) {
               homeScore++;
             }
             break;
           case "Goal":
           case "Goal (Penalty)":
-            if (matchEvent.getValue().TeamShortName.equals(mMatch.HomeTeamShortName)) {
+            if (matchEvent.TeamShortName.equals(mMatch.HomeTeamShortName)) {
               homeScore++;
-            } else if (matchEvent.getValue().TeamShortName.equals(mMatch.AwayTeamShortName)) {
+            } else if (matchEvent.TeamShortName.equals(mMatch.AwayTeamShortName)) {
               awayScore++;
             }
             break;
         }
+      }
+
+      // now update the match summary object
+      if (!mMatch.Id.equals(BaseActivity.DEFAULT_ID)) {
+        MatchSummary summary = new MatchSummary();
+        summary.AwayScore = awayScore;
+        summary.AwayTeamShortName = mMatch.AwayTeamShortName;
+        summary.HomeScore = homeScore;
+        summary.HomeTeamShortName = mMatch.HomeTeamShortName;
+        summary.IsFinal = mMatch.IsFinal;
+        summary.MatchDate = mMatch.MatchDate;
+
+        // grab year from match date
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(mMatch.MatchDate);
+
+        Map<String, Object> postValues = summary.toMap();
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/teams/" + mMatch.AwayTeamShortName + "/MatchSummaries/" + calendar.get(Calendar.YEAR) + "/" + mMatch.Id, postValues);
+        FirebaseDatabase.getInstance().getReference().updateChildren(childUpdates);
+        childUpdates.put("/teams/" + mMatch.HomeTeamShortName + "/MatchSummaries/" + calendar.get(Calendar.YEAR) + "/" + mMatch.Id, postValues);
+        FirebaseDatabase.getInstance().getReference().updateChildren(childUpdates);
       }
     }
 

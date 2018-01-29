@@ -48,13 +48,13 @@ public class Match implements Serializable {
   /**
    * Collection of match events; formatted for json
    */
-  public Map<String, Object> MatchEvents;
+  public Map<String, MatchEvent> MatchEvents;
 
   /**
    * Constructs a new Match object with default values.
    */
   public Match() {
-    this("", "", BaseActivity.DEFAULT_ID, false, 0, new HashMap<String, Object>());
+    this("", "", BaseActivity.DEFAULT_ID, false, 0, new HashMap<String, MatchEvent>());
     // Default constructor required for calls to DataSnapshot.getValue(Match.class)
   }
 
@@ -68,7 +68,7 @@ public class Match implements Serializable {
    * @param matchDate - Date of match; in ticks
    * @param matchEvents - Collection of events occurring during the match
    */
-  public Match(String homeTeamShortName, String awayTeamShortName, String id, boolean isFinal, long matchDate, Map<String, Object> matchEvents) {
+  public Match(String homeTeamShortName, String awayTeamShortName, String id, boolean isFinal, long matchDate, Map<String, MatchEvent> matchEvents) {
 
     this.AwayTeamShortName = awayTeamShortName;
     this.HomeTeamShortName = homeTeamShortName;

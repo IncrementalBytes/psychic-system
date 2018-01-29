@@ -16,22 +16,25 @@ public class Team implements Serializable {
   private static final String TAG = "Team";
 
   public String FullName;
+  public Map<String, Map<String, Object>> MatchSummaries;
+  public Map<String, List<String>> Rosters;
   @Exclude
   public String ShortName; // acts as identifier
-  public Map<String, List<String>> Rosters;
 
   @SuppressWarnings("unused")
   public Team() {
 
     // Default constructor required for calls to DataSnapshot.getValue(Team.class)
     this.FullName = "";
-    this.ShortName = "";
+    this.MatchSummaries = new HashMap<>();
     this.Rosters = new HashMap<>();
+    this.ShortName = "";
   }
 
-  public Team(String fullName, Map<String, List<String>> rosters, String shortName) {
+  public Team(String fullName, Map<String, Map<String, Object>> matchSummaries, Map<String, List<String>> rosters, String shortName) {
 
     this.FullName = fullName;
+    this.MatchSummaries = matchSummaries;
     this.Rosters = rosters;
     this.ShortName = shortName;
   }
@@ -77,6 +80,10 @@ public class Team implements Serializable {
 
     HashMap<String, Object> result = new HashMap<>();
     result.put("FullName", FullName);
+    if (!MatchSummaries.isEmpty()) {
+      result.put("MatchSummaries", MatchSummaries);
+    }
+
     if (!Rosters.isEmpty()) {
       result.put("Rosters", Rosters);
     }

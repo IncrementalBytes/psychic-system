@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">Trendo</string>
+  <string name="app_name">Trends</string>
   <string name="scoring">Match Scoring</string>
   <string name="default_score">0</string>
   <string name="add_event">Add event</string>
@@ -35,4 +35,13 @@
   <string name="err_event_permissions">Could not create match event. Permissions?</string>
   <string name="new_match">Create a new match</string>
   <string name="event_create_header">Create match event</string>
+  <string name="settings_header">Settings</string>
+  <string name="settings_select_year">Select year:</string>
+  <string name="save">Save</string>
+  <string name="err_match_exists">%s; Match already exists.</string>
+  <string name="err_no_team_no_year">No matches found. Try adjusting team and year in Settings.</string>
+  <string name="err_settings_failed">Unable to save settings data.</string>
+  <string name="subtitle">%s - %d match(es)</string>
+  <string name="string_settings_select_year">Select team:</string>
+  <string name="err_no_results_for_team">%s has no results to view.</string>
 </resources>

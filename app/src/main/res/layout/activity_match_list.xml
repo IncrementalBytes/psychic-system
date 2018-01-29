@@ -3,20 +3,39 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/activity_match_list"
-  android:orientation="vertical"
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent">
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
 
   <android.support.v7.widget.RecyclerView
-    android:id="@+id/match_list"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clipToPadding="false"
-    android:padding="5dp"
-    android:scrollbars="vertical"
-    tools:listitem="@layout/match_item"
-    app:layout_constraintStart_toStartOf="parent"
+    android:id="@+id/match_list_recyclerview"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_margin="@dimen/recyclerview_margin"
+    app:layout_constraintBottom_toTopOf="@+id/match_list_text_error_message"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="parent"/>
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:listitem="@layout/match_item"/>
+
+  <TextView
+    android:id="@+id/match_list_text_error_message"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/text_margin"
+    app:layout_constraintBottom_toTopOf="@+id/match_list_fab_new"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    android:textColor="@color/colorError"/>
+
+  <android.support.design.widget.FloatingActionButton
+    android:id="@+id/match_list_fab_new"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/fab_margin"
+    android:gravity="end"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    android:contentDescription="@string/new_match"
+    app:srcCompat="@drawable/ic_add_match"/>
 
 </android.support.constraint.ConstraintLayout>

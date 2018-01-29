@@ -127,7 +127,9 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     String username = usernameFromEmail(user.getEmail());
     writeNewUser(user.getUid(), username, user.getEmail());
-    startActivity(new Intent(SignInActivity.this, MatchListActivity.class));
+    Intent intent = new Intent(SignInActivity.this, MatchListActivity.class);
+    intent.putExtra(BaseActivity.ARG_USER, user.getUid());
+    startActivity(intent);
     finish();
   }
 

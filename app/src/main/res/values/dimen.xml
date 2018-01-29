@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <!-- Default screen margins, per the Android Design guidelines. -->
-  <dimen name="activity_horizontal_margin">16dp</dimen>
-  <dimen name="activity_vertical_margin">16dp</dimen>
+  <dimen name="activity_horizontal_margin">8dp</dimen>
+  <dimen name="activity_vertical_margin">8dp</dimen>
   <dimen name="fab_margin">16dp</dimen>
+  <dimen name="text_margin">4dp</dimen>
+  <dimen name="spinner_margin">4dp</dimen>
+  <dimen name="imageview_margin">4dp</dimen>
+  <dimen name="button_margin">4dp</dimen>
+  <dimen name="recyclerview_margin">4dp</dimen>
+  <dimen name="edit_margin">4dp</dimen>
+  <dimen name="picker_margin">4dp</dimen>
+  <dimen name="checkbox_margin">4dp</dimen>
 </resources>

@@ -11,6 +11,8 @@ public class BaseActivity extends AppCompatActivity {
   static final String ARG_MATCH = "match";
   static final String ARG_MATCH_ID = "match_id";
   static final String ARG_TEAM_NAME = "team_name";
+  static final String ARG_USER = "user";
+  static final String ARG_YEAR_SETTING = "year";
 
   static final int RESULT_MATCH_CREATE = 0;
   static final int RESULT_MATCH_SELECT = 1;

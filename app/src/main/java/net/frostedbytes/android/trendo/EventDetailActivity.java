@@ -310,8 +310,8 @@ public class EventDetailActivity extends BaseActivity {
       return false;
     }
 
-    for (Map.Entry<String, Object> entry : mMatch.MatchEvents.entrySet()) {
-      MatchEvent matchEvent = (MatchEvent) entry;
+    for (Map.Entry<String, MatchEvent> entry : mMatch.MatchEvents.entrySet()) {
+      MatchEvent matchEvent = entry.getValue();
       if (matchEvent.EventName.equals(mEventNameSpinner.getSelectedItem().toString()) &&
         matchEvent.MinuteOfEvent == ((mFirstDigitPicker.getValue() * 10) + mSecondDigitPicker.getValue())){
         mErrorMessageText.setText(matchEvent.toString() + " already exists.");
