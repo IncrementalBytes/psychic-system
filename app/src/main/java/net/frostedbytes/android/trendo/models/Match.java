@@ -9,9 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import net.frostedbytes.android.trendo.BaseActivity;
 
 @IgnoreExtraProperties
@@ -36,7 +34,7 @@ public class Match implements Serializable {
   public String Id;
 
   /**
-   * Value indicating whether or not this match is final; read-only
+   * Value indicating whether or not this match is final.
    */
   public boolean IsFinal;
 
@@ -46,15 +44,11 @@ public class Match implements Serializable {
   public long MatchDate;
 
   /**
-   * Collection of match events; formatted for json
-   */
-  public Map<String, MatchEvent> MatchEvents;
-
-  /**
    * Constructs a new Match object with default values.
    */
   public Match() {
-    this("", "", BaseActivity.DEFAULT_ID, false, 0, new HashMap<String, MatchEvent>());
+    this("", "", BaseActivity.DEFAULT_ID, false, 0);
+
     // Default constructor required for calls to DataSnapshot.getValue(Match.class)
   }
 
@@ -66,9 +60,8 @@ public class Match implements Serializable {
    * @param id - Unique identifier of this match; used as key in firebase
    * @param isFinal - Value indicating whether or not this match has completed
    * @param matchDate - Date of match; in ticks
-   * @param matchEvents - Collection of events occurring during the match
    */
-  public Match(String homeTeamShortName, String awayTeamShortName, String id, boolean isFinal, long matchDate, Map<String, MatchEvent> matchEvents) {
+  public Match(String homeTeamShortName, String awayTeamShortName, String id, boolean isFinal, long matchDate) {
 
     this.AwayTeamShortName = awayTeamShortName;
     this.HomeTeamShortName = homeTeamShortName;
@@ -86,10 +79,14 @@ public class Match implements Serializable {
     } else {
       this.MatchDate = matchDate;
     }
-
-    this.MatchEvents = matchEvents;
   }
 
+  /**
+   * Compares this match with another match.
+   * @param compareTo Match to compare this match against
+   * @return TRUE if this match equals the other match, otherwise FALSE
+   * @throws ClassCastException if object parameter cannot be casted into Match object
+   */
   @Override
   public boolean equals(Object compareTo) throws ClassCastException {
 
@@ -119,6 +116,10 @@ public class Match implements Serializable {
     return false;
   }
 
+  /**
+   * Returns a user-friendly readable summary of this match.
+   * @return User-friendly readable match summary
+   */
   @Override
   public String toString() {
 
@@ -132,19 +133,6 @@ public class Match implements Serializable {
     }
 
     return "Match details unavailable.";
-  }
-
-  @Exclude
-  public Map<String, Object> toMap() {
-
-    HashMap<String, Object> result = new HashMap<>();
-    result.put("AwayTeamShortName", AwayTeamShortName);
-    result.put("HomeTeamShortName", HomeTeamShortName);
-    result.put("IsFinal", IsFinal);
-    result.put("MatchDate", MatchDate);
-    result.put("MatchEvents", MatchEvents);
-
-    return result;
   }
 
   /**

@@ -1,6 +1,5 @@
 package net.frostedbytes.android.trendo.models;
 
-import com.google.firebase.database.Exclude;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,27 +7,25 @@ import net.frostedbytes.android.trendo.BaseActivity;
 
 public class MatchSummary implements Serializable {
 
-  private static final String TAG = "MatchSummary";
-
   /**
    * Goals scored by the away team.
    */
-  public int AwayScore;
+  public long AwayScore;
 
   /**
    * Name for away team; used as identifier for other classes.
    */
-  public String AwayTeamShortName;
+  public String AwayTeamName;
 
   /**
    * Goals scored by the home team.
    */
-  public int HomeScore;
+  public long HomeScore;
 
   /**
    * Name for home team; used as identifier for other classes.
    */
-  public String HomeTeamShortName;
+  public String HomeTeamName;
 
   /**
    * Value indicating whether or not this match is final.
@@ -45,25 +42,32 @@ public class MatchSummary implements Serializable {
    */
   public long MatchDate;
 
+  /**
+   * Constructs a new MatchSummary object with default values.
+   */
   public MatchSummary() {
 
+    // Default constructor required for calls to DataSnapshot.getValue(MatchSummary.class)
     this.AwayScore = 0;
-    this.AwayTeamShortName = "";
+    this.AwayTeamName = "";
     this.HomeScore = 0;
-    this.HomeTeamShortName = "";
+    this.HomeTeamName = "";
     this.IsFinal = false;
     this.MatchId = BaseActivity.DEFAULT_ID;
     this.MatchDate = 0;
   }
 
-  @Exclude
+  /**
+   * Creates a mapped object based on values of this match summary object
+   * @return A mapped object of match summary
+   */
   public Map<String, Object> toMap() {
 
     HashMap<String, Object> result = new HashMap<>();
     result.put("AwayScore", AwayScore);
-    result.put("AwayTeamShortName", AwayTeamShortName);
+    result.put("AwayTeamName", AwayTeamName);
     result.put("HomeScore", HomeScore);
-    result.put("HomeTeamShortName", HomeTeamShortName);
+    result.put("HomeTeamName", HomeTeamName);
     result.put("IsFinal", IsFinal);
     result.put("MatchDate", MatchDate);
 

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:id="@+id/activity_settings"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:paddingTop="@dimen/activity_vertical_margin"
@@ -18,7 +16,6 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="parent">
     <TextView
-      android:id="@+id/settings_text_header"
       android:textStyle="bold"
       android:layout_width="wrap_content"
       android:layout_height="match_parent"
@@ -26,12 +23,12 @@
       android:text="@string/settings_header"
       android:textSize="18sp"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toStartOf="@+id/settings_imageview_cancel"/>
+      app:layout_constraintEnd_toStartOf="@+id/settings_image_cancel"/>
     <net.frostedbytes.android.trendo.views.TouchableImageView
-      android:id="@+id/settings_imageview_cancel"
+      android:id="@+id/settings_image_cancel"
       android:layout_width="wrap_content"
       android:layout_height="match_parent"
-      android:layout_margin="@dimen/imageview_margin"
+      android:layout_margin="@dimen/image_margin"
       android:contentDescription="@string/cancel"
       app:layout_constraintEnd_toEndOf="parent"
       app:srcCompat="@drawable/ic_cancel"/>
@@ -68,7 +65,6 @@
   </android.support.constraint.ConstraintLayout>
 
   <android.support.constraint.ConstraintLayout
-    android:id="@+id/settings_row_year"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layout_constraintEnd_toEndOf="parent"
@@ -100,7 +96,6 @@
   <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/settings_row_error_message"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintBottom_toTopOf="@+id/settings_row_buttons">

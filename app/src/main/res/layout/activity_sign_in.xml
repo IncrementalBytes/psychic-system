@@ -2,7 +2,6 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
-  android:id="@+id/fragment_event_detail"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:paddingTop="@dimen/activity_vertical_margin"
@@ -12,7 +11,7 @@
   tools:context="net.frostedbytes.android.trendo.SignInActivity">
 
   <android.support.constraint.ConstraintLayout
-    android:id="@+id/signin_row_header"
+    android:id="@+id/sign_in_row_header"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="8dp"
@@ -20,10 +19,9 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
     <ImageView
-      android:id="@+id/signin_imageview_lock"
       android:layout_width="wrap_content"
       android:layout_height="match_parent"
-      android:layout_margin="@dimen/imageview_margin"
+      android:layout_margin="@dimen/image_margin"
       android:contentDescription="@string/desc_locked"
       android:src="@drawable/ic_lock"
       app:layout_constraintStart_toStartOf="parent"
@@ -31,15 +29,15 @@
   </android.support.constraint.ConstraintLayout>
 
   <android.support.constraint.ConstraintLayout
-    android:id="@+id/signin_row_email_password"
+    android:id="@+id/sign_in_row_email_password"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/signin_row_header">
+    app:layout_constraintTop_toBottomOf="@+id/sign_in_row_header">
     <EditText
-      android:id="@+id/signin_edit_email"
+      android:id="@+id/sign_in_edit_email"
       android:layout_width="150dp"
       android:layout_height="match_parent"
       android:layout_margin="@dimen/edit_margin"
@@ -49,9 +47,9 @@
       android:inputType="textEmailAddress"
       android:maxLines="1"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toStartOf="@+id/signin_edit_password"/>
+      app:layout_constraintEnd_toStartOf="@+id/sign_in_edit_password"/>
     <EditText
-      android:id="@+id/signin_edit_password"
+      android:id="@+id/sign_in_edit_password"
       android:layout_width="150dp"
       android:layout_height="match_parent"
       android:layout_margin="@dimen/edit_margin"
@@ -60,36 +58,35 @@
       android:hint="@string/hint_password"
       android:inputType="textPassword"
       android:maxLines="1"
-      app:layout_constraintStart_toEndOf="@+id/signin_edit_email"
+      app:layout_constraintStart_toEndOf="@+id/sign_in_edit_email"
       app:layout_constraintEnd_toEndOf="parent"/>
   </android.support.constraint.ConstraintLayout>
 
   <android.support.constraint.ConstraintLayout
-    android:id="@+id/signin_row_buttons"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_below="@+id/signin_row_email_password"
+    android:layout_below="@+id/sign_in_row_email_password"
     android:gravity="center"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/signin_row_email_password">
+    app:layout_constraintTop_toBottomOf="@+id/sign_in_row_email_password">
     <Button
-      android:id="@+id/signin_button_sign_in"
+      android:id="@+id/sign_in_button_sign_in"
       style="@style/Widget.AppCompat.Button.Borderless"
       android:layout_width="wrap_content"
       android:layout_height="match_parent"
       android:layout_margin="@dimen/button_margin"
       android:text="@string/sign_in"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toStartOf="@+id/signin_button_sign_up"/>
+      app:layout_constraintEnd_toStartOf="@+id/sign_in_button_sign_up"/>
     <Button
-      android:id="@+id/signin_button_sign_up"
+      android:id="@+id/sign_in_button_sign_up"
       style="@style/Widget.AppCompat.Button.Borderless"
       android:layout_width="wrap_content"
       android:layout_height="match_parent"
       android:layout_margin="@dimen/edit_margin"
       android:text="@string/sign_up"
-      app:layout_constraintStart_toEndOf="@+id/signin_button_sign_in"
+      app:layout_constraintStart_toEndOf="@+id/sign_in_button_sign_in"
       app:layout_constraintEnd_toEndOf="parent"/>
   </android.support.constraint.ConstraintLayout>
 

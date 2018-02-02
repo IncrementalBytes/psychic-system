@@ -2,13 +2,15 @@ package net.frostedbytes.android.trendo;
 
 import static org.junit.Assert.assertEquals;
 
-import android.os.Build.VERSION_CODES;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -16,36 +18,67 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.UUID;
-import net.frostedbytes.android.trendo.models.Match;
-import net.frostedbytes.android.trendo.models.MatchEvent;
 import net.frostedbytes.android.trendo.models.MatchSummary;
-import org.junit.After;
-import org.junit.Before;
+import net.frostedbytes.android.trendo.models.Trend;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameter;
+import org.junit.runners.Parameterized.Parameters;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = VERSION_CODES.LOLLIPOP, packageName = "net.frostedbytes.android.trendo")
+@RunWith(Parameterized.class)
 public class GenerateUnitTest {
 
-  @Before
-  public void setUp() throws Exception {
-  }
+  @Parameter()
+  public String mShortName;
 
-  @After
-  public void finish() throws Exception {
+  @Parameter(value = 1)
+  public String mTeamName;
+
+  @Parameter(value = 2)
+  public int mYear;
+
+  @Parameters
+  public static Collection<Object[]> initParameters() {
+    return Arrays.asList(new Object[][]{{"SEA", "Seattle Sounders FC", 2017}});
+    // return Arrays.asList(new Object[][] { { "SEA", "Seattle Sounders FC", 2017 }, { "COL", "Colorado Rapids", 2017 } });
   }
 
   @Test
   public void generateResults() throws IOException {
 
-    generateResults("SEA", 2017);
+    List<MatchSummary> matchSummaries = generateMatchSummaries();
+    List<Trend> trends = generateTrends(matchSummaries);
+
+    Map<String, Map<String, Object>> mappedSummaries = new HashMap<>();
+    for (MatchSummary matchSummary : matchSummaries) {
+      mappedSummaries.put(matchSummary.MatchId, matchSummary.toMap());
+    }
+
+    Map<String, Map<String, Map<String, Object>>> teamSummaries = new HashMap<>();
+    teamSummaries.put(mShortName, mappedSummaries);
+
+    Map<String, Map<String, Map<String, Map<String, Object>>>> yearlySummaries = new HashMap<>();
+    yearlySummaries.put(String.valueOf(mYear), teamSummaries);
+    Map<String, Map<String, Map<String, Map<String, Map<String, Object>>>>> finalSummaries = new HashMap<>();
+    finalSummaries.put("MatchSummaries", yearlySummaries);
+
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    System.out.println(gson.toJson(finalSummaries));
+
+    Map<String, Map<String, Object>> mappedTrends = new HashMap<>();
+    for (Trend trend : trends) {
+      mappedTrends.put(trend.MatchId, trend.toMap());
+    }
+
+    Map<String, Map<String, Map<String, Object>>> finalTrends = new HashMap<>();
+    finalTrends.put("Trends", mappedTrends);
+    gson = new GsonBuilder().setPrettyPrinting().create();
+    System.out.println(gson.toJson(finalTrends));
     assertEquals(1, 1);
   }
 
-  long convertDateToMilliseconds(String matchDate) {
+  private long convertDateToMilliseconds(String matchDate) {
 
     int year = Integer.parseInt(matchDate.substring(0, 4));
     int month = Integer.parseInt(matchDate.substring(4, 6));
@@ -56,23 +89,29 @@ public class GenerateUnitTest {
     return date.getTime();
   }
 
-  void generateResults(String teamShortName, int year) throws IOException {
+  private List<MatchSummary> generateMatchSummaries() throws IOException {
 
+    List<MatchSummary> matchSummaries = new ArrayList<>();
+    MatchSummary currentSummary = new MatchSummary();
     String parsableString;
-    try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(year + "/" + teamShortName + ".txt")) {
+    try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(String.valueOf(mYear) + "/" + mShortName + ".txt")) {
       try (Scanner s = new Scanner(inputStream)) {
         parsableString = s.useDelimiter("\\A").hasNext() ? s.next() : "";
       }
     }
 
     String[] lineSegments = parsableString.split("\r\n");
-    Map<String, Map<String, Object>> matches = new HashMap<>();
-    Map<String, Map<String, Object>> matchSummaries = new HashMap<>();
-    Match currentMatch = new Match();
-    MatchSummary currentSummary = new MatchSummary();
-    currentMatch.Id = UUID.randomUUID().toString();
     for (String line : lineSegments) {
-      if (line.isEmpty() || line.startsWith("#")) {
+      if (line.startsWith("#")) {
+        // comment line; ignore
+        continue;
+      } else if (line.isEmpty()) {
+        // put current summary into collection
+        currentSummary.IsFinal = true;
+        matchSummaries.add(currentSummary);
+
+        // update current summary
+        currentSummary = new MatchSummary();
         continue;
       }
 
@@ -87,173 +126,161 @@ public class GenerateUnitTest {
         continue;
       }
 
-      String matchEventId = UUID.randomUUID().toString();
-      if (!currentMatch.MatchEvents.isEmpty()) {
-        if (!currentMatch.HomeTeamShortName.equals(homeTeam) || !currentMatch.AwayTeamShortName.equals(awayTeam)) {
-          // put current match into collection
-          currentMatch.IsFinal = true;
-          matches.put(currentMatch.Id, currentMatch.toMap());
-
-          // put current summary into collection
-          currentSummary.IsFinal = true;
-          matchSummaries.put(currentMatch.Id, currentSummary.toMap());
-
-          // update current match
-          System.out.println("Creating new match and summary.");
-          currentMatch = new Match();
-          currentMatch.Id = UUID.randomUUID().toString();
-          currentMatch.HomeTeamShortName = homeTeam;
-          currentMatch.AwayTeamShortName = awayTeam;
-          currentMatch.MatchDate = convertedMatchDate;
-          currentMatch.MatchEvents = new HashMap<>();
-
-          // update current summary
-          currentSummary = new MatchSummary();
-          currentSummary.AwayScore = 0;
-          currentSummary.AwayTeamShortName = awayTeam;
-          currentSummary.HomeScore = 0;
-          currentSummary.HomeTeamShortName = homeTeam;
-          currentSummary.MatchId = currentMatch.Id;
-          currentSummary.MatchDate = convertedMatchDate;
-        } else {
-          System.out.println("Same match; progressing to match events.");
-        }
-      } else {
-        System.out.println("Processing first line?");
-        currentMatch.HomeTeamShortName = homeTeam;
-        currentMatch.AwayTeamShortName = awayTeam;
-        currentMatch.MatchDate = convertedMatchDate;
-
-        currentSummary.AwayTeamShortName = awayTeam;
-        currentSummary.HomeTeamShortName = homeTeam;
+      if (!currentSummary.HomeTeamName.equals(homeTeam) || !currentSummary.AwayTeamName.equals(awayTeam)) {
+        currentSummary.AwayScore = 0;
+        currentSummary.AwayTeamName = awayTeam;
+        currentSummary.HomeScore = 0;
+        currentSummary.HomeTeamName = homeTeam;
         currentSummary.MatchDate = convertedMatchDate;
+        currentSummary.MatchId = UUID.randomUUID().toString();
+      } else {
+        System.out.println("Same match; progressing to match events.");
       }
 
-      MatchEvent matchEvent = new MatchEvent();
-      matchEvent.Id = matchEventId;
       String event = elements.remove(0);
       int goalCount = 0;
       switch (event) {
         case "assist":
-          matchEvent.EventName = "Assist";
           break;
         case "goal":
-          matchEvent.EventName = "Goal";
           goalCount = 1;
           break;
         case "goalpenalty":
-          matchEvent.EventName = "Goal (Penalty)";
           goalCount = 1;
           break;
         case "owngoal":
-          matchEvent.EventName = "Own Goal";
           goalCount = -1;
           break;
         case "yellow":
-          matchEvent.EventName = "Yellow Card";
           break;
         case "red":
-          matchEvent.EventName = "Red Card";
           break;
         case "sub":
-          matchEvent.EventName = "";
           break;
         case "penaltymissed":
-          matchEvent.EventName = "Penalty Missed";
           break;
         default:
-          matchEvent.EventName = "UNKNOWN";
+          System.out.println("Unknown event in: " + line);
+          break;
       }
 
-      matchEvent.TeamShortName = elements.remove(0);
+      String teamName = elements.remove(0);
       if (goalCount < 0) {
-        if (matchEvent.TeamShortName.equals(homeTeam)) {
+        if (teamName.equals(homeTeam)) {
           currentSummary.AwayScore++;
         } else {
           currentSummary.HomeScore++;
         }
       } else if (goalCount > 0) {
-        if (matchEvent.TeamShortName.equals(homeTeam)) {
+        if (teamName.equals(homeTeam)) {
           currentSummary.HomeScore++;
         } else {
           currentSummary.AwayScore++;
         }
       }
-
-      matchEvent.MinuteOfEvent = Integer.parseInt(elements.remove(0));
-      if (event.equals("sub") && matchEvent.EventName.isEmpty()) {
-        System.out.println("Processing substitution.");
-        // first player name is sub off, second player name is sub on
-        String subOff = elements.remove(0);
-        String subOn = elements.remove(0);
-
-        // check for stoppage/extra-time
-        boolean isStoppageTime = false;
-        if (!elements.isEmpty()) {
-          isStoppageTime = Boolean.parseBoolean(elements.remove(0));
-        }
-
-        boolean isAdditionalExtraTime = false;
-        if (!elements.isEmpty()) {
-          isAdditionalExtraTime = Boolean.parseBoolean(elements.remove(0));
-        }
-
-        matchEvent.EventName = "Substitution (off)";
-        matchEvent.PlayerName = subOff;
-        matchEvent.IsStoppageTime = isStoppageTime;
-        matchEvent.IsAdditionalExtraTime = isAdditionalExtraTime;
-        currentMatch.MatchEvents.put(matchEventId, matchEvent.toMap());
-
-        matchEventId = UUID.randomUUID().toString();
-        matchEvent.Id = matchEventId;
-        matchEvent.EventName = "Substitution (on)";
-        matchEvent.PlayerName = subOn;
-        currentMatch.MatchEvents.put(matchEventId, matchEvent.toMap());
-      } else if (!elements.isEmpty()) {
-        System.out.println("Processing additional details on match event");
-        // check for stoppage/extra-time
-        boolean isStoppageTime = Boolean.parseBoolean(elements.get(0));
-        if (!isStoppageTime) {
-          // see if this is a players name
-          matchEvent.PlayerName = elements.remove(0);
-          if (!elements.isEmpty()) {
-            isStoppageTime = Boolean.parseBoolean(elements.remove(0));
-          }
-        }
-
-        boolean isAdditionalExtraTime = false;
-        if (!elements.isEmpty()) {
-          isAdditionalExtraTime = Boolean.parseBoolean(elements.remove(0));
-        }
-
-        matchEvent.IsAdditionalExtraTime = isAdditionalExtraTime;
-        matchEvent.IsStoppageTime = isStoppageTime;
-        currentMatch.MatchEvents.put(matchEventId, matchEvent.toMap());
-      } else {
-        currentMatch.MatchEvents.put(matchEventId, matchEvent.toMap());
-      }
     }
 
-    // add last match and summary
-    currentMatch.IsFinal = true;
-    matches.put(currentMatch.Id, currentMatch.toMap());
+    // put last summary into collection
     currentSummary.IsFinal = true;
-    matchSummaries.put(currentMatch.Id, currentSummary.toMap());
+    matchSummaries.add(currentSummary);
 
-    Map<String, Map<String, Map<String, Object>>> yearlyMatches = new HashMap<>();
-    yearlyMatches.put("2017", matches);
-    Map<String, Map<String, Map<String, Map<String, Object>>>> finalMatches = new HashMap<>();
-    finalMatches.put("matches", yearlyMatches);
+    // arrange this list by match date
+    matchSummaries.sort(new Comparator<MatchSummary>() {
+      @Override
+      public int compare(MatchSummary summary1, MatchSummary summary2) {
 
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    System.out.println(gson.toJson(finalMatches));
+        if (summary1.MatchDate < summary2.MatchDate) {
+          return -1;
+        } else if (summary1.MatchDate > summary2.MatchDate) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }
+    });
 
-    Map<String, Map<String, Map<String, Object>>> yearlySummaries = new HashMap<>();
-    yearlySummaries.put("2017", matchSummaries);
-    Map<String, Map<String, Map<String, Map<String, Object>>>> finalSummaries = new HashMap<>();
-    finalSummaries.put("MatchSummaries", yearlySummaries);
+    return matchSummaries;
+  }
 
-    gson = new GsonBuilder().setPrettyPrinting().create();
-    System.out.println(gson.toJson(finalSummaries));
+  private List<Trend> generateTrends(List<MatchSummary> matchSummaries) {
+
+    List<Trend> trends = new ArrayList<>();
+    List<Long> goalsAgainstList = new ArrayList<>();
+    List<Long> goalsForList = new ArrayList<>();
+    List<Long> goalDifferentialsList = new ArrayList<>();
+    List<Long> totalPointsList = new ArrayList<>();
+    List<Double> pointsPerGameList = new ArrayList<>();
+    for (MatchSummary summary : matchSummaries) {
+      Trend newTrend = new Trend();
+      long goalsAgainst;
+      long goalDifferential;
+      long goalsFor;
+      long totalPoints;
+
+      if (summary.HomeTeamName.equals(mTeamName)) {
+        // targetTeam is the home team
+        goalsAgainst = summary.AwayScore;
+        goalDifferential = summary.HomeScore - summary.AwayScore;
+        goalsFor = summary.HomeScore;
+        if (summary.HomeScore > summary.AwayScore) {
+          totalPoints = (long) 3;
+        } else if (summary.HomeScore < summary.AwayScore) {
+          totalPoints = (long) 0;
+        } else {
+          totalPoints = (long) 1;
+        }
+      } else {
+        // targetTeam is the away team
+        goalsAgainst = summary.HomeScore;
+        goalDifferential = summary.AwayScore - summary.HomeScore;
+        goalsFor = summary.AwayScore;
+        if (summary.AwayScore > summary.HomeScore) {
+          totalPoints = (long) 3;
+        } else if (summary.AwayScore < summary.HomeScore) {
+          totalPoints = (long) 0;
+        } else {
+          totalPoints = (long) 1;
+        }
+      }
+
+      long prevGoalAgainst = 0;
+      long prevGoalDifferential = 0;
+      long prevGoalFor = 0;
+      long prevTotalPoints = 0;
+      if (!trends.isEmpty()) {
+        prevGoalAgainst = goalsAgainstList.get(goalsAgainstList.size() - 1);
+        prevGoalDifferential = goalDifferentialsList.get(goalDifferentialsList.size() - 1);
+        prevGoalFor = goalsForList.get(goalsForList.size() - 1);
+        prevTotalPoints = totalPointsList.get(totalPointsList.size() - 1);
+      }
+
+      goalsAgainstList.add(goalsAgainst + prevGoalAgainst);
+      newTrend.GoalsAgainst = new ArrayList<>(goalsAgainstList);
+
+      goalDifferentialsList.add(goalDifferential + prevGoalDifferential);
+      newTrend.GoalDifferential = new ArrayList<>(goalDifferentialsList);
+
+      goalsForList.add(goalsFor + prevGoalFor);
+      newTrend.GoalsFor = new ArrayList<>(goalsForList);
+
+      totalPointsList.add(totalPoints + prevTotalPoints);
+      newTrend.TotalPoints = new ArrayList<>(totalPointsList);
+
+      double result = (double) totalPoints;
+      if (!trends.isEmpty()) {
+        // already added this match to the total points
+        result = (totalPointsList.get(totalPointsList.size() - 1)) / (double) (totalPointsList.size());
+      }
+
+      pointsPerGameList.add(result);
+      newTrend.PointsPerGame = new ArrayList<>(pointsPerGameList);
+
+      newTrend.MatchDate = summary.MatchDate;
+      newTrend.MatchId = summary.MatchId;
+      newTrend.TeamName = mTeamName;
+      trends.add(newTrend);
+    }
+
+    return trends;
   }
 }

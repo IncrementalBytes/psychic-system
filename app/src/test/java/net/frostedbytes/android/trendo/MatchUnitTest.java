@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.UUID;
 import net.frostedbytes.android.trendo.models.Match;
 import org.junit.Test;
@@ -28,7 +27,6 @@ public class MatchUnitTest {
       0,
       0).getTimeInMillis();
     assertEquals(testMatch.MatchDate, matchDate);
-    assertEquals(testMatch.MatchEvents.isEmpty(), true);
   }
 
   @Test
@@ -46,13 +44,12 @@ public class MatchUnitTest {
       0,
       0).getTimeInMillis();
 
-    Match testMatch = new Match(homeTeam, awayTeam, id, isFinal, matchDate, new HashMap<String, Object>());
+    Match testMatch = new Match(homeTeam, awayTeam, id, isFinal, matchDate);
     assertEquals(testMatch.AwayTeamShortName, awayTeam);
     assertEquals(testMatch.HomeTeamShortName, homeTeam);
     assertEquals(testMatch.Id, id);
     assertEquals(testMatch.IsFinal, isFinal);
     assertEquals(testMatch.MatchDate, matchDate);
-    assertEquals(testMatch.MatchEvents.isEmpty(), true);
   }
 
   @Test
