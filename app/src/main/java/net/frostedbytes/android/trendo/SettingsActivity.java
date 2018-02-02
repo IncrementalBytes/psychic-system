@@ -9,22 +9,16 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.frostedbytes.android.trendo.models.Settings;
-import net.frostedbytes.android.trendo.models.Team;
 
 public class SettingsActivity extends BaseActivity {
 
@@ -33,9 +27,9 @@ public class SettingsActivity extends BaseActivity {
   private Spinner mTeamSpinner;
   private Spinner mYearSpinner;
   private TextView mErrorMessageText;
+  private Button mSaveButton;
 
-  private Team mSelectedTeam;
-  private List<Team> mTeams;
+  private Map<String, String> mTeamMappings;
   private String mUserId;
 
   @Override
@@ -47,40 +41,11 @@ public class SettingsActivity extends BaseActivity {
 
     mUserId = getIntent().getStringExtra(BaseActivity.ARG_USER);
 
-    ImageView cancelImageView = findViewById(R.id.settings_imageview_cancel);
+    ImageView cancelImageView = findViewById(R.id.settings_image_cancel);
     mTeamSpinner = findViewById(R.id.settings_spinner_team);
     mYearSpinner = findViewById(R.id.settings_spinner_year);
     mErrorMessageText = findViewById(R.id.settings_text_error_message);
-    final Button saveButton = findViewById(R.id.settings_button_save);
-
-    mTeams = new ArrayList<>();
-    Query teamsQuery = FirebaseDatabase.getInstance().getReference().child("teams").orderByChild("FullName");
-    ValueEventListener teamsValueListener = new ValueEventListener() {
-
-      @Override
-      public void onDataChange(DataSnapshot dataSnapshot) {
-
-        for (DataSnapshot data : dataSnapshot.getChildren()) {
-          Team team = data.getValue(Team.class);
-          if (team != null) {
-            team.ShortName = data.getKey();
-            mTeams.add(team);
-          } else {
-            Log.d(TAG, "Unable to get team from dataSnapshot.");
-          }
-        }
-
-        onGatheringTeamsComplete();
-      }
-
-      @Override
-      public void onCancelled(DatabaseError databaseError) {
-
-        Log.d(TAG, "++onCancelled(DatabaseError)");
-        Log.e(TAG, databaseError.getMessage());
-      }
-    };
-    teamsQuery.addValueEventListener(teamsValueListener);
+    mSaveButton = findViewById(R.id.settings_button_save);
 
     cancelImageView.setOnClickListener(new View.OnClickListener() {
 
@@ -94,55 +59,52 @@ public class SettingsActivity extends BaseActivity {
       }
     });
 
-    mTeamSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-      @Override
-      public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-        mSelectedTeam = mTeams.get(i);
-        teamSelected();
+    mTeamMappings = new HashMap<>();
+    String[] resourceItems = getResources().getStringArray(R.array.teams);
+    for (String teamNameResource : resourceItems) {
+      String[] teamSegments = teamNameResource.split(",");
+      if (teamSegments.length == 2) {
+        mTeamMappings.put(teamSegments[0], teamSegments[1]);
+      } else {
+        Log.d(TAG, "Skipping unexpected entry: " + teamNameResource);
       }
+    }
 
-      @Override
-      public void onNothingSelected(AdapterView<?> adapterView) {
+    List<String> teams = new ArrayList<>(mTeamMappings.keySet());
+    Collections.sort(teams);
 
-      }
-    });
+    // get a list of teams for the object adapter used by the spinner controls
+    ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>(teams));
+    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    mTeamSpinner.setAdapter(adapter);
+    mTeamSpinner.setOnItemSelectedListener(spinnerListener);
 
-    mYearSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-      @Override
-      public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+    // get a list of teams for the object adapter used by the spinner controls
+    resourceItems = getResources().getStringArray(R.array.years);
+    adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, resourceItems);
+    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    mYearSpinner.setAdapter(adapter);
+    mYearSpinner.setOnItemSelectedListener(spinnerListener);
 
-        saveButton.setEnabled(true);
-      }
-
-      @Override
-      public void onNothingSelected(AdapterView<?> adapterView) {
-
-      }
-    });
-
-    saveButton.setEnabled(false);
-    saveButton.setOnClickListener(new View.OnClickListener() {
+    mSaveButton.setEnabled(false);
+    mSaveButton.setOnClickListener(new View.OnClickListener() {
 
       @Override
       public void onClick(View view) {
         Log.d(TAG, "++mSaveButton::onClick(View");
 
-        // TODO: validate information on view before proceeding
-        // update settings for user
         try {
           Settings setting = new Settings();
+          setting.Id = mUserId;
           setting.Year = Integer.parseInt(mYearSpinner.getSelectedItem().toString());
-          setting.TeamShortName = mSelectedTeam.ShortName;
+          setting.TeamShortName = mTeamMappings.get(mTeamSpinner.getSelectedItem().toString());
           Map<String, Object> postValues = setting.toMap();
           Map<String, Object> childUpdates = new HashMap<>();
-          childUpdates.put("/settings/" + mUserId, postValues);
+          childUpdates.put("Settings/" + mUserId, postValues);
           FirebaseDatabase.getInstance().getReference().updateChildren(childUpdates);
 
           Intent intent = new Intent();
-          intent.putExtra(BaseActivity.ARG_TEAM_NAME, setting.TeamShortName);
-          intent.putExtra(BaseActivity.ARG_YEAR_SETTING, setting.Year);
+          intent.putExtra(BaseActivity.ARG_SETTINGS, setting);
           setResult(RESULT_OK, intent);
           finish();
         } catch (DatabaseException dex) {
@@ -152,52 +114,26 @@ public class SettingsActivity extends BaseActivity {
     });
   }
 
-  private void onGatheringTeamsComplete() {
+  private void validateForm() {
 
-    Log.d(TAG, "++onGatheringTeamsComplete(List<Team>)");
-    List<String> teamNames = new ArrayList<>();
-    for (Team team : mTeams) {
-      teamNames.add(team.FullName);
-    }
-
-    // get a list of teams for the object adapter used by the spinner controls
-    ArrayAdapter<String> adapter = new ArrayAdapter<>(
-      this,
-      android.R.layout.simple_list_item_1,
-      teamNames);
-
-    // specify the layout to use when the list of choices appears
-    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-    // apply the adapter to the spinner
-    mTeamSpinner.setAdapter(adapter);
-  }
-
-  private void teamSelected() {
-
-    // grab the years available for this team
-    List<String> availableYears = new ArrayList<>();
-    if (!mSelectedTeam.MatchSummaries.isEmpty()) {
-      mErrorMessageText.setText("");
-      for (Map.Entry<String, Map<String, Object>> matchSummary : mSelectedTeam.MatchSummaries.entrySet()) {
-        availableYears.add(matchSummary.getKey());
-      }
-
-      // get a list of teams for the object adapter used by the spinner controls
-      ArrayAdapter<String> adapter = new ArrayAdapter<>(
-        this,
-        android.R.layout.simple_list_item_1,
-        availableYears);
-
-      // specify the layout to use when the list of choices appears
-      adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-      // apply the adapter to the spinner
-      mYearSpinner.setAdapter(adapter);
-      mYearSpinner.setEnabled(true);
+    if (!mTeamSpinner.getSelectedItem().toString().isEmpty() && !mYearSpinner.getSelectedItem().toString().isEmpty()) {
+      mSaveButton.setEnabled(true);
     } else {
-      mErrorMessageText.setText(String.format(getString(R.string.err_no_results_for_team), mSelectedTeam.FullName));
-      mYearSpinner.setEnabled(false);
+      mSaveButton.setEnabled(false);
     }
   }
+
+  private final OnItemSelectedListener spinnerListener = new OnItemSelectedListener() {
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+      validateForm();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+  };
 }

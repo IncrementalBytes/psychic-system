@@ -38,10 +38,10 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     mDatabase = FirebaseDatabase.getInstance().getReference();
     mAuth = FirebaseAuth.getInstance();
 
-    mEmailEdit = findViewById(R.id.signin_edit_email);
-    mPasswordEdit = findViewById(R.id.signin_edit_password);
-    Button signInButton = findViewById(R.id.signin_button_sign_in);
-    Button signUpButton = findViewById(R.id.signin_button_sign_up);
+    mEmailEdit = findViewById(R.id.sign_in_edit_email);
+    mPasswordEdit = findViewById(R.id.sign_in_edit_password);
+    Button signInButton = findViewById(R.id.sign_in_button_sign_in);
+    Button signUpButton = findViewById(R.id.sign_in_button_sign_up);
 
     signInButton.setOnClickListener(this);
     signUpButton.setOnClickListener(this);
@@ -53,7 +53,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     Log.d(TAG, "++onStart()");
     if (mAuth.getCurrentUser() != null) {
-      onAuthSuccess(mAuth.getCurrentUser());
+      onAuthenticateSuccess(mAuth.getCurrentUser());
     }
   }
 
@@ -62,10 +62,10 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     Log.d(TAG, "++onClick()");
     switch (view.getId()) {
-      case R.id.signin_button_sign_in:
+      case R.id.sign_in_button_sign_in:
         signIn();
         break;
-      case R.id.signin_button_sign_up:
+      case R.id.sign_in_button_sign_up:
         signUp();
         break;
     }
@@ -89,7 +89,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             hideProgressDialog();
 
             if (task.isSuccessful()) {
-              onAuthSuccess(task.getResult().getUser());
+              onAuthenticateSuccess(task.getResult().getUser());
             } else {
               Toast.makeText(SignInActivity.this, "Sign In Failed", Toast.LENGTH_SHORT).show();
             }
@@ -115,7 +115,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             hideProgressDialog();
 
             if (task.isSuccessful()) {
-              onAuthSuccess(task.getResult().getUser());
+              onAuthenticateSuccess(task.getResult().getUser());
             } else {
               Toast.makeText(SignInActivity.this, "Sign Up Failed", Toast.LENGTH_SHORT).show();
             }
@@ -123,10 +123,11 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         });
   }
 
-  private void onAuthSuccess(FirebaseUser user) {
+  private void onAuthenticateSuccess(FirebaseUser user) {
 
     String username = usernameFromEmail(user.getEmail());
     writeNewUser(user.getUid(), username, user.getEmail());
+
     Intent intent = new Intent(SignInActivity.this, MatchListActivity.class);
     intent.putExtra(BaseActivity.ARG_USER, user.getUid());
     startActivity(intent);
@@ -161,6 +162,6 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
   private void writeNewUser(String userId, String name, String email) {
 
     User user = new User(name, email);
-    mDatabase.child("users").child(userId).setValue(user);
+    mDatabase.child("Users").child(userId).setValue(user);
   }
 }

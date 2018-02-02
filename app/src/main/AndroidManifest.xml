@@ -22,13 +22,7 @@
       </intent-filter>
     </activity>
     <activity android:name=".BaseActivity"/>
-    <activity android:name=".MatchCreationActivity"
-      android:parentActivityName=".MatchListActivity">
-      <meta-data
-        android:name="android.support.PARENT_ACTIVITY"
-        android:value=".MatchListActivity"/>
-    </activity>
-    <activity android:name=".MatchDetailActivity"
+    <activity android:name=".TrendActivity"
       android:parentActivityName=".MatchListActivity">
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"
@@ -39,12 +33,6 @@
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"
         android:value=".MatchListActivity"/>
-    </activity>
-    <activity android:name=".EventDetailActivity"
-      android:parentActivityName=".MatchDetailActivity">
-      <meta-data
-        android:name="android.support.PARENT_ACTIVITY"
-        android:value=".MatchDetailActivity"/>
     </activity>
   </application>
 

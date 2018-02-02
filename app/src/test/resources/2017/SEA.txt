@@ -1,302 +1,302 @@
-HOU,SEA,20170304,goal,HOU,20
-HOU,SEA,20170304,yellow,SEA,33,Chad Marshall
-HOU,SEA,20170304,goal,HOU,42
-HOU,SEA,20170304,goal,SEA,58,Clint Dempsey
-HOU,SEA,20170304,yellow,SEA,67,Román Torres
-HOU,SEA,20170304,sub,SEA,76,Álvaro Fernández,Will Bruin
-HOU,SEA,20170304,sub,SEA,85,Gustav Svensson,Henry Wingo
+Houston Dynamo,Seattle Sounders FC,20170304,goal,Houston Dynamo,20
+Houston Dynamo,Seattle Sounders FC,20170304,yellow,Seattle Sounders FC,33,Chad Marshall
+Houston Dynamo,Seattle Sounders FC,20170304,goal,Houston Dynamo,42
+Houston Dynamo,Seattle Sounders FC,20170304,goal,Seattle Sounders FC,58,Clint Dempsey
+Houston Dynamo,Seattle Sounders FC,20170304,yellow,Seattle Sounders FC,67,Román Torres
+Houston Dynamo,Seattle Sounders FC,20170304,sub,Seattle Sounders FC,76,Álvaro Fernández,Will Bruin
+Houston Dynamo,Seattle Sounders FC,20170304,sub,Seattle Sounders FC,85,Gustav Svensson,Henry Wingo
 
-MON,SEA,20170311,goal,MON,17
-MON,SEA,20170311,goal,MON,57
-MON,SEA,20170311,sub,SEA,59,Gustav Svensson,Oniel Fisher
-MON,SEA,20170311,goalpenalty,SEA,83,Nicolás Lodeiro
-MON,SEA,20170311,sub,SEA,72,Harry Ship,Henry Wingo
-MON,SEA,20170311,sub,SEA,85,Román Torres,Will Bruin
-MON,SEA,20170311,goal,SEA,94,Will Bruin,true,false
+Montreal Impact,Seattle Sounders FC,20170311,goal,Montreal Impact,17
+Montreal Impact,Seattle Sounders FC,20170311,goal,Montreal Impact,57
+Montreal Impact,Seattle Sounders FC,20170311,sub,Seattle Sounders FC,59,Gustav Svensson,Oniel Fisher
+Montreal Impact,Seattle Sounders FC,20170311,goalpenalty,Seattle Sounders FC,83,Nicolás Lodeiro
+Montreal Impact,Seattle Sounders FC,20170311,sub,Seattle Sounders FC,72,Harry Ship,Henry Wingo
+Montreal Impact,Seattle Sounders FC,20170311,sub,Seattle Sounders FC,85,Román Torres,Will Bruin
+Montreal Impact,Seattle Sounders FC,20170311,goal,Seattle Sounders FC,94,Will Bruin,true,false
 
-SEA,NY,20170319,goalpenalty,SEA,28,Clint Dempsey
-SEA,NY,20170319,goal,NY,57
-SEA,NY,20170319,sub,SEA,65,Oniel Fisher,Álvaro Fernández
-SEA,NY,20170319,assist,SEA,66,Nicolás Lodeiro
-SEA,NY,20170319,goal,SEA,66,Jordan Morris
-SEA,NY,20170319,yellow,SEA,78,Clint Dempsey
-SEA,NY,20170319,assist,SEA,79,Joevin Jones
-SEA,NY,20170319,goal,SEA,79,Harry Shipp
-SEA,NY,20170319,sub,SEA,81,Jordan Morris,Will Bruin
-SEA,NY,20170319,sub,SEA,91,Clint Dempsey,Henry Wingo,true,false
-SEA,NY,20170319,yellow,SEA,92,Álvaro Fernández,true,false
+Seattle Sounders FC,New York Red Bulls,20170319,goalpenalty,Seattle Sounders FC,28,Clint Dempsey
+Seattle Sounders FC,New York Red Bulls,20170319,goal,New York Red Bulls,57
+Seattle Sounders FC,New York Red Bulls,20170319,sub,Seattle Sounders FC,65,Oniel Fisher,Álvaro Fernández
+Seattle Sounders FC,New York Red Bulls,20170319,assist,Seattle Sounders FC,66,Nicolás Lodeiro
+Seattle Sounders FC,New York Red Bulls,20170319,goal,Seattle Sounders FC,66,Jordan Morris
+Seattle Sounders FC,New York Red Bulls,20170319,yellow,Seattle Sounders FC,78,Clint Dempsey
+Seattle Sounders FC,New York Red Bulls,20170319,assist,Seattle Sounders FC,79,Joevin Jones
+Seattle Sounders FC,New York Red Bulls,20170319,goal,Seattle Sounders FC,79,Harry Shipp
+Seattle Sounders FC,New York Red Bulls,20170319,sub,Seattle Sounders FC,81,Jordan Morris,Will Bruin
+Seattle Sounders FC,New York Red Bulls,20170319,sub,Seattle Sounders FC,91,Clint Dempsey,Henry Wingo,true,false
+Seattle Sounders FC,New York Red Bulls,20170319,yellow,Seattle Sounders FC,92,Álvaro Fernández,true,false
 
-SEA,ATL,20170331,sub,SEA,57,Álvaro Fernández,Clint Dempsey
-SEA,ATL,20170331,sub,SEA,80,Jordy Delem,Henry Wingo
-SEA,ATL,20170331,sub,SEA,91,Harry Ship,Will Bruin,true,false
+Seattle Sounders FC,Atlanta United FC,20170331,sub,Seattle Sounders FC,57,Álvaro Fernández,Clint Dempsey
+Seattle Sounders FC,Atlanta United FC,20170331,sub,Seattle Sounders FC,80,Jordy Delem,Henry Wingo
+Seattle Sounders FC,Atlanta United FC,20170331,sub,Seattle Sounders FC,91,Harry Ship,Will Bruin,true,false
 
-SJ,SEA,20170408,sub,SEA,15,Román Torres,Gustav Svensson
-SJ,SEA,20170408,yellow,SEA,46,Nicolás Lodeiro
-SJ,SEA,20170408,sub,SEA,70,Oniel Fisher,Álvaro Fernández
-SJ,SEA,20170408,goal,SEA,84,Nicolás Lodeiro
-SJ,SEA,20170408,sub,SEA,88,Clint Dempsey,Jordy Delem
-SJ,SEA,20170408,goal,SJ,90
+San Jose Earthquakes,Seattle Sounders FC,20170408,sub,Seattle Sounders FC,15,Román Torres,Gustav Svensson
+San Jose Earthquakes,Seattle Sounders FC,20170408,yellow,Seattle Sounders FC,46,Nicolás Lodeiro
+San Jose Earthquakes,Seattle Sounders FC,20170408,sub,Seattle Sounders FC,70,Oniel Fisher,Álvaro Fernández
+San Jose Earthquakes,Seattle Sounders FC,20170408,goal,Seattle Sounders FC,84,Nicolás Lodeiro
+San Jose Earthquakes,Seattle Sounders FC,20170408,sub,Seattle Sounders FC,88,Clint Dempsey,Jordy Delem
+San Jose Earthquakes,Seattle Sounders FC,20170408,goal,San Jose Earthquakes,90
 
-VAN,SEA,20170414,yellow,SEA,37,Nicolás Lodeiro
-VAN,SEA,20170414,yellow,SEA,44,Harry Shipp
-VAN,SEA,20170414,goal,VAN,65
-VAN,SEA,20170414,sub,SEA,68,Harry Shipp,Will Bruin
-VAN,SEA,20170414,sub,SEA,78,Oniel Fisher,Henry Wingo
-VAN,SEA,20170414,goal,VAN,80
-VAN,SEA,20170414,assist,SEA,89,Nicolás Lodeiro
-VAN,SEA,20170414,goal,SEA,89,Will Bruin
+Vancouver Whitecaps FC,Seattle Sounders FC,20170414,yellow,Seattle Sounders FC,37,Nicolás Lodeiro
+Vancouver Whitecaps FC,Seattle Sounders FC,20170414,yellow,Seattle Sounders FC,44,Harry Shipp
+Vancouver Whitecaps FC,Seattle Sounders FC,20170414,goal,Vancouver Whitecaps FC,65
+Vancouver Whitecaps FC,Seattle Sounders FC,20170414,sub,Seattle Sounders FC,68,Harry Shipp,Will Bruin
+Vancouver Whitecaps FC,Seattle Sounders FC,20170414,sub,Seattle Sounders FC,78,Oniel Fisher,Henry Wingo
+Vancouver Whitecaps FC,Seattle Sounders FC,20170414,goal,Vancouver Whitecaps FC,80
+Vancouver Whitecaps FC,Seattle Sounders FC,20170414,assist,Seattle Sounders FC,89,Nicolás Lodeiro
+Vancouver Whitecaps FC,Seattle Sounders FC,20170414,goal,Seattle Sounders FC,89,Will Bruin
 
-LA,SEA,20170423,yellow,SEA,28,Cristian Roldan
-LA,SEA,20170423,assist,SEA,29,Nicolás Lodeiro
-LA,SEA,20170423,goal,SEA,29,Clint Dempsey
-LA,SEA,20170423,owngoal,LA,35
-LA,SEA,20170423,assist,SEA,44,Clint Dempsey
-LA,SEA,20170423,goal,SEA,44,Jordan Morris
-LA,SEA,20170423,sub,SEA,68,Jordan Morris,Harry Shipp
-LA,SEA,20170423,yellow,SEA,84,Tony Alfaro
-LA,SEA,20170423,sub,SEA,85,Clint Dempsey,Henry Wingo
+LA Galaxy,Seattle Sounders FC,20170423,yellow,Seattle Sounders FC,28,Cristian Roldan
+LA Galaxy,Seattle Sounders FC,20170423,assist,Seattle Sounders FC,29,Nicolás Lodeiro
+LA Galaxy,Seattle Sounders FC,20170423,goal,Seattle Sounders FC,29,Clint Dempsey
+LA Galaxy,Seattle Sounders FC,20170423,owngoal,LA Galaxy,35
+LA Galaxy,Seattle Sounders FC,20170423,assist,Seattle Sounders FC,44,Clint Dempsey
+LA Galaxy,Seattle Sounders FC,20170423,goal,Seattle Sounders FC,44,Jordan Morris
+LA Galaxy,Seattle Sounders FC,20170423,sub,Seattle Sounders FC,68,Jordan Morris,Harry Shipp
+LA Galaxy,Seattle Sounders FC,20170423,yellow,Seattle Sounders FC,84,Tony Alfaro
+LA Galaxy,Seattle Sounders FC,20170423,sub,Seattle Sounders FC,85,Clint Dempsey,Henry Wingo
 
-SEA,NE,20170429,goal,NE,15
-SEA,NE,20170429,goal,NE,26
-SEA,NE,20170429,goal,NE,54
-SEA,NE,20170429,assist,SEA,75,Joevin Jones
-SEA,NE,20170429,goal,SEA,75,Nicolás Lodeiro
-SEA,NE,20170429,assist,SEA,85,Joevin Jones
-SEA,NE,20170429,goal,SEA,85,Will Bruin
-SEA,NE,20170429,assist,SEA,88,Gustav Svensson
-SEA,NE,20170429,goal,SEA,88,Osvaldo Alonso
+Seattle Sounders FC,New England Revolution,20170429,goal,New England Revolution,15
+Seattle Sounders FC,New England Revolution,20170429,goal,New England Revolution,26
+Seattle Sounders FC,New England Revolution,20170429,goal,New England Revolution,54
+Seattle Sounders FC,New England Revolution,20170429,assist,Seattle Sounders FC,75,Joevin Jones
+Seattle Sounders FC,New England Revolution,20170429,goal,Seattle Sounders FC,75,Nicolás Lodeiro
+Seattle Sounders FC,New England Revolution,20170429,assist,Seattle Sounders FC,85,Joevin Jones
+Seattle Sounders FC,New England Revolution,20170429,goal,Seattle Sounders FC,85,Will Bruin
+Seattle Sounders FC,New England Revolution,20170429,assist,Seattle Sounders FC,88,Gustav Svensson
+Seattle Sounders FC,New England Revolution,20170429,goal,Seattle Sounders FC,88,Osvaldo Alonso
 
-SEA,TFC,20170506,yellow,SEA,13,Jordy Delem
-SEA,TFC,20170506,goalpenalty,TFC,23
-SEA,TFC,20170506,yellow,SEA,46,Osvaldo Alonso
-SEA,TFC,20170506,sub,SEA,57,Jordy Delem,Harry Shipp
-SEA,TFC,20170506,sub,SEA,71,Jordan Morris,Álvaro Fernández
-SEA,TFC,20170506,sub,SEA,74,Román Torres,Tony Alfaro
+Seattle Sounders FC,Toronto FC,20170506,yellow,Seattle Sounders FC,13,Jordy Delem
+Seattle Sounders FC,Toronto FC,20170506,goalpenalty,Toronto FC,23
+Seattle Sounders FC,Toronto FC,20170506,yellow,Seattle Sounders FC,46,Osvaldo Alonso
+Seattle Sounders FC,Toronto FC,20170506,sub,Seattle Sounders FC,57,Jordy Delem,Harry Shipp
+Seattle Sounders FC,Toronto FC,20170506,sub,Seattle Sounders FC,71,Jordan Morris,Álvaro Fernández
+Seattle Sounders FC,Toronto FC,20170506,sub,Seattle Sounders FC,74,Román Torres,Tony Alfaro
 
-CHI,SEA,20170513,goalpenalty,CHI,25
-CHI,SEA,20170513,yellow,SEA,26,Stefan Frei
-CHI,SEA,20170513,assist,SEA,28,Cristian Roldan
-CHI,SEA,20170513,goal,SEA,28,Clint Dempsey
-CHI,SEA,20170513,goal,CHI,60
-CHI,SEA,20170513,sub,SEA,71,Harry Shipp,Will Bruin
-CHI,SEA,20170513,goal,CHI,73
-CHI,SEA,20170513,goal,CHI,76
-CHI,SEA,20170513,sub,SEA,77,Osvaldo Alonso,Álvaro Fernández
-CHI,SEA,20170513,sub,SEA,79,Clint Dempsey,Brad Evans
-CHI,SEA,20170513,yellow,SEA,87,Joevin Jones
-CHI,SEA,20170513,red,SEA,89,Joevin Jones
+Chicago Fire,Seattle Sounders FC,20170513,goalpenalty,Chicago Fire,25
+Chicago Fire,Seattle Sounders FC,20170513,yellow,Seattle Sounders FC,26,Stefan Frei
+Chicago Fire,Seattle Sounders FC,20170513,assist,Seattle Sounders FC,28,Cristian Roldan
+Chicago Fire,Seattle Sounders FC,20170513,goal,Seattle Sounders FC,28,Clint Dempsey
+Chicago Fire,Seattle Sounders FC,20170513,goal,Chicago Fire,60
+Chicago Fire,Seattle Sounders FC,20170513,sub,Seattle Sounders FC,71,Harry Shipp,Will Bruin
+Chicago Fire,Seattle Sounders FC,20170513,goal,Chicago Fire,73
+Chicago Fire,Seattle Sounders FC,20170513,goal,Chicago Fire,76
+Chicago Fire,Seattle Sounders FC,20170513,sub,Seattle Sounders FC,77,Osvaldo Alonso,Álvaro Fernández
+Chicago Fire,Seattle Sounders FC,20170513,sub,Seattle Sounders FC,79,Clint Dempsey,Brad Evans
+Chicago Fire,Seattle Sounders FC,20170513,yellow,Seattle Sounders FC,87,Joevin Jones
+Chicago Fire,Seattle Sounders FC,20170513,red,Seattle Sounders FC,89,Joevin Jones
 
-SKC,SEA,20170517,yellow,SEA,3,Jordy Delem
-SKC,SEA,20170517,goal,SKC,56
-SKC,SEA,20170517,goal,SKC,58
-SKC,SEA,20170517,goal,SKC,69
-SKC,SEA,20170517,sub,SEA,72,Gustav Svensson,Harry Shipp
-SKC,SEA,20170517,sub,SEA,77,Jordan Morris,Seyi Adekoya
-SKC,SEA,20170517,sub,SEA,78,Oniel Fisher,Brad Evans
-SKC,SEA,20170517,yellow,SEA,85,Tony Alfaro
+Sporting Kansas City,Seattle Sounders FC,20170517,yellow,Seattle Sounders FC,3,Jordy Delem
+Sporting Kansas City,Seattle Sounders FC,20170517,goal,Sporting Kansas City,56
+Sporting Kansas City,Seattle Sounders FC,20170517,goal,Sporting Kansas City,58
+Sporting Kansas City,Seattle Sounders FC,20170517,goal,Sporting Kansas City,69
+Sporting Kansas City,Seattle Sounders FC,20170517,sub,Seattle Sounders FC,72,Gustav Svensson,Harry Shipp
+Sporting Kansas City,Seattle Sounders FC,20170517,sub,Seattle Sounders FC,77,Jordan Morris,Seyi Adekoya
+Sporting Kansas City,Seattle Sounders FC,20170517,sub,Seattle Sounders FC,78,Oniel Fisher,Brad Evans
+Sporting Kansas City,Seattle Sounders FC,20170517,yellow,Seattle Sounders FC,85,Tony Alfaro
 
-SEA,RSL,20170520,assist,SEA,42,Gustav Svensson
-SEA,RSL,20170520,goal,SEA,42,Harry Shipp
-SEA,RSL,20170520,sub,SEA,63,Harry Shipp,Álvaro Fernández
-SEA,RSL,20170520,sub,SEA,68,Brad Evans,Jordy Delem
-SEA,RSL,20170520,sub,SEA,81,Clint Dempsey,Will Bruin
+Seattle Sounders FC,Real Salt Lake,20170520,assist,Seattle Sounders FC,42,Gustav Svensson
+Seattle Sounders FC,Real Salt Lake,20170520,goal,Seattle Sounders FC,42,Harry Shipp
+Seattle Sounders FC,Real Salt Lake,20170520,sub,Seattle Sounders FC,63,Harry Shipp,Álvaro Fernández
+Seattle Sounders FC,Real Salt Lake,20170520,sub,Seattle Sounders FC,68,Brad Evans,Jordy Delem
+Seattle Sounders FC,Real Salt Lake,20170520,sub,Seattle Sounders FC,81,Clint Dempsey,Will Bruin
 
-SEA,POR,20170527,assist,SEA,4,Chad Marshall
-SEA,POR,20170527,goal,SEA,4,Cristian Roldan
-SEA,POR,20170527,yellow,SEA,41,Stefan Frei
-SEA,POR,20170527,sub,SEA,80,Harry Shipp,Jordy Delem
-SEA,POR,20170527,sub,SEA,91,Jordan Morris,Oniel Fisher,true,false
+Seattle Sounders FC,Portland Timbers,20170527,assist,Seattle Sounders FC,4,Chad Marshall
+Seattle Sounders FC,Portland Timbers,20170527,goal,Seattle Sounders FC,4,Cristian Roldan
+Seattle Sounders FC,Portland Timbers,20170527,yellow,Seattle Sounders FC,41,Stefan Frei
+Seattle Sounders FC,Portland Timbers,20170527,sub,Seattle Sounders FC,80,Harry Shipp,Jordy Delem
+Seattle Sounders FC,Portland Timbers,20170527,sub,Seattle Sounders FC,91,Jordan Morris,Oniel Fisher,true,false
 
-CLB,SEA,20170531,yellow,SEA,3,Seyi Adekoya
-CLB,SEA,20170531,goal,CLB,10
-CLB,SEA,20170531,goal,CLB,21
-CLB,SEA,20170531,goal,CLB,59
-CLB,SEA,20170531,sub,SEA,64,Oniel Fisher,Nouhou Tolo
-CLB,SEA,20170531,sub,SEA,64,Seyi Adekoya,Brad Evans
-CLB,SEA,20170531,sub,SEA,74,Joevin Jones,Román Torres
+Columbus Crew SC,Seattle Sounders FC,20170531,yellow,Seattle Sounders FC,3,Seyi Adekoya
+Columbus Crew SC,Seattle Sounders FC,20170531,goal,Columbus Crew SC,10
+Columbus Crew SC,Seattle Sounders FC,20170531,goal,Columbus Crew SC,21
+Columbus Crew SC,Seattle Sounders FC,20170531,goal,Columbus Crew SC,59
+Columbus Crew SC,Seattle Sounders FC,20170531,sub,Seattle Sounders FC,64,Oniel Fisher,Nouhou Tolo
+Columbus Crew SC,Seattle Sounders FC,20170531,sub,Seattle Sounders FC,64,Seyi Adekoya,Brad Evans
+Columbus Crew SC,Seattle Sounders FC,20170531,sub,Seattle Sounders FC,74,Joevin Jones,Román Torres
 
-SEA,HOU,20170604,sub,SEA,54,Brad Evans,Aaron Kovar
-SEA,HOU,20170604,assist,SEA,69,Cristian Roldan
-SEA,HOU,20170604,goal,SEA,69,Will Bruin
-SEA,HOU,20170604,sub,SEA,75,Álvaro Fernández,Nouhou Tolo
-SEA,HOU,20170604,sub,SEA,88,Will Bruin,Jordy Delem
+Seattle Sounders FC,Houston Dynamo,20170604,sub,Seattle Sounders FC,54,Brad Evans,Aaron Kovar
+Seattle Sounders FC,Houston Dynamo,20170604,assist,Seattle Sounders FC,69,Cristian Roldan
+Seattle Sounders FC,Houston Dynamo,20170604,goal,Seattle Sounders FC,69,Will Bruin
+Seattle Sounders FC,Houston Dynamo,20170604,sub,Seattle Sounders FC,75,Álvaro Fernández,Nouhou Tolo
+Seattle Sounders FC,Houston Dynamo,20170604,sub,Seattle Sounders FC,88,Will Bruin,Jordy Delem
 
-NYC,SEA,20170617,yellow,SEA,28,Gustav Svensson
-NYC,SEA,20170617,yellow,SEA,29,Cristian Roldan
-NYC,SEA,20170617,goal,SEA,40,Cristian Roldan
-NYC,SEA,20170617,yellow,SEA,48,Osvaldo Alonso
-NYC,SEA,20170617,yellow,SEA,52,Chad Marshall
-NYC,SEA,20170617,goalpenalty,NYC,52
-NYC,SEA,20170617,goal,NYC,77
-NYC,SEA,20170617,sub,SEA,67,Harry Shipp,Will Bruin
-NYC,SEA,20170617,sub,SEA,81,Joevin Jones,Nouhou Tolo
-NYC,SEA,20170617,sub,SEA,82,Oniel Fisher,Henry Wingo
+New York City FC,Seattle Sounders FC,20170617,yellow,Seattle Sounders FC,28,Gustav Svensson
+New York City FC,Seattle Sounders FC,20170617,yellow,Seattle Sounders FC,29,Cristian Roldan
+New York City FC,Seattle Sounders FC,20170617,goal,Seattle Sounders FC,40,Cristian Roldan
+New York City FC,Seattle Sounders FC,20170617,yellow,Seattle Sounders FC,48,Osvaldo Alonso
+New York City FC,Seattle Sounders FC,20170617,yellow,Seattle Sounders FC,52,Chad Marshall
+New York City FC,Seattle Sounders FC,20170617,goalpenalty,New York City FC,52
+New York City FC,Seattle Sounders FC,20170617,goal,New York City FC,77
+New York City FC,Seattle Sounders FC,20170617,sub,Seattle Sounders FC,67,Harry Shipp,Will Bruin
+New York City FC,Seattle Sounders FC,20170617,sub,Seattle Sounders FC,81,Joevin Jones,Nouhou Tolo
+New York City FC,Seattle Sounders FC,20170617,sub,Seattle Sounders FC,82,Oniel Fisher,Henry Wingo
 
-SEA,ORL,20170621,goal,SEA,19,Will Bruin
-SEA,ORL,20170621,yellow,SEA,75,Clint Dempsey
-SEA,ORL,20170621,sub,SEA,76,Will Bruin,Joevin Jones
-SEA,ORL,20170621,sub,SEA,87,Jordan Morris,Henry Wingo
-SEA,ORL,20170621,sub,SEA,91,Clint Dempsey,Tony Alfaro,true,false
-SEA,ORL,20170621,yellow,SEA,93,Román Torres,true,false
-SEA,ORL,20170621,goal,ORL,94,true,false
+Seattle Sounders FC,Orlando City SC,20170621,goal,Seattle Sounders FC,19,Will Bruin
+Seattle Sounders FC,Orlando City SC,20170621,yellow,Seattle Sounders FC,75,Clint Dempsey
+Seattle Sounders FC,Orlando City SC,20170621,sub,Seattle Sounders FC,76,Will Bruin,Joevin Jones
+Seattle Sounders FC,Orlando City SC,20170621,sub,Seattle Sounders FC,87,Jordan Morris,Henry Wingo
+Seattle Sounders FC,Orlando City SC,20170621,sub,Seattle Sounders FC,91,Clint Dempsey,Tony Alfaro,true,false
+Seattle Sounders FC,Orlando City SC,20170621,yellow,Seattle Sounders FC,93,Román Torres,true,false
+Seattle Sounders FC,Orlando City SC,20170621,goal,Orlando City SC,94,true,false
 
-POR,SEA,20170625,goal,SEA,27,Joevin Jones
-POR,SEA,20170625,red,SEA,44,Brad Evans
-POR,SEA,20170625,goalpenalty,POR,45
-POR,SEA,20170625,goal,POR,49,false,false,true,false
-POR,SEA,20170625,sub,SEA,56,Jordan Morris,Clint Dempsey
-POR,SEA,20170625,sub,SEA,57,Joevin Jones,Nouhou Tolo
-POR,SEA,20170625,sub,SEA,87,Will Bruin,Aaron Kovar
-POR,SEA,20170625,assist,SEA,94,Román Torres,true,false
-POR,SEA,20170625,goal,SEA,94,Clint Dempsey,true,false
+Portland Timbers,Seattle Sounders FC,20170625,goal,Seattle Sounders FC,27,Joevin Jones
+Portland Timbers,Seattle Sounders FC,20170625,red,Seattle Sounders FC,44,Brad Evans
+Portland Timbers,Seattle Sounders FC,20170625,goalpenalty,Portland Timbers,45
+Portland Timbers,Seattle Sounders FC,20170625,goal,Portland Timbers,49,false,false,true,false
+Portland Timbers,Seattle Sounders FC,20170625,sub,Seattle Sounders FC,56,Jordan Morris,Clint Dempsey
+Portland Timbers,Seattle Sounders FC,20170625,sub,Seattle Sounders FC,57,Joevin Jones,Nouhou Tolo
+Portland Timbers,Seattle Sounders FC,20170625,sub,Seattle Sounders FC,87,Will Bruin,Aaron Kovar
+Portland Timbers,Seattle Sounders FC,20170625,assist,Seattle Sounders FC,94,Román Torres,true,false
+Portland Timbers,Seattle Sounders FC,20170625,goal,Seattle Sounders FC,94,Clint Dempsey,true,false
 
-COL,SEA,20170704,assist,SEA,6,Joevin Jones
-COL,SEA,20170704,goal,SEA,6,Clint Dempsey
-COL,SEA,20170704,sub,SEA,17,Osvaldo Alonso,Aaron Kovar
-COL,SEA,20170704,sub,SEA,22,Chad Marshall,Tony Alfaro
-COL,SEA,20170704,assist,SEA,30,Clint Dempsey
-COL,SEA,20170704,goal,SEA,30,Will Bruin
-COL,SEA,20170704,goal,COL,78
-COL,SEA,20170704,sub,SEA,84,Aaron Kovar,Harry Shipp
-COL,SEA,20170704,assist,SEA,85,Will Bruin
-COL,SEA,20170704,goal,SEA,85,Clint Dempsey
+Colorado Rapids,Seattle Sounders FC,20170704,assist,Seattle Sounders FC,6,Joevin Jones
+Colorado Rapids,Seattle Sounders FC,20170704,goal,Seattle Sounders FC,6,Clint Dempsey
+Colorado Rapids,Seattle Sounders FC,20170704,sub,Seattle Sounders FC,17,Osvaldo Alonso,Aaron Kovar
+Colorado Rapids,Seattle Sounders FC,20170704,sub,Seattle Sounders FC,22,Chad Marshall,Tony Alfaro
+Colorado Rapids,Seattle Sounders FC,20170704,assist,Seattle Sounders FC,30,Clint Dempsey
+Colorado Rapids,Seattle Sounders FC,20170704,goal,Seattle Sounders FC,30,Will Bruin
+Colorado Rapids,Seattle Sounders FC,20170704,goal,Colorado Rapids,78
+Colorado Rapids,Seattle Sounders FC,20170704,sub,Seattle Sounders FC,84,Aaron Kovar,Harry Shipp
+Colorado Rapids,Seattle Sounders FC,20170704,assist,Seattle Sounders FC,85,Will Bruin
+Colorado Rapids,Seattle Sounders FC,20170704,goal,Seattle Sounders FC,85,Clint Dempsey
 
-SEA,DC,20170719,goal,DC,8
-SEA,DC,20170719,goal,DC,27
-SEA,DC,20170719,goal,DC,50
-SEA,DC,20170719,assist,SEA,51,Joevin Jones
-SEA,DC,20170719,goal,SEA,51,Will Bruin
-SEA,DC,20170719,sub,SEA,54,Harry Shipp,Nouhou Tolo
-SEA,DC,20170719,sub,SEA,54,Aaron Kovar,Kelvin Leerdam
-SEA,DC,20170719,assist,SEA,62,Joevin Jones
-SEA,DC,20170719,goal,SEA,62,Brad Evans
-SEA,DC,20170719,sub,SEA,70,Brad Evans,Jordy Delem
-SEA,DC,20170719,assist,SEA,74,Nicolás Lodeiro
-SEA,DC,20170719,goal,SEA,74,Gustav Svensson
-SEA,DC,20170719,assist,SEA,78,Will Bruin
-SEA,DC,20170719,goal,SEA,78,Cristian Roldan
-SEA,DC,20170719,red,SEA,89,Nicolás Lodeiro
+Seattle Sounders FC,D.C. United,20170719,goal,D.C. United,8
+Seattle Sounders FC,D.C. United,20170719,goal,D.C. United,27
+Seattle Sounders FC,D.C. United,20170719,goal,D.C. United,50
+Seattle Sounders FC,D.C. United,20170719,assist,Seattle Sounders FC,51,Joevin Jones
+Seattle Sounders FC,D.C. United,20170719,goal,Seattle Sounders FC,51,Will Bruin
+Seattle Sounders FC,D.C. United,20170719,sub,Seattle Sounders FC,54,Harry Shipp,Nouhou Tolo
+Seattle Sounders FC,D.C. United,20170719,sub,Seattle Sounders FC,54,Aaron Kovar,Kelvin Leerdam
+Seattle Sounders FC,D.C. United,20170719,assist,Seattle Sounders FC,62,Joevin Jones
+Seattle Sounders FC,D.C. United,20170719,goal,Seattle Sounders FC,62,Brad Evans
+Seattle Sounders FC,D.C. United,20170719,sub,Seattle Sounders FC,70,Brad Evans,Jordy Delem
+Seattle Sounders FC,D.C. United,20170719,assist,Seattle Sounders FC,74,Nicolás Lodeiro
+Seattle Sounders FC,D.C. United,20170719,goal,Seattle Sounders FC,74,Gustav Svensson
+Seattle Sounders FC,D.C. United,20170719,assist,Seattle Sounders FC,78,Will Bruin
+Seattle Sounders FC,D.C. United,20170719,goal,Seattle Sounders FC,78,Cristian Roldan
+Seattle Sounders FC,D.C. United,20170719,red,Seattle Sounders FC,89,Nicolás Lodeiro
 
-SEA,SJ,20170723,assist,SEA,54,Gustav Svensson
-SEA,SJ,20170723,goal,SEA,54,Cristian Roldan
-SEA,SJ,20170723,goal,SEA,56,Cristian Roldan
-SEA,SJ,20170723,goal,SEA,65,Kelvin Leerdam
-SEA,SJ,20170723,sub,SEA,71,Brad Evans,Aaron Kovar
-SEA,SJ,20170723,sub,SEA,84,Kelvin Leerdam,Harry Shipp
-SEA,SJ,20170723,sub,SEA,86,Joevin Jones,Tony Alfaro
+Seattle Sounders FC,San Jose Earthquakes,20170723,assist,Seattle Sounders FC,54,Gustav Svensson
+Seattle Sounders FC,San Jose Earthquakes,20170723,goal,Seattle Sounders FC,54,Cristian Roldan
+Seattle Sounders FC,San Jose Earthquakes,20170723,goal,Seattle Sounders FC,56,Cristian Roldan
+Seattle Sounders FC,San Jose Earthquakes,20170723,goal,Seattle Sounders FC,65,Kelvin Leerdam
+Seattle Sounders FC,San Jose Earthquakes,20170723,sub,Seattle Sounders FC,71,Brad Evans,Aaron Kovar
+Seattle Sounders FC,San Jose Earthquakes,20170723,sub,Seattle Sounders FC,84,Kelvin Leerdam,Harry Shipp
+Seattle Sounders FC,San Jose Earthquakes,20170723,sub,Seattle Sounders FC,86,Joevin Jones,Tony Alfaro
 
-LA,SEA,20170729,sub,SEA,66,Nouhou Tolo,Jordan Morris
-LA,SEA,20170729,sub,SEA,80,Will Bruin,Brad Evans
-LA,SEA,20170729,yellow,SEA,83,Joevin Jones
-LA,SEA,20170729,red,LA,86
+LA Galaxy,Seattle Sounders FC,20170729,sub,Seattle Sounders FC,66,Nouhou Tolo,Jordan Morris
+LA Galaxy,Seattle Sounders FC,20170729,sub,Seattle Sounders FC,80,Will Bruin,Brad Evans
+LA Galaxy,Seattle Sounders FC,20170729,yellow,Seattle Sounders FC,83,Joevin Jones
+#LA Galaxy,Seattle Sounders FC,20170729,red,LA Galaxy,86
 
-MIN,SEA,20170805,assist,SEA,9,Clint Dempsey
-MIN,SEA,20170805,goal,SEA,9,Will Bruin
-MIN,SEA,20170805,assist,SEA,18,Chad Marshall
-MIN,SEA,20170805,goal,SEA,18,Clint Dempsey
-MIN,SEA,20170805,sub,SEA,64,Will Bruin,Brad Evans
-MIN,SEA,20170805,yellow,SEA,68,Joevin Jones
-MIN,SEA,20170805,assist,SEA,71,Nicolás Lodeiro
-MIN,SEA,20170805,goal,SEA,71,Jordan Morris
-MIN,SEA,20170805,assist,SEA,73,Joevin Jones
-MIN,SEA,20170805,goal,SEA,73,Clint Dempsey
-MIN,SEA,20170805,sub,SEA,75,Román Torres,Tony Alfaro
-MIN,SEA,20170805,sub,SEA,76,Jordan Morris,Aaron Kovar
+Minnesota United FC,Seattle Sounders FC,20170805,assist,Seattle Sounders FC,9,Clint Dempsey
+Minnesota United FC,Seattle Sounders FC,20170805,goal,Seattle Sounders FC,9,Will Bruin
+Minnesota United FC,Seattle Sounders FC,20170805,assist,Seattle Sounders FC,18,Chad Marshall
+Minnesota United FC,Seattle Sounders FC,20170805,goal,Seattle Sounders FC,18,Clint Dempsey
+Minnesota United FC,Seattle Sounders FC,20170805,sub,Seattle Sounders FC,64,Will Bruin,Brad Evans
+Minnesota United FC,Seattle Sounders FC,20170805,yellow,Seattle Sounders FC,68,Joevin Jones
+Minnesota United FC,Seattle Sounders FC,20170805,assist,Seattle Sounders FC,71,Nicolás Lodeiro
+Minnesota United FC,Seattle Sounders FC,20170805,goal,Seattle Sounders FC,71,Jordan Morris
+Minnesota United FC,Seattle Sounders FC,20170805,assist,Seattle Sounders FC,73,Joevin Jones
+Minnesota United FC,Seattle Sounders FC,20170805,goal,Seattle Sounders FC,73,Clint Dempsey
+Minnesota United FC,Seattle Sounders FC,20170805,sub,Seattle Sounders FC,75,Román Torres,Tony Alfaro
+Minnesota United FC,Seattle Sounders FC,20170805,sub,Seattle Sounders FC,76,Jordan Morris,Aaron Kovar
 
-SEA,SKC,20170812,assist,SEA,36,Jordan Morris
-SEA,SKC,20170812,goal,SEA,36,Clint Dempsey
-SEA,SKC,20170812,yellow,SEA,46,Nicolás Lodeiro,true,false
-SEA,SKC,20170812,sub,SEA,59,Will Bruin,Osvaldo Alonso
-SEA,SKC,20170812,yellow,SEA,66,Román Torres
-SEA,SKC,20170812,sub,SEA,87,Clint Dempsey,Nouhou Tolo
-SEA,SKC,20170812,sub,SEA,91,Jordan Morris,Lamar Neagle,true,false
+Seattle Sounders FC,Sporting Kansas City,20170812,assist,Seattle Sounders FC,36,Jordan Morris
+Seattle Sounders FC,Sporting Kansas City,20170812,goal,Seattle Sounders FC,36,Clint Dempsey
+Seattle Sounders FC,Sporting Kansas City,20170812,yellow,Seattle Sounders FC,46,Nicolás Lodeiro,true,false
+Seattle Sounders FC,Sporting Kansas City,20170812,sub,Seattle Sounders FC,59,Will Bruin,Osvaldo Alonso
+Seattle Sounders FC,Sporting Kansas City,20170812,yellow,Seattle Sounders FC,66,Román Torres
+Seattle Sounders FC,Sporting Kansas City,20170812,sub,Seattle Sounders FC,87,Clint Dempsey,Nouhou Tolo
+Seattle Sounders FC,Sporting Kansas City,20170812,sub,Seattle Sounders FC,91,Jordan Morris,Lamar Neagle,true,false
 
-SEA,MIN,20170820,goal,MIN,21
-SEA,MIN,20170820,assist,SEA,31,Nicolás Lodeiro
-SEA,MIN,20170820,goal,SEA,31,Chad Marshall
-SEA,MIN,20170820,sub,SEA,65,Gustav Svensson,Will Bruin
-SEA,MIN,20170820,sub,SEA,83,Jordan Morris,Nouhou Tolo
-SEA,MIN,20170820,goalpenalty,SEA,94,Clint Dempsey,true,false
+Seattle Sounders FC,Minnesota United FC,20170820,goal,Minnesota United FC,21
+Seattle Sounders FC,Minnesota United FC,20170820,assist,Seattle Sounders FC,31,Nicolás Lodeiro
+Seattle Sounders FC,Minnesota United FC,20170820,goal,Seattle Sounders FC,31,Chad Marshall
+Seattle Sounders FC,Minnesota United FC,20170820,sub,Seattle Sounders FC,65,Gustav Svensson,Will Bruin
+Seattle Sounders FC,Minnesota United FC,20170820,sub,Seattle Sounders FC,83,Jordan Morris,Nouhou Tolo
+Seattle Sounders FC,Minnesota United FC,20170820,goalpenalty,Seattle Sounders FC,94,Clint Dempsey,true,false
 
-VAN,SEA,20170823,goalpenalty,SEA,19,Nicolás Lodeiro
-VAN,SEA,20170823,yellow,SEA,31,Nouhou Tolo
-VAN,SEA,20170823,yellow,SEA,45,Tony Alfaro
-#VAN,SEA,20170823,secondyellow,current.getHomeId(),60,Tony Tchani
-VAN,SEA,20170823,goal,VAN,64
-VAN,SEA,20170823,sub,SEA,68,Jordan Morris,Clint Dempsey
-VAN,SEA,20170823,sub,SEA,76,Tony Alfaro,Osvaldo Alonso
-VAN,SEA,20170823,sub,SEA,84,Nouhou Tolo,Aaron Kovar
+Vancouver Whitecaps FC,Seattle Sounders FC,20170823,goalpenalty,Seattle Sounders FC,19,Nicolás Lodeiro
+Vancouver Whitecaps FC,Seattle Sounders FC,20170823,yellow,Seattle Sounders FC,31,Nouhou Tolo
+Vancouver Whitecaps FC,Seattle Sounders FC,20170823,yellow,Seattle Sounders FC,45,Tony Alfaro
+#Vancouver Whitecaps FC,Seattle Sounders FC,20170823,secondyellow,current.getHomeId(),60,ToNew York Red Bulls Tchani
+Vancouver Whitecaps FC,Seattle Sounders FC,20170823,goal,Vancouver Whitecaps FC,64
+Vancouver Whitecaps FC,Seattle Sounders FC,20170823,sub,Seattle Sounders FC,68,Jordan Morris,Clint Dempsey
+Vancouver Whitecaps FC,Seattle Sounders FC,20170823,sub,Seattle Sounders FC,76,Tony Alfaro,Osvaldo Alonso
+Vancouver Whitecaps FC,Seattle Sounders FC,20170823,sub,Seattle Sounders FC,84,Nouhou Tolo,Aaron Kovar
 
-SEA,POR,20170827,goal,SEA,18,Cristian Roldan
-SEA,POR,20170827,goalpenalty,POR,47,true,false
-SEA,POR,20170827,sub,SEA,61,Will Bruin,Víctor Rodríguez
-SEA,POR,20170827,sub,SEA,83,Jordan Morris,Lamar Neagle
-SEA,POR,20170827,red,SEA,93,Nouhou Tolo,true,false
+Seattle Sounders FC,Portland Timbers,20170827,goal,Seattle Sounders FC,18,Cristian Roldan
+Seattle Sounders FC,Portland Timbers,20170827,goalpenalty,Portland Timbers,47,true,false
+Seattle Sounders FC,Portland Timbers,20170827,sub,Seattle Sounders FC,61,Will Bruin,Víctor Rodríguez
+Seattle Sounders FC,Portland Timbers,20170827,sub,Seattle Sounders FC,83,Jordan Morris,Lamar Neagle
+Seattle Sounders FC,Portland Timbers,20170827,red,Seattle Sounders FC,93,Nouhou Tolo,true,false
 
-SEA,LA,20170910,goal,LA,25
-SEA,LA,20170910,sub,SEA,61,Jordan Morris,Will Bruin
-SEA,LA,20170910,yellow,SEA,73,Oniel Fisher
-SEA,LA,20170910,sub,SEA,74,Oniel Fischer,Gustav Svensson
-SEA,LA,20170910,yellow,SEA,75,Osvaldo Alonsa
-SEA,LA,20170910,sub,SEA,83,Víctor Rodríguez,Lamar Neagle
-SEA,LA,20170910,assist,SEA,85,Román Torres
-SEA,LA,20170910,goal,SEA,85,Lamar Neagle
-SEA,LA,20170910,red,SEA,89,Román Torres
+Seattle Sounders FC,LA Galaxy,20170910,goal,LA Galaxy,25
+Seattle Sounders FC,LA Galaxy,20170910,sub,Seattle Sounders FC,61,Jordan Morris,Will Bruin
+Seattle Sounders FC,LA Galaxy,20170910,yellow,Seattle Sounders FC,73,Oniel Fisher
+Seattle Sounders FC,LA Galaxy,20170910,sub,Seattle Sounders FC,74,Oniel Fischer,Gustav Svensson
+Seattle Sounders FC,LA Galaxy,20170910,yellow,Seattle Sounders FC,75,Osvaldo Alonso
+Seattle Sounders FC,LA Galaxy,20170910,sub,Seattle Sounders FC,83,Víctor Rodríguez,Lamar Neagle
+Seattle Sounders FC,LA Galaxy,20170910,assist,Seattle Sounders FC,85,Román Torres
+Seattle Sounders FC,LA Galaxy,20170910,goal,Seattle Sounders FC,85,LA Galaxymar Neagle
+Seattle Sounders FC,LA Galaxy,20170910,red,Seattle Sounders FC,89,Román Torres
 
-DAL,SEA,20170916,yellow,SEA,60,Clint Dempsey
-DAL,SEA,20170916,sub,SEA,64,Joevin Jones,Víctor Rodríguez
-DAL,SEA,20170916,yellow,SEA,68,Kelvin Leerdam
-DAL,SEA,20170916,sub,SEA,82,Will Bruin,Lamar Neagle
-DAL,SEA,20170916,yellow,SEA,89,Nicolás Lodeiro
-DAL,SEA,20170916,yellow,SEA,94,Víctor Rodríguez,true,false
+FC Dallas,Seattle Sounders FC,20170916,yellow,Seattle Sounders FC,60,Clint Dempsey
+FC Dallas,Seattle Sounders FC,20170916,sub,Seattle Sounders FC,64,Joevin Jones,Víctor Rodríguez
+FC Dallas,Seattle Sounders FC,20170916,yellow,Seattle Sounders FC,68,Kelvin Leerdam
+FC Dallas,Seattle Sounders FC,20170916,sub,Seattle Sounders FC,82,Will Bruin,Lamar Neagle
+FC Dallas,Seattle Sounders FC,20170916,yellow,Seattle Sounders FC,89,Nicolás Lodeiro
+FC Dallas,Seattle Sounders FC,20170916,yellow,Seattle Sounders FC,94,Víctor Rodríguez,true,false
 
-RSL,SEA,20170923,goal,RSL,52
-RSL,SEA,20170923,yellow,SEA,57,Kelvin Leerdam
-RSL,SEA,20170923,sub,SEA,61,Nouhou Tolo,Joevin Jones
-RSL,SEA,20170923,goal,RSL,66
-RSL,SEA,20170923,sub,SEA,72,Will Bruin,Lamar Neagle
-RSL,SEA,20170923,sub,SEA,86,Nicolás Lodeiro,Chad Marshall
-RSL,SEA,20170923,yellow,SEA,96,Lamar Negle,true,false
+Real Salt Lake,Seattle Sounders FC,20170923,goal,Real Salt Lake,52
+Real Salt Lake,Seattle Sounders FC,20170923,yellow,Seattle Sounders FC,57,Kelvin Leerdam
+Real Salt Lake,Seattle Sounders FC,20170923,sub,Seattle Sounders FC,61,Nouhou Tolo,Joevin Jones
+Real Salt Lake,Seattle Sounders FC,20170923,goal,Real Salt Lake,66
+Real Salt Lake,Seattle Sounders FC,20170923,sub,Seattle Sounders FC,72,Will Bruin,Lamar Neagle
+Real Salt Lake,Seattle Sounders FC,20170923,sub,Seattle Sounders FC,86,Nicolás Lodeiro,Chad Marshall
+Real Salt Lake,Seattle Sounders FC,20170923,yellow,Seattle Sounders FC,96,Lamar Neagle,true,false
 
-SEA,VAN,20170927,assist,SEA,17,Nicolás Lodeiro
-SEA,VAN,20170927,goal,SEA,17,Víctor Rodríguez
-SEA,VAN,20170927,yellow,SEA,35,Ovsaldo Alonso
-SEA,VAN,20170927,sub,SEA,45,Ovsaldo Alonso,Nouhou Tolo
-SEA,VAN,20170927,assist,SEA,62,Joevin Jones
-SEA,VAN,20170927,goal,SEA,62,Nicolás Lodeiro
-SEA,VAN,20170927,assist,SEA,69,Nicolás Lodeiro
-SEA,VAN,20170927,goal,SEA,69,Clint Dempsey
-SEA,VAN,20170927,sub,SEA,76,Joevin Jones,Will Bruin
-SEA,VAN,20170927,sub,SEA,79,Román Torres,Tony Alfaro
-#SEA,VAN,20170927,red,SEA,90,Tony Tchani,true,false
+Seattle Sounders FC,Vancouver Whitecaps FC,20170927,assist,Seattle Sounders FC,17,Nicolás Lodeiro
+Seattle Sounders FC,Vancouver Whitecaps FC,20170927,goal,Seattle Sounders FC,17,Víctor Rodríguez
+Seattle Sounders FC,Vancouver Whitecaps FC,20170927,yellow,Seattle Sounders FC,35,Ovsaldo Alonso
+Seattle Sounders FC,Vancouver Whitecaps FC,20170927,sub,Seattle Sounders FC,45,Ovsaldo Alonso,Nouhou Tolo
+Seattle Sounders FC,Vancouver Whitecaps FC,20170927,assist,Seattle Sounders FC,62,Joevin Jones
+Seattle Sounders FC,Vancouver Whitecaps FC,20170927,goal,Seattle Sounders FC,62,Nicolás Lodeiro
+Seattle Sounders FC,Vancouver Whitecaps FC,20170927,assist,Seattle Sounders FC,69,Nicolás Lodeiro
+Seattle Sounders FC,Vancouver Whitecaps FC,20170927,goal,Seattle Sounders FC,69,Clint Dempsey
+Seattle Sounders FC,Vancouver Whitecaps FC,20170927,sub,Seattle Sounders FC,76,Joevin Jones,Will Bruin
+Seattle Sounders FC,Vancouver Whitecaps FC,20170927,sub,Seattle Sounders FC,79,Román Torres,Tony Alfaro
+#Seattle Sounders FC,Vancouver Whitecaps FC,20170927,red,Seattle Sounders FC,90,Tony Tchani,true,false
 
-PHI,SEA,20171001,yellow,SEA,11,Jordy Delem
-PHI,SEA,20171001,goal,PHI,28
-PHI,SEA,20171001,sub,SEA,55,Jordy Delem,Clint Dempsey
-PHI,SEA,20171001,sub,SEA,60,Nouhou Tolo,Henry Wingo
-PHI,SEA,20171001,sub,SEA,80,Cristian Roldan,Lamar Neagle
-PHI,SEA,20171001,goal,PHI,88
+Philadelphia Union,Seattle Sounders FC,20171001,yellow,Seattle Sounders FC,11,Jordy Delem
+Philadelphia Union,Seattle Sounders FC,20171001,goal,Philadelphia Union,28
+Philadelphia Union,Seattle Sounders FC,20171001,sub,Seattle Sounders FC,55,Jordy Delem,Clint Dempsey
+Philadelphia Union,Seattle Sounders FC,20171001,sub,Seattle Sounders FC,60,Nouhou Tolo,Henry Wingo
+Philadelphia Union,Seattle Sounders FC,20171001,sub,Seattle Sounders FC,80,Cristian Roldan,Lamar Neagle
+Philadelphia Union,Seattle Sounders FC,20171001,goal,Philadelphia Union,88
 
-SEA,DAL,20171015,sub,SEA,23,Gustav Svensson,Nouhou Tolo
-SEA,DAL,20171015,assist,SEA,31,Clint Dempsey
-SEA,DAL,20171015,goal,SEA,31,Víctor Rodríguez
-SEA,DAL,20171015,goal,SEA,64,Will Bruin
-SEA,DAL,20171015,goal,SEA,67,Will Bruin
-SEA,DAL,20171015,sub,SEA,76,Víctor Rodríguez,Lamar Neagle
-SEA,DAL,20171015,sub,SEA,81,Joevin Jones,Harry Shipp
-SEA,DAL,20171015,assist,SEA,92,Nicolás Lodeiro,true,false
-SEA,DAL,20171015,goal,SEA,92,Lamar Neagle,true,false
+Seattle Sounders FC,FC Dallas,20171015,sub,Seattle Sounders FC,23,Gustav Svensson,Nouhou Tolo
+Seattle Sounders FC,FC Dallas,20171015,assist,Seattle Sounders FC,31,Clint Dempsey
+Seattle Sounders FC,FC Dallas,20171015,goal,Seattle Sounders FC,31,Víctor Rodríguez
+Seattle Sounders FC,FC Dallas,20171015,goal,Seattle Sounders FC,64,Will Bruin
+Seattle Sounders FC,FC Dallas,20171015,goal,Seattle Sounders FC,67,Will Bruin
+Seattle Sounders FC,FC Dallas,20171015,sub,Seattle Sounders FC,76,Víctor Rodríguez,Lamar Neagle
+Seattle Sounders FC,FC Dallas,20171015,sub,Seattle Sounders FC,81,Joevin Jones,Harry Shipp
+Seattle Sounders FC,FC Dallas,20171015,assist,Seattle Sounders FC,92,Nicolás Lodeiro,true,false
+Seattle Sounders FC,FC Dallas,20171015,goal,Seattle Sounders FC,92,Lamar Neagle,true,false
 
-#SEA,COL,20171022,assist,SEA,9,Kelvin Leerdam
-#SEA,COL,20171022,goal,SEA,9,Will Bruin
-#SEA,COL,20171022,red,SEA,24,Clint Dempsey
-#SEA,COL,20171022,yellow,SEA,29,Román Torres
-#SEA,COL,20171022,yellow,SEA,51,Cristian Roldan
-#SEA,COL,20171022,red,COL,62
-#SEA,COL,20171022,goalpenalty,SEA,64,Nicolás Lodeiro
-#SEA,COL,20171022,sub,SEA,67,Harry Shipp,Lamar Neagle
-#SEA,COL,20171022,sub,SEA,85,Will Bruin,Henry Wingo
-#SEA,COL,20171022,yellow,SEA,91,Joevin Jones,true,false
-#SEA,COL,20171022,sub,SEA,91,Román Torres,Tony Alfaro,true,false
-#SEA,COL,20171022,goal,SEA,94,Nicolás Lodeiro,true,false
-#SEA,COL,20171022,yellow,SEA,94,Nicolás Lodeiro,true,false
+Seattle Sounders FC,Colorado Rapids,20171022,assist,Seattle Sounders FC,9,Kelvin Leerdam
+Seattle Sounders FC,Colorado Rapids,20171022,goal,Seattle Sounders FC,9,Will Bruin
+Seattle Sounders FC,Colorado Rapids,20171022,red,Seattle Sounders FC,24,Clint Dempsey
+Seattle Sounders FC,Colorado Rapids,20171022,yellow,Seattle Sounders FC,29,Román Torres
+Seattle Sounders FC,Colorado Rapids,20171022,yellow,Seattle Sounders FC,51,Cristian Roldan
+#Seattle Sounders FC,Colorado Rapids,20171022,red,Colorado Rapids,62
+Seattle Sounders FC,Colorado Rapids,20171022,goalpenalty,Seattle Sounders FC,64,Nicolás Lodeiro
+Seattle Sounders FC,Colorado Rapids,20171022,sub,Seattle Sounders FC,67,Harry Shipp,Lamar Neagle
+Seattle Sounders FC,Colorado Rapids,20171022,sub,Seattle Sounders FC,85,Will Bruin,Henry Wingo
+Seattle Sounders FC,Colorado Rapids,20171022,yellow,Seattle Sounders FC,91,Joevin Jones,true,false
+Seattle Sounders FC,Colorado Rapids,20171022,sub,Seattle Sounders FC,91,Román Torres,Tony Alfaro,true,false
+Seattle Sounders FC,Colorado Rapids,20171022,goal,Seattle Sounders FC,94,Nicolás Lodeiro,true,false
+Seattle Sounders FC,Colorado Rapids,20171022,yellow,Seattle Sounders FC,94,Nicolás Lodeiro,true,false

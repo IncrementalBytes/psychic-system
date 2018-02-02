@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:orientation="vertical"
-  tools:layout_editor_absoluteY="81dp"
-  tools:layout_editor_absoluteX="0dp">
+  android:orientation="vertical">
 
   <TextView
     android:id="@+id/match_item_title"
@@ -18,8 +15,6 @@
     android:textSize="18sp"
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
     app:layout_constraintRight_toRightOf="parent"
     android:maxLines="1"/>
   <TextView
@@ -30,7 +25,16 @@
     android:text="@string/placeholder"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/match_item_title"/>
+    app:layout_constraintTop_toBottomOf="@+id/match_item_title"/>
+  <TextView
+    android:id="@+id/match_item_score"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:text="@string/placeholder"
+    android:layout_margin="@dimen/text_margin"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@+id/match_item_status"
+    app:layout_constraintTop_toBottomOf="@+id/match_item_title"/>
   <TextView
     android:id="@+id/match_item_status"
     android:layout_width="0dp"
@@ -38,18 +42,7 @@
     android:text="@string/placeholder"
     android:layout_margin="@dimen/text_margin"
     app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintLeft_toRightOf="@id/match_item_date"
-    app:layout_constraintTop_toBottomOf="@id/match_item_title"/>
-  <net.frostedbytes.android.trendo.views.TouchableImageView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/match_item_delete"
-    app:srcCompat="@drawable/ic_delete"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    android:layout_margin="@dimen/imageview_margin"
-    app:layout_constraintTop_toBottomOf="@id/match_item_title"
-    app:layout_constraintVertical_bias="0.0"
-    android:contentDescription="@string/delete_match"/>
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/match_item_title"/>
 
 </android.support.constraint.ConstraintLayout>

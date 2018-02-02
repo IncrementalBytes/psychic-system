@@ -2,15 +2,14 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
-  android:id="@+id/activity_match_list"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
   <android.support.v7.widget.RecyclerView
-    android:id="@+id/match_list_recyclerview"
+    android:id="@+id/match_list_view"
     android:layout_width="0dp"
     android:layout_height="0dp"
-    android:layout_margin="@dimen/recyclerview_margin"
+    android:layout_margin="@dimen/view_margin"
     app:layout_constraintBottom_toTopOf="@+id/match_list_text_error_message"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -22,20 +21,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/text_margin"
-    app:layout_constraintBottom_toTopOf="@+id/match_list_fab_new"
+    app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     android:textColor="@color/colorError"/>
-
-  <android.support.design.widget.FloatingActionButton
-    android:id="@+id/match_list_fab_new"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/fab_margin"
-    android:gravity="end"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"
-    android:contentDescription="@string/new_match"
-    app:srcCompat="@drawable/ic_add_match"/>
 
 </android.support.constraint.ConstraintLayout>
