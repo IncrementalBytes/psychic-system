@@ -19,12 +19,12 @@
   </plurals>
   <string name="string_settings_select_year">Select team:</string>
   <string name="err_no_results_for_team">%s has no results to view.</string>
-  <string name="trend_points">Points:</string>
+  <string name="trend_points">Points</string>
   <string name="trend_header">Trends</string>
-  <string name="trend_ppg">Points Per Game:</string>
-  <string name="trend_goals_for">Goals For:</string>
-  <string name="trend_goals_against">Goals Against:</string>
-  <string name="trend_goal_diff">Goal Differential:</string>
+  <string name="trend_ppg">Points Per Game</string>
+  <string name="trend_goals_for">Goals For</string>
+  <string name="trend_goals_against">Goals Against</string>
+  <string name="trend_goal_diff">Goal Differential</string>
   <string name="trend_round_value">%d</string>
   <string name="trend_decimal_value">%.2f</string>
   <string name="trend_positive_round">(+%d)</string>
