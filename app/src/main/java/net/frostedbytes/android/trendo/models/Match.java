@@ -142,6 +142,7 @@ public class Match implements Serializable {
    * @return - User-friendly readable string of the date; formatted YYYY-MM-DD
    */
   public static String formatDateForDisplay(long date) {
+
     Date temp = new Date(date);
     DateFormat dateFormat = SimpleDateFormat.getDateInstance();
     return dateFormat.format(temp);

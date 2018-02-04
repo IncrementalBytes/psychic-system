@@ -2,45 +2,34 @@ package net.frostedbytes.android.trendo;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import java.util.Locale;
-import net.frostedbytes.android.trendo.models.Match;
-import net.frostedbytes.android.trendo.models.MatchSummary;
+import net.frostedbytes.android.trendo.fragments.MatchListFragment;
+import net.frostedbytes.android.trendo.fragments.SettingsFragment;
+import net.frostedbytes.android.trendo.fragments.TrendFragment;
 import net.frostedbytes.android.trendo.models.Settings;
 
-public class MatchListActivity extends BaseActivity {
+public class MatchListActivity extends BaseActivity implements SettingsFragment.OnSettingsSavedListener, MatchListFragment.OnMatchListListener {
 
   private static final String TAG = "MatchListActivity";
 
-  private RecyclerView mRecyclerView;
-  private TextView mErrorMessage;
+  private ActionBar mActionBar;
 
-  private RecyclerView.Adapter mAdapter;
   private Settings mSettings;
   private String mUserId;
 
-  private Query mMatchSummaryQuery; /* mMatchQuery gets cleaned up by FirebaseRecyclerAdapter */
   private Query mSettingsQuery;
-
   private ValueEventListener mSettingsValueListener;
 
   @Override
@@ -50,10 +39,10 @@ public class MatchListActivity extends BaseActivity {
     Log.d(TAG, "++onCreate(Bundle)");
     setContentView(R.layout.activity_match_list);
 
-    mRecyclerView = findViewById(R.id.match_list_view);
-    mErrorMessage = findViewById(R.id.match_list_text_error_message);
-
-    mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    mActionBar = getSupportActionBar();
+    if (mActionBar != null) {
+      mActionBar.setDisplayShowHomeEnabled(true);
+    }
 
     mSettings = new Settings();
     mUserId = getIntent().getStringExtra(BaseActivity.ARG_USER);
@@ -82,7 +71,6 @@ public class MatchListActivity extends BaseActivity {
     super.onResume();
 
     Log.d(TAG, "++onResume()");
-    updateUI();
   }
 
   @Override
@@ -92,28 +80,6 @@ public class MatchListActivity extends BaseActivity {
     Log.d(TAG, "++onDestroy()");
     if (mSettingsQuery != null && mSettingsValueListener != null) {
       mSettingsQuery.removeEventListener(mSettingsValueListener);
-    }
-  }
-
-  @Override
-  public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-    Log.d(TAG, "++onActivityResult(int, int, Intent)");
-    if (resultCode != RESULT_OK) {
-      Log.d(TAG, "Child activity returned cancelled.");
-      return;
-    }
-
-    switch (requestCode) {
-      case BaseActivity.REQUEST_MATCH_SELECT:
-        break;
-      case BaseActivity.REQUEST_SETTINGS:
-        mSettings = new Settings((Settings)data.getSerializableExtra(BaseActivity.ARG_SETTINGS));
-        onGatheringSettingsComplete();
-        break;
-      default:
-        Log.w(TAG, "Unknown request code: " + requestCode);
-        break;
     }
   }
 
@@ -129,154 +95,100 @@ public class MatchListActivity extends BaseActivity {
   public boolean onOptionsItemSelected(MenuItem item) {
 
     Log.d(TAG, "++onOptionsItemSelected(MenuItem)");
-    int i = item.getItemId();
-    switch (i) {
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+          fragmentManager.popBackStack();
+        }
+
+        return true;
       case R.id.action_logout:
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(this, SignInActivity.class));
         finish();
         return true;
       case R.id.action_settings:
-        Intent settingsIntent = new Intent(this, SettingsActivity.class);
-        settingsIntent.putExtra(BaseActivity.ARG_USER, mUserId);
-        startActivityForResult(settingsIntent, BaseActivity.REQUEST_SETTINGS);
+        // TODO: ignore if we're already showing the settings fragment
+        if (mActionBar != null) {
+          mActionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+        Fragment fragment = SettingsFragment.newInstance(mUserId);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
         return true;
       default:
         return super.onOptionsItemSelected(item);
     }
   }
 
+  @Override
+  public void onSettingsSaved(Settings userSettings) {
+
+    Log.d(TAG, "++onSettingsSaved(Settings)");
+    if (mActionBar != null) {
+      mActionBar.setDisplayHomeAsUpEnabled(false);
+    }
+
+    mSettings = userSettings;
+    FragmentManager fragmentManager = getSupportFragmentManager();
+    if (fragmentManager.getBackStackEntryCount() > 0) {
+      fragmentManager.popBackStack();
+    }
+  }
+
+  @Override
+  public void onPopulated(int size) {
+
+    Log.d(TAG, "++onPopulated(int)");
+    if (mActionBar != null) {
+      mActionBar.setSubtitle(getResources().getQuantityString(R.plurals.subtitle,size, mSettings.TeamShortName, size));
+    }
+  }
+
+  @Override
+  public void onSelected(String matchId) {
+
+    Log.d(TAG, "++onSelected(String)");
+    if (mActionBar != null) {
+      mActionBar.setSubtitle("");
+    }
+
+    Fragment fragment = TrendFragment.newInstance(matchId);
+    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+    transaction.replace(R.id.fragment_container, fragment);
+    transaction.addToBackStack(null);
+    transaction.commit();
+  }
+
   private void onGatheringSettingsComplete() {
 
     Log.d(TAG, "++onGatheringSettingsComplete()");
     if (mSettings == null || mSettings.TeamShortName.isEmpty()) {
-      Log.d(TAG, "No team settings information found; starting settings activity.");
-      Intent settingsIntent = new Intent(this, SettingsActivity.class);
-      settingsIntent.putExtra(BaseActivity.ARG_USER, mUserId);
-      startActivityForResult(settingsIntent, BaseActivity.REQUEST_SETTINGS);
+      Log.d(TAG, "No team settings information found; starting settings fragment.");
+      if (mActionBar != null) {
+        mActionBar.setDisplayHomeAsUpEnabled(true);
+      }
+
+      Fragment fragment = SettingsFragment.newInstance(mUserId);
+      FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+      transaction.replace(R.id.fragment_container, fragment);
+      transaction.addToBackStack(null);
+      transaction.commit();
     } else {
-      String queryPath = "MatchSummaries/" + String.valueOf(mSettings.Year) + "/" + mSettings.TeamShortName;
-      mMatchSummaryQuery = FirebaseDatabase.getInstance().getReference().child(queryPath).orderByChild("MatchDate");
-
-      mAdapter = newAdapter();
-
-      // scroll to bottom on new messages
-      mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-
-        @Override
-        public void onItemRangeInserted(int positionStart, int itemCount) {
-
-          mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount());
-        }
-      });
-
-      mRecyclerView.setAdapter(mAdapter);
-      updateUI();
-    }
-  }
-
-  private void updateSubtitle() {
-
-    Log.d(TAG, "++updateSubtitle()");
-    AppCompatActivity activity = this;
-    ActionBar bar = activity.getSupportActionBar();
-    if (bar != null) {
-      if (mAdapter != null) {
-        bar.setSubtitle(getResources().getQuantityString(R.plurals.subtitle, mAdapter.getItemCount(), mSettings.TeamShortName, mAdapter.getItemCount()));
-      } else {
-        bar.setSubtitle(mSettings.TeamShortName);
-      }
-    }
-  }
-
-  private void updateUI() {
-    Log.d(TAG, "++updateUI()");
-    if (mAdapter != null) {
-      if (mAdapter.getItemCount() > 0) {
-        mErrorMessage.setText("");
-      } else {
-        mErrorMessage.setText(String.format(getString(R.string.err_no_results_for_team), mSettings.TeamShortName));
-      }
-    }
-
-    updateSubtitle();
-  }
-
-  private RecyclerView.Adapter newAdapter() {
-
-    FirebaseRecyclerOptions<MatchSummary> options = new FirebaseRecyclerOptions.Builder<MatchSummary>()
-      .setQuery(mMatchSummaryQuery, MatchSummary.class)
-      .setLifecycleOwner(this)
-      .build();
-
-    return new FirebaseRecyclerAdapter<MatchSummary, MatchSummaryHolder>(options) {
-
-      @Override
-      public MatchSummaryHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        return new MatchSummaryHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.match_item, parent, false));
+      Log.d(TAG, "User settings found; starting match list fragment.");
+      if (mActionBar != null) {
+        mActionBar.setDisplayHomeAsUpEnabled(true);
       }
 
-      @Override
-      protected void onBindViewHolder(@NonNull MatchSummaryHolder holder, int position, @NonNull MatchSummary model) {
-
-        model.MatchId = getRef(position).getKey();
-        holder.bind(model);
-      }
-
-      @Override
-      public void onDataChanged() {
-
-        updateUI();
-      }
-    };
-  }
-
-  private class MatchSummaryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-    private final TextView mTitleTextView;
-    private final TextView mMatchDateTextView;
-    private final TextView mMatchScoreTextView;
-    private final TextView mMatchStatusTextView;
-
-    private MatchSummary mMatchSummary;
-
-    MatchSummaryHolder(View itemView) {
-      super(itemView);
-
-      itemView.setOnClickListener(this);
-      mTitleTextView = itemView.findViewById(R.id.match_item_title);
-      mMatchDateTextView = itemView.findViewById(R.id.match_item_date);
-      mMatchScoreTextView = itemView.findViewById(R.id.match_item_score);
-      mMatchStatusTextView = itemView.findViewById(R.id.match_item_status);
-    }
-
-    void bind(MatchSummary matchSummary) {
-
-      mMatchSummary = matchSummary;
-      mTitleTextView.setText(
-        String.format(
-          Locale.getDefault(),
-          "%1s vs %2s",
-          mMatchSummary.HomeTeamName,
-          mMatchSummary.AwayTeamName));
-      mMatchDateTextView.setText(Match.formatDateForDisplay(mMatchSummary.MatchDate));
-      mMatchScoreTextView.setText(
-        String.format(
-          Locale.getDefault(),
-          "%1d - %2d",
-          mMatchSummary.HomeScore,
-          mMatchSummary.AwayScore));
-      mMatchStatusTextView.setText(mMatchSummary.IsFinal ? "FT" : "In Progress");
-    }
-
-    @Override
-    public void onClick(View view) {
-
-      Log.d(TAG, "++MatchSummaryHolder::onClick(View)");
-      Intent intent = new Intent(getApplicationContext(), TrendActivity.class);
-      intent.putExtra(BaseActivity.ARG_MATCH_ID, mMatchSummary.MatchId);
-      startActivityForResult(intent, BaseActivity.REQUEST_MATCH_SELECT);
+      Fragment fragment = MatchListFragment.newInstance(mSettings);
+      FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+      transaction.replace(R.id.fragment_container, fragment);
+      transaction.addToBackStack(null);
+      transaction.commit();
     }
   }
 }

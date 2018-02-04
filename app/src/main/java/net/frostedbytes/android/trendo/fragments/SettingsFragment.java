@@ -1,14 +1,17 @@
-package net.frostedbytes.android.trendo;
+package net.frostedbytes.android.trendo.fragments;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.google.firebase.database.DatabaseException;
@@ -18,11 +21,22 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.frostedbytes.android.trendo.BaseActivity;
+import net.frostedbytes.android.trendo.R;
 import net.frostedbytes.android.trendo.models.Settings;
 
-public class SettingsActivity extends BaseActivity {
+public class SettingsFragment extends Fragment {
 
-  private static final String TAG = "SettingsActivity";
+  private static final String TAG = "SettingsFragment";
+
+  static final String ARG_USER_ID = "user_id";
+
+  public interface OnSettingsSavedListener {
+
+    void onSettingsSaved(Settings userSettings);
+  }
+
+  private OnSettingsSavedListener mCallback;
 
   private Spinner mTeamSpinner;
   private Spinner mYearSpinner;
@@ -32,32 +46,33 @@ public class SettingsActivity extends BaseActivity {
   private Map<String, String> mTeamMappings;
   private String mUserId;
 
+  public static SettingsFragment newInstance(String userId) {
+
+    Log.d(TAG, "++newInstance(String)");
+    SettingsFragment fragment = new SettingsFragment();
+    Bundle args = new Bundle();
+    args.putString(ARG_USER_ID, userId);
+    fragment.setArguments(args);
+    return fragment;
+  }
+
   @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+  public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-    Log.d(TAG, "++onCreate(Bundle)");
-    setContentView(R.layout.activity_settings);
+    Log.d(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
+    View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
-    mUserId = getIntent().getStringExtra(BaseActivity.ARG_USER);
+    Bundle arguments = getArguments();
+    if (arguments != null) {
+      mUserId = getArguments().getString(ARG_USER_ID);
+    } else {
+      mUserId = BaseActivity.DEFAULT_ID;
+    }
 
-    ImageView cancelImageView = findViewById(R.id.settings_image_cancel);
-    mTeamSpinner = findViewById(R.id.settings_spinner_team);
-    mYearSpinner = findViewById(R.id.settings_spinner_year);
-    mErrorMessageText = findViewById(R.id.settings_text_error_message);
-    mSaveButton = findViewById(R.id.settings_button_save);
-
-    cancelImageView.setOnClickListener(new View.OnClickListener() {
-
-      @Override
-      public void onClick(View view) {
-
-        Log.d(TAG, "++cancelImageView::onClick(View");
-        Log.d(TAG, "User cancelled match creation");
-        setResult(RESULT_CANCELED);
-        finish();
-      }
-    });
+    mTeamSpinner = view.findViewById(R.id.settings_spinner_team);
+    mYearSpinner = view.findViewById(R.id.settings_spinner_year);
+    mErrorMessageText = view.findViewById(R.id.settings_text_error_message);
+    mSaveButton = view.findViewById(R.id.settings_button_save);
 
     mTeamMappings = new HashMap<>();
     String[] resourceItems = getResources().getStringArray(R.array.teams);
@@ -74,14 +89,14 @@ public class SettingsActivity extends BaseActivity {
     Collections.sort(teams);
 
     // get a list of teams for the object adapter used by the spinner controls
-    ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>(teams));
+    ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<>(teams));
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     mTeamSpinner.setAdapter(adapter);
     mTeamSpinner.setOnItemSelectedListener(spinnerListener);
 
     // get a list of teams for the object adapter used by the spinner controls
     resourceItems = getResources().getStringArray(R.array.years);
-    adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, resourceItems);
+    adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, resourceItems);
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     mYearSpinner.setAdapter(adapter);
     mYearSpinner.setOnItemSelectedListener(spinnerListener);
@@ -103,19 +118,29 @@ public class SettingsActivity extends BaseActivity {
           childUpdates.put("Settings/" + mUserId, postValues);
           FirebaseDatabase.getInstance().getReference().updateChildren(childUpdates);
 
-          Intent intent = new Intent();
-          intent.putExtra(BaseActivity.ARG_SETTINGS, setting);
-          setResult(RESULT_OK, intent);
-          finish();
+          mCallback.onSettingsSaved(setting);
         } catch (DatabaseException dex) {
           mErrorMessageText.setText(R.string.err_settings_failed);
         }
       }
     });
+
+    return view;
+  }
+
+  @Override
+  public void onAttach(Context context) {
+    super.onAttach(context);
+    try {
+      mCallback = (OnSettingsSavedListener) context;
+    } catch (ClassCastException e) {
+      throw new ClassCastException(context.toString() + " must implement OnDataSent");
+    }
   }
 
   private void validateForm() {
 
+    Log.d(TAG, "++validateForm()");
     if (!mTeamSpinner.getSelectedItem().toString().isEmpty() && !mYearSpinner.getSelectedItem().toString().isEmpty()) {
       mSaveButton.setEnabled(true);
     } else {
