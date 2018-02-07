@@ -65,7 +65,7 @@ public class TrendFragment extends Fragment {
     }
 
     // grab trend data for match
-    String queryPath = "Trends/" + mMatchId;
+    String queryPath = Trend.ROOT + "/" + mMatchId;
     Log.d(TAG, "Query: " + queryPath);
     mTrendQuery = FirebaseDatabase.getInstance().getReference().child(queryPath);
     mTrendValueListener = new ValueEventListener() {
@@ -121,15 +121,15 @@ public class TrendFragment extends Fragment {
 
         switch (position) {
           case 0: // fragment # 0 - this will show total points
-            return TotalPointsFragment.newInstance(mTrend.TotalPoints);
+            return LineChartFragment.newInstance(mTrend.TotalPoints.stream().mapToLong(Long::longValue).toArray());
           case 1: // fragment # 1 - this will show points per game
-            return PointsPerGameFragment.newInstance(mTrend.PointsPerGame);
+            return LineChartFragment.newInstance(mTrend.PointsPerGame.stream().mapToDouble(Double::doubleValue).toArray());
           case 2: // fragment # 2 - this will show goals against
-            return GoalsAgainstFragment.newInstance(mTrend.GoalsAgainst);
+            return LineChartFragment.newInstance(mTrend.GoalsAgainst.stream().mapToLong(Long::longValue).toArray());
           case 3: // fragment # 3 - this will show goals for
-            return GoalsForFragment.newInstance(mTrend.GoalsFor);
+            return LineChartFragment.newInstance(mTrend.GoalsFor.stream().mapToLong(Long::longValue).toArray());
           case 4: // fragment # 4 - this will show goal differential
-            return GoalDifferentialFragment.newInstance(mTrend.GoalDifferential);
+            return LineChartFragment.newInstance(mTrend.GoalDifferential.stream().mapToLong(Long::longValue).toArray());
           default:
             return null;
         }
@@ -146,15 +146,15 @@ public class TrendFragment extends Fragment {
 
         switch (position) {
           case 0:
-            return TotalPointsFragment.DisplayName;
+            return "Total Points";
           case 1:
-            return PointsPerGameFragment.DisplayName;
+            return "Points per Game";
           case 2:
-            return GoalsAgainstFragment.DisplayName;
+            return "Goals Against";
           case 3:
-            return GoalsForFragment.DisplayName;
+            return "Goals For";
           case 4:
-            return GoalDifferentialFragment.DisplayName;
+            return "Goal Differential";
           default:
             return null;
         }

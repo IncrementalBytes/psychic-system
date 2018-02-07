@@ -1,5 +1,6 @@
 package net.frostedbytes.android.trendo.models;
 
+import com.google.firebase.database.Exclude;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +9,9 @@ import java.util.Map;
 import net.frostedbytes.android.trendo.BaseActivity;
 
 public class Trend implements Serializable {
+
+  @Exclude
+  public static final String ROOT = "Trends";
 
   /**
    * List containing the accumulated goals scored against.

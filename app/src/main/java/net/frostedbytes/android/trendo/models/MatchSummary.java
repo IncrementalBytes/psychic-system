@@ -1,11 +1,15 @@
 package net.frostedbytes.android.trendo.models;
 
+import com.google.firebase.database.Exclude;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import net.frostedbytes.android.trendo.BaseActivity;
 
 public class MatchSummary implements Serializable {
+
+  @Exclude
+  public static final String ROOT = "MatchSummaries";
 
   /**
    * Goals scored by the away team.

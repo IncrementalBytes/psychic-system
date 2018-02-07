@@ -4,15 +4,15 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Calendar;
 import java.util.Map;
-import net.frostedbytes.android.trendo.models.Settings;
+import net.frostedbytes.android.trendo.models.UserSetting;
 import org.junit.Test;
 
-public class SettingsUnitTest {
+public class UserSettingUnitTest {
 
   @Test
   public void constructorTestDefaults() {
 
-    Settings testSettings = new Settings();
+    UserSetting testSettings = new UserSetting();
     Calendar calendar = Calendar.getInstance();
     assertEquals(testSettings.Year, calendar.get(Calendar.YEAR));
     assertEquals(testSettings.TeamShortName, "");
@@ -22,7 +22,7 @@ public class SettingsUnitTest {
   @Test
   public void toMapTest() {
 
-    Settings testSettings = new Settings();
+    UserSetting testSettings = new UserSetting();
     Map<String, Object> mappedTrend = testSettings.toMap();
   }
 }

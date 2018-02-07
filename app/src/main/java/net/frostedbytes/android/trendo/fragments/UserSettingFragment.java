@@ -23,20 +23,20 @@ import java.util.List;
 import java.util.Map;
 import net.frostedbytes.android.trendo.BaseActivity;
 import net.frostedbytes.android.trendo.R;
-import net.frostedbytes.android.trendo.models.Settings;
+import net.frostedbytes.android.trendo.models.UserSetting;
 
-public class SettingsFragment extends Fragment {
+public class UserSettingFragment extends Fragment {
 
-  private static final String TAG = "SettingsFragment";
+  private static final String TAG = "UserSettingFragment";
 
   static final String ARG_USER_ID = "user_id";
 
-  public interface OnSettingsSavedListener {
+  public interface OnUserSettingListener {
 
-    void onSettingsSaved(Settings userSettings);
+    void onUserSettingSaved(UserSetting userSettings);
   }
 
-  private OnSettingsSavedListener mCallback;
+  private OnUserSettingListener mCallback;
 
   private Spinner mTeamSpinner;
   private Spinner mYearSpinner;
@@ -46,10 +46,10 @@ public class SettingsFragment extends Fragment {
   private Map<String, String> mTeamMappings;
   private String mUserId;
 
-  public static SettingsFragment newInstance(String userId) {
+  public static UserSettingFragment newInstance(String userId) {
 
-    Log.d(TAG, "++newInstance(String)");
-    SettingsFragment fragment = new SettingsFragment();
+    Log.d(TAG, String.format("++newInstance(%1s)", userId));
+    UserSettingFragment fragment = new UserSettingFragment();
     Bundle args = new Bundle();
     args.putString(ARG_USER_ID, userId);
     fragment.setArguments(args);
@@ -102,26 +102,22 @@ public class SettingsFragment extends Fragment {
     mYearSpinner.setOnItemSelectedListener(spinnerListener);
 
     mSaveButton.setEnabled(false);
-    mSaveButton.setOnClickListener(new View.OnClickListener() {
+    mSaveButton.setOnClickListener(view1 -> {
+      Log.d(TAG, "++mSaveButton::onClick(View");
 
-      @Override
-      public void onClick(View view) {
-        Log.d(TAG, "++mSaveButton::onClick(View");
+      try {
+        UserSetting setting = new UserSetting();
+        setting.Id = mUserId;
+        setting.Year = Integer.parseInt(mYearSpinner.getSelectedItem().toString());
+        setting.TeamShortName = mTeamMappings.get(mTeamSpinner.getSelectedItem().toString());
+        Map<String, Object> postValues = setting.toMap();
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put(UserSetting.ROOT + "/" + mUserId, postValues);
+        FirebaseDatabase.getInstance().getReference().updateChildren(childUpdates);
 
-        try {
-          Settings setting = new Settings();
-          setting.Id = mUserId;
-          setting.Year = Integer.parseInt(mYearSpinner.getSelectedItem().toString());
-          setting.TeamShortName = mTeamMappings.get(mTeamSpinner.getSelectedItem().toString());
-          Map<String, Object> postValues = setting.toMap();
-          Map<String, Object> childUpdates = new HashMap<>();
-          childUpdates.put("Settings/" + mUserId, postValues);
-          FirebaseDatabase.getInstance().getReference().updateChildren(childUpdates);
-
-          mCallback.onSettingsSaved(setting);
-        } catch (DatabaseException dex) {
-          mErrorMessageText.setText(R.string.err_settings_failed);
-        }
+        mCallback.onUserSettingSaved(setting);
+      } catch (DatabaseException dex) {
+        mErrorMessageText.setText(R.string.err_settings_failed);
       }
     });
 
@@ -132,9 +128,9 @@ public class SettingsFragment extends Fragment {
   public void onAttach(Context context) {
     super.onAttach(context);
     try {
-      mCallback = (OnSettingsSavedListener) context;
+      mCallback = (OnUserSettingListener) context;
     } catch (ClassCastException e) {
-      throw new ClassCastException(context.toString() + " must implement OnDataSent");
+      throw new ClassCastException(context.toString() + " must implement onUserSettingSaved(UserSetting)");
     }
   }
 

@@ -3,6 +3,7 @@ package net.frostedbytes.android.trendo.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,16 +12,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import net.frostedbytes.android.trendo.R;
 import net.frostedbytes.android.trendo.models.Match;
 import net.frostedbytes.android.trendo.models.MatchSummary;
-import net.frostedbytes.android.trendo.models.Settings;
+import net.frostedbytes.android.trendo.models.UserSetting;
 
 public class MatchListFragment extends Fragment {
 
@@ -32,18 +35,20 @@ public class MatchListFragment extends Fragment {
 
     void onPopulated(int size);
     void onSelected(String matchId);
+    void onSettingsClicked();
   }
 
-  private RecyclerView.Adapter mRecyclerViewAdapter;
-  private Settings mSettings;
+  private UserSetting mSettings;
   private OnMatchListListener mCallback;
 
   private RecyclerView mRecyclerView;
-  private TextView mErrorMessage;
 
-  private Query mMatchSummaryQuery; /* mMatchQuery gets cleaned up by FirebaseRecyclerAdapter */
+  List<MatchSummary> mMatchSummaries;
 
-  public static MatchListFragment newInstance(Settings userSettings) {
+  private Query mMatchSummaryQuery;
+  private ValueEventListener mValueEventListener;
+
+  public static MatchListFragment newInstance(UserSetting userSettings) {
 
     Log.d(TAG, "++newInstance(Settings)");
     MatchListFragment fragment = new MatchListFragment();
@@ -59,36 +64,13 @@ public class MatchListFragment extends Fragment {
     Log.d(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
     final View view = inflater.inflate(R.layout.fragment_match_list, container, false);
 
-    Bundle arguments = getArguments();
-    if (arguments != null) {
-      mSettings = (Settings) arguments.getSerializable(ARG_USER_SETTINGS);
-    } else {
-      Log.d(TAG, "Arguments were null.");
-    }
-
     mRecyclerView = view.findViewById(R.id.match_list_view);
-    mErrorMessage = view.findViewById(R.id.match_list_text_error_message);
+    FloatingActionButton settingsButton = view.findViewById(R.id.match_list_fab_settings);
+    settingsButton.setOnClickListener(buttonView -> mCallback.onSettingsClicked());
 
     final LinearLayoutManager manager = new LinearLayoutManager(getActivity());
     mRecyclerView.setLayoutManager(manager);
 
-    String queryPath = "MatchSummaries/" + String.valueOf(mSettings.Year) + "/" + mSettings.TeamShortName;
-    Log.d(TAG, "Query: " + queryPath);
-    mMatchSummaryQuery = FirebaseDatabase.getInstance().getReference().child(queryPath).orderByChild("MatchDate");
-
-    mRecyclerViewAdapter = newAdapter();
-
-    // scroll to bottom on new messages
-    mRecyclerViewAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-
-      @Override
-      public void onItemRangeInserted(int positionStart, int itemCount) {
-
-        mRecyclerView.smoothScrollToPosition(mRecyclerViewAdapter.getItemCount());
-      }
-    });
-
-    mRecyclerView.setAdapter(mRecyclerViewAdapter);
     updateUI();
 
     return view;
@@ -104,53 +86,95 @@ public class MatchListFragment extends Fragment {
     } catch (ClassCastException e) {
       throw new ClassCastException(context.toString() + " must implement OnDataSent");
     }
+
+    Bundle arguments = getArguments();
+    if (arguments != null) {
+      mSettings = (UserSetting) arguments.getSerializable(ARG_USER_SETTINGS);
+    } else {
+      Log.d(TAG, "Arguments were null.");
+    }
+
+    if (mSettings != null) {
+      String queryPath = MatchSummary.ROOT + "/" + String.valueOf(mSettings.Year) + "/" + mSettings.TeamShortName;
+      Log.d(TAG, "Query: " + queryPath);
+      mMatchSummaryQuery = FirebaseDatabase.getInstance().getReference().child(queryPath).orderByChild("MatchDate");
+      mValueEventListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+
+          mMatchSummaries = new ArrayList<>();
+          for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+            MatchSummary matchSummary = snapshot.getValue(MatchSummary.class);
+            if (matchSummary != null) {
+              matchSummary.MatchId = snapshot.getKey();
+              mMatchSummaries.add(matchSummary);
+            }
+          }
+
+          updateUI();
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+      };
+      mMatchSummaryQuery.addValueEventListener(mValueEventListener);
+    } else {
+      Log.e(TAG, "Failed to get user settings from arguments.");
+    }
   }
 
-  private void updateSubtitle() {
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
 
-    Log.d(TAG, "++updateSubtitle()");
-    mCallback.onPopulated(mRecyclerViewAdapter.getItemCount());
+    Log.d(TAG, "++onDestroy()");
+    if (mMatchSummaryQuery != null && mValueEventListener != null) {
+      mMatchSummaryQuery.removeEventListener(mValueEventListener);
+    }
   }
 
   private void updateUI() {
-    Log.d(TAG, "++updateUI()");
-    if (mRecyclerViewAdapter != null && mRecyclerViewAdapter.getItemCount() > 0) {
-      mErrorMessage.setText("");
-    } else {
-      mErrorMessage.setText(String.format(getString(R.string.err_no_results_for_team), mSettings.TeamShortName));
-    }
 
-    updateSubtitle();
+    if (mMatchSummaries != null) {
+      Log.d(TAG, "++updateUI()");
+      MatchSummaryAdapter matchAdapter = new MatchSummaryAdapter(mMatchSummaries);
+      mRecyclerView.setAdapter(matchAdapter);
+      mCallback.onPopulated(matchAdapter.getItemCount());
+    }
   }
 
-  private RecyclerView.Adapter newAdapter() {
+  private class MatchSummaryAdapter extends RecyclerView.Adapter<MatchSummaryHolder> {
 
-    FirebaseRecyclerOptions<MatchSummary> options = new FirebaseRecyclerOptions.Builder<MatchSummary>()
-      .setQuery(mMatchSummaryQuery, MatchSummary.class)
-      .setLifecycleOwner(getActivity())
-      .build();
+    private List<MatchSummary> mMatchSummaries;
 
-    return new FirebaseRecyclerAdapter<MatchSummary, MatchSummaryHolder>(options) {
+    MatchSummaryAdapter(List<MatchSummary> matchSummaries) {
 
-      @Override
-      public MatchSummaryHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+      mMatchSummaries = matchSummaries;
+    }
 
-        return new MatchSummaryHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.match_item, parent, false));
-      }
+    @Override
+    public MatchSummaryHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-      @Override
-      protected void onBindViewHolder(@NonNull MatchSummaryHolder holder, int position, @NonNull MatchSummary model) {
+      LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+      return new MatchSummaryHolder(layoutInflater, parent);
+    }
 
-        model.MatchId = getRef(position).getKey();
-        holder.bind(model);
-      }
+    @Override
+    public void onBindViewHolder(MatchSummaryHolder holder, int position) {
 
-      @Override
-      public void onDataChanged() {
+      MatchSummary matchSummary = mMatchSummaries.get(position);
+      holder.bind(matchSummary);
+    }
 
-        updateUI();
-      }
-    };
+    @Override
+    public int getItemCount() { return mMatchSummaries.size(); }
+
+    void setMatchSummaries(List<MatchSummary> matchSummaries) {
+
+      mMatchSummaries = matchSummaries;
+    }
   }
 
   private class MatchSummaryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -162,8 +186,8 @@ public class MatchListFragment extends Fragment {
 
     private MatchSummary mMatchSummary;
 
-    MatchSummaryHolder(View itemView) {
-      super(itemView);
+    MatchSummaryHolder(LayoutInflater inflater, ViewGroup parent) {
+      super(inflater.inflate(R.layout.match_item, parent, false));
 
       itemView.setOnClickListener(this);
       mTitleTextView = itemView.findViewById(R.id.match_item_title);

@@ -2,11 +2,11 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:id="@+id/fragment_total_points"
+  android:id="@+id/fragment_line_chart"
   xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <com.github.mikephil.charting.charts.LineChart
-    android:id="@+id/trend_chart_total_points"
+    android:id="@+id/trend_line_chart"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/text_margin"

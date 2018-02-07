@@ -1,7 +1,6 @@
 <resources>
   <string name="app_name">Trends</string>
   <string name="placeholder">TBD</string> <!-- if this string is shown, something needs updating -->
-  <string name="settings">Settings</string>
   <string name="logout">Logout</string>
   <string name="hint_email">Type email</string>
   <string name="hint_password">Type password</string>
@@ -16,5 +15,4 @@
     <item quantity="other">%s - %d matches</item>
   </plurals>
   <string name="string_settings_select_year">Select team:</string>
-  <string name="err_no_results_for_team">%s has no results to view.</string>
 </resources>

@@ -3,14 +3,9 @@
   xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <item
-    android:id="@+id/action_settings"
-    android:title="@string/settings"
-    android:visible="true"
-    app:showAsAction="never" />
-
-  <item
     android:id="@+id/action_logout"
     android:title="@string/logout"
     android:visible="true"
     app:showAsAction="never" />
+
 </menu>

@@ -18,27 +18,29 @@ import java.util.ArrayList;
 import java.util.List;
 import net.frostedbytes.android.trendo.R;
 
-public class GoalsForFragment extends Fragment {
+public class LineChartFragment extends Fragment {
 
-  private static final String TAG = "GoalsForFragment";
+  private static final String TAG = "LineChartFragment";
 
-  static final String ARG_TREND_ID = "trend_id";
+  static final String ARG_DOUBLE_ARRAY = "double_array";
+  static final String ARG_LONG_ARRAY = "long_array";
 
-  public static final String DisplayName = "Goals For";
-
-  public static GoalsForFragment newInstance(List<Long> dataPoints) {
+  public static LineChartFragment newInstance(long[] dataPoints) {
 
     Log.d(TAG, "++newInstance(List<Long>)");
-    GoalsForFragment fragment = new GoalsForFragment();
+    LineChartFragment fragment = new LineChartFragment();
     Bundle args = new Bundle();
-    long[] longArray = new long[dataPoints.size()];
-    int index = 0;
-    for (Long dataPoint : dataPoints) {
-      longArray[index] = dataPoint;
-      index++;
-    }
+    args.putLongArray(ARG_LONG_ARRAY, dataPoints);
+    fragment.setArguments(args);
+    return fragment;
+  }
 
-    args.putLongArray(ARG_TREND_ID, longArray);
+  public static LineChartFragment newInstance(double[] dataPoints) {
+
+    Log.d(TAG, "++newInstance(List<Long>)");
+    LineChartFragment fragment = new LineChartFragment();
+    Bundle args = new Bundle();
+    args.putDoubleArray(ARG_DOUBLE_ARRAY, dataPoints);
     fragment.setArguments(args);
     return fragment;
   }
@@ -47,23 +49,37 @@ public class GoalsForFragment extends Fragment {
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
     Log.d(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
-    View view = inflater.inflate(R.layout.fragment_goals_for, container, false);
-    LineChart chart = view.findViewById(R.id.trend_chart_goals_for);
-
-    Bundle arguments = getArguments();
-    long[] dataPoints;
-    if (arguments != null) {
-      dataPoints = getArguments().getLongArray(ARG_TREND_ID);
-    } else {
-      dataPoints = new long[0];
-    }
+    View view = inflater.inflate(R.layout.fragment_line_chart, container, false);
+    LineChart chart = view.findViewById(R.id.trend_line_chart);
 
     List<Entry> entries = new ArrayList<>();
+    long minimum = 0;
     int matchDays = 1;
-    for (Long dataPoint : dataPoints) {
-      entries.add(new Entry(matchDays, dataPoint));
-      matchDays++;
+    Bundle arguments = getArguments();
+    if (arguments != null) {
+      if (arguments.containsKey(ARG_DOUBLE_ARRAY)) {
+        double[] dataPoints = getArguments().getDoubleArray(ARG_DOUBLE_ARRAY);
+        for (Double dataPoint : dataPoints) {
+          if (dataPoint < minimum) {
+            minimum = dataPoint.longValue();
+          }
+
+          entries.add(new Entry(matchDays, dataPoint.floatValue()));
+          matchDays++;
+        }
+      } else if (arguments.containsKey(ARG_LONG_ARRAY)) {
+        long[] dataPoints = getArguments().getLongArray(ARG_LONG_ARRAY);
+        for (Long dataPoint : dataPoints) {
+          if (dataPoint < minimum) {
+            minimum = dataPoint;
+          }
+
+          entries.add(new Entry(matchDays, dataPoint));
+          matchDays++;
+        }
+      }
     }
+
 
     LineDataSet dataSet = new LineDataSet(entries, ""); // add entries to data set
     dataSet.setColor(Color.RED);
@@ -76,7 +92,7 @@ public class GoalsForFragment extends Fragment {
 
     chart.getDescription().setEnabled(false);
 
-    chart.getAxisLeft().setAxisMinimum(0);
+    chart.getAxisLeft().setAxisMinimum(minimum); // TODO: make minimum just a little less (but not too much)
     chart.getAxisLeft().setPosition(YAxisLabelPosition.OUTSIDE_CHART);
     chart.getAxisLeft().setDrawGridLines(false);
 

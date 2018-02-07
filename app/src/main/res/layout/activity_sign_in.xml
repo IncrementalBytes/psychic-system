@@ -30,7 +30,7 @@
   </android.support.constraint.ConstraintLayout>
 
   <android.support.constraint.ConstraintLayout
-    android:id="@+id/sign_in_row_email_password"
+    android:id="@+id/sign_in_row_email"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
@@ -39,7 +39,7 @@
     app:layout_constraintTop_toBottomOf="@+id/sign_in_row_header">
     <EditText
       android:id="@+id/sign_in_edit_email"
-      android:layout_width="150dp"
+      android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_margin="@dimen/edit_margin"
       android:gravity="center_horizontal"
@@ -48,10 +48,20 @@
       android:inputType="textEmailAddress"
       android:maxLines="1"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toStartOf="@+id/sign_in_edit_password"/>
+      app:layout_constraintEnd_toStartOf="parent"/>
+  </android.support.constraint.ConstraintLayout>
+
+  <android.support.constraint.ConstraintLayout
+    android:id="@+id/sign_in_row_password"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/sign_in_row_email">
     <EditText
       android:id="@+id/sign_in_edit_password"
-      android:layout_width="150dp"
+      android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_margin="@dimen/edit_margin"
       android:gravity="center_horizontal"
@@ -59,18 +69,18 @@
       android:hint="@string/hint_password"
       android:inputType="textPassword"
       android:maxLines="1"
-      app:layout_constraintStart_toEndOf="@+id/sign_in_edit_email"
+      app:layout_constraintStart_toEndOf="parent"
       app:layout_constraintEnd_toEndOf="parent"/>
   </android.support.constraint.ConstraintLayout>
 
   <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_below="@+id/sign_in_row_email_password"
+    android:layout_below="@+id/sign_in_row_password"
     android:gravity="center"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/sign_in_row_email_password">
+    app:layout_constraintTop_toBottomOf="@+id/sign_in_row_password">
     <Button
       android:id="@+id/sign_in_button_sign_in"
       style="@style/Widget.AppCompat.Button.Borderless"

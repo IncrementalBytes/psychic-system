@@ -16,17 +16,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import net.frostedbytes.android.trendo.fragments.MatchListFragment;
-import net.frostedbytes.android.trendo.fragments.SettingsFragment;
 import net.frostedbytes.android.trendo.fragments.TrendFragment;
-import net.frostedbytes.android.trendo.models.Settings;
+import net.frostedbytes.android.trendo.fragments.UserSettingFragment;
+import net.frostedbytes.android.trendo.models.UserSetting;
 
-public class MatchListActivity extends BaseActivity implements SettingsFragment.OnSettingsSavedListener, MatchListFragment.OnMatchListListener {
+public class MatchListActivity extends BaseActivity implements UserSettingFragment.OnUserSettingListener, MatchListFragment.OnMatchListListener {
 
   private static final String TAG = "MatchListActivity";
 
   private ActionBar mActionBar;
 
-  private Settings mSettings;
+  FragmentManager mFragmentManager;
+
+  private UserSetting mSettings;
   private String mUserId;
 
   private Query mSettingsQuery;
@@ -39,12 +41,15 @@ public class MatchListActivity extends BaseActivity implements SettingsFragment.
     Log.d(TAG, "++onCreate(Bundle)");
     setContentView(R.layout.activity_match_list);
 
+    showProgressDialog("Initializing...");
     mActionBar = getSupportActionBar();
     if (mActionBar != null) {
       mActionBar.setDisplayShowHomeEnabled(true);
     }
 
-    mSettings = new Settings();
+    mFragmentManager = getSupportFragmentManager();
+
+    mSettings = new UserSetting();
     mUserId = getIntent().getStringExtra(BaseActivity.ARG_USER);
     mSettingsQuery = FirebaseDatabase.getInstance().getReference().child("Settings").child(mUserId);
     mSettingsValueListener = new ValueEventListener() {
@@ -52,7 +57,7 @@ public class MatchListActivity extends BaseActivity implements SettingsFragment.
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
 
-        mSettings = dataSnapshot.getValue(Settings.class);
+        mSettings = dataSnapshot.getValue(UserSetting.class);
         onGatheringSettingsComplete();
       }
 
@@ -64,13 +69,6 @@ public class MatchListActivity extends BaseActivity implements SettingsFragment.
       }
     };
     mSettingsQuery.addValueEventListener(mSettingsValueListener);
-  }
-
-  @Override
-  public void onResume() {
-    super.onResume();
-
-    Log.d(TAG, "++onResume()");
   }
 
   @Override
@@ -94,12 +92,11 @@ public class MatchListActivity extends BaseActivity implements SettingsFragment.
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
 
-    Log.d(TAG, "++onOptionsItemSelected(MenuItem)");
+    Log.d(TAG, String.format("++onOptionsItemSelected(%1s)", item.getTitle()));
     switch (item.getItemId()) {
       case android.R.id.home:
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        if (fragmentManager.getBackStackEntryCount() > 0) {
-          fragmentManager.popBackStack();
+        if (mFragmentManager.getBackStackEntryCount() > 0) {
+          mFragmentManager.popBackStack();
         }
 
         return true;
@@ -108,58 +105,68 @@ public class MatchListActivity extends BaseActivity implements SettingsFragment.
         startActivity(new Intent(this, SignInActivity.class));
         finish();
         return true;
-      case R.id.action_settings:
-        // TODO: ignore if we're already showing the settings fragment
-        if (mActionBar != null) {
-          mActionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
-        Fragment fragment = SettingsFragment.newInstance(mUserId);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-        return true;
       default:
         return super.onOptionsItemSelected(item);
     }
   }
 
   @Override
-  public void onSettingsSaved(Settings userSettings) {
+  public void onUserSettingSaved(UserSetting userSettings) {
 
-    Log.d(TAG, "++onSettingsSaved(Settings)");
+    Log.d(TAG, String.format("++onSettingsSaved(%1s, %2d)", userSettings.TeamShortName, userSettings.Year));
     if (mActionBar != null) {
       mActionBar.setDisplayHomeAsUpEnabled(false);
     }
 
-    mSettings = userSettings;
-    FragmentManager fragmentManager = getSupportFragmentManager();
-    if (fragmentManager.getBackStackEntryCount() > 0) {
-      fragmentManager.popBackStack();
+    // remove settings fragment from stack; returning to match list fragment
+    if (mFragmentManager.getBackStackEntryCount() > 0) {
+      mFragmentManager.popBackStack();
+    }
+
+    if (!userSettings.equals(mSettings)) {
+      // settings have changed, signal that to match list fragment
+      mSettings = userSettings;
+      onGatheringSettingsComplete();
     }
   }
 
   @Override
   public void onPopulated(int size) {
 
-    Log.d(TAG, "++onPopulated(int)");
+    Log.d(TAG, String.format("++onPopulated(%1d)", size));
     if (mActionBar != null) {
       mActionBar.setSubtitle(getResources().getQuantityString(R.plurals.subtitle,size, mSettings.TeamShortName, size));
     }
+
+    hideProgressDialog();
   }
 
   @Override
   public void onSelected(String matchId) {
 
-    Log.d(TAG, "++onSelected(String)");
+    Log.d(TAG, String.format("++onSelected(%1s)", matchId));
     if (mActionBar != null) {
       mActionBar.setSubtitle("");
     }
 
     Fragment fragment = TrendFragment.newInstance(matchId);
-    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-    transaction.replace(R.id.fragment_container, fragment);
+    FragmentTransaction transaction = mFragmentManager.beginTransaction();
+    transaction.replace(R.id.fragment_container, fragment, "TREND_FRAGMENT");
+    transaction.addToBackStack(null);
+    transaction.commit();
+  }
+
+  @Override
+  public void onSettingsClicked() {
+
+    Log.d(TAG, "++onSettingsClicked()");
+    if (mActionBar != null) {
+      mActionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    Fragment fragment = UserSettingFragment.newInstance(mUserId);
+    FragmentTransaction transaction = mFragmentManager.beginTransaction();
+    transaction.replace(R.id.fragment_container, fragment, "SETTINGS_FRAGMENT");
     transaction.addToBackStack(null);
     transaction.commit();
   }
@@ -167,15 +174,16 @@ public class MatchListActivity extends BaseActivity implements SettingsFragment.
   private void onGatheringSettingsComplete() {
 
     Log.d(TAG, "++onGatheringSettingsComplete()");
+    hideProgressDialog();
     if (mSettings == null || mSettings.TeamShortName.isEmpty()) {
       Log.d(TAG, "No team settings information found; starting settings fragment.");
       if (mActionBar != null) {
         mActionBar.setDisplayHomeAsUpEnabled(true);
       }
 
-      Fragment fragment = SettingsFragment.newInstance(mUserId);
-      FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-      transaction.replace(R.id.fragment_container, fragment);
+      Fragment fragment = UserSettingFragment.newInstance(mUserId);
+      FragmentTransaction transaction = mFragmentManager.beginTransaction();
+      transaction.replace(R.id.fragment_container, fragment, "SETTINGS_FRAGMENT");
       transaction.addToBackStack(null);
       transaction.commit();
     } else {
@@ -184,9 +192,10 @@ public class MatchListActivity extends BaseActivity implements SettingsFragment.
         mActionBar.setDisplayHomeAsUpEnabled(true);
       }
 
+      showProgressDialog("Querying...");
       Fragment fragment = MatchListFragment.newInstance(mSettings);
-      FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-      transaction.replace(R.id.fragment_container, fragment);
+      FragmentTransaction transaction = mFragmentManager.beginTransaction();
+      transaction.replace(R.id.fragment_container, fragment, "MATCH_LIST_FRAGMENT");
       transaction.addToBackStack(null);
       transaction.commit();
     }

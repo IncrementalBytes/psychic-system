@@ -99,7 +99,7 @@ public class Match implements Serializable {
     }
 
     //cast to native object is now safe
-    if ((compareTo instanceof Match))
+    if ((compareTo instanceof Match)) {
       try {
         Match compareToMatch = (Match) compareTo;
         if (this.Id.equals(compareToMatch.Id) &&
@@ -112,6 +112,7 @@ public class Match implements Serializable {
       } catch (ClassCastException cce) {
         Log.e(TAG, "Could not cast object to Match class: " + cce.getMessage());
       }
+    }
 
     return false;
   }
