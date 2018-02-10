@@ -1,5 +1,6 @@
 package net.frostedbytes.android.trendo.fragments;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,34 +17,32 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import java.util.Calendar;
 import net.frostedbytes.android.trendo.BaseActivity;
 import net.frostedbytes.android.trendo.R;
 import net.frostedbytes.android.trendo.models.Trend;
+import net.frostedbytes.android.trendo.models.UserSetting;
 
 public class TrendFragment extends Fragment {
 
   private static final String TAG = "TrendFragment";
 
-  static final String ARG_MATCH_ID = "match_id";
-
-  private static int NUM_TRENDS = 5;
-
   ViewPager mViewPager;
   PagerTabStrip mPagerTabStrip;
 
+  private long mMatchDate;
+  private UserSetting mSettings;
   private static Trend mTrend;
-  private String mMatchId;
 
   private Query mTrendQuery;
   private ValueEventListener mTrendValueListener;
 
-  public static TrendFragment newInstance(String matchId) {
+  public static TrendFragment newInstance(UserSetting userSettings, long matchDate) {
 
     Log.d(TAG, "++newInstance(String)");
     TrendFragment fragment = new TrendFragment();
     Bundle args = new Bundle();
-    args.putString(ARG_MATCH_ID, matchId);
+    args.putSerializable(BaseActivity.ARG_USER_SETTINGS, userSettings);
+    args.putLong(BaseActivity.ARG_MATCH_DATE, matchDate);
     fragment.setArguments(args);
     return fragment;
   }
@@ -56,49 +55,55 @@ public class TrendFragment extends Fragment {
     mViewPager = view.findViewById(R.id.trend_view_pager);
     mPagerTabStrip = view.findViewById(R.id.trend_view_pager_header);
 
-    // get arguments
-    Bundle arguments = getArguments();
-    if (arguments != null) {
-      mMatchId = getArguments().getString(ARG_MATCH_ID);
-    } else {
-      mMatchId = BaseActivity.DEFAULT_ID;
-    }
-
-    // grab trend data for match
-    String queryPath = Trend.ROOT + "/" + mMatchId;
-    Log.d(TAG, "Query: " + queryPath);
-    mTrendQuery = FirebaseDatabase.getInstance().getReference().child(queryPath);
-    mTrendValueListener = new ValueEventListener() {
-
-      @Override
-      public void onDataChange(DataSnapshot dataSnapshot) {
-
-        mTrend = dataSnapshot.getValue(Trend.class);
-        if (mTrend != null) {
-          Calendar calendar = Calendar.getInstance();
-          calendar.setTimeInMillis(mTrend.MatchDate);
-          mTrend.MatchId = dataSnapshot.getKey();
-          populateTrendData();
-        } else {
-          Log.w(TAG, "Could not get trend data for " + mMatchId);
-        }
-      }
-
-      @Override
-      public void onCancelled(DatabaseError databaseError) {
-
-        Log.e(TAG, databaseError.getDetails());
-      }
-    };
-    mTrendQuery.addValueEventListener(mTrendValueListener);
-
-    // finish setting up view
     mPagerTabStrip.setBackgroundColor(Color.rgb(240, 240, 240));
     mPagerTabStrip.getChildAt(1).setPadding(30, 15, 30, 15);
     mPagerTabStrip.setDrawFullUnderline(false);
     mPagerTabStrip.setTabIndicatorColor(Color.rgb(240,240,240));
 
     return view;
+  }
+
+  @Override
+  public void onAttach(Context context) {
+    super.onAttach(context);
+
+    Log.d(TAG, "++onAttach(Context)");
+    Bundle arguments = getArguments();
+    if (arguments != null) {
+      mMatchDate = arguments.getLong(BaseActivity.ARG_MATCH_DATE);
+      mSettings = (UserSetting) arguments.getSerializable(BaseActivity.ARG_USER_SETTINGS);
+    } else {
+      Log.d(TAG, "Arguments were null.");
+    }
+
+    if (mSettings != null) {
+      String queryPath = Trend.ROOT + "/" + String.valueOf(mSettings.Year) + "/" + mSettings.TeamShortName;
+      Log.d(TAG, "Query: " + queryPath);
+      mTrendQuery = FirebaseDatabase.getInstance().getReference().child(queryPath);
+      mTrendValueListener = new ValueEventListener() {
+
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+
+          mTrend = dataSnapshot.getValue(Trend.class);
+          if (mTrend != null) {
+            populateTrendData();
+          } else {
+            Log.w(TAG, "Could not get trend data.");
+          }
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+          Log.e(TAG, databaseError.getDetails());
+        }
+      };
+      mTrendQuery.addValueEventListener(mTrendValueListener);
+    }
+    else {
+      Log.e(TAG, "Failed to get user settings from arguments.");
+    }
   }
 
   @Override
@@ -121,15 +126,15 @@ public class TrendFragment extends Fragment {
 
         switch (position) {
           case 0: // fragment # 0 - this will show total points
-            return LineChartFragment.newInstance(mTrend.TotalPointsMap);
+            return LineChartFragment.newLongInstance(mTrend.TotalPoints, mMatchDate);
           case 1: // fragment # 1 - this will show points per game
-            //return LineChartFragment.newInstance(mTrend.PointsPerGameMap);
+            return LineChartFragment.newDoubleInstance(mTrend.PointsPerGame, mMatchDate);
           case 2: // fragment # 2 - this will show goals against
-            return LineChartFragment.newInstance(mTrend.GoalsAgainstMap);
+            return LineChartFragment.newLongInstance(mTrend.GoalsAgainst, mMatchDate);
           case 3: // fragment # 3 - this will show goals for
-            return LineChartFragment.newInstance(mTrend.GoalsForMap);
+            return LineChartFragment.newLongInstance(mTrend.GoalsFor, mMatchDate);
           case 4: // fragment # 4 - this will show goal differential
-            return LineChartFragment.newInstance(mTrend.GoalDifferentialMap);
+            return LineChartFragment.newLongInstance(mTrend.GoalDifferential, mMatchDate);
           default:
             return null;
         }
@@ -138,7 +143,7 @@ public class TrendFragment extends Fragment {
       @Override
       public int getCount() {
 
-        return NUM_TRENDS;
+        return BaseActivity.NUM_TRENDS;
       }
 
       @Override

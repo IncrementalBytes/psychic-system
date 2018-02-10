@@ -46,32 +46,45 @@ public class GenerateUnitTest {
   @Test
   public void generateResults() throws IOException {
 
+    // create match summary objects
     List<MatchSummary> matchSummaries = generateMatchSummaries();
-    List<Trend> trends = generateTrends(matchSummaries);
 
+    // convert match summary objects into mapped objects
     Map<String, Map<String, Object>> mappedSummaries = new HashMap<>();
     for (MatchSummary matchSummary : matchSummaries) {
       mappedSummaries.put(matchSummary.MatchId, matchSummary.toMap());
     }
 
+    // add mapped match summary objects to team node
     Map<String, Map<String, Map<String, Object>>> teamSummaries = new HashMap<>();
     teamSummaries.put(mShortName, mappedSummaries);
 
+    // add team node (with mapped match summary objects) to year node
     Map<String, Map<String, Map<String, Map<String, Object>>>> yearlySummaries = new HashMap<>();
     yearlySummaries.put(String.valueOf(mYear), teamSummaries);
-    Map<String, Map<String, Map<String, Map<String, Map<String, Object>>>>> finalSummaries = new HashMap<>();
-    finalSummaries.put("MatchSummaries", yearlySummaries);
 
+    // add year node to match summary parent node
+    Map<String, Map<String, Map<String, Map<String, Map<String, Object>>>>> finalSummaries = new HashMap<>();
+    finalSummaries.put(MatchSummary.ROOT, yearlySummaries);
+
+    // print pretty json
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     System.out.println(gson.toJson(finalSummaries));
 
-    Map<String, Map<String, Object>> mappedTrends = new HashMap<>();
-    for (Trend trend : trends) {
-      mappedTrends.put(trend.MatchId, trend.toMap());
-    }
+    Map<String, Object> mappedTrends = generateTrends(matchSummaries);
 
-    Map<String, Map<String, Map<String, Object>>> finalTrends = new HashMap<>();
-    finalTrends.put("Trends", mappedTrends);
+    // add mapped match summary objects to team node
+    Map<String, Map<String, Object>> teamTrends = new HashMap<>();
+    teamTrends.put(mShortName, mappedTrends);
+
+    // add team node (with mapped match summary objects) to year node
+    Map<String, Map<String, Map<String, Object>>> yearlyTrends = new HashMap<>();
+    yearlyTrends.put(String.valueOf(mYear), teamTrends);
+
+    // add year node to match summary parent node
+    Map<String, Map<String, Map<String, Map<String, Object>>>> finalTrends = new HashMap<>();
+    finalTrends.put(Trend.ROOT, yearlyTrends);
+
     gson = new GsonBuilder().setPrettyPrinting().create();
     System.out.println(gson.toJson(finalTrends));
     assertEquals(1, 1);
@@ -184,39 +197,39 @@ public class GenerateUnitTest {
     matchSummaries.add(currentSummary);
 
     // arrange this list by match date
-    matchSummaries.sort(new Comparator<MatchSummary>() {
-      @Override
-      public int compare(MatchSummary summary1, MatchSummary summary2) {
+    matchSummaries.sort((summary1, summary2) -> {
 
-        if (summary1.MatchDate < summary2.MatchDate) {
-          return -1;
-        } else if (summary1.MatchDate > summary2.MatchDate) {
-          return 1;
-        } else {
-          return 0;
-        }
+      if (summary1.MatchDate < summary2.MatchDate) {
+        return -1;
+      } else if (summary1.MatchDate > summary2.MatchDate) {
+        return 1;
+      } else {
+        return 0;
       }
     });
 
     return matchSummaries;
   }
 
-  private List<Trend> generateTrends(List<MatchSummary> matchSummaries) {
+  private Map<String, Object> generateTrends(List<MatchSummary> matchSummaries) {
 
-    List<Trend> trends = new ArrayList<>();
+    Map<String, Object> mappedTrends = new HashMap<>();
+
     Map<String, Long> goalsAgainstMap = new HashMap<>();
     Map<String, Long> goalsForMap = new HashMap<>();
     Map<String, Long> goalDifferentialMap = new HashMap<>();
     Map<String, Long> totalPointsMap = new HashMap<>();
     Map<String, Double> pointsPerGameMap = new HashMap<>();
 
+    long goalsAgainst;
+    long goalDifferential;
+    long goalsFor;
+    long totalPoints;
+    long prevGoalAgainst = 0;
+    long prevGoalDifferential = 0;
+    long prevGoalFor = 0;
+    long prevTotalPoints = 0;
     for (MatchSummary summary : matchSummaries) {
-      Trend newTrend = new Trend();
-      long goalsAgainst;
-      long goalDifferential;
-      long goalsFor;
-      long totalPoints;
-
       if (summary.HomeTeamName.equals(mTeamName)) {
         // targetTeam is the home team
         goalsAgainst = summary.AwayScore;
@@ -243,59 +256,30 @@ public class GenerateUnitTest {
         }
       }
 
-      long prevGoalAgainst = 0;
-      long prevGoalDifferential = 0;
-      long prevGoalFor = 0;
-      long prevTotalPoints = 0;
-      if (!trends.isEmpty()) {
-//        prevGoalAgainst = goalsAgainstList.get(goalsAgainstList.size() - 1);
-//        prevGoalDifferential = goalDifferentialList.get(goalDifferentialList.size() - 1);
-//        prevGoalFor = goalsForList.get(goalsForList.size() - 1);
-//        prevTotalPoints = totalPointsList.get(totalPointsList.size() - 1);
-      }
-
-      //goalsAgainstList.add(goalsAgainst + prevGoalAgainst);
       goalsAgainstMap.put(String.valueOf(summary.MatchDate), goalsAgainst + prevGoalAgainst);
-      prevGoalAgainst = goalsAgainst;
-      //newTrend.GoalsAgainst = new ArrayList<>(goalsAgainstList);
-      newTrend.GoalsAgainstMap = new HashMap<>(goalsAgainstMap);
-
-      //goalDifferentialList.add(goalDifferential + prevGoalDifferential);
       goalDifferentialMap.put(String.valueOf(summary.MatchDate), goalDifferential + prevGoalDifferential);
-      prevGoalDifferential = goalDifferential;
-      //newTrend.GoalDifferential = new ArrayList<>(goalDifferentialList);
-      newTrend.GoalDifferentialMap = new HashMap<>(goalDifferentialMap);
-
-      //goalsForList.add(goalsFor + prevGoalFor);
       goalsForMap.put(String.valueOf(summary.MatchDate), goalsFor + prevGoalFor);
-      prevGoalFor = goalsFor;
-      //newTrend.GoalsFor = new ArrayList<>(goalsForList);
-      newTrend.GoalsForMap = new HashMap<>(goalsForMap);
+      totalPointsMap.put(String.valueOf(summary.MatchDate), totalPoints + prevTotalPoints);
 
-      //totalPointsList.add(totalPoints + prevTotalPoints);
-      totalPointsMap.put(String.valueOf(summary.MatchDate), totalPoints);
-      //prevTotalPoints = totalPoints;
-      //newTrend.TotalPoints = new ArrayList<>(totalPointsList);
-      newTrend.TotalPointsMap = new HashMap<>(totalPointsMap);
-
-      double result = (double) totalPoints;
-      if (!trends.isEmpty()) {
-        // already added this match to the total points
-        //result = (totalPointsList.get(totalPointsList.size() - 1)) / (double) (totalPointsList.size());
-        result = (totalPoints) / (double) (totalPointsMap.size());
+      double result = (double) totalPoints + prevTotalPoints;
+      if (result > 0) {
+        result = (totalPoints + prevTotalPoints) / (double) (totalPointsMap.size());
       }
 
-      //pointsPerGameList.add(result);
       pointsPerGameMap.put(String.valueOf(summary.MatchDate), result);
-      //newTrend.PointsPerGame = new ArrayList<>(pointsPerGameList);
-      newTrend.PointsPerGameMap = new HashMap<>(pointsPerGameMap);
 
-      newTrend.MatchDate = summary.MatchDate;
-      newTrend.MatchId = summary.MatchId;
-      newTrend.TeamName = mTeamName;
-      trends.add(newTrend);
+      // update previous values for next pass
+      prevGoalAgainst = goalsAgainst + prevGoalAgainst;
+      prevGoalDifferential = goalDifferential + prevGoalDifferential;
+      prevGoalFor = goalsFor + prevGoalFor;
+      prevTotalPoints = totalPoints + prevTotalPoints;
     }
 
-    return trends;
+    mappedTrends.put("GoalsAgainst", goalsAgainstMap);
+    mappedTrends.put("GoalDifferential", goalDifferentialMap);
+    mappedTrends.put("GoalsFor", goalsForMap);
+    mappedTrends.put("TotalPoints", totalPointsMap);
+    mappedTrends.put("PointsPerGame", pointsPerGameMap);
+    return mappedTrends;
   }
 }

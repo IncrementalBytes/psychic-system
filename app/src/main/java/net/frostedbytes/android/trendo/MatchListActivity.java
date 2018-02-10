@@ -146,15 +146,15 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
   }
 
   @Override
-  public void onSelected(String matchId) {
+  public void onSelected(long matchDate) {
 
-    Log.d(TAG, String.format("++onSelected(%1s)", matchId));
+    Log.d(TAG, String.format("++onSelected(%1d)", matchDate));
     if (mActionBar != null) {
       mActionBar.setDisplayHomeAsUpEnabled(true);
       mActionBar.setSubtitle("");
     }
 
-    Fragment fragment = TrendFragment.newInstance(matchId);
+    Fragment fragment = TrendFragment.newInstance(mSettings, matchDate);
     FragmentTransaction transaction = mFragmentManager.beginTransaction();
     transaction.replace(R.id.fragment_container, fragment, "TREND_FRAGMENT");
     transaction.addToBackStack(null);

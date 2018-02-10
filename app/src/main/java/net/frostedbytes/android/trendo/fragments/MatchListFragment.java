@@ -20,6 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import net.frostedbytes.android.trendo.BaseActivity;
 import net.frostedbytes.android.trendo.R;
 import net.frostedbytes.android.trendo.models.MatchSummary;
 import net.frostedbytes.android.trendo.models.UserSetting;
@@ -28,12 +29,10 @@ public class MatchListFragment extends Fragment {
 
   private static final String TAG = "MatchListFragment";
 
-  static final String ARG_USER_SETTINGS = "user_settings";
-
   public interface OnMatchListListener {
 
     void onPopulated(int size);
-    void onSelected(String matchId);
+    void onSelected(long matchDate);
     void onSettingsClicked();
   }
 
@@ -52,7 +51,7 @@ public class MatchListFragment extends Fragment {
     Log.d(TAG, "++newInstance(Settings)");
     MatchListFragment fragment = new MatchListFragment();
     Bundle args = new Bundle();
-    args.putSerializable(ARG_USER_SETTINGS, userSettings);
+    args.putSerializable(BaseActivity.ARG_USER_SETTINGS, userSettings);
     fragment.setArguments(args);
     return fragment;
   }
@@ -88,7 +87,7 @@ public class MatchListFragment extends Fragment {
 
     Bundle arguments = getArguments();
     if (arguments != null) {
-      mSettings = (UserSetting) arguments.getSerializable(ARG_USER_SETTINGS);
+      mSettings = (UserSetting) arguments.getSerializable(BaseActivity.ARG_USER_SETTINGS);
     } else {
       Log.d(TAG, "Arguments were null.");
     }
@@ -213,7 +212,7 @@ public class MatchListFragment extends Fragment {
     public void onClick(View view) {
 
       Log.d(TAG, "++MatchSummaryHolder::onClick(View)");
-      mCallback.onSelected(mMatchSummary.MatchId);
+      mCallback.onSelected(mMatchSummary.MatchDate);
     }
   }
 }
