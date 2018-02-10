@@ -2,9 +2,7 @@ package net.frostedbytes.android.trendo.models;
 
 import com.google.firebase.database.Exclude;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import net.frostedbytes.android.trendo.BaseActivity;
 
@@ -16,17 +14,17 @@ public class Trend implements Serializable {
   /**
    * List containing the accumulated goals scored against.
    */
-  public List<Long> GoalsAgainst;
+  public HashMap<String, Long> GoalsAgainstMap;
 
   /**
    * List containing the accumulated goal differential.
    */
-  public List<Long> GoalDifferential;
+  public HashMap<String, Long> GoalDifferentialMap;
 
   /**
    * List containing the accumulated goals scored.
    */
-  public List<Long> GoalsFor;
+  public HashMap<String, Long> GoalsForMap;
 
   /**
    * Date of match (in ticks).
@@ -41,7 +39,7 @@ public class Trend implements Serializable {
   /**
    * List containing the accumulated points per game.
    */
-  public List<Double> PointsPerGame;
+  public HashMap<String, Double> PointsPerGameMap;
 
   /**
    * Identifier of team this trend is for.
@@ -51,7 +49,7 @@ public class Trend implements Serializable {
   /**
    * List containing the accumulated total points.
    */
-  public List<Long> TotalPoints;
+  public HashMap<String, Long> TotalPointsMap;
 
   /**
    * Constructs a new Trend object with default values.
@@ -59,14 +57,14 @@ public class Trend implements Serializable {
   public Trend() {
 
     // Default constructor required for calls to DataSnapshot.getValue(Trend.class)
-    this.GoalsAgainst = new ArrayList<>();
-    this.GoalDifferential = new ArrayList<>();
-    this.GoalsFor = new ArrayList<>();
+    this.GoalsAgainstMap = new HashMap<>();
+    this.GoalDifferentialMap = new HashMap<>();
+    this.GoalsForMap = new HashMap<>();
     this.MatchDate = 0;
     this.MatchId = BaseActivity.DEFAULT_ID;
-    this.PointsPerGame = new ArrayList<>();
+    this.PointsPerGameMap = new HashMap<>();
     this.TeamName = "";
-    this.TotalPoints = new ArrayList<>();
+    this.TotalPointsMap = new HashMap<>();
   }
 
   /**
@@ -76,13 +74,13 @@ public class Trend implements Serializable {
   public Map<String, Object> toMap() {
 
     HashMap<String, Object> result = new HashMap<>();
-    result.put("GoalsAgainst", GoalsAgainst);
-    result.put("GoalDifferential", GoalDifferential);
-    result.put("GoalsFor", GoalsFor);
+    result.put("GoalsAgainstMap", GoalsAgainstMap);
+    result.put("GoalDifferentialMap", GoalDifferentialMap);
+    result.put("GoalsForMap", GoalsForMap);
     result.put("MatchDate", MatchDate);
-    result.put("PointsPerGame", PointsPerGame);
+    result.put("PointsPerGameMap", PointsPerGameMap);
     result.put("TeamName", TeamName);
-    result.put("TotalPoints", TotalPoints);
+    result.put("TotalPointsMap", TotalPointsMap);
 
     return result;
   }

@@ -9,12 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.XAxis.XAxisPosition;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import net.frostedbytes.android.trendo.R;
 
@@ -22,25 +25,14 @@ public class LineChartFragment extends Fragment {
 
   private static final String TAG = "LineChartFragment";
 
-  static final String ARG_DOUBLE_ARRAY = "double_array";
-  static final String ARG_LONG_ARRAY = "long_array";
+  static final String ARG_DATA_VALUES = "data_values";
 
-  public static LineChartFragment newInstance(long[] dataPoints) {
+  public static LineChartFragment newInstance(HashMap<String, Long> dataPoints) {
 
-    Log.d(TAG, "++newInstance(List<Long>)");
+    Log.d(TAG, "++newInstance(HashMap<String, Long>)");
     LineChartFragment fragment = new LineChartFragment();
     Bundle args = new Bundle();
-    args.putLongArray(ARG_LONG_ARRAY, dataPoints);
-    fragment.setArguments(args);
-    return fragment;
-  }
-
-  public static LineChartFragment newInstance(double[] dataPoints) {
-
-    Log.d(TAG, "++newInstance(List<Long>)");
-    LineChartFragment fragment = new LineChartFragment();
-    Bundle args = new Bundle();
-    args.putDoubleArray(ARG_DOUBLE_ARRAY, dataPoints);
+    args.putSerializable(ARG_DATA_VALUES, dataPoints);
     fragment.setArguments(args);
     return fragment;
   }
@@ -55,34 +47,34 @@ public class LineChartFragment extends Fragment {
     List<Entry> entries = new ArrayList<>();
     long minimum = 0;
     int matchDays = 1;
+    HashMap<String, Long> dataValues = new HashMap<>();
     Bundle arguments = getArguments();
     if (arguments != null) {
-      if (arguments.containsKey(ARG_DOUBLE_ARRAY)) {
-        double[] dataPoints = getArguments().getDoubleArray(ARG_DOUBLE_ARRAY);
-        for (Double dataPoint : dataPoints) {
-          if (dataPoint < minimum) {
-            minimum = dataPoint.longValue();
+      try {
+        dataValues = (HashMap<String, Long>) arguments.getSerializable(ARG_DATA_VALUES);
+
+        List<String> sortedKeys = new ArrayList(dataValues.keySet());
+        Collections.sort(sortedKeys);
+
+        // key is the match date, get the month
+        Calendar calendar = Calendar.getInstance();
+        for (String sortedKey : sortedKeys) {
+          calendar.setTimeInMillis(Long.parseLong(sortedKey));
+
+          if (dataValues.get(sortedKey).longValue() < minimum) {
+            minimum = dataValues.get(sortedKey).longValue();
           }
 
-          entries.add(new Entry(matchDays, dataPoint.floatValue()));
-          matchDays++;
+          entries.add(new Entry(matchDays++, dataValues.get(sortedKey).longValue()));
         }
-      } else if (arguments.containsKey(ARG_LONG_ARRAY)) {
-        long[] dataPoints = getArguments().getLongArray(ARG_LONG_ARRAY);
-        for (Long dataPoint : dataPoints) {
-          if (dataPoint < minimum) {
-            minimum = dataPoint;
-          }
-
-          entries.add(new Entry(matchDays, dataPoint));
-          matchDays++;
-        }
+      } catch (ClassCastException cce) {
+        Log.d(TAG, cce.getMessage());
       }
     }
 
-
     LineDataSet dataSet = new LineDataSet(entries, ""); // add entries to data set
     dataSet.setColor(Color.RED);
+    dataSet.setLineWidth(2.0f);
     dataSet.disableDashedLine();
     dataSet.setDrawCircles(false);
     dataSet.setDrawValues(false);
@@ -92,15 +84,16 @@ public class LineChartFragment extends Fragment {
 
     chart.getDescription().setEnabled(false);
 
-    chart.getAxisLeft().setAxisMinimum(minimum); // TODO: make minimum just a little less (but not too much)
-    chart.getAxisLeft().setPosition(YAxisLabelPosition.OUTSIDE_CHART);
-    chart.getAxisLeft().setDrawGridLines(false);
+    YAxis yAxis = chart.getAxisLeft();
+    yAxis.setAxisMinimum(minimum < 0 ? (minimum - .5f) : minimum);
+    yAxis.setPosition(YAxisLabelPosition.OUTSIDE_CHART);
+    yAxis.setDrawGridLines(true);
 
-    chart.getXAxis().setDrawGridLines(false);
-    chart.getXAxis().setPosition(XAxisPosition.BOTTOM);
-
+    chart.getXAxis().setEnabled(false);
     chart.getAxisRight().setEnabled(false);
     chart.getLegend().setEnabled(false);
+
+    // TODO: chart contains all matches to date, highlight the specific match the user clicked
 
     chart.invalidate(); // refresh
 

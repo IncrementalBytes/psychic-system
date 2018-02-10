@@ -51,7 +51,7 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
 
     mSettings = new UserSetting();
     mUserId = getIntent().getStringExtra(BaseActivity.ARG_USER);
-    mSettingsQuery = FirebaseDatabase.getInstance().getReference().child("Settings").child(mUserId);
+    mSettingsQuery = FirebaseDatabase.getInstance().getReference().child(UserSetting.ROOT).child(mUserId);
     mSettingsValueListener = new ValueEventListener() {
 
       @Override
@@ -97,6 +97,9 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
       case android.R.id.home:
         if (mFragmentManager.getBackStackEntryCount() > 0) {
           mFragmentManager.popBackStack();
+        } else {
+          mActionBar.setDisplayHomeAsUpEnabled(false);
+          onGatheringSettingsComplete();
         }
 
         return true;
@@ -135,6 +138,7 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
 
     Log.d(TAG, String.format("++onPopulated(%1d)", size));
     if (mActionBar != null) {
+      mActionBar.setDisplayHomeAsUpEnabled(false);
       mActionBar.setSubtitle(getResources().getQuantityString(R.plurals.subtitle,size, mSettings.TeamShortName, size));
     }
 
@@ -146,6 +150,7 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
 
     Log.d(TAG, String.format("++onSelected(%1s)", matchId));
     if (mActionBar != null) {
+      mActionBar.setDisplayHomeAsUpEnabled(true);
       mActionBar.setSubtitle("");
     }
 
@@ -162,6 +167,7 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
     Log.d(TAG, "++onSettingsClicked()");
     if (mActionBar != null) {
       mActionBar.setDisplayHomeAsUpEnabled(true);
+      mActionBar.setSubtitle("Settings");
     }
 
     Fragment fragment = UserSettingFragment.newInstance(mUserId);
@@ -179,6 +185,7 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
       Log.d(TAG, "No team settings information found; starting settings fragment.");
       if (mActionBar != null) {
         mActionBar.setDisplayHomeAsUpEnabled(true);
+        mActionBar.setSubtitle("");
       }
 
       Fragment fragment = UserSettingFragment.newInstance(mUserId);
@@ -189,7 +196,7 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
     } else {
       Log.d(TAG, "User settings found; starting match list fragment.");
       if (mActionBar != null) {
-        mActionBar.setDisplayHomeAsUpEnabled(true);
+        mActionBar.setDisplayHomeAsUpEnabled(false);
       }
 
       showProgressDialog("Querying...");

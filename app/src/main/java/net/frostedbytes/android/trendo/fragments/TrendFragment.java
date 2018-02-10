@@ -121,15 +121,15 @@ public class TrendFragment extends Fragment {
 
         switch (position) {
           case 0: // fragment # 0 - this will show total points
-            return LineChartFragment.newInstance(mTrend.TotalPoints.stream().mapToLong(Long::longValue).toArray());
+            return LineChartFragment.newInstance(mTrend.TotalPointsMap);
           case 1: // fragment # 1 - this will show points per game
-            return LineChartFragment.newInstance(mTrend.PointsPerGame.stream().mapToDouble(Double::doubleValue).toArray());
+            //return LineChartFragment.newInstance(mTrend.PointsPerGameMap);
           case 2: // fragment # 2 - this will show goals against
-            return LineChartFragment.newInstance(mTrend.GoalsAgainst.stream().mapToLong(Long::longValue).toArray());
+            return LineChartFragment.newInstance(mTrend.GoalsAgainstMap);
           case 3: // fragment # 3 - this will show goals for
-            return LineChartFragment.newInstance(mTrend.GoalsFor.stream().mapToLong(Long::longValue).toArray());
+            return LineChartFragment.newInstance(mTrend.GoalsForMap);
           case 4: // fragment # 4 - this will show goal differential
-            return LineChartFragment.newInstance(mTrend.GoalDifferential.stream().mapToLong(Long::longValue).toArray());
+            return LineChartFragment.newInstance(mTrend.GoalDifferentialMap);
           default:
             return null;
         }

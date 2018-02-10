@@ -47,17 +47,6 @@ public class UserSetting implements Serializable {
   }
 
   /**
-   * Default copy constructor for creating a new UserSetting object based on an existing UserSetting object.
-   * @param settings Existing UserSetting object
-   */
-  public UserSetting(UserSetting settings) {
-
-    this.Id = settings.Id;
-    this.TeamShortName = settings.TeamShortName;
-    this.Year = settings.Year;
-  }
-
-  /**
    * Compares this UserSetting with another UserSetting.
    * @param compareTo UserSetting to compare this UserSetting against
    * @return TRUE if this UserSetting equals the other UserSetting, otherwise FALSE

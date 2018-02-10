@@ -204,11 +204,12 @@ public class GenerateUnitTest {
   private List<Trend> generateTrends(List<MatchSummary> matchSummaries) {
 
     List<Trend> trends = new ArrayList<>();
-    List<Long> goalsAgainstList = new ArrayList<>();
-    List<Long> goalsForList = new ArrayList<>();
-    List<Long> goalDifferentialsList = new ArrayList<>();
-    List<Long> totalPointsList = new ArrayList<>();
-    List<Double> pointsPerGameList = new ArrayList<>();
+    Map<String, Long> goalsAgainstMap = new HashMap<>();
+    Map<String, Long> goalsForMap = new HashMap<>();
+    Map<String, Long> goalDifferentialMap = new HashMap<>();
+    Map<String, Long> totalPointsMap = new HashMap<>();
+    Map<String, Double> pointsPerGameMap = new HashMap<>();
+
     for (MatchSummary summary : matchSummaries) {
       Trend newTrend = new Trend();
       long goalsAgainst;
@@ -247,32 +248,47 @@ public class GenerateUnitTest {
       long prevGoalFor = 0;
       long prevTotalPoints = 0;
       if (!trends.isEmpty()) {
-        prevGoalAgainst = goalsAgainstList.get(goalsAgainstList.size() - 1);
-        prevGoalDifferential = goalDifferentialsList.get(goalDifferentialsList.size() - 1);
-        prevGoalFor = goalsForList.get(goalsForList.size() - 1);
-        prevTotalPoints = totalPointsList.get(totalPointsList.size() - 1);
+//        prevGoalAgainst = goalsAgainstList.get(goalsAgainstList.size() - 1);
+//        prevGoalDifferential = goalDifferentialList.get(goalDifferentialList.size() - 1);
+//        prevGoalFor = goalsForList.get(goalsForList.size() - 1);
+//        prevTotalPoints = totalPointsList.get(totalPointsList.size() - 1);
       }
 
-      goalsAgainstList.add(goalsAgainst + prevGoalAgainst);
-      newTrend.GoalsAgainst = new ArrayList<>(goalsAgainstList);
+      //goalsAgainstList.add(goalsAgainst + prevGoalAgainst);
+      goalsAgainstMap.put(String.valueOf(summary.MatchDate), goalsAgainst + prevGoalAgainst);
+      prevGoalAgainst = goalsAgainst;
+      //newTrend.GoalsAgainst = new ArrayList<>(goalsAgainstList);
+      newTrend.GoalsAgainstMap = new HashMap<>(goalsAgainstMap);
 
-      goalDifferentialsList.add(goalDifferential + prevGoalDifferential);
-      newTrend.GoalDifferential = new ArrayList<>(goalDifferentialsList);
+      //goalDifferentialList.add(goalDifferential + prevGoalDifferential);
+      goalDifferentialMap.put(String.valueOf(summary.MatchDate), goalDifferential + prevGoalDifferential);
+      prevGoalDifferential = goalDifferential;
+      //newTrend.GoalDifferential = new ArrayList<>(goalDifferentialList);
+      newTrend.GoalDifferentialMap = new HashMap<>(goalDifferentialMap);
 
-      goalsForList.add(goalsFor + prevGoalFor);
-      newTrend.GoalsFor = new ArrayList<>(goalsForList);
+      //goalsForList.add(goalsFor + prevGoalFor);
+      goalsForMap.put(String.valueOf(summary.MatchDate), goalsFor + prevGoalFor);
+      prevGoalFor = goalsFor;
+      //newTrend.GoalsFor = new ArrayList<>(goalsForList);
+      newTrend.GoalsForMap = new HashMap<>(goalsForMap);
 
-      totalPointsList.add(totalPoints + prevTotalPoints);
-      newTrend.TotalPoints = new ArrayList<>(totalPointsList);
+      //totalPointsList.add(totalPoints + prevTotalPoints);
+      totalPointsMap.put(String.valueOf(summary.MatchDate), totalPoints);
+      //prevTotalPoints = totalPoints;
+      //newTrend.TotalPoints = new ArrayList<>(totalPointsList);
+      newTrend.TotalPointsMap = new HashMap<>(totalPointsMap);
 
       double result = (double) totalPoints;
       if (!trends.isEmpty()) {
         // already added this match to the total points
-        result = (totalPointsList.get(totalPointsList.size() - 1)) / (double) (totalPointsList.size());
+        //result = (totalPointsList.get(totalPointsList.size() - 1)) / (double) (totalPointsList.size());
+        result = (totalPoints) / (double) (totalPointsMap.size());
       }
 
-      pointsPerGameList.add(result);
-      newTrend.PointsPerGame = new ArrayList<>(pointsPerGameList);
+      //pointsPerGameList.add(result);
+      pointsPerGameMap.put(String.valueOf(summary.MatchDate), result);
+      //newTrend.PointsPerGame = new ArrayList<>(pointsPerGameList);
+      newTrend.PointsPerGameMap = new HashMap<>(pointsPerGameMap);
 
       newTrend.MatchDate = summary.MatchDate;
       newTrend.MatchId = summary.MatchId;

@@ -2,6 +2,9 @@ package net.frostedbytes.android.trendo.models;
 
 import com.google.firebase.database.Exclude;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import net.frostedbytes.android.trendo.BaseActivity;
@@ -76,5 +79,18 @@ public class MatchSummary implements Serializable {
     result.put("MatchDate", MatchDate);
 
     return result;
+  }
+
+  /**
+   * Returns a user-friendly readable string of the date.
+   *
+   * @param date - Date; in ticks
+   * @return - User-friendly readable string of the date; formatted YYYY-MM-DD
+   */
+  public static String formatDateForDisplay(long date) {
+
+    Date temp = new Date(date);
+    DateFormat dateFormat = SimpleDateFormat.getDateInstance();
+    return dateFormat.format(temp);
   }
 }

@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import net.frostedbytes.android.trendo.R;
-import net.frostedbytes.android.trendo.models.Match;
 import net.frostedbytes.android.trendo.models.MatchSummary;
 import net.frostedbytes.android.trendo.models.UserSetting;
 
@@ -170,11 +169,6 @@ public class MatchListFragment extends Fragment {
 
     @Override
     public int getItemCount() { return mMatchSummaries.size(); }
-
-    void setMatchSummaries(List<MatchSummary> matchSummaries) {
-
-      mMatchSummaries = matchSummaries;
-    }
   }
 
   private class MatchSummaryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -205,7 +199,7 @@ public class MatchListFragment extends Fragment {
           "%1s vs %2s",
           mMatchSummary.HomeTeamName,
           mMatchSummary.AwayTeamName));
-      mMatchDateTextView.setText(Match.formatDateForDisplay(mMatchSummary.MatchDate));
+      mMatchDateTextView.setText(MatchSummary.formatDateForDisplay(mMatchSummary.MatchDate));
       mMatchScoreTextView.setText(
         String.format(
           Locale.getDefault(),
