@@ -24,5 +24,8 @@ public class UserSettingUnitTest {
 
     UserSetting testSettings = new UserSetting();
     Map<String, Object> mappedTrend = testSettings.toMap();
+    assertEquals(mappedTrend.get("TeamShortName"), "");
+    Calendar calendar = Calendar.getInstance();
+    assertEquals(mappedTrend.get("Year"), calendar.get(Calendar.YEAR));
   }
 }

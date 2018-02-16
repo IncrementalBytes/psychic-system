@@ -8,19 +8,17 @@ import com.google.firebase.crash.FirebaseCrash;
 
 public class BaseActivity extends AppCompatActivity {
 
-  public static final String ARG_VALUES_DOUBLE = "values_double";
-  public static final String ARG_VALUES_LONG = "values_long";
   public static final String ARG_MATCH_DATE = "match_date";
+  public static final String ARG_TREND = "trend";
   public static final String ARG_USER = "user";
+  public static final String ARG_USER_ID = "user_id";
   public static final String ARG_USER_SETTINGS = "user_settings";
-
   public static final String DEFAULT_ID = "000000000-0000-0000-0000-000000000000";
-  public static final int NUM_TRENDS = 5;
+  public static final int NUM_TRENDS = 2;
 
   private static final String TAG = "BaseActivity";
 
   private ProgressDialog mProgressDialog;
-
 
   @Override
   public void onCreate(Bundle saved) {

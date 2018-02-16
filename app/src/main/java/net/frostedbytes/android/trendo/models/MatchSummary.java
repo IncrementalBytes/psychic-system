@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import net.frostedbytes.android.trendo.BaseActivity;
 
@@ -89,8 +90,24 @@ public class MatchSummary implements Serializable {
    */
   public static String formatDateForDisplay(long date) {
 
+    return formatDateForDisplay(date, false);
+  }
+
+  /**
+   * Returns a user-friendly readable string of the date.
+   *
+   * @param date - Date; in ticks
+   * @param abbreviated - User-friendly readable string is an abbreviated version, if TRUE.
+   * @return - User-friendly readable string of the date; formatted YYYY-MM-DD, or MM/DD (abbreviated)
+   */
+  public static String formatDateForDisplay(long date, boolean abbreviated) {
+
     Date temp = new Date(date);
     DateFormat dateFormat = SimpleDateFormat.getDateInstance();
+    if (abbreviated) {
+      dateFormat = new SimpleDateFormat("MM/dd", Locale.getDefault());
+    }
+
     return dateFormat.format(temp);
   }
 }

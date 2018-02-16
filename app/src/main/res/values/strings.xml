@@ -1,6 +1,7 @@
 <resources>
   <string name="app_name">Trends</string>
   <string name="placeholder">TBD</string> <!-- if this string is shown, something needs updating -->
+  <string name="settings">Settings</string>
   <string name="logout">Logout</string>
   <string name="hint_email">Type email</string>
   <string name="hint_password">Type password</string>
@@ -9,10 +10,22 @@
   <string name="desc_locked">App requires authentication before continuing</string>
   <string name="settings_select_year">Select year:</string>
   <string name="save">Save</string>
-  <string name="err_settings_failed">Unable to save settings data.</string>
   <plurals name="subtitle">
     <item quantity="one">%s - %d match</item>
     <item quantity="other">%s - %d matches</item>
   </plurals>
   <string name="string_settings_select_year">Select team:</string>
+  <string name="logout_message">Are you sure you want to log out?</string>
+  <string name="full_time">FT</string>
+  <string name="in_progress">In Progress</string>
+  <string name="forgot_password">Forgot password? Tap here.</string>
+  <string name="goals_against">Against</string>
+  <string name="goals_for">For</string>
+  <string name="goal_differential">Differential</string>
+  <string name="total_points">Total Points</string>
+  <string name="points_per_game">Points Per Game</string>
+  <!-- ERROR MESSAGES -->
+  <string name="err_settings_failed">Unable to save settings data.</string>
+  <string name="err_missing_team_selection">Please select a team.</string>
+  <string name="err_missing_year_selection">Please select a year.</string>
 </resources>

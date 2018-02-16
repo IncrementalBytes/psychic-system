@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +27,7 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
   private static final String TAG = "MatchListActivity";
 
   private ActionBar mActionBar;
+  private MenuItem mSettingsMenuItem;
 
   FragmentManager mFragmentManager;
 
@@ -42,6 +45,9 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
     setContentView(R.layout.activity_match_list);
 
     showProgressDialog("Initializing...");
+
+    Toolbar toolbar = findViewById(R.id.main_toolbar);
+    setSupportActionBar(toolbar);
     mActionBar = getSupportActionBar();
     if (mActionBar != null) {
       mActionBar.setDisplayShowHomeEnabled(true);
@@ -86,6 +92,7 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
 
     Log.d(TAG, "++onCreateOptionsMenu(Menu)");
     getMenuInflater().inflate(R.menu.menu_main, menu);
+    mSettingsMenuItem = menu.findItem(R.id.menu_item_settings);
     return true;
   }
 
@@ -102,11 +109,40 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
           onGatheringSettingsComplete();
         }
 
+        if (mSettingsMenuItem != null) {
+          mSettingsMenuItem.setVisible(true);
+        }
+
         return true;
-      case R.id.action_logout:
-        FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(this, SignInActivity.class));
-        finish();
+      case R.id.menu_item_settings:
+        if (mActionBar != null) {
+          mActionBar.setDisplayHomeAsUpEnabled(true);
+          mActionBar.setSubtitle("Settings");
+        }
+
+        if (mSettingsMenuItem != null) {
+          mSettingsMenuItem.setVisible(false);
+        }
+
+        Fragment fragment = UserSettingFragment.newInstance(mUserId);
+        FragmentTransaction transaction = mFragmentManager.beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment, "SETTINGS_FRAGMENT");
+        transaction.addToBackStack(null);
+        transaction.commit();
+        return true;
+      case R.id.menu_item_logout:
+        AlertDialog dialog = new AlertDialog.Builder(this)
+          .setMessage(R.string.logout_message)
+          .setPositiveButton(
+            android.R.string.yes,
+            (dialog1, which) -> {
+              FirebaseAuth.getInstance().signOut();
+              startActivity(new Intent(getApplicationContext(), SignInActivity.class));
+              finish();
+          })
+          .setNegativeButton(android.R.string.no, null)
+          .create();
+        dialog.show();
         return true;
       default:
         return super.onOptionsItemSelected(item);
@@ -119,6 +155,10 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
     Log.d(TAG, String.format("++onSettingsSaved(%1s, %2d)", userSettings.TeamShortName, userSettings.Year));
     if (mActionBar != null) {
       mActionBar.setDisplayHomeAsUpEnabled(false);
+    }
+
+    if (mSettingsMenuItem != null) {
+      mSettingsMenuItem.setVisible(true);
     }
 
     // remove settings fragment from stack; returning to match list fragment
@@ -161,22 +201,6 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
     transaction.commit();
   }
 
-  @Override
-  public void onSettingsClicked() {
-
-    Log.d(TAG, "++onSettingsClicked()");
-    if (mActionBar != null) {
-      mActionBar.setDisplayHomeAsUpEnabled(true);
-      mActionBar.setSubtitle("Settings");
-    }
-
-    Fragment fragment = UserSettingFragment.newInstance(mUserId);
-    FragmentTransaction transaction = mFragmentManager.beginTransaction();
-    transaction.replace(R.id.fragment_container, fragment, "SETTINGS_FRAGMENT");
-    transaction.addToBackStack(null);
-    transaction.commit();
-  }
-
   private void onGatheringSettingsComplete() {
 
     Log.d(TAG, "++onGatheringSettingsComplete()");
@@ -185,7 +209,7 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
       Log.d(TAG, "No team settings information found; starting settings fragment.");
       if (mActionBar != null) {
         mActionBar.setDisplayHomeAsUpEnabled(true);
-        mActionBar.setSubtitle("");
+        mActionBar.setSubtitle("Settings");
       }
 
       Fragment fragment = UserSettingFragment.newInstance(mUserId);

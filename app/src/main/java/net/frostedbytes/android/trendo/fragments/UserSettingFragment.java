@@ -8,8 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -29,8 +27,6 @@ public class UserSettingFragment extends Fragment {
 
   private static final String TAG = "UserSettingFragment";
 
-  static final String ARG_USER_ID = "user_id";
-
   public interface OnUserSettingListener {
 
     void onUserSettingSaved(UserSetting userSettings);
@@ -41,7 +37,6 @@ public class UserSettingFragment extends Fragment {
   private Spinner mTeamSpinner;
   private Spinner mYearSpinner;
   private TextView mErrorMessageText;
-  private Button mSaveButton;
 
   private Map<String, String> mTeamMappings;
   private String mUserId;
@@ -51,7 +46,7 @@ public class UserSettingFragment extends Fragment {
     Log.d(TAG, String.format("++newInstance(%1s)", userId));
     UserSettingFragment fragment = new UserSettingFragment();
     Bundle args = new Bundle();
-    args.putString(ARG_USER_ID, userId);
+    args.putString(BaseActivity.ARG_USER_ID, userId);
     fragment.setArguments(args);
     return fragment;
   }
@@ -64,7 +59,7 @@ public class UserSettingFragment extends Fragment {
 
     Bundle arguments = getArguments();
     if (arguments != null) {
-      mUserId = getArguments().getString(ARG_USER_ID);
+      mUserId = getArguments().getString(BaseActivity.ARG_USER_ID);
     } else {
       mUserId = BaseActivity.DEFAULT_ID;
     }
@@ -72,7 +67,7 @@ public class UserSettingFragment extends Fragment {
     mTeamSpinner = view.findViewById(R.id.settings_spinner_team);
     mYearSpinner = view.findViewById(R.id.settings_spinner_year);
     mErrorMessageText = view.findViewById(R.id.settings_text_error_message);
-    mSaveButton = view.findViewById(R.id.settings_button_save);
+    Button saveButton = view.findViewById(R.id.settings_button_save);
 
     mTeamMappings = new HashMap<>();
     String[] resourceItems = getResources().getStringArray(R.array.teams);
@@ -89,35 +84,40 @@ public class UserSettingFragment extends Fragment {
     Collections.sort(teams);
 
     // get a list of teams for the object adapter used by the spinner controls
-    ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<>(teams));
-    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    mTeamSpinner.setAdapter(adapter);
-    mTeamSpinner.setOnItemSelectedListener(spinnerListener);
+    if (getActivity() != null) {
+      ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<>(teams));
+      adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+      mTeamSpinner.setAdapter(adapter);
 
-    // get a list of teams for the object adapter used by the spinner controls
-    resourceItems = getResources().getStringArray(R.array.years);
-    adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, resourceItems);
-    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    mYearSpinner.setAdapter(adapter);
-    mYearSpinner.setOnItemSelectedListener(spinnerListener);
+      // get a list of teams for the object adapter used by the spinner controls
+      resourceItems = getResources().getStringArray(R.array.years);
+      adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, resourceItems);
+      adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+      mYearSpinner.setAdapter(adapter);
+    }
 
-    mSaveButton.setEnabled(false);
-    mSaveButton.setOnClickListener(view1 -> {
+    saveButton.setOnClickListener(view1 -> {
       Log.d(TAG, "++mSaveButton::onClick(View");
 
-      try {
-        UserSetting setting = new UserSetting();
-        setting.Id = mUserId;
-        setting.Year = Integer.parseInt(mYearSpinner.getSelectedItem().toString());
-        setting.TeamShortName = mTeamMappings.get(mTeamSpinner.getSelectedItem().toString());
-        Map<String, Object> postValues = setting.toMap();
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put(UserSetting.ROOT + "/" + mUserId, postValues);
-        FirebaseDatabase.getInstance().getReference().updateChildren(childUpdates);
+      if (mTeamSpinner.getSelectedItem().toString().isEmpty()) {
+        mErrorMessageText.setText(R.string.err_missing_team_selection);
+      } else if (mYearSpinner.getSelectedItem().toString().isEmpty()) {
+        mErrorMessageText.setText(R.string.err_missing_year_selection);
+      } else {
+        try {
+          UserSetting setting = new UserSetting();
+          setting.Id = mUserId;
+          setting.Year = Integer.parseInt(mYearSpinner.getSelectedItem().toString());
+          setting.TeamShortName = mTeamMappings.get(mTeamSpinner.getSelectedItem().toString());
+          Map<String, Object> postValues = setting.toMap();
+          Map<String, Object> childUpdates = new HashMap<>();
+          childUpdates.put(UserSetting.ROOT + "/" + mUserId, postValues);
+          FirebaseDatabase.getInstance().getReference().updateChildren(childUpdates);
 
-        mCallback.onUserSettingSaved(setting);
-      } catch (DatabaseException dex) {
-        mErrorMessageText.setText(R.string.err_settings_failed);
+          mCallback.onUserSettingSaved(setting);
+        } catch (DatabaseException dex) {
+          mErrorMessageText.setText(R.string.err_settings_failed);
+        }
       }
     });
 
@@ -127,34 +127,11 @@ public class UserSettingFragment extends Fragment {
   @Override
   public void onAttach(Context context) {
     super.onAttach(context);
+
     try {
       mCallback = (OnUserSettingListener) context;
     } catch (ClassCastException e) {
       throw new ClassCastException(context.toString() + " must implement onUserSettingSaved(UserSetting)");
     }
   }
-
-  private void validateForm() {
-
-    Log.d(TAG, "++validateForm()");
-    if (!mTeamSpinner.getSelectedItem().toString().isEmpty() && !mYearSpinner.getSelectedItem().toString().isEmpty()) {
-      mSaveButton.setEnabled(true);
-    } else {
-      mSaveButton.setEnabled(false);
-    }
-  }
-
-  private final OnItemSelectedListener spinnerListener = new OnItemSelectedListener() {
-
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-      validateForm();
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
-  };
 }

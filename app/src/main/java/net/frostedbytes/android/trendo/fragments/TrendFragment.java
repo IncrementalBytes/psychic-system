@@ -1,7 +1,6 @@
 package net.frostedbytes.android.trendo.fragments;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -55,10 +54,10 @@ public class TrendFragment extends Fragment {
     mViewPager = view.findViewById(R.id.trend_view_pager);
     mPagerTabStrip = view.findViewById(R.id.trend_view_pager_header);
 
-    mPagerTabStrip.setBackgroundColor(Color.rgb(240, 240, 240));
+//    mPagerTabStrip.setBackgroundColor(Color.rgb(240, 240, 240));
     mPagerTabStrip.getChildAt(1).setPadding(30, 15, 30, 15);
     mPagerTabStrip.setDrawFullUnderline(false);
-    mPagerTabStrip.setTabIndicatorColor(Color.rgb(240,240,240));
+//    mPagerTabStrip.setTabIndicatorColor(Color.rgb(240,240,240));
 
     return view;
   }
@@ -125,16 +124,10 @@ public class TrendFragment extends Fragment {
       public Fragment getItem(int position) {
 
         switch (position) {
-          case 0: // fragment # 0 - this will show total points
-            return LineChartFragment.newLongInstance(mTrend.TotalPoints, mMatchDate);
-          case 1: // fragment # 1 - this will show points per game
-            return LineChartFragment.newDoubleInstance(mTrend.PointsPerGame, mMatchDate);
-          case 2: // fragment # 2 - this will show goals against
-            return LineChartFragment.newLongInstance(mTrend.GoalsAgainst, mMatchDate);
-          case 3: // fragment # 3 - this will show goals for
-            return LineChartFragment.newLongInstance(mTrend.GoalsFor, mMatchDate);
-          case 4: // fragment # 4 - this will show goal differential
-            return LineChartFragment.newLongInstance(mTrend.GoalDifferential, mMatchDate);
+          case 0:
+            return GoalsLineChartFragment.newInstance(mTrend, mMatchDate);
+          case 1:
+            return PointsLineChartFragment.newInstance(mTrend, mMatchDate);
           default:
             return null;
         }
@@ -151,15 +144,9 @@ public class TrendFragment extends Fragment {
 
         switch (position) {
           case 0:
-            return "Total Points";
+            return "Goals";
           case 1:
-            return "Points per Game";
-          case 2:
-            return "Goals Against";
-          case 3:
-            return "Goals For";
-          case 4:
-            return "Goal Differential";
+            return "Points";
           default:
             return null;
         }

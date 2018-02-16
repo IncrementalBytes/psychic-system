@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import net.frostedbytes.android.trendo.models.User;
+import net.frostedbytes.android.trendo.views.TouchableTextView;
 
 public class SignInActivity extends BaseActivity implements View.OnClickListener {
 
@@ -35,6 +37,33 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     mAuth = FirebaseAuth.getInstance();
 
     mEmailEdit = findViewById(R.id.sign_in_edit_email);
+    TouchableTextView forgotPasswordText = findViewById(R.id.sign_in_text_forgot_password);
+    forgotPasswordText.setOnTouchListener((view, motionEvent) -> {
+
+      switch (motionEvent.getAction()) {
+        case MotionEvent.ACTION_DOWN:
+          String emailAddress = mEmailEdit.getText().toString();
+          if (!emailAddress.isEmpty() && emailAddress.contains("@")) {
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            auth.sendPasswordResetEmail(emailAddress)
+              .addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                  Toast.makeText(SignInActivity.this, "Reset email sent.", Toast.LENGTH_SHORT).show();
+                }
+              });
+          } else {
+            mEmailEdit.setError("Required");
+            return false;
+          }
+
+          return true;
+        case MotionEvent.ACTION_UP:
+          view.performClick();
+          return true;
+      }
+      return false;
+    });
+
     mPasswordEdit = findViewById(R.id.sign_in_edit_password);
     Button signInButton = findViewById(R.id.sign_in_button_sign_in);
     Button signUpButton = findViewById(R.id.sign_in_button_sign_up);

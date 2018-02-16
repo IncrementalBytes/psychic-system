@@ -1,9 +1,9 @@
 package net.frostedbytes.android.trendo.fragments;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,7 +33,6 @@ public class MatchListFragment extends Fragment {
 
     void onPopulated(int size);
     void onSelected(long matchDate);
-    void onSettingsClicked();
   }
 
   private UserSetting mSettings;
@@ -63,8 +62,6 @@ public class MatchListFragment extends Fragment {
     final View view = inflater.inflate(R.layout.fragment_match_list, container, false);
 
     mRecyclerView = view.findViewById(R.id.match_list_view);
-    FloatingActionButton settingsButton = view.findViewById(R.id.match_list_fab_settings);
-    settingsButton.setOnClickListener(buttonView -> mCallback.onSettingsClicked());
 
     final LinearLayoutManager manager = new LinearLayoutManager(getActivity());
     mRecyclerView.setLayoutManager(manager);
@@ -205,7 +202,13 @@ public class MatchListFragment extends Fragment {
           "%1d - %2d",
           mMatchSummary.HomeScore,
           mMatchSummary.AwayScore));
-      mMatchStatusTextView.setText(mMatchSummary.IsFinal ? "FT" : "In Progress");
+      if (mMatchSummary.IsFinal) {
+        mMatchStatusTextView.setText(R.string.full_time);
+        mMatchStatusTextView.setTypeface(null, Typeface.BOLD);
+      } else {
+        mMatchStatusTextView.setText(R.string.in_progress);
+        mMatchStatusTextView.setTypeface(null, Typeface.ITALIC);
+      }
     }
 
     @Override

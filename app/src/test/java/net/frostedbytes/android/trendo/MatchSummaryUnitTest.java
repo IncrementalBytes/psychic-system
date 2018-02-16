@@ -3,7 +3,6 @@ package net.frostedbytes.android.trendo;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Map;
 import net.frostedbytes.android.trendo.models.MatchSummary;
 import org.junit.Test;
@@ -18,15 +17,7 @@ public class MatchSummaryUnitTest {
     assertEquals(testSummary.HomeScore, 0);
     assertEquals(testSummary.MatchId, BaseActivity.DEFAULT_ID);
     assertEquals(testSummary.IsFinal, false);
-    Calendar calendar = Calendar.getInstance();
-    long matchDate = new GregorianCalendar(
-      calendar.get(Calendar.YEAR),
-      calendar.get(Calendar.MONTH),
-      calendar.get(Calendar.DAY_OF_MONTH),
-      0,
-      0,
-      0).getTimeInMillis();
-    assertEquals(testSummary.MatchDate, matchDate);
+    assertEquals(testSummary.MatchDate, 0);
     assertEquals(testSummary.HomeTeamName, "");
     assertEquals(testSummary.AwayTeamName, "");
   }
@@ -36,5 +27,19 @@ public class MatchSummaryUnitTest {
 
     MatchSummary testSummary = new MatchSummary();
     Map<String, Object> mappedSummary = testSummary.toMap();
+    assertEquals((long)mappedSummary.get("AwayScore"), 0);
+    assertEquals(mappedSummary.get("AwayTeamName"), "");
+    assertEquals((long)mappedSummary.get("HomeScore"), 0);
+    assertEquals(mappedSummary.get("HomeTeamName"), "");
+    assertEquals(mappedSummary.get("IsFinal"), false);
+    assertEquals((long)mappedSummary.get("MatchDate"), 0);
+  }
+
+  @Test
+  public void formatDateForDisplayTest() {
+    Calendar calendar = Calendar.getInstance();
+    long testDate = calendar.getTimeInMillis();
+    String formatted = MatchSummary.formatDateForDisplay(testDate);
+
   }
 }
