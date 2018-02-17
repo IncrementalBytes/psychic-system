@@ -6,11 +6,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Switch;
+import android.widget.Toast;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import net.frostedbytes.android.trendo.BaseActivity;
+import net.frostedbytes.android.trendo.utils.LogUtils;
 import net.frostedbytes.android.trendo.R;
 import net.frostedbytes.android.trendo.models.Trend;
 import net.frostedbytes.android.trendo.views.CustomMarkerView;
@@ -35,26 +36,24 @@ public class PointsLineChartFragment extends Fragment {
 
   private static final String TAG = "PointsLineChartFragment";
 
-  LineChart mLineChart;
-  Switch mTotalSwitch;
-  Switch mAverageSwitch;
+  private LineChart mLineChart;
+  private Switch mTotalSwitch;
+  private Switch mAverageSwitch;
 
-  List<Entry> mTotalEntries;
-  List<Entry> mAverageEntries;
-  long mHighlightDate;
-  Entry mHighlightedEntry;
+  private List<Entry> mTotalEntries;
+  private List<Entry> mAverageEntries;
+  private String mHighlightDate;
 
-  LineDataSet mTotalDataSet;
-  LineDataSet mAverageDataSet;
-  List<ILineDataSet> mDataSets;
+  private LineDataSet mTotalDataSet;
+  private LineDataSet mAverageDataSet;
 
-  public static PointsLineChartFragment newInstance(Trend trend, long matchDate) {
+  public static PointsLineChartFragment newInstance(Trend trend, String matchDate) {
 
-    Log.d(TAG, "++newInstance(Trend, long");
+    LogUtils.debug(TAG, "++newInstance(Trend, long");
     PointsLineChartFragment fragment = new PointsLineChartFragment();
     Bundle args = new Bundle();
     args.putSerializable(BaseActivity.ARG_TREND, trend);
-    args.putLong(BaseActivity.ARG_MATCH_DATE, matchDate);
+    args.putString(BaseActivity.ARG_MATCH_DATE, matchDate);
     fragment.setArguments(args);
     return fragment;
   }
@@ -64,7 +63,7 @@ public class PointsLineChartFragment extends Fragment {
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-    Log.d(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
+    LogUtils.debug(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
     View view = inflater.inflate(R.layout.fragment_line_chart, container, false);
     mLineChart = view.findViewById(R.id.line_chart);
     mTotalSwitch = view.findViewById(R.id.line_chart_switch_left);
@@ -88,6 +87,7 @@ public class PointsLineChartFragment extends Fragment {
     mTotalDataSet .setDrawValues(false);
     mTotalDataSet .setHighlightEnabled(true);
     mTotalDataSet .setDrawHighlightIndicators(true);
+    mTotalDataSet.setDrawHorizontalHighlightIndicator(false);
 
     mAverageDataSet = new LineDataSet(mAverageEntries, "Per Game"); // add entries to data set
     mAverageDataSet.setAxisDependency(AxisDependency.RIGHT);
@@ -98,35 +98,40 @@ public class PointsLineChartFragment extends Fragment {
     mAverageDataSet.setDrawValues(false);
     mAverageDataSet.setHighlightEnabled(true);
     mAverageDataSet.setDrawHighlightIndicators(true);
+    mAverageDataSet.setDrawHorizontalHighlightIndicator(false);
 
     mLineChart.getDescription().setEnabled(false);
 
-    YAxis leftAxis = mLineChart.getAxisLeft();
-    leftAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextPrimary));
-    leftAxis.setPosition(YAxisLabelPosition.OUTSIDE_CHART);
-    leftAxis.setDrawGridLines(false);
-    leftAxis.setDrawZeroLine(true);
+    if (getContext() != null) {
+      YAxis leftAxis = mLineChart.getAxisLeft();
+      leftAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextPrimary));
+      leftAxis.setPosition(YAxisLabelPosition.OUTSIDE_CHART);
+      leftAxis.setDrawGridLines(false);
+      leftAxis.setDrawZeroLine(true);
 
-    YAxis rightAxis = mLineChart.getAxisRight();
-    rightAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextPrimary));
-    rightAxis.setEnabled(true);
+      YAxis rightAxis = mLineChart.getAxisRight();
+      rightAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextPrimary));
+      rightAxis.setEnabled(true);
 
-    XAxis bottomAxis = mLineChart.getXAxis();
-    bottomAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextPrimary));
-    bottomAxis.setDrawGridLines(false);
-    bottomAxis.setPosition(XAxisPosition.BOTTOM);
-    bottomAxis.setEnabled(false);
+      XAxis bottomAxis = mLineChart.getXAxis();
+      bottomAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextPrimary));
+      bottomAxis.setDrawGridLines(false);
+      bottomAxis.setPosition(XAxisPosition.BOTTOM);
+      bottomAxis.setEnabled(false);
 
-    Legend legend = mLineChart.getLegend();
-    legend.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextPrimary));
-    legend.setEnabled(true);
+      Legend legend = mLineChart.getLegend();
+      legend.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextPrimary));
+      legend.setEnabled(true);
 
-    // TODO: what should we do when multiple values are drawn? reset marker to upper line?
-    CustomMarkerView customMaker = new CustomMarkerView(getContext(), R.layout.custom_marker);
-    customMaker.setChartView(mLineChart);
-    mLineChart.setMarker(customMaker);
+      // TODO: what should we do when multiple values are drawn? reset marker to upper line?
+      CustomMarkerView customMaker = new CustomMarkerView(getContext(), R.layout.custom_marker);
+      customMaker.setChartView(mLineChart);
+      mLineChart.setMarker(customMaker);
 
-    updateUI();
+      updateUI();
+    } else {
+      Toast.makeText(getContext(), "Could not get resource value.", Toast.LENGTH_SHORT).show();
+    }
 
     return view;
   }
@@ -135,58 +140,64 @@ public class PointsLineChartFragment extends Fragment {
   public void onAttach(Context context) {
     super.onAttach(context);
 
-    Log.d(TAG, "onAttach(Context)");
+    LogUtils.debug(TAG, "onAttach(Context)");
     mTotalEntries = new ArrayList<>();
     mAverageEntries = new ArrayList<>();
-    mHighlightDate = 0;
+    mHighlightDate = BaseActivity.DEFAULT_DATE;
 
-    // TODO: figure out match date mis-match between summary and sorted values
     Bundle arguments = getArguments();
-    if (arguments != null) {
-      mHighlightDate = arguments.getLong(BaseActivity.ARG_MATCH_DATE);
-      if (arguments.containsKey(BaseActivity.ARG_TREND)) {
-        Trend trend = new Trend();
-        try {
-          if (arguments.getSerializable(BaseActivity.ARG_TREND) != null) {
-            trend = (Trend) arguments.getSerializable(BaseActivity.ARG_TREND);
-          }
-        } catch (ClassCastException cce) {
-          Log.d(TAG, cce.getMessage());
-        }
+    if (arguments == null) {
+      Toast.makeText(context, "Did not receive details about match.", Toast.LENGTH_SHORT).show();
+      return;
+    }
 
-        List<String> sortedKeys = new ArrayList(trend != null ? trend.TotalPoints.keySet() : null);
-        Collections.sort(sortedKeys);
+    mHighlightDate = arguments.getString(BaseActivity.ARG_MATCH_DATE);
+    if (!arguments.containsKey(BaseActivity.ARG_TREND)) {
+      Toast.makeText(context, "Did not receive trend data.", Toast.LENGTH_SHORT).show();
+      return;
+    }
 
-        for (String sortedKey : sortedKeys) {
-          float sortedFloat = Float.parseFloat(sortedKey);
-          mTotalEntries.add(new Entry(sortedFloat, trend.TotalPoints.get(sortedKey)));
-          mAverageEntries.add(new Entry(sortedFloat, trend.PointsPerGame.get(sortedKey).floatValue()));
-
-          if (mHighlightDate == sortedFloat) {
-            mHighlightedEntry = new Entry(sortedFloat, trend.TotalPoints.get(sortedKey));
-          }
-        }
+    Trend trend = new Trend();
+    try {
+      if (arguments.getSerializable(BaseActivity.ARG_TREND) != null) {
+        trend = (Trend) arguments.getSerializable(BaseActivity.ARG_TREND);
       }
+    } catch (ClassCastException cce) {
+      LogUtils.debug(TAG, cce.getMessage());
+    }
+
+    if (trend == null) {
+      Toast.makeText(context, "Trend data unexpected.", Toast.LENGTH_SHORT).show();
+      return;
+    }
+
+    List<String> sortedKeys = new ArrayList(trend != null ? trend.TotalPoints.keySet() : null);
+    Collections.sort(sortedKeys);
+
+    for (String sortedKey : sortedKeys) {
+      String trimmedKey = sortedKey.substring(4, 8);
+      float sortedFloat = Float.parseFloat(trimmedKey);
+      mTotalEntries.add(new Entry(sortedFloat, trend.TotalPoints.get(sortedKey)));
+      mAverageEntries.add(new Entry(sortedFloat, trend.PointsPerGame.get(sortedKey).floatValue()));
     }
   }
 
   private void updateUI() {
 
-    Log.d(TAG, "++updateUI()");
-    mDataSets = new ArrayList<>();
+    LogUtils.debug(TAG, "++updateUI()");
+    List<ILineDataSet> dataSets = new ArrayList<>();
     if (mTotalSwitch.isChecked()) {
-      mDataSets.add(mTotalDataSet);
+      dataSets.add(mTotalDataSet);
     }
 
     if (mAverageSwitch.isChecked()) {
-      mDataSets.add(mAverageDataSet);
+      dataSets.add(mAverageDataSet);
     }
 
-    LineData lineData = new LineData(mDataSets);
+    LineData lineData = new LineData(dataSets);
     mLineChart.setData(lineData);
 
-    // TODO: can we only show vertical line?
-    Highlight highlight = new Highlight((float)mHighlightDate, 0, 0);
+    Highlight highlight = new Highlight(Float.parseFloat(mHighlightDate.substring(4, 8)), 0, 0);
     mLineChart.highlightValue(highlight, false);
 
     mLineChart.invalidate(); // refresh

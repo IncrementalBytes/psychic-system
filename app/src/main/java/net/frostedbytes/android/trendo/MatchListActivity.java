@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,10 +16,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import java.util.Locale;
 import net.frostedbytes.android.trendo.fragments.MatchListFragment;
 import net.frostedbytes.android.trendo.fragments.TrendFragment;
 import net.frostedbytes.android.trendo.fragments.UserSettingFragment;
 import net.frostedbytes.android.trendo.models.UserSetting;
+import net.frostedbytes.android.trendo.utils.LogUtils;
 
 public class MatchListActivity extends BaseActivity implements UserSettingFragment.OnUserSettingListener, MatchListFragment.OnMatchListListener {
 
@@ -29,7 +30,7 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
   private ActionBar mActionBar;
   private MenuItem mSettingsMenuItem;
 
-  FragmentManager mFragmentManager;
+  private FragmentManager mFragmentManager;
 
   private UserSetting mSettings;
   private String mUserId;
@@ -41,7 +42,7 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    Log.d(TAG, "++onCreate(Bundle)");
+    LogUtils.debug(TAG, "++onCreate(Bundle)");
     setContentView(R.layout.activity_match_list);
 
     showProgressDialog("Initializing...");
@@ -70,8 +71,8 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
       @Override
       public void onCancelled(DatabaseError databaseError) {
 
-        Log.d(TAG, "++onCancelled(DatabaseError)");
-        Log.e(TAG, databaseError.getMessage());
+        LogUtils.debug(TAG, "++onCancelled(DatabaseError)");
+        LogUtils.error(TAG, databaseError.getMessage());
       }
     };
     mSettingsQuery.addValueEventListener(mSettingsValueListener);
@@ -81,7 +82,7 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
   public void onDestroy() {
     super.onDestroy();
 
-    Log.d(TAG, "++onDestroy()");
+    LogUtils.debug(TAG, "++onDestroy()");
     if (mSettingsQuery != null && mSettingsValueListener != null) {
       mSettingsQuery.removeEventListener(mSettingsValueListener);
     }
@@ -90,7 +91,7 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
 
-    Log.d(TAG, "++onCreateOptionsMenu(Menu)");
+    LogUtils.debug(TAG, "++onCreateOptionsMenu(Menu)");
     getMenuInflater().inflate(R.menu.menu_main, menu);
     mSettingsMenuItem = menu.findItem(R.id.menu_item_settings);
     return true;
@@ -99,7 +100,7 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
 
-    Log.d(TAG, String.format("++onOptionsItemSelected(%1s)", item.getTitle()));
+    LogUtils.debug(TAG, String.format("++onOptionsItemSelected(%1s)", item.getTitle()));
     switch (item.getItemId()) {
       case android.R.id.home:
         if (mFragmentManager.getBackStackEntryCount() > 0) {
@@ -152,7 +153,7 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
   @Override
   public void onUserSettingSaved(UserSetting userSettings) {
 
-    Log.d(TAG, String.format("++onSettingsSaved(%1s, %2d)", userSettings.TeamShortName, userSettings.Year));
+    LogUtils.debug(TAG, String.format(Locale.getDefault(), "++onSettingsSaved(%1s, %2d)", userSettings.TeamShortName, userSettings.Year));
     if (mActionBar != null) {
       mActionBar.setDisplayHomeAsUpEnabled(false);
     }
@@ -176,7 +177,7 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
   @Override
   public void onPopulated(int size) {
 
-    Log.d(TAG, String.format("++onPopulated(%1d)", size));
+    LogUtils.debug(TAG, String.format(Locale.getDefault(), "++onPopulated(%1d)", size));
     if (mActionBar != null) {
       mActionBar.setDisplayHomeAsUpEnabled(false);
       mActionBar.setSubtitle(getResources().getQuantityString(R.plurals.subtitle,size, mSettings.TeamShortName, size));
@@ -186,9 +187,9 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
   }
 
   @Override
-  public void onSelected(long matchDate) {
+  public void onSelected(String matchDate) {
 
-    Log.d(TAG, String.format("++onSelected(%1d)", matchDate));
+    LogUtils.debug(TAG, String.format("++onSelected(%1s)", matchDate));
     if (mActionBar != null) {
       mActionBar.setDisplayHomeAsUpEnabled(true);
       mActionBar.setSubtitle("");
@@ -203,10 +204,10 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
 
   private void onGatheringSettingsComplete() {
 
-    Log.d(TAG, "++onGatheringSettingsComplete()");
+    LogUtils.debug(TAG, "++onGatheringSettingsComplete()");
     hideProgressDialog();
     if (mSettings == null || mSettings.TeamShortName.isEmpty()) {
-      Log.d(TAG, "No team settings information found; starting settings fragment.");
+      LogUtils.debug(TAG, "No team settings information found; starting settings fragment.");
       if (mActionBar != null) {
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setSubtitle("Settings");
@@ -218,7 +219,7 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
       transaction.addToBackStack(null);
       transaction.commit();
     } else {
-      Log.d(TAG, "User settings found; starting match list fragment.");
+      LogUtils.debug(TAG, "User settings found; starting match list fragment.");
       if (mActionBar != null) {
         mActionBar.setDisplayHomeAsUpEnabled(false);
       }

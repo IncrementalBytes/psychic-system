@@ -8,9 +8,9 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
-import java.util.Calendar;
+import java.util.Locale;
 import net.frostedbytes.android.trendo.R;
-import net.frostedbytes.android.trendo.models.MatchSummary;
+import net.frostedbytes.android.trendo.utils.DateUtils;
 
 public class CustomMarkerView extends MarkerView {
 
@@ -29,11 +29,7 @@ public class CustomMarkerView extends MarkerView {
       CandleEntry ce = (CandleEntry) entry;
       mMarkerText.setText(Utils.formatNumber(ce.getHigh(), 0, true));
     } else {
-      // WORKAROUND: entry values converted from long to float are slightly off
-      Calendar calendar = Calendar.getInstance();
-      calendar.setTimeInMillis((long)entry.getX());
-      calendar.add(Calendar.MINUTE, 1);
-      mMarkerText.setText(MatchSummary.formatDateForDisplay(calendar.getTimeInMillis(), true));
+      mMarkerText.setText(DateUtils.formatDateForDisplay(String.format(Locale.getDefault(), "%.0f", entry.getX()), true));
     }
 
     super.refreshContent(entry, highlight);

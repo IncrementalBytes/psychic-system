@@ -2,7 +2,6 @@ package net.frostedbytes.android.trendo;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Calendar;
 import java.util.Map;
 import net.frostedbytes.android.trendo.models.MatchSummary;
 import org.junit.Test;
@@ -17,7 +16,7 @@ public class MatchSummaryUnitTest {
     assertEquals(testSummary.HomeScore, 0);
     assertEquals(testSummary.MatchId, BaseActivity.DEFAULT_ID);
     assertEquals(testSummary.IsFinal, false);
-    assertEquals(testSummary.MatchDate, 0);
+    assertEquals(testSummary.MatchDate, BaseActivity.DEFAULT_DATE);
     assertEquals(testSummary.HomeTeamName, "");
     assertEquals(testSummary.AwayTeamName, "");
   }
@@ -33,13 +32,5 @@ public class MatchSummaryUnitTest {
     assertEquals(mappedSummary.get("HomeTeamName"), "");
     assertEquals(mappedSummary.get("IsFinal"), false);
     assertEquals((long)mappedSummary.get("MatchDate"), 0);
-  }
-
-  @Test
-  public void formatDateForDisplayTest() {
-    Calendar calendar = Calendar.getInstance();
-    long testDate = calendar.getTimeInMillis();
-    String formatted = MatchSummary.formatDateForDisplay(testDate);
-
   }
 }

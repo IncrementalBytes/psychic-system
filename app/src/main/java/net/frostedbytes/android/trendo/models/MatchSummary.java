@@ -2,11 +2,7 @@ package net.frostedbytes.android.trendo.models;
 
 import com.google.firebase.database.Exclude;
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import net.frostedbytes.android.trendo.BaseActivity;
 
@@ -48,7 +44,7 @@ public class MatchSummary implements Serializable {
   /**
    * Number of ticks representing the year, month, and date of this match.
    */
-  public long MatchDate;
+  public String MatchDate;
 
   /**
    * Constructs a new MatchSummary object with default values.
@@ -62,7 +58,7 @@ public class MatchSummary implements Serializable {
     this.HomeTeamName = "";
     this.IsFinal = false;
     this.MatchId = BaseActivity.DEFAULT_ID;
-    this.MatchDate = 0;
+    this.MatchDate = BaseActivity.DEFAULT_DATE;
   }
 
   /**
@@ -80,34 +76,5 @@ public class MatchSummary implements Serializable {
     result.put("MatchDate", MatchDate);
 
     return result;
-  }
-
-  /**
-   * Returns a user-friendly readable string of the date.
-   *
-   * @param date - Date; in ticks
-   * @return - User-friendly readable string of the date; formatted YYYY-MM-DD
-   */
-  public static String formatDateForDisplay(long date) {
-
-    return formatDateForDisplay(date, false);
-  }
-
-  /**
-   * Returns a user-friendly readable string of the date.
-   *
-   * @param date - Date; in ticks
-   * @param abbreviated - User-friendly readable string is an abbreviated version, if TRUE.
-   * @return - User-friendly readable string of the date; formatted YYYY-MM-DD, or MM/DD (abbreviated)
-   */
-  public static String formatDateForDisplay(long date, boolean abbreviated) {
-
-    Date temp = new Date(date);
-    DateFormat dateFormat = SimpleDateFormat.getDateInstance();
-    if (abbreviated) {
-      dateFormat = new SimpleDateFormat("MM/dd", Locale.getDefault());
-    }
-
-    return dateFormat.format(temp);
   }
 }

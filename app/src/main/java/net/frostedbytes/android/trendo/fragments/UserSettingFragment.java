@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.frostedbytes.android.trendo.BaseActivity;
+import net.frostedbytes.android.trendo.utils.LogUtils;
 import net.frostedbytes.android.trendo.R;
 import net.frostedbytes.android.trendo.models.UserSetting;
 
@@ -43,7 +43,7 @@ public class UserSettingFragment extends Fragment {
 
   public static UserSettingFragment newInstance(String userId) {
 
-    Log.d(TAG, String.format("++newInstance(%1s)", userId));
+    LogUtils.debug(TAG, String.format("++newInstance(%1s)", userId));
     UserSettingFragment fragment = new UserSettingFragment();
     Bundle args = new Bundle();
     args.putString(BaseActivity.ARG_USER_ID, userId);
@@ -54,7 +54,7 @@ public class UserSettingFragment extends Fragment {
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-    Log.d(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
+    LogUtils.debug(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
     View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
     Bundle arguments = getArguments();
@@ -76,7 +76,7 @@ public class UserSettingFragment extends Fragment {
       if (teamSegments.length == 2) {
         mTeamMappings.put(teamSegments[0], teamSegments[1]);
       } else {
-        Log.d(TAG, "Skipping unexpected entry: " + teamNameResource);
+        LogUtils.debug(TAG, "Skipping unexpected entry: " + teamNameResource);
       }
     }
 
@@ -97,7 +97,7 @@ public class UserSettingFragment extends Fragment {
     }
 
     saveButton.setOnClickListener(view1 -> {
-      Log.d(TAG, "++mSaveButton::onClick(View");
+      LogUtils.debug(TAG, "++mSaveButton::onClick(View");
 
       if (mTeamSpinner.getSelectedItem().toString().isEmpty()) {
         mErrorMessageText.setText(R.string.err_missing_team_selection);

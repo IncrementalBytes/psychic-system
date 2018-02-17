@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import net.frostedbytes.android.trendo.BaseActivity;
+import net.frostedbytes.android.trendo.utils.DateUtils;
+import net.frostedbytes.android.trendo.utils.LogUtils;
 import net.frostedbytes.android.trendo.R;
 import net.frostedbytes.android.trendo.models.MatchSummary;
 import net.frostedbytes.android.trendo.models.UserSetting;
@@ -32,7 +33,7 @@ public class MatchListFragment extends Fragment {
   public interface OnMatchListListener {
 
     void onPopulated(int size);
-    void onSelected(long matchDate);
+    void onSelected(String matchDate);
   }
 
   private UserSetting mSettings;
@@ -40,14 +41,14 @@ public class MatchListFragment extends Fragment {
 
   private RecyclerView mRecyclerView;
 
-  List<MatchSummary> mMatchSummaries;
+  private List<MatchSummary> mMatchSummaries;
 
   private Query mMatchSummaryQuery;
   private ValueEventListener mValueEventListener;
 
   public static MatchListFragment newInstance(UserSetting userSettings) {
 
-    Log.d(TAG, "++newInstance(Settings)");
+    LogUtils.debug(TAG, "++newInstance(Settings)");
     MatchListFragment fragment = new MatchListFragment();
     Bundle args = new Bundle();
     args.putSerializable(BaseActivity.ARG_USER_SETTINGS, userSettings);
@@ -58,7 +59,7 @@ public class MatchListFragment extends Fragment {
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-    Log.d(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
+    LogUtils.debug(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
     final View view = inflater.inflate(R.layout.fragment_match_list, container, false);
 
     mRecyclerView = view.findViewById(R.id.match_list_view);
@@ -75,7 +76,7 @@ public class MatchListFragment extends Fragment {
   public void onAttach(Context context) {
     super.onAttach(context);
 
-    Log.d(TAG, "++onAttach(Context)");
+    LogUtils.debug(TAG, "++onAttach(Context)");
     try {
       mCallback = (OnMatchListListener) context;
     } catch (ClassCastException e) {
@@ -86,12 +87,12 @@ public class MatchListFragment extends Fragment {
     if (arguments != null) {
       mSettings = (UserSetting) arguments.getSerializable(BaseActivity.ARG_USER_SETTINGS);
     } else {
-      Log.d(TAG, "Arguments were null.");
+      LogUtils.error(TAG, "Arguments were null.");
     }
 
     if (mSettings != null) {
       String queryPath = MatchSummary.ROOT + "/" + String.valueOf(mSettings.Year) + "/" + mSettings.TeamShortName;
-      Log.d(TAG, "Query: " + queryPath);
+      LogUtils.debug(TAG, "Query: " + queryPath);
       mMatchSummaryQuery = FirebaseDatabase.getInstance().getReference().child(queryPath).orderByChild("MatchDate");
       mValueEventListener = new ValueEventListener() {
         @Override
@@ -116,7 +117,7 @@ public class MatchListFragment extends Fragment {
       };
       mMatchSummaryQuery.addValueEventListener(mValueEventListener);
     } else {
-      Log.e(TAG, "Failed to get user settings from arguments.");
+      LogUtils.error(TAG, "Failed to get user settings from arguments.");
     }
   }
 
@@ -124,7 +125,7 @@ public class MatchListFragment extends Fragment {
   public void onDestroy() {
     super.onDestroy();
 
-    Log.d(TAG, "++onDestroy()");
+    LogUtils.debug(TAG, "++onDestroy()");
     if (mMatchSummaryQuery != null && mValueEventListener != null) {
       mMatchSummaryQuery.removeEventListener(mValueEventListener);
     }
@@ -133,7 +134,7 @@ public class MatchListFragment extends Fragment {
   private void updateUI() {
 
     if (mMatchSummaries != null) {
-      Log.d(TAG, "++updateUI()");
+      LogUtils.debug(TAG, "++updateUI()");
       MatchSummaryAdapter matchAdapter = new MatchSummaryAdapter(mMatchSummaries);
       mRecyclerView.setAdapter(matchAdapter);
       mCallback.onPopulated(matchAdapter.getItemCount());
@@ -195,7 +196,7 @@ public class MatchListFragment extends Fragment {
           "%1s vs %2s",
           mMatchSummary.HomeTeamName,
           mMatchSummary.AwayTeamName));
-      mMatchDateTextView.setText(MatchSummary.formatDateForDisplay(mMatchSummary.MatchDate));
+      mMatchDateTextView.setText(DateUtils.formatDateForDisplay(mMatchSummary.MatchDate));
       mMatchScoreTextView.setText(
         String.format(
           Locale.getDefault(),
@@ -214,7 +215,7 @@ public class MatchListFragment extends Fragment {
     @Override
     public void onClick(View view) {
 
-      Log.d(TAG, "++MatchSummaryHolder::onClick(View)");
+      LogUtils.debug(TAG, "++MatchSummaryHolder::onClick(View)");
       mCallback.onSelected(mMatchSummary.MatchDate);
     }
   }

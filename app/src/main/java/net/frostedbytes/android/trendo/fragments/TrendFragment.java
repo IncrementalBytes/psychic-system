@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import net.frostedbytes.android.trendo.BaseActivity;
+import net.frostedbytes.android.trendo.utils.LogUtils;
 import net.frostedbytes.android.trendo.R;
 import net.frostedbytes.android.trendo.models.Trend;
 import net.frostedbytes.android.trendo.models.UserSetting;
@@ -25,23 +25,23 @@ public class TrendFragment extends Fragment {
 
   private static final String TAG = "TrendFragment";
 
-  ViewPager mViewPager;
-  PagerTabStrip mPagerTabStrip;
+  private ViewPager mViewPager;
+  private PagerTabStrip mPagerTabStrip;
 
-  private long mMatchDate;
+  private String mMatchDate;
   private UserSetting mSettings;
   private static Trend mTrend;
 
   private Query mTrendQuery;
   private ValueEventListener mTrendValueListener;
 
-  public static TrendFragment newInstance(UserSetting userSettings, long matchDate) {
+  public static TrendFragment newInstance(UserSetting userSettings, String matchDate) {
 
-    Log.d(TAG, "++newInstance(String)");
+    LogUtils.debug(TAG, "++newInstance(String)");
     TrendFragment fragment = new TrendFragment();
     Bundle args = new Bundle();
     args.putSerializable(BaseActivity.ARG_USER_SETTINGS, userSettings);
-    args.putLong(BaseActivity.ARG_MATCH_DATE, matchDate);
+    args.putString(BaseActivity.ARG_MATCH_DATE, matchDate);
     fragment.setArguments(args);
     return fragment;
   }
@@ -49,15 +49,13 @@ public class TrendFragment extends Fragment {
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-    Log.d(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
+    LogUtils.debug(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
     View view = inflater.inflate(R.layout.fragment_trend, container, false);
     mViewPager = view.findViewById(R.id.trend_view_pager);
     mPagerTabStrip = view.findViewById(R.id.trend_view_pager_header);
 
-//    mPagerTabStrip.setBackgroundColor(Color.rgb(240, 240, 240));
     mPagerTabStrip.getChildAt(1).setPadding(30, 15, 30, 15);
     mPagerTabStrip.setDrawFullUnderline(false);
-//    mPagerTabStrip.setTabIndicatorColor(Color.rgb(240,240,240));
 
     return view;
   }
@@ -66,18 +64,18 @@ public class TrendFragment extends Fragment {
   public void onAttach(Context context) {
     super.onAttach(context);
 
-    Log.d(TAG, "++onAttach(Context)");
+    LogUtils.debug(TAG, "++onAttach(Context)");
     Bundle arguments = getArguments();
     if (arguments != null) {
-      mMatchDate = arguments.getLong(BaseActivity.ARG_MATCH_DATE);
+      mMatchDate = arguments.getString(BaseActivity.ARG_MATCH_DATE);
       mSettings = (UserSetting) arguments.getSerializable(BaseActivity.ARG_USER_SETTINGS);
     } else {
-      Log.d(TAG, "Arguments were null.");
+      LogUtils.debug(TAG, "Arguments were null.");
     }
 
     if (mSettings != null) {
       String queryPath = Trend.ROOT + "/" + String.valueOf(mSettings.Year) + "/" + mSettings.TeamShortName;
-      Log.d(TAG, "Query: " + queryPath);
+      LogUtils.debug(TAG, "Query: " + queryPath);
       mTrendQuery = FirebaseDatabase.getInstance().getReference().child(queryPath);
       mTrendValueListener = new ValueEventListener() {
 
@@ -88,20 +86,20 @@ public class TrendFragment extends Fragment {
           if (mTrend != null) {
             populateTrendData();
           } else {
-            Log.w(TAG, "Could not get trend data.");
+            LogUtils.warn(TAG, "Could not get trend data.");
           }
         }
 
         @Override
         public void onCancelled(DatabaseError databaseError) {
 
-          Log.e(TAG, databaseError.getDetails());
+          LogUtils.error(TAG, databaseError.getDetails());
         }
       };
       mTrendQuery.addValueEventListener(mTrendValueListener);
     }
     else {
-      Log.e(TAG, "Failed to get user settings from arguments.");
+      LogUtils.error(TAG, "Failed to get user settings from arguments.");
     }
   }
 
@@ -109,7 +107,7 @@ public class TrendFragment extends Fragment {
   public void onDestroy() {
     super.onDestroy();
 
-    Log.d(TAG, "++onDestroy()");
+    LogUtils.debug(TAG, "++onDestroy()");
     if (mTrendQuery != null && mTrendValueListener != null) {
       mTrendQuery.removeEventListener(mTrendValueListener);
     }
@@ -117,7 +115,7 @@ public class TrendFragment extends Fragment {
 
   private void populateTrendData() {
 
-    Log.d(TAG, "++populateTrendData()");
+    LogUtils.debug(TAG, "++populateTrendData()");
     mViewPager.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
 
       @Override

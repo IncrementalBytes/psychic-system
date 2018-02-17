@@ -9,8 +9,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,17 +87,6 @@ public class GenerateUnitTest {
     assertEquals(1, 1);
   }
 
-  private long convertDateToMilliseconds(String matchDate) {
-
-    int year = Integer.parseInt(matchDate.substring(0, 4));
-    int month = Integer.parseInt(matchDate.substring(4, 6));
-    int day = Integer.parseInt(matchDate.substring(6, 8));
-
-    // months are 0 index based
-    Date date = new GregorianCalendar(year, month - 1, day, 0, 0, 0).getTime();
-    return date.getTime();
-  }
-
   private List<MatchSummary> generateMatchSummaries() throws IOException {
 
     List<MatchSummary> matchSummaries = new ArrayList<>();
@@ -132,7 +119,6 @@ public class GenerateUnitTest {
       String homeTeam = elements.remove(0);
       String awayTeam = elements.remove(0);
       String dateString = elements.remove(0);
-      long convertedMatchDate = convertDateToMilliseconds(dateString);
       if (elements.isEmpty()) {
         continue;
       }
@@ -142,7 +128,7 @@ public class GenerateUnitTest {
         currentSummary.AwayTeamName = awayTeam;
         currentSummary.HomeScore = 0;
         currentSummary.HomeTeamName = homeTeam;
-        currentSummary.MatchDate = convertedMatchDate;
+        currentSummary.MatchDate = dateString;
         currentSummary.MatchId = UUID.randomUUID().toString();
       } else {
         System.out.println("Same match; progressing to match events.");
@@ -198,9 +184,9 @@ public class GenerateUnitTest {
     // arrange this list by match date
     matchSummaries.sort((summary1, summary2) -> {
 
-      if (summary1.MatchDate < summary2.MatchDate) {
+      if (summary1.MatchDate.compareTo(summary2.MatchDate) < 0) {
         return -1;
-      } else if (summary1.MatchDate > summary2.MatchDate) {
+      } else if (summary1.MatchDate.compareTo(summary2.MatchDate) > 0) {
         return 1;
       } else {
         return 0;

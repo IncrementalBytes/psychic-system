@@ -3,7 +3,6 @@ package net.frostedbytes.android.trendo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +14,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import net.frostedbytes.android.trendo.models.User;
+import net.frostedbytes.android.trendo.utils.LogUtils;
 import net.frostedbytes.android.trendo.views.TouchableTextView;
 
 public class SignInActivity extends BaseActivity implements View.OnClickListener {
@@ -31,7 +31,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    Log.d(TAG, "++onCreate(Bundle)");
+    LogUtils.debug(TAG, "++onCreate(Bundle)");
     setContentView(R.layout.activity_sign_in);
     mDatabase = FirebaseDatabase.getInstance().getReference();
     mAuth = FirebaseAuth.getInstance();
@@ -76,7 +76,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
   public void onStart() {
     super.onStart();
 
-    Log.d(TAG, "++onStart()");
+    LogUtils.debug(TAG, "++onStart()");
     if (mAuth.getCurrentUser() != null) {
       onAuthenticateSuccess(mAuth.getCurrentUser());
     }
@@ -85,7 +85,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
   @Override
   public void onClick(View view) {
 
-    Log.d(TAG, "++onClick()");
+    LogUtils.debug(TAG, "++onClick()");
     switch (view.getId()) {
       case R.id.sign_in_button_sign_in:
         signIn();
@@ -98,7 +98,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
   private void signIn() {
 
-    Log.d(TAG, "++::signIn()");
+    LogUtils.debug(TAG, "++::signIn()");
     if (!validateForm()) {
       return;
     }
@@ -108,7 +108,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     String password = mPasswordEdit.getText().toString();
     mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
 
-      Log.d(TAG, "Sign-In complete: " + task.isSuccessful());
+      LogUtils.debug(TAG, "Sign-In complete: " + task.isSuccessful());
       hideProgressDialog();
 
       if (task.isSuccessful()) {
@@ -121,7 +121,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
   private void signUp() {
 
-    Log.d(TAG, "++signUp()");
+    LogUtils.debug(TAG, "++signUp()");
     if (!validateForm()) {
       return;
     }
@@ -131,7 +131,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     String password = mPasswordEdit.getText().toString();
     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
 
-      Log.d(TAG, "Create user complete: " + task.isSuccessful());
+      LogUtils.debug(TAG, "Create user complete: " + task.isSuccessful());
       hideProgressDialog();
 
       if (task.isSuccessful()) {

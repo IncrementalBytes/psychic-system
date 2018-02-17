@@ -1,6 +1,5 @@
 package net.frostedbytes.android.trendo.models;
 
-import android.util.Log;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import java.io.Serializable;
@@ -8,6 +7,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import net.frostedbytes.android.trendo.BaseActivity;
+import net.frostedbytes.android.trendo.utils.LogUtils;
 
 @IgnoreExtraProperties
 public class UserSetting implements Serializable {
@@ -72,7 +72,7 @@ public class UserSetting implements Serializable {
           return true;
         }
       } catch (ClassCastException cce) {
-        Log.e(TAG, "Could not cast object to UserSetting class: " + cce.getMessage());
+        LogUtils.error(TAG, "Could not cast object to UserSetting class: " + cce.getMessage());
       }
     }
 
