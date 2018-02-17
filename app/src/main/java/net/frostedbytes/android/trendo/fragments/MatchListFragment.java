@@ -143,7 +143,7 @@ public class MatchListFragment extends Fragment {
 
   private class MatchSummaryAdapter extends RecyclerView.Adapter<MatchSummaryHolder> {
 
-    private List<MatchSummary> mMatchSummaries;
+    private final List<MatchSummary> mMatchSummaries;
 
     MatchSummaryAdapter(List<MatchSummary> matchSummaries) {
 

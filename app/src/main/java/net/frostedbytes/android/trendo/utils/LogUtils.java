@@ -1,6 +1,7 @@
 package net.frostedbytes.android.trendo.utils;
 
 import android.util.Log;
+import java.util.Locale;
 import net.frostedbytes.android.trendo.BuildConfig;
 
 /**
@@ -8,24 +9,24 @@ import net.frostedbytes.android.trendo.BuildConfig;
  */
 public class LogUtils {
 
-  public static void debug(final String tag, String message) {
+  public static void debug(final String tag, String messageFormat, Object... args) {
 
     if (BuildConfig.DEBUG) {
-      Log.d(tag, message);
+      Log.d(tag, String.format(Locale.getDefault(), messageFormat, args));
     }
   }
 
-  public static void error(final String tag, String message) {
+  public static void error(final String tag, String messageFormat, Object... args) {
 
     if (BuildConfig.DEBUG) {
-      Log.e(tag, message);
+      Log.e(tag, String.format(Locale.getDefault(), messageFormat, args));
     }
   }
 
-  public static void warn(final String tag, String message) {
+  public static void warn(final String tag, String messageFormat, Object... args) {
 
     if (BuildConfig.DEBUG) {
-      Log.w(tag, message);
+      Log.w(tag, String.format(Locale.getDefault(), messageFormat, args));
     }
   }
 }

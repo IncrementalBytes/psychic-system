@@ -26,7 +26,6 @@ public class TrendFragment extends Fragment {
   private static final String TAG = "TrendFragment";
 
   private ViewPager mViewPager;
-  private PagerTabStrip mPagerTabStrip;
 
   private String mMatchDate;
   private UserSetting mSettings;
@@ -52,10 +51,10 @@ public class TrendFragment extends Fragment {
     LogUtils.debug(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
     View view = inflater.inflate(R.layout.fragment_trend, container, false);
     mViewPager = view.findViewById(R.id.trend_view_pager);
-    mPagerTabStrip = view.findViewById(R.id.trend_view_pager_header);
+    PagerTabStrip pagerTabStrip = view.findViewById(R.id.trend_view_pager_header);
 
-    mPagerTabStrip.getChildAt(1).setPadding(30, 15, 30, 15);
-    mPagerTabStrip.setDrawFullUnderline(false);
+    pagerTabStrip.getChildAt(1).setPadding(30, 15, 30, 15);
+    pagerTabStrip.setDrawFullUnderline(false);
 
     return view;
   }

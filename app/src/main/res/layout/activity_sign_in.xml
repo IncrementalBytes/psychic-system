@@ -2,100 +2,135 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/activity_sign_in"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:layout_gravity="center_horizontal|center_vertical"
   android:paddingTop="@dimen/activity_vertical_margin"
   android:paddingBottom="@dimen/activity_vertical_margin"
   android:paddingLeft="@dimen/activity_horizontal_margin"
   android:paddingRight="@dimen/activity_horizontal_margin"
   tools:context="net.frostedbytes.android.trendo.SignInActivity">
 
-  <android.support.constraint.ConstraintLayout
-    android:id="@+id/sign_in_row_header"
-    android:layout_width="match_parent"
+  <TextView
+    android:id="@+id/sign_in_text_welcome"
+    android:textStyle="bold"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/activity_vertical_margin"
+    android:layout_margin="@dimen/default_view_margin"
+    android:gravity="center"
+    android:text="@string/app_name"
+    android:textAllCaps="true"
+    android:textSize="24sp"
     app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintBottom_toTopOf="@id/sign_in_row_email">
-    <ImageView
-      android:id="@+id/sign_in_image_lock"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_margin="@dimen/image_margin"
-      android:contentDescription="@string/desc_locked"
-      android:src="@drawable/ic_lock_dark"/>
-  </android.support.constraint.ConstraintLayout>
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toStartOf="parent"/>
+  <ImageView
+    android:id="@+id/sign_in_image_lock"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    android:contentDescription="@string/desc_locked"
+    android:src="@drawable/ic_lock_dark"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/sign_in_text_welcome"/>
 
-  <android.support.constraint.ConstraintLayout
-    android:id="@+id/sign_in_row_email"
+  <EditText
+    android:id="@+id/sign_in_edit_email"
+    android:layout_width="180dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    android:ellipsize="end"
+    android:gravity="center"
+    android:hint="@string/hint_email"
+    android:inputType="textEmailAddress"
+    android:maxLines="1"
+    app:layout_constraintEnd_toStartOf="@+id/sign_in_edit_password"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/sign_in_image_lock"/>
+
+  <EditText
+    android:id="@+id/sign_in_edit_password"
+    android:layout_width="180dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    android:layout_marginStart="4dp"
+    android:ellipsize="end"
+    android:gravity="center"
+    android:hint="@string/hint_password"
+    android:inputType="textPassword"
+    android:maxLines="1"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@+id/sign_in_edit_email"
+    app:layout_constraintTop_toBottomOf="@id/sign_in_image_lock"/>
+
+  <net.frostedbytes.android.trendo.views.TouchableTextView
+    android:id="@+id/sign_in_text_forgot_password"
+    android:textStyle="italic"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/activity_vertical_margin"
-    app:layout_constraintTop_toBottomOf="@id/sign_in_row_header"
-    app:layout_constraintBottom_toTopOf="@id/sign_in_row_password">
-    <EditText
-      android:id="@+id/sign_in_edit_email"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_margin="@dimen/edit_margin"
-      android:ellipsize="end"
-      android:gravity="center"
-      android:hint="@string/hint_email"
-      android:inputType="textEmailAddress"
-      android:maxLines="1"
-      app:layout_constraintBottom_toTopOf="@id/sign_in_text_forgot_password"/>
-    <net.frostedbytes.android.trendo.views.TouchableTextView
-      android:id="@+id/sign_in_text_forgot_password"
-      android:textStyle="italic"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_margin="@dimen/activity_vertical_margin"
-      android:clickable="true"
-      android:gravity="center"
-      android:text="@string/forgot_password"
-      android:focusable="true"
-      app:layout_constraintTop_toBottomOf="@id/sign_in_edit_email"/>
-  </android.support.constraint.ConstraintLayout>
-
-  <android.support.constraint.ConstraintLayout
-    android:id="@+id/sign_in_row_password"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/activity_vertical_margin"
-    app:layout_constraintTop_toBottomOf="@id/sign_in_row_email">
-    <EditText
-      android:id="@+id/sign_in_edit_password"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_margin="@dimen/edit_margin"
-      android:ellipsize="end"
-      android:gravity="center"
-      android:hint="@string/hint_password"
-      android:inputType="textPassword"
-      android:maxLines="1"/>
-  </android.support.constraint.ConstraintLayout>
+    android:layout_margin="@dimen/default_view_margin"
+    android:layout_marginTop="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="start"
+    android:text="@string/forgot_password"
+    android:textSize="12sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/sign_in_button_sign_in"/>
 
   <Button
     android:id="@+id/sign_in_button_sign_in"
     style="@style/Widget.AppCompat.Button.Borderless"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
+    android:layout_margin="@dimen/default_view_margin"
+    android:layout_marginTop="8dp"
     android:text="@string/sign_in"
     android:textColor="@color/colorAccent"
-    app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toStartOf="@+id/sign_in_button_sign_up"
-    app:layout_constraintStart_toStartOf="parent"/>
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/sign_in_edit_email"/>
+
   <Button
     android:id="@+id/sign_in_button_sign_up"
     style="@style/Widget.AppCompat.Button.Borderless"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
+    android:layout_margin="@dimen/default_view_margin"
+    android:layout_marginTop="8dp"
     android:text="@string/sign_up"
     android:textColor="@color/colorAccent"
-    app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toEndOf="@+id/sign_in_button_sign_in"/>
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toEndOf="@+id/sign_in_button_sign_in"
+    app:layout_constraintTop_toBottomOf="@+id/sign_in_edit_password"/>
+
+  <TextView
+    android:id="@+id/sign_in_text_or"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    android:text="@string/sign_in_or"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/sign_in_text_forgot_password"/>
+
+  <com.google.android.gms.common.SignInButton
+    android:id="@+id/sign_in_button_google"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/sign_in_text_or"/>
 
 </android.support.constraint.ConstraintLayout>

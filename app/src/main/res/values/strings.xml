@@ -5,6 +5,7 @@
   <string name="logout">Logout</string>
   <string name="hint_email">Type email</string>
   <string name="hint_password">Type password</string>
+  <string name="sign_in_or">- OR -</string>
   <string name="sign_in">Sign-In</string>
   <string name="sign_up">Sign Up</string>
   <string name="desc_locked">App requires authentication before continuing</string>
@@ -28,4 +29,6 @@
   <string name="err_settings_failed">Unable to save settings data.</string>
   <string name="err_missing_team_selection">Please select a team.</string>
   <string name="err_missing_year_selection">Please select a year.</string>
+  <string name="status_authenticating">Authenticating…</string>
+  <string name="status_processing">Processing…</string>
 </resources>

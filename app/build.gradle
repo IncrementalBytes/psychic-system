@@ -57,7 +57,7 @@ dependencies {
     // Firebase UI
     compile 'com.firebaseui:firebase-ui-database:3.1.0'
     // Testing dependencies
-    testImplementation 'org.robolectric:robolectric:3.4.2'
+    testImplementation 'org.robolectric:robolectric:3.6.1'
     testImplementation 'junit:junit:4.12'
     testImplementation 'com.google.code.gson:gson:2.8.2'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {

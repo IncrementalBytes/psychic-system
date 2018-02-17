@@ -2,6 +2,7 @@ package net.frostedbytes.android.trendo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,13 +11,17 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import java.util.Locale;
 import net.frostedbytes.android.trendo.fragments.MatchListFragment;
 import net.frostedbytes.android.trendo.fragments.TrendFragment;
 import net.frostedbytes.android.trendo.fragments.UserSettingFragment;
@@ -134,13 +139,24 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
       case R.id.menu_item_logout:
         AlertDialog dialog = new AlertDialog.Builder(this)
           .setMessage(R.string.logout_message)
-          .setPositiveButton(
-            android.R.string.yes,
-            (dialog1, which) -> {
+          .setPositiveButton(android.R.string.yes, (dialog1, which) -> {
+
+              // sign out of firebase
               FirebaseAuth.getInstance().signOut();
-              startActivity(new Intent(getApplicationContext(), SignInActivity.class));
-              finish();
-          })
+
+              // sign out of google, if necessary
+              GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+              GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, gso);
+              googleSignInClient.signOut().addOnCompleteListener(this, task -> {
+
+                  // return to sign-in activity
+                  startActivity(new Intent(getApplicationContext(), SignInActivity.class));
+                  finish();
+                });
+            })
           .setNegativeButton(android.R.string.no, null)
           .create();
         dialog.show();
@@ -153,7 +169,7 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
   @Override
   public void onUserSettingSaved(UserSetting userSettings) {
 
-    LogUtils.debug(TAG, String.format(Locale.getDefault(), "++onSettingsSaved(%1s, %2d)", userSettings.TeamShortName, userSettings.Year));
+    LogUtils.debug(TAG, "++onSettingsSaved(%1s, %2d)", userSettings.TeamShortName, userSettings.Year);
     if (mActionBar != null) {
       mActionBar.setDisplayHomeAsUpEnabled(false);
     }
@@ -177,7 +193,7 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
   @Override
   public void onPopulated(int size) {
 
-    LogUtils.debug(TAG, String.format(Locale.getDefault(), "++onPopulated(%1d)", size));
+    LogUtils.debug(TAG, "++onPopulated(%1d)", size);
     if (mActionBar != null) {
       mActionBar.setDisplayHomeAsUpEnabled(false);
       mActionBar.setSubtitle(getResources().getQuantityString(R.plurals.subtitle,size, mSettings.TeamShortName, size));
@@ -189,10 +205,14 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
   @Override
   public void onSelected(String matchDate) {
 
-    LogUtils.debug(TAG, String.format("++onSelected(%1s)", matchDate));
+    LogUtils.debug(TAG, "++onSelected(%1s)", matchDate);
     if (mActionBar != null) {
       mActionBar.setDisplayHomeAsUpEnabled(true);
       mActionBar.setSubtitle("");
+    }
+
+    if (mSettingsMenuItem != null) {
+      mSettingsMenuItem.setVisible(false);
     }
 
     Fragment fragment = TrendFragment.newInstance(mSettings, matchDate);

@@ -43,7 +43,7 @@ public class UserSettingFragment extends Fragment {
 
   public static UserSettingFragment newInstance(String userId) {
 
-    LogUtils.debug(TAG, String.format("++newInstance(%1s)", userId));
+    LogUtils.debug(TAG, "++newInstance(%1s)", userId);
     UserSettingFragment fragment = new UserSettingFragment();
     Bundle args = new Bundle();
     args.putString(BaseActivity.ARG_USER_ID, userId);
