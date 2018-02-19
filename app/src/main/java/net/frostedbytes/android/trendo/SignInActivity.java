@@ -6,17 +6,17 @@ import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,14 +24,14 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import net.frostedbytes.android.trendo.utils.LogUtils;
 import net.frostedbytes.android.trendo.views.TouchableTextView;
 
-public class SignInActivity extends BaseActivity implements View.OnClickListener {
+public class SignInActivity extends BaseActivity implements OnClickListener {
 
   private static final String TAG = "SignInActivity";
 
   private static final int RC_SIGN_IN = 4701;
 
   private FirebaseAuth mAuth;
-  private GoogleSignInClient mGoogleSignInClient;
+  private GoogleApiClient mGoogleApiClient;
 
   private EditText mEmailEdit;
   private EditText mPasswordEdit;
@@ -85,7 +85,15 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
       .requestIdToken(getString(R.string.default_web_client_id))
       .requestEmail()
       .build();
-    mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+    mGoogleApiClient = new GoogleApiClient.Builder(this)
+      .enableAutoManage(this, connectionResult -> {
+        LogUtils.debug(TAG, "++onConnectionFailed(ConnectionResult");
+        LogUtils.debug(TAG, connectionResult.getErrorMessage());
+        Toast.makeText(SignInActivity.this, connectionResult.getErrorMessage(), Toast.LENGTH_SHORT).show();
+      })
+      .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+      .build();
   }
 
   @Override
@@ -121,13 +129,14 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     LogUtils.debug(TAG, "++onActivityResult(%1d, %2d, Intent)", requestCode, resultCode);
     if (requestCode == RC_SIGN_IN) {
-      Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-      try {
-        GoogleSignInAccount account = task.getResult(ApiException.class);
+      GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+      if (result.isSuccess()) {
+        GoogleSignInAccount account = result.getSignInAccount();
         firebaseAuthenticateWithGoogle(account);
-      } catch (ApiException e) {
-        LogUtils.warn(TAG, "Getting task result failed: %1s", e.getMessage());
-        Snackbar.make(findViewById(R.id.activity_sign_in), "Google sign in failed.", Snackbar.LENGTH_SHORT).show();
+      }
+      else {
+        LogUtils.warn(TAG, "Getting task result failed: %1s", result.getStatus());
+        Snackbar.make(findViewById(R.id.activity_sign_in), "Google sign in failed: " + result.getStatus(), Snackbar.LENGTH_SHORT).show();
       }
     }
   }
@@ -172,7 +181,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
           TAG,
           "Sign-In with email failed: %1s",
           task.getException() != null ? task.getException().getMessage() : "");
-        Snackbar.make(findViewById(R.id.activity_sign_in), "Email Sign-in failed.", Toast.LENGTH_SHORT).show();
+        Snackbar.make(findViewById(R.id.activity_sign_in), "Email Sign-in failed.", Snackbar.LENGTH_SHORT).show();
       }
 
       hideProgressDialog();
@@ -182,7 +191,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
   private void signInWithGoogle() {
 
     LogUtils.debug(TAG, "++signInWithGoogle()");
-    Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+    Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
     startActivityForResult(signInIntent, RC_SIGN_IN);
   }
 
@@ -205,7 +214,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
           TAG,
           "Sign up with email failed: %1s",
           task.getException() != null ? task.getException().getMessage() : "");
-        Snackbar.make(findViewById(R.id.activity_sign_in), "Sign Up Failed", Toast.LENGTH_SHORT).show();
+        Snackbar.make(findViewById(R.id.activity_sign_in), "Sign Up Failed", Snackbar.LENGTH_SHORT).show();
       }
 
       hideProgressDialog();

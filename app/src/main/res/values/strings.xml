@@ -29,6 +29,9 @@
   <string name="err_settings_failed">Unable to save settings data.</string>
   <string name="err_missing_team_selection">Please select a team.</string>
   <string name="err_missing_year_selection">Please select a year.</string>
-  <string name="status_authenticating">Authenticating…</string>
+  <!-- STATUS MESSAGES -->
   <string name="status_processing">Processing…</string>
+  <string name="status_authenticating">Authenticating…</string>
+  <string name="status_initializing">Initializing…</string>
+  <string name="status_querying">Querying…</string>
 </resources>

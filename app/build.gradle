@@ -1,19 +1,32 @@
 apply plugin: 'com.android.application'
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "net.frostedbytes.android.trendo"
         minSdkVersion 24
         targetSdkVersion 27
-        versionCode 1
-        versionName "0.9"
+        versionCode 7
+        versionName "0.9.006"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    signingConfigs {
+        config {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
         debug {
             ext.enableCrashlytics = false
@@ -48,6 +61,7 @@ dependencies {
     // Google
     implementation 'com.google.android.gms:play-services-auth:11.8.0'
     // Firebase
+    compile 'com.google.firebase:firebase-core:11.8.0'
     compile 'com.google.firebase:firebase-database:11.8.0'
     compile 'com.google.firebase:firebase-auth:11.8.0'
     compile 'com.google.firebase:firebase-config:11.8.0'

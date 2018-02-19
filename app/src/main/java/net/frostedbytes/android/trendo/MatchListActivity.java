@@ -47,7 +47,7 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
     LogUtils.debug(TAG, "++onCreate(Bundle)");
     setContentView(R.layout.activity_match_list);
 
-    showProgressDialog("Initializing...");
+    showProgressDialog(getString(R.string.status_initializing));
 
     Toolbar toolbar = findViewById(R.id.main_toolbar);
     setSupportActionBar(toolbar);
@@ -241,7 +241,7 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
         mActionBar.setDisplayHomeAsUpEnabled(false);
       }
 
-      showProgressDialog("Querying...");
+      showProgressDialog(getString(R.string.status_querying));
       Fragment fragment = MatchListFragment.newInstance(mSettings);
       FragmentTransaction transaction = mFragmentManager.beginTransaction();
       transaction.replace(R.id.fragment_container, fragment, "MATCH_LIST_FRAGMENT");
