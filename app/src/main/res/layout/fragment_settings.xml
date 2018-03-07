@@ -64,6 +64,31 @@
     app:layout_constraintHorizontal_weight="1.5"
     app:layout_constraintTop_toBottomOf="@id/settings_text_year"/>
 
+  <CheckBox
+    android:id="@+id/settings_check_compare"
+    android:textStyle="bold"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:text="@string/compare_with"
+    android:textColor="@color/colorAccent"
+    app:layout_constraintTop_toBottomOf="@id/settings_spinner_year"/>
+  <Spinner
+    android:id="@+id/settings_spinner_compare"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:maxLines="1"
+    android:spinnerMode="dialog"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_weight="1.5"
+    app:layout_constraintTop_toBottomOf="@id/settings_check_compare"/>
+
   <TextView
     android:id="@+id/settings_text_error_message"
     android:layout_width="match_parent"

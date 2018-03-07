@@ -22,20 +22,20 @@ import com.google.firebase.database.ValueEventListener;
 import net.frostedbytes.android.trendo.fragments.MatchListFragment;
 import net.frostedbytes.android.trendo.fragments.TrendFragment;
 import net.frostedbytes.android.trendo.fragments.UserSettingFragment;
+import net.frostedbytes.android.trendo.models.MatchSummary;
 import net.frostedbytes.android.trendo.models.UserSetting;
 import net.frostedbytes.android.trendo.utils.LogUtils;
 
-public class MatchListActivity extends BaseActivity implements UserSettingFragment.OnUserSettingListener, MatchListFragment.OnMatchListListener {
+public class MainActivity extends BaseActivity implements UserSettingFragment.OnUserSettingListener, MatchListFragment.OnMatchListListener {
 
-  private static final String TAG = "MatchListActivity";
+  private static final String TAG = MainActivity.class.getSimpleName();
 
   private ActionBar mActionBar;
   private MenuItem mSettingsMenuItem;
 
   private FragmentManager mFragmentManager;
 
-  private UserSetting mSettings;
-  private String mUserId;
+  private UserSetting mUserSettings;
 
   private Query mSettingsQuery;
   private ValueEventListener mSettingsValueListener;
@@ -58,15 +58,20 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
 
     mFragmentManager = getSupportFragmentManager();
 
-    mSettings = new UserSetting();
-    mUserId = getIntent().getStringExtra(BaseActivity.ARG_USER);
-    mSettingsQuery = FirebaseDatabase.getInstance().getReference().child(UserSetting.ROOT).child(mUserId);
+    mUserSettings = new UserSetting();
+    mUserSettings.UserId = getIntent().getStringExtra(BaseActivity.ARG_USER);
+    mSettingsQuery = FirebaseDatabase.getInstance().getReference().child(UserSetting.ROOT).child(mUserSettings.UserId);
     mSettingsValueListener = new ValueEventListener() {
 
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
 
-        mSettings = dataSnapshot.getValue(UserSetting.class);
+        UserSetting userSettings = dataSnapshot.getValue(UserSetting.class);
+        if (userSettings != null) {
+          mUserSettings = userSettings;
+          mUserSettings.UserId = dataSnapshot.getKey();
+        }
+
         onGatheringSettingsComplete();
       }
 
@@ -88,6 +93,8 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
     if (mSettingsQuery != null && mSettingsValueListener != null) {
       mSettingsQuery.removeEventListener(mSettingsValueListener);
     }
+
+    mUserSettings = null;
   }
 
   @Override
@@ -118,20 +125,7 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
 
         return true;
       case R.id.menu_item_settings:
-        if (mActionBar != null) {
-          mActionBar.setDisplayHomeAsUpEnabled(true);
-          mActionBar.setSubtitle("Settings");
-        }
-
-        if (mSettingsMenuItem != null) {
-          mSettingsMenuItem.setVisible(false);
-        }
-
-        Fragment fragment = UserSettingFragment.newInstance(mUserId);
-        FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment, "SETTINGS_FRAGMENT");
-        transaction.addToBackStack(null);
-        transaction.commit();
+        showSettingsFragment();
         return true;
       case R.id.menu_item_logout:
         AlertDialog dialog = new AlertDialog.Builder(this)
@@ -180,9 +174,9 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
       mFragmentManager.popBackStack();
     }
 
-    if (!userSettings.equals(mSettings)) {
+    if (!userSettings.equals(mUserSettings)) {
       // settings have changed, signal that to match list fragment
-      mSettings = userSettings;
+      mUserSettings = userSettings;
       onGatheringSettingsComplete();
     }
   }
@@ -193,16 +187,16 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
     LogUtils.debug(TAG, "++onPopulated(%1d)", size);
     if (mActionBar != null) {
       mActionBar.setDisplayHomeAsUpEnabled(false);
-      mActionBar.setSubtitle(getResources().getQuantityString(R.plurals.subtitle,size, mSettings.TeamShortName, size));
+      mActionBar.setSubtitle(getResources().getQuantityString(R.plurals.subtitle,size, mUserSettings.TeamShortName, size));
     }
 
     hideProgressDialog();
   }
 
   @Override
-  public void onSelected(String matchDate) {
+  public void onSelected(MatchSummary matchSummary) {
 
-    LogUtils.debug(TAG, "++onSelected(%1s)", matchDate);
+    LogUtils.debug(TAG, "++onSelected(MatchSummary)");
     if (mActionBar != null) {
       mActionBar.setDisplayHomeAsUpEnabled(true);
       mActionBar.setSubtitle("");
@@ -212,7 +206,7 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
       mSettingsMenuItem.setVisible(false);
     }
 
-    Fragment fragment = TrendFragment.newInstance(mSettings, matchDate);
+    Fragment fragment = TrendFragment.newInstance(mUserSettings, matchSummary);
     FragmentTransaction transaction = mFragmentManager.beginTransaction();
     transaction.replace(R.id.fragment_container, fragment, "TREND_FRAGMENT");
     transaction.addToBackStack(null);
@@ -223,18 +217,9 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
 
     LogUtils.debug(TAG, "++onGatheringSettingsComplete()");
     hideProgressDialog();
-    if (mSettings == null || mSettings.TeamShortName.isEmpty()) {
+    if (mUserSettings == null || mUserSettings.TeamShortName.isEmpty()) {
       LogUtils.debug(TAG, "No team settings information found; starting settings fragment.");
-      if (mActionBar != null) {
-        mActionBar.setDisplayHomeAsUpEnabled(true);
-        mActionBar.setSubtitle("Settings");
-      }
-
-      Fragment fragment = UserSettingFragment.newInstance(mUserId);
-      FragmentTransaction transaction = mFragmentManager.beginTransaction();
-      transaction.replace(R.id.fragment_container, fragment, "SETTINGS_FRAGMENT");
-      transaction.addToBackStack(null);
-      transaction.commit();
+      showSettingsFragment();
     } else {
       LogUtils.debug(TAG, "User settings found; starting match list fragment.");
       if (mActionBar != null) {
@@ -242,11 +227,30 @@ public class MatchListActivity extends BaseActivity implements UserSettingFragme
       }
 
       showProgressDialog(getString(R.string.status_querying));
-      Fragment fragment = MatchListFragment.newInstance(mSettings);
+      Fragment fragment = MatchListFragment.newInstance(mUserSettings);
       FragmentTransaction transaction = mFragmentManager.beginTransaction();
       transaction.replace(R.id.fragment_container, fragment, "MATCH_LIST_FRAGMENT");
       transaction.addToBackStack(null);
       transaction.commit();
     }
+  }
+
+  private void showSettingsFragment() {
+
+    LogUtils.debug(TAG, "++showSettingsFragment()");
+    if (mActionBar != null) {
+      mActionBar.setDisplayHomeAsUpEnabled(true);
+      mActionBar.setSubtitle("Settings");
+    }
+
+    if (mSettingsMenuItem != null) {
+      mSettingsMenuItem.setVisible(false);
+    }
+
+    Fragment fragment = UserSettingFragment.newInstance(mUserSettings);
+    FragmentTransaction transaction = mFragmentManager.beginTransaction();
+    transaction.replace(R.id.fragment_container, fragment, "SETTINGS_FRAGMENT");
+    transaction.addToBackStack(null);
+    transaction.commit();
   }
 }

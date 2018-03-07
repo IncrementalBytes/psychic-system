@@ -1,1 +1,8 @@
-SEA,LAFC,20180340
+Seattle Sounders FC,Los Angeles Football Club,20180304,goal,Los Angeles Football Club,11
+Seattle Sounders FC,Los Angeles Football Club,20180304,sub,Seattle Sounders FC,46,Román Torres,Magnus Wolff Eikrem
+Seattle Sounders FC,Los Angeles Football Club,20180304,sub,Seattle Sounders FC,64,Harry Shipp,Handwalla Bwana
+Seattle Sounders FC,Los Angeles Football Club,20180304,sub,Seattle Sounders FC,80,Jordy Delem,Lamar Neagle
+Seattle Sounders FC,Los Angeles Football Club,20180304,yellow,Seattle Sounders FC,80,Tony Alfaro
+Seattle Sounders FC,Los Angeles Football Club,20180304,red,Seattle Sounders FC,83,Tony Alfaro
+Seattle Sounders FC,Los Angeles Football Club,20180304,yellow,Seattle Sounders FC,93,Nouhou Tolo
+

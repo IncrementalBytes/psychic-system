@@ -26,7 +26,7 @@ import net.frostedbytes.android.trendo.views.TouchableTextView;
 
 public class SignInActivity extends BaseActivity implements OnClickListener {
 
-  private static final String TAG = "SignInActivity";
+  private static final String TAG = SignInActivity.class.getSimpleName();
 
   private static final int RC_SIGN_IN = 4701;
 
@@ -133,10 +133,9 @@ public class SignInActivity extends BaseActivity implements OnClickListener {
       if (result.isSuccess()) {
         GoogleSignInAccount account = result.getSignInAccount();
         firebaseAuthenticateWithGoogle(account);
-      }
-      else {
-        LogUtils.warn(TAG, "Getting task result failed: %1s", result.getStatus());
-        Snackbar.make(findViewById(R.id.activity_sign_in), "Google sign in failed: " + result.getStatus(), Snackbar.LENGTH_SHORT).show();
+      } else {
+        LogUtils.error(TAG, "Getting task result failed.", result.getStatus());
+        Snackbar.make(findViewById(R.id.activity_sign_in), "Could not sign-in with Google.", Snackbar.LENGTH_SHORT).show();
       }
     }
   }
@@ -151,7 +150,7 @@ public class SignInActivity extends BaseActivity implements OnClickListener {
         if (task.isSuccessful()) {
           onAuthenticateSuccess(mAuth.getCurrentUser());
         } else {
-          LogUtils.warn(
+          LogUtils.error(
             TAG,
             "Authenticating with Google account failed: %1s",
             task.getException() != null ? task.getException().getMessage() : "");
@@ -177,7 +176,7 @@ public class SignInActivity extends BaseActivity implements OnClickListener {
       if (task.isSuccessful()) {
         onAuthenticateSuccess(task.getResult().getUser());
       } else {
-        LogUtils.warn(
+        LogUtils.error(
           TAG,
           "Sign-In with email failed: %1s",
           task.getException() != null ? task.getException().getMessage() : "");
@@ -210,7 +209,7 @@ public class SignInActivity extends BaseActivity implements OnClickListener {
       if (task.isSuccessful()) {
         onAuthenticateSuccess(task.getResult().getUser());
       } else {
-        LogUtils.warn(
+        LogUtils.error(
           TAG,
           "Sign up with email failed: %1s",
           task.getException() != null ? task.getException().getMessage() : "");
@@ -224,7 +223,7 @@ public class SignInActivity extends BaseActivity implements OnClickListener {
   private void onAuthenticateSuccess(FirebaseUser user) {
 
     LogUtils.debug(TAG, "++onAuthenticateSuccess(%1s)", user.getDisplayName());
-    Intent intent = new Intent(SignInActivity.this, MatchListActivity.class);
+    Intent intent = new Intent(SignInActivity.this, MainActivity.class);
     intent.putExtra(BaseActivity.ARG_USER, user.getUid());
     startActivity(intent);
     finish();

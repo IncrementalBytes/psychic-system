@@ -23,10 +23,13 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.firebase.crash.FirebaseCrash;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import net.frostedbytes.android.trendo.BaseActivity;
+import net.frostedbytes.android.trendo.models.MatchSummary;
 import net.frostedbytes.android.trendo.utils.LogUtils;
 import net.frostedbytes.android.trendo.R;
 import net.frostedbytes.android.trendo.models.Trend;
@@ -34,34 +37,43 @@ import net.frostedbytes.android.trendo.views.CustomMarkerView;
 
 public class GoalsLineChartFragment extends Fragment {
 
-  private static final String TAG = "GoalsLineChartFragment";
+  private static final String TAG = GoalsLineChartFragment.class.getSimpleName();
 
-  private LineChart mLineChart;
   private Switch mAgainstSwitch;
   private Switch mDifferentialSwitch;
   private Switch mForSwitch;
+  private LineChart mLineChart;
 
-  private List<Entry> mAgainstEntries;
-  private List<Entry> mForEntries;
-  private List<Entry> mDifferentialEntries;
-  private String mHighlightDate;
-
-  private LineDataSet mForDataSet;
   private LineDataSet mAgainstDataSet;
+  private List<Entry> mAgainstEntries;
+  private Trend mCompare;
+  private LineDataSet mCompareAgainstDataSet;
+  private List<Entry> mCompareAgainstEntries;
+  private LineDataSet mCompareDifferentialDataSet;
+  private List<Entry> mCompareDifferentialEntries;
+  private LineDataSet mCompareForDataSet;
+  private List<Entry> mCompareForEntries;
   private LineDataSet mDifferentialDataSet;
+  private List<Entry> mDifferentialEntries;
+  private LineDataSet mForDataSet;
+  private List<Entry> mForEntries;
+  private MatchSummary mHighlightSummary;
+  private Trend mTrend;
 
-  public static GoalsLineChartFragment newInstance(Trend trend, String matchDate) {
+  public static GoalsLineChartFragment newInstance(Trend trend, Trend compare, MatchSummary matchSummary) {
 
-    LogUtils.debug(TAG, "++newInstance(Trend, long");
+    LogUtils.debug(TAG, "++newInstance(Trend, Trend, MatchSummary)");
     GoalsLineChartFragment fragment = new GoalsLineChartFragment();
     Bundle args = new Bundle();
     args.putSerializable(BaseActivity.ARG_TREND, trend);
-    args.putString(BaseActivity.ARG_MATCH_DATE, matchDate);
+    if (compare != null) {
+      args.putSerializable(BaseActivity.ARG_COMPARE, compare);
+    }
+
+    args.putSerializable(BaseActivity.ARG_MATCH_SUMMARY, matchSummary);
     fragment.setArguments(args);
     return fragment;
   }
-
-  // TODO: add newInstance with previous years trend for comparison
 
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -82,10 +94,38 @@ public class GoalsLineChartFragment extends Fragment {
     mAgainstSwitch.setOnCheckedChangeListener((compoundButton, checked) -> updateUI());
     mDifferentialSwitch.setOnCheckedChangeListener((compoundButton, checked) -> updateUI());
 
-    // setting up data sets
-    mForDataSet = new LineDataSet(mForEntries, getResources().getString(R.string.goals_for));
+    if (mCompareForEntries.size() > 0) {
+      mCompareForDataSet = new LineDataSet(
+        mCompareForEntries,
+        String.format(Locale.ENGLISH, "%s - %d", getResources().getString(R.string.goals_for), mCompare.Year));
+      mCompareForDataSet.setAxisDependency(AxisDependency.LEFT);
+      if (getContext() != null) {
+        mCompareForDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorForCompare));
+      } else {
+        mCompareForDataSet.setColor(Color.GREEN);
+      }
+
+      mCompareForDataSet.setLineWidth(1.0f);
+      mCompareForDataSet.enableDashedLine(10, 10, 0);
+      mCompareForDataSet.setDrawCircles(false);
+      mCompareForDataSet.setDrawValues(false);
+      mCompareForDataSet.setHighlightEnabled(false);
+      mCompareForDataSet.setDrawHighlightIndicators(false);
+      mCompareForDataSet.setDrawHorizontalHighlightIndicator(false);
+      mForDataSet = new LineDataSet(
+        mForEntries,
+        String.format(Locale.ENGLISH, "%s - %d", getResources().getString(R.string.goals_for), mTrend.Year));
+    } else {
+      mForDataSet = new LineDataSet(mForEntries, getResources().getString(R.string.goals_for));
+    }
+
     mForDataSet.setAxisDependency(AxisDependency.LEFT);
-    mForDataSet.setColor(Color.GREEN);
+    if (getContext() != null) {
+      mForDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorFor));
+    } else {
+      mForDataSet.setColor(Color.GREEN);
+    }
+
     mForDataSet.setLineWidth(2.0f);
     mForDataSet.disableDashedLine();
     mForDataSet.setDrawCircles(false);
@@ -94,9 +134,38 @@ public class GoalsLineChartFragment extends Fragment {
     mForDataSet.setDrawHighlightIndicators(true);
     mForDataSet.setDrawHorizontalHighlightIndicator(false);
 
-    mAgainstDataSet = new LineDataSet(mAgainstEntries, getResources().getString(R.string.goals_against));
+    if (mCompareAgainstEntries.size() > 0) {
+      mCompareAgainstDataSet = new LineDataSet(
+        mCompareAgainstEntries,
+        String.format(Locale.ENGLISH, "%s - %d", getResources().getString(R.string.goals_against), mCompare.Year));
+      mCompareAgainstDataSet.setAxisDependency(AxisDependency.LEFT);
+      if (getContext() != null) {
+        mCompareAgainstDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorAgainstCompare));
+      } else {
+        mCompareAgainstDataSet.setColor(Color.YELLOW);
+      }
+
+      mCompareAgainstDataSet.setLineWidth(1.0f);
+      mCompareAgainstDataSet.enableDashedLine(10, 10, 0);
+      mCompareAgainstDataSet.setDrawCircles(false);
+      mCompareAgainstDataSet.setDrawValues(false);
+      mCompareAgainstDataSet.setHighlightEnabled(false);
+      mCompareAgainstDataSet.setDrawHighlightIndicators(false);
+      mCompareAgainstDataSet.setDrawHorizontalHighlightIndicator(false);
+      mAgainstDataSet = new LineDataSet(
+        mAgainstEntries,
+        String.format(Locale.ENGLISH, "%s - %d", getResources().getString(R.string.goals_against), mTrend.Year));
+    } else {
+      mAgainstDataSet = new LineDataSet(mAgainstEntries, getResources().getString(R.string.goals_against));
+    }
+
     mAgainstDataSet.setAxisDependency(AxisDependency.LEFT);
-    mAgainstDataSet.setColor(Color.RED);
+    if (getContext() != null) {
+      mAgainstDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorAgainst));
+    } else {
+      mAgainstDataSet.setColor(Color.YELLOW);
+    }
+
     mAgainstDataSet.setLineWidth(2.0f);
     mAgainstDataSet.disableDashedLine();
     mAgainstDataSet.setDrawCircles(false);
@@ -105,9 +174,38 @@ public class GoalsLineChartFragment extends Fragment {
     mAgainstDataSet.setDrawHighlightIndicators(true);
     mAgainstDataSet.setDrawHorizontalHighlightIndicator(false);
 
-    mDifferentialDataSet = new LineDataSet(mDifferentialEntries, getResources().getString(R.string.goal_differential));
+    if (mCompareDifferentialEntries.size() > 0) {
+      mCompareDifferentialDataSet = new LineDataSet(
+        mCompareDifferentialEntries,
+        String.format(Locale.ENGLISH, "%s - %d", getResources().getString(R.string.goal_differential), mCompare.Year));
+      mCompareDifferentialDataSet.setAxisDependency(AxisDependency.RIGHT);
+      if (getContext() != null) {
+        mCompareDifferentialDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorDifferentialCompare));
+      } else {
+        mCompareDifferentialDataSet.setColor(Color.RED);
+      }
+
+      mCompareDifferentialDataSet.setLineWidth(1.0f);
+      mCompareDifferentialDataSet.enableDashedLine(10, 10, 0);
+      mCompareDifferentialDataSet.setDrawCircles(false);
+      mCompareDifferentialDataSet.setDrawValues(false);
+      mCompareDifferentialDataSet.setHighlightEnabled(false);
+      mCompareDifferentialDataSet.setDrawHighlightIndicators(false);
+      mCompareDifferentialDataSet.setDrawHorizontalHighlightIndicator(false);
+      mDifferentialDataSet = new LineDataSet(
+        mDifferentialEntries,
+        String.format(Locale.ENGLISH, "%s - %d", getResources().getString(R.string.goal_differential), mTrend.Year));
+    } else {
+      mDifferentialDataSet = new LineDataSet(mDifferentialEntries, getResources().getString(R.string.goal_differential));
+    }
+
     mDifferentialDataSet.setAxisDependency(AxisDependency.RIGHT);
-    mDifferentialDataSet.setColor(Color.YELLOW);
+    if (getContext() != null) {
+      mDifferentialDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorDifferential));
+    } else {
+      mDifferentialDataSet.setColor(Color.RED);
+    }
+
     mDifferentialDataSet.setLineWidth(1.0f);
     mDifferentialDataSet.disableDashedLine();
     mDifferentialDataSet.setDrawCircles(false);
@@ -137,6 +235,10 @@ public class GoalsLineChartFragment extends Fragment {
 
       Legend legend = mLineChart.getLegend();
       legend.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextPrimary));
+      legend.setXEntrySpace(10f);
+      legend.setYEntrySpace(10f);
+      legend.setMaxSizePercent(.80f);
+      legend.setWordWrapEnabled(true);
       legend.setEnabled(true);
 
       // TODO: what should we do when multiple values are drawn? reset marker to upper line?
@@ -146,7 +248,8 @@ public class GoalsLineChartFragment extends Fragment {
 
       updateUI();
     } else {
-      Toast.makeText(getContext(), "Problem setting chart properties.", Toast.LENGTH_SHORT).show();
+      LogUtils.debug(TAG, "Could not set chart resources; context is null.");
+      FirebaseCrash.log("Could not set chart resources; context is null.");
     }
 
     return view;
@@ -156,11 +259,13 @@ public class GoalsLineChartFragment extends Fragment {
   public void onAttach(Context context) {
     super.onAttach(context);
 
-    LogUtils.debug(TAG, "onAttach(Context)");
+    LogUtils.debug(TAG, "++onAttach(Context)");
     mAgainstEntries = new ArrayList<>();
+    mCompareAgainstEntries = new ArrayList<>();
+    mCompareDifferentialEntries = new ArrayList<>();
+    mCompareForEntries = new ArrayList<>();
     mForEntries = new ArrayList<>();
     mDifferentialEntries = new ArrayList<>();
-    mHighlightDate = BaseActivity.DEFAULT_DATE;
     mForEntries = new ArrayList<>();
 
     Bundle arguments = getArguments();
@@ -169,36 +274,83 @@ public class GoalsLineChartFragment extends Fragment {
       return;
     }
 
-    mHighlightDate = arguments.getString(BaseActivity.ARG_MATCH_DATE);
-    if (!arguments.containsKey(BaseActivity.ARG_TREND)) {
-      Toast.makeText(context, "Did not receive trend data.", Toast.LENGTH_SHORT).show();
-      return;
-    }
-
-    Trend trend = new Trend();
+    mHighlightSummary = new MatchSummary();
     try {
-      if (arguments.getSerializable(BaseActivity.ARG_TREND) != null) {
-        trend = (Trend) arguments.getSerializable(BaseActivity.ARG_TREND);
+      if (arguments.getSerializable(BaseActivity.ARG_MATCH_SUMMARY) != null) {
+        mHighlightSummary = (MatchSummary) arguments.getSerializable(BaseActivity.ARG_MATCH_SUMMARY);
       }
     } catch (ClassCastException cce) {
       LogUtils.debug(TAG, cce.getMessage());
     }
 
-    if (trend == null) {
+    if (!arguments.containsKey(BaseActivity.ARG_TREND)) {
+      Toast.makeText(context, "Did not receive trend data.", Toast.LENGTH_SHORT).show();
+      return;
+    }
+
+    mTrend = new Trend();
+    try {
+      if (arguments.getSerializable(BaseActivity.ARG_TREND) != null) {
+        mTrend = (Trend) arguments.getSerializable(BaseActivity.ARG_TREND);
+      }
+    } catch (ClassCastException cce) {
+      LogUtils.debug(TAG, cce.getMessage());
+    }
+
+    if (mTrend == null) {
       Toast.makeText(context, "Trend data unexpected.", Toast.LENGTH_SHORT).show();
       return;
     }
 
+    mCompare = null;
+    if (arguments.containsKey(BaseActivity.ARG_COMPARE)) {
+      mCompare = new Trend();
+      try {
+        if (arguments.getSerializable(BaseActivity.ARG_COMPARE) != null) {
+          mCompare = (Trend) arguments.getSerializable(BaseActivity.ARG_COMPARE);
+        }
+      } catch (ClassCastException cce) {
+        LogUtils.debug(TAG, cce.getMessage());
+      }
+
+      if (mCompare == null) {
+        Toast.makeText(context, "Compare trend data unexpected.", Toast.LENGTH_SHORT).show();
+      }
+    }
+
     // order the keys ascending (keys are match dates in milliseconds)
-    List<String> sortedKeys = new ArrayList<>();
-    sortedKeys.addAll(trend.GoalsFor.keySet());
-    Collections.sort(sortedKeys);
-    for (String sortedKey : sortedKeys) {
-      String trimmedKey = sortedKey.substring(4, 8);
+    List<String> trendKeys = new ArrayList<>();
+    trendKeys.addAll(mTrend.GoalsFor.keySet());
+    Collections.sort(trendKeys);
+
+    for (String trendKey : trendKeys) {
+      String trimmedKey = trendKey.substring(3, trendKey.length());
       float sortedFloat = Float.parseFloat(trimmedKey);
-      mAgainstEntries.add(new Entry(sortedFloat, trend.GoalsAgainst.get(sortedKey)));
-      mForEntries.add(new Entry(sortedFloat, trend.GoalsFor.get(sortedKey)));
-      mDifferentialEntries.add(new Entry(sortedFloat, trend.GoalDifferential.get(sortedKey)));
+      mAgainstEntries.add(new Entry(sortedFloat, mTrend.GoalsAgainst.get(trendKey)));
+      mForEntries.add(new Entry(sortedFloat, mTrend.GoalsFor.get(trendKey)));
+      mDifferentialEntries.add(new Entry(sortedFloat, mTrend.GoalDifferential.get(trendKey)));
+    }
+
+    if (mCompare != null) {
+      List<String> compareKeys = new ArrayList<>();
+      compareKeys.addAll(mCompare.GoalsFor.keySet());
+      Collections.sort(compareKeys);
+      for (String compareKey : compareKeys) {
+        String trimmedKey = compareKey.substring(3, compareKey.length());
+        float sortedFloat = Float.parseFloat(trimmedKey);
+        // trend key is the match day; both sets of trends should have entries for corresponding match days
+        if (mCompare.GoalsAgainst.containsKey(compareKey)) {
+          mCompareAgainstEntries.add(new Entry(sortedFloat, mCompare.GoalsAgainst.get(compareKey)));
+        }
+
+        if (mCompare.GoalsFor.containsKey(compareKey)) {
+          mCompareForEntries.add(new Entry(sortedFloat, mCompare.GoalsFor.get(compareKey)));
+        }
+
+        if (mCompare.GoalDifferential.containsKey(compareKey)) {
+          mCompareDifferentialEntries.add(new Entry(sortedFloat, mCompare.GoalDifferential.get(compareKey)));
+        }
+      }
     }
   }
 
@@ -208,21 +360,30 @@ public class GoalsLineChartFragment extends Fragment {
     List<ILineDataSet> dataSets = new ArrayList<>();
     if (mForSwitch.isChecked()) {
       dataSets.add(mForDataSet);
+      if (mCompareForDataSet != null && mCompareForDataSet.getEntryCount() > 0) {
+        dataSets.add(mCompareForDataSet);
+      }
     }
 
     if (mAgainstSwitch.isChecked()) {
       dataSets.add(mAgainstDataSet);
+      if (mCompareAgainstDataSet != null && mCompareAgainstDataSet.getEntryCount() > 0) {
+        dataSets.add(mCompareAgainstDataSet);
+      }
     }
 
     if (mDifferentialSwitch.isChecked()) {
       dataSets.add(mDifferentialDataSet);
+      if (mCompareDifferentialDataSet != null && mCompareDifferentialDataSet.getEntryCount() > 0) {
+        dataSets.add(mCompareDifferentialDataSet);
+      }
     }
 
     LineData lineData = new LineData(dataSets);
     mLineChart.setData(lineData);
 
 
-    Highlight highlight = new Highlight(Float.parseFloat(mHighlightDate.substring(4, 8)), 0, 0);
+    Highlight highlight = new Highlight(mHighlightSummary.MatchDay, 0, 0);
     mLineChart.highlightValue(highlight, false);
 
     mLineChart.invalidate(); // refresh

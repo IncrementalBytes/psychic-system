@@ -47,6 +47,11 @@ public class MatchSummary implements Serializable {
   public String MatchDate;
 
   /**
+   * Iterated value representing the match throughout a season.
+   */
+  public int MatchDay;
+
+  /**
    * Constructs a new MatchSummary object with default values.
    */
   public MatchSummary() {
@@ -59,6 +64,7 @@ public class MatchSummary implements Serializable {
     this.IsFinal = false;
     this.MatchId = BaseActivity.DEFAULT_ID;
     this.MatchDate = BaseActivity.DEFAULT_DATE;
+    this.MatchDay = 0;
   }
 
   /**
@@ -74,7 +80,7 @@ public class MatchSummary implements Serializable {
     result.put("HomeTeamName", HomeTeamName);
     result.put("IsFinal", IsFinal);
     result.put("MatchDate", MatchDate);
-
+    result.put("MatchDay", MatchDay);
     return result;
   }
 }

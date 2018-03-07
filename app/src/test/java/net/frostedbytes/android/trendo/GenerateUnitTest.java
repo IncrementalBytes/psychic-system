@@ -36,7 +36,7 @@ public class GenerateUnitTest {
 
   @Parameters
   public static Collection<Object[]> initParameters() {
-    return Arrays.asList(new Object[][]{{"SEA", "Seattle Sounders FC", 2017}});
+    return Arrays.asList(new Object[][]{{"SEA", "Seattle Sounders FC", 2017}, {"SEA", "Seattle Sounders FC", 2018}});
     // return Arrays.asList(new Object[][] { { "SEA", "Seattle Sounders FC", 2017 }, { "COL", "Colorado Rapids", 2017 } });
   }
 
@@ -90,7 +90,9 @@ public class GenerateUnitTest {
   private List<MatchSummary> generateMatchSummaries() throws IOException {
 
     List<MatchSummary> matchSummaries = new ArrayList<>();
+    int matchDay = 1;
     MatchSummary currentSummary = new MatchSummary();
+    currentSummary.MatchDay = matchDay;
     String parsableString;
     try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(String.valueOf(mYear) + "/" + mShortName + ".txt")) {
       try (Scanner s = new Scanner(inputStream)) {
@@ -107,9 +109,11 @@ public class GenerateUnitTest {
         // put current summary into collection
         currentSummary.IsFinal = true;
         matchSummaries.add(currentSummary);
+        matchDay++;
 
         // update current summary
         currentSummary = new MatchSummary();
+        currentSummary.MatchDay = matchDay;
         continue;
       }
 
@@ -241,17 +245,18 @@ public class GenerateUnitTest {
         }
       }
 
-      goalsAgainstMap.put(String.valueOf(summary.MatchDate), goalsAgainst + prevGoalAgainst);
-      goalDifferentialMap.put(String.valueOf(summary.MatchDate), goalDifferential + prevGoalDifferential);
-      goalsForMap.put(String.valueOf(summary.MatchDate), goalsFor + prevGoalFor);
-      totalPointsMap.put(String.valueOf(summary.MatchDate), totalPoints + prevTotalPoints);
+      String key = String.format("ID_%02d", summary.MatchDay);
+      goalsAgainstMap.put(key, goalsAgainst + prevGoalAgainst);
+      goalDifferentialMap.put(key, goalDifferential + prevGoalDifferential);
+      goalsForMap.put(key, goalsFor + prevGoalFor);
+      totalPointsMap.put(key, totalPoints + prevTotalPoints);
 
       double result = (double) totalPoints + prevTotalPoints;
       if (result > 0) {
         result = (totalPoints + prevTotalPoints) / (double) (totalPointsMap.size());
       }
 
-      pointsPerGameMap.put(String.valueOf(summary.MatchDate), result);
+      pointsPerGameMap.put(key, result);
 
       // update previous values for next pass
       prevGoalAgainst = goalsAgainst + prevGoalAgainst;

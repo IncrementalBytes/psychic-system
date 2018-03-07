@@ -10,11 +10,10 @@ import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import java.util.Locale;
 import net.frostedbytes.android.trendo.R;
-import net.frostedbytes.android.trendo.utils.DateUtils;
 
 public class CustomMarkerView extends MarkerView {
 
-  private TextView mMarkerText;
+  private final TextView mMarkerText;
 
   public CustomMarkerView(Context context, int layoutResource) {
     super(context, layoutResource);
@@ -29,7 +28,7 @@ public class CustomMarkerView extends MarkerView {
       CandleEntry ce = (CandleEntry) entry;
       mMarkerText.setText(Utils.formatNumber(ce.getHigh(), 0, true));
     } else {
-      mMarkerText.setText(DateUtils.formatDateForDisplay(String.format(Locale.getDefault(), "%.0f", entry.getX()), true));
+      mMarkerText.setText(String.format(Locale.getDefault(), "Match\r\n%.0f", entry.getX()));
     }
 
     super.refreshContent(entry, highlight);

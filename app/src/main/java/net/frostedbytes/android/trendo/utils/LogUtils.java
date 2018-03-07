@@ -1,6 +1,7 @@
 package net.frostedbytes.android.trendo.utils;
 
 import android.util.Log;
+import com.google.firebase.crash.FirebaseCrash;
 import java.util.Locale;
 import net.frostedbytes.android.trendo.BuildConfig;
 
@@ -20,6 +21,8 @@ public class LogUtils {
 
     if (BuildConfig.DEBUG) {
       Log.e(tag, String.format(Locale.getDefault(), messageFormat, args));
+    } else {
+      FirebaseCrash.log(String.format(Locale.getDefault(), messageFormat, args));
     }
   }
 

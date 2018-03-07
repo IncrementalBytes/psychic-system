@@ -28,12 +28,12 @@ import net.frostedbytes.android.trendo.models.UserSetting;
 
 public class MatchListFragment extends Fragment {
 
-  private static final String TAG = "MatchListFragment";
+  private static final String TAG = MatchListFragment.class.getSimpleName();
 
   public interface OnMatchListListener {
 
     void onPopulated(int size);
-    void onSelected(String matchDate);
+    void onSelected(MatchSummary matchSummary);
   }
 
   private UserSetting mSettings;
@@ -80,7 +80,7 @@ public class MatchListFragment extends Fragment {
     try {
       mCallback = (OnMatchListListener) context;
     } catch (ClassCastException e) {
-      throw new ClassCastException(context.toString() + " must implement OnDataSent");
+      throw new ClassCastException(context.toString() + " must implement onPopulated(int) and onSelected(String).");
     }
 
     Bundle arguments = getArguments();
@@ -93,7 +93,7 @@ public class MatchListFragment extends Fragment {
     if (mSettings != null) {
       String queryPath = MatchSummary.ROOT + "/" + String.valueOf(mSettings.Year) + "/" + mSettings.TeamShortName;
       LogUtils.debug(TAG, "Query: " + queryPath);
-      mMatchSummaryQuery = FirebaseDatabase.getInstance().getReference().child(queryPath).orderByChild("MatchDate");
+      mMatchSummaryQuery = FirebaseDatabase.getInstance().getReference().child(queryPath).orderByChild("MatchDay");
       mValueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -129,6 +129,8 @@ public class MatchListFragment extends Fragment {
     if (mMatchSummaryQuery != null && mValueEventListener != null) {
       mMatchSummaryQuery.removeEventListener(mValueEventListener);
     }
+
+    mMatchSummaries = null;
   }
 
   private void updateUI() {
@@ -150,15 +152,16 @@ public class MatchListFragment extends Fragment {
       mMatchSummaries = matchSummaries;
     }
 
+    @NonNull
     @Override
-    public MatchSummaryHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MatchSummaryHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
       LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
       return new MatchSummaryHolder(layoutInflater, parent);
     }
 
     @Override
-    public void onBindViewHolder(MatchSummaryHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MatchSummaryHolder holder, int position) {
 
       MatchSummary matchSummary = mMatchSummaries.get(position);
       holder.bind(matchSummary);
@@ -216,7 +219,7 @@ public class MatchListFragment extends Fragment {
     public void onClick(View view) {
 
       LogUtils.debug(TAG, "++MatchSummaryHolder::onClick(View)");
-      mCallback.onSelected(mMatchSummary.MatchDate);
+      mCallback.onSelected(mMatchSummary);
     }
   }
 }

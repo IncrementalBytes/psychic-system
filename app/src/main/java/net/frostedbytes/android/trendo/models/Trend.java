@@ -13,27 +13,37 @@ public class Trend implements Serializable {
   /**
    * List containing the accumulated goals scored against.
    */
+  @SuppressWarnings("CanBeFinal")
   public HashMap<String, Long> GoalsAgainst;
 
   /**
    * List containing the accumulated goal differential.
    */
+  @SuppressWarnings("CanBeFinal")
   public HashMap<String, Long> GoalDifferential;
 
   /**
    * List containing the accumulated goals scored.
    */
+  @SuppressWarnings("CanBeFinal")
   public HashMap<String, Long> GoalsFor;
 
   /**
    * List containing the accumulated points per game.
    */
+  @SuppressWarnings("CanBeFinal")
   public HashMap<String, Double> PointsPerGame;
 
   /**
    * List containing the accumulated total points.
    */
+  @SuppressWarnings("CanBeFinal")
   public HashMap<String, Long> TotalPoints;
+
+  /**
+   * Year (season) this trend represents.
+   */
+  public int Year;
 
   /**
    * Constructs a new Trend object with default values.
@@ -46,6 +56,7 @@ public class Trend implements Serializable {
     this.GoalsFor = new HashMap<>();
     this.PointsPerGame = new HashMap<>();
     this.TotalPoints = new HashMap<>();
+    this.Year = 0;
   }
 
   /**
@@ -60,7 +71,7 @@ public class Trend implements Serializable {
     result.put("GoalsFor", GoalsFor);
     result.put("PointsPerGame", PointsPerGame);
     result.put("TotalPoints", TotalPoints);
-
+    result.put("Year", Year);
     return result;
   }
 }

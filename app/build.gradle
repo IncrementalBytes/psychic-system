@@ -11,7 +11,7 @@ android {
         minSdkVersion 24
         targetSdkVersion 27
         versionCode 7
-        versionName "0.9.006"
+        versionName "0.9.1000"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
@@ -24,7 +24,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
         }
@@ -54,22 +54,25 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support:appcompat-v7:27.0.2'
+    implementation 'com.android.support:appcompat-v7:27.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    implementation 'com.android.support:design:27.0.2'
-    implementation 'com.android.support:recyclerview-v7:27.0.2'
+    implementation 'com.android.support:design:27.1.0'
+    implementation 'com.android.support:recyclerview-v7:27.1.0'
     // Google
     implementation 'com.google.android.gms:play-services-auth:11.8.0'
     // Firebase
-    compile 'com.google.firebase:firebase-core:11.8.0'
-    compile 'com.google.firebase:firebase-database:11.8.0'
-    compile 'com.google.firebase:firebase-auth:11.8.0'
-    compile 'com.google.firebase:firebase-config:11.8.0'
-    compile 'com.google.android.gms:play-services-appinvite:11.8.0'
-    compile 'com.google.firebase:firebase-crash:11.8.0'
-    compile 'com.google.firebase:firebase-analytics:11.8.0'
+    implementation 'com.google.firebase:firebase-core:11.8.0'
+    implementation 'com.google.firebase:firebase-database:11.8.0'
+    implementation 'com.google.firebase:firebase-auth:11.8.0'
+    implementation 'com.google.firebase:firebase-config:11.8.0'
+    implementation 'com.google.android.gms:play-services-appinvite:11.8.0'
+    implementation 'com.google.firebase:firebase-crash:11.8.0'
+    implementation 'com.google.firebase:firebase-analytics:11.8.0'
     // Firebase UI
-    compile 'com.firebaseui:firebase-ui-database:3.1.0'
+    implementation('com.firebaseui:firebase-ui-database:3.1.0') {
+        exclude module:'runtime'
+        exclude module:'extensions'
+    }
     // Testing dependencies
     testImplementation 'org.robolectric:robolectric:3.6.1'
     testImplementation 'junit:junit:4.12'
