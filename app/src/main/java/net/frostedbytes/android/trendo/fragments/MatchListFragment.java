@@ -20,11 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import net.frostedbytes.android.trendo.BaseActivity;
+import net.frostedbytes.android.trendo.models.UserPreference;
 import net.frostedbytes.android.trendo.utils.DateUtils;
 import net.frostedbytes.android.trendo.utils.LogUtils;
 import net.frostedbytes.android.trendo.R;
 import net.frostedbytes.android.trendo.models.MatchSummary;
-import net.frostedbytes.android.trendo.models.UserSetting;
 
 public class MatchListFragment extends Fragment {
 
@@ -36,22 +36,23 @@ public class MatchListFragment extends Fragment {
     void onSelected(MatchSummary matchSummary);
   }
 
-  private UserSetting mSettings;
   private OnMatchListListener mCallback;
 
   private RecyclerView mRecyclerView;
 
   private List<MatchSummary> mMatchSummaries;
+  private UserPreference mUserPreference;
 
   private Query mMatchSummaryQuery;
   private ValueEventListener mValueEventListener;
 
-  public static MatchListFragment newInstance(UserSetting userSettings) {
+  public static MatchListFragment newInstance(UserPreference userPreference) {
 
     LogUtils.debug(TAG, "++newInstance(Settings)");
+    LogUtils.debug(TAG, "%s (%s): %d (%d)", userPreference.TeamFullName, userPreference.TeamShortName, userPreference.Season, userPreference.Compare);
     MatchListFragment fragment = new MatchListFragment();
     Bundle args = new Bundle();
-    args.putSerializable(BaseActivity.ARG_USER_SETTINGS, userSettings);
+    args.putSerializable(BaseActivity.ARG_USER_PREFERENCE, userPreference);
     fragment.setArguments(args);
     return fragment;
   }
@@ -67,31 +68,8 @@ public class MatchListFragment extends Fragment {
     final LinearLayoutManager manager = new LinearLayoutManager(getActivity());
     mRecyclerView.setLayoutManager(manager);
 
-    updateUI();
-
-    return view;
-  }
-
-  @Override
-  public void onAttach(Context context) {
-    super.onAttach(context);
-
-    LogUtils.debug(TAG, "++onAttach(Context)");
-    try {
-      mCallback = (OnMatchListListener) context;
-    } catch (ClassCastException e) {
-      throw new ClassCastException(context.toString() + " must implement onPopulated(int) and onSelected(String).");
-    }
-
-    Bundle arguments = getArguments();
-    if (arguments != null) {
-      mSettings = (UserSetting) arguments.getSerializable(BaseActivity.ARG_USER_SETTINGS);
-    } else {
-      LogUtils.error(TAG, "Arguments were null.");
-    }
-
-    if (mSettings != null) {
-      String queryPath = MatchSummary.ROOT + "/" + String.valueOf(mSettings.Year) + "/" + mSettings.TeamShortName;
+    if (mUserPreference != null && !mUserPreference.TeamShortName.isEmpty()) {
+      String queryPath = MatchSummary.ROOT + "/" + String.valueOf(mUserPreference.Season) + "/" + mUserPreference.TeamShortName;
       LogUtils.debug(TAG, "Query: " + queryPath);
       mMatchSummaryQuery = FirebaseDatabase.getInstance().getReference().child(queryPath).orderByChild("MatchDay");
       mValueEventListener = new ValueEventListener() {
@@ -117,7 +95,30 @@ public class MatchListFragment extends Fragment {
       };
       mMatchSummaryQuery.addValueEventListener(mValueEventListener);
     } else {
-      LogUtils.error(TAG, "Failed to get user settings from arguments.");
+      LogUtils.warn(TAG, "User preferences were incomplete.");
+    }
+
+    updateUI();
+
+    return view;
+  }
+
+  @Override
+  public void onAttach(Context context) {
+    super.onAttach(context);
+
+    LogUtils.debug(TAG, "++onAttach(Context)");
+    try {
+      mCallback = (OnMatchListListener) context;
+    } catch (ClassCastException e) {
+      throw new ClassCastException(context.toString() + " must implement onPopulated(int) and onSelected(String).");
+    }
+
+    Bundle arguments = getArguments();
+    if (arguments != null) {
+      mUserPreference = (UserPreference) arguments.getSerializable(BaseActivity.ARG_USER_PREFERENCE);
+    } else {
+      LogUtils.error(TAG, "Arguments were null.");
     }
   }
 
@@ -133,13 +134,23 @@ public class MatchListFragment extends Fragment {
     mMatchSummaries = null;
   }
 
+  @Override
+  public void onResume() {
+    super.onResume();
+
+    LogUtils.debug(TAG, "++onResume()");
+    updateUI();
+  }
+
   private void updateUI() {
 
-    if (mMatchSummaries != null) {
+    if (mMatchSummaries != null && mMatchSummaries.size() > 0) {
       LogUtils.debug(TAG, "++updateUI()");
       MatchSummaryAdapter matchAdapter = new MatchSummaryAdapter(mMatchSummaries);
       mRecyclerView.setAdapter(matchAdapter);
       mCallback.onPopulated(matchAdapter.getItemCount());
+    } else {
+      mCallback.onPopulated(0);
     }
   }
 

@@ -4,23 +4,19 @@ import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Locale;
 import net.frostedbytes.android.trendo.BaseActivity;
 import net.frostedbytes.android.trendo.utils.LogUtils;
 
 @IgnoreExtraProperties
-public class UserSetting implements Serializable {
+public class UserPreference implements Serializable {
 
-  private static final String TAG = UserSetting.class.getSimpleName();
-
-  @Exclude
-  public static final String ROOT = "UserSettings";
+  private static final String TAG = UserPreference.class.getSimpleName();
 
   /**
    * Year to compare Year results against.
    */
-  public int CompareTo;
+  public int Compare;
 
   /**
    * Full name of team.
@@ -41,28 +37,27 @@ public class UserSetting implements Serializable {
   /**
    * Year of results.
    */
-  public int Year;
+  public int Season;
 
   /**
-   * Constructs a new UserSetting object with default values.
+   * Constructs a new UserPreference object with default values.
    */
   @SuppressWarnings("unused")
-  public UserSetting() {
+  public UserPreference() {
 
     // Default constructor required for calls to DataSnapshot.getValue(Settings.class)
-    this.CompareTo = 0;
+    this.Compare = 0;
     this.UserId = BaseActivity.DEFAULT_ID;
     this.TeamFullName = "";
     this.TeamShortName = "";
-    Calendar calendar = Calendar.getInstance();
-    this.Year = calendar.get(Calendar.YEAR);
+    this.Season = Calendar.getInstance().get(Calendar.YEAR);
   }
 
   /**
-   * Compares this UserSetting with another UserSetting.
-   * @param compareTo UserSetting to compare this UserSetting against
-   * @return TRUE if this UserSetting equals the other UserSetting, otherwise FALSE
-   * @throws ClassCastException if object parameter cannot be cast into UserSetting object
+   * Compares this UserPreference with another UserPreference.
+   * @param compareTo UserPreference to compare this UserPreference against
+   * @return TRUE if this UserPreference equals the other UserPreference, otherwise FALSE
+   * @throws ClassCastException if object parameter cannot be cast into UserPreference object
    */
   @Override
   public boolean equals(Object compareTo)  throws ClassCastException {
@@ -76,14 +71,14 @@ public class UserSetting implements Serializable {
     }
 
     //cast to native object is now safe
-    if ((compareTo instanceof UserSetting)) {
+    if ((compareTo instanceof UserPreference)) {
       try {
-        UserSetting compareToSettings = (UserSetting) compareTo;
+        UserPreference compareToSettings = (UserPreference) compareTo;
         if (this.UserId.equals(compareToSettings.UserId) &&
           this.TeamShortName.equals(compareToSettings.TeamShortName) &&
           this.TeamFullName.equals(compareToSettings.TeamFullName) &&
-          this.Year == compareToSettings.Year &&
-          this.CompareTo == ((UserSetting) compareTo).CompareTo) {
+          this.Season == compareToSettings.Season &&
+          this.Compare == ((UserPreference) compareTo).Compare) {
           return true;
         }
       } catch (ClassCastException cce) {
@@ -94,18 +89,13 @@ public class UserSetting implements Serializable {
     return false;
   }
 
-  /**
-   * Creates a mapped object based on values of this settings object.
-   * @return A mapped object of settings
-   */
-  @Exclude
-  public Map<String, Object> toMap() {
+  @Override
+  public String toString() {
 
-    HashMap<String, Object> result = new HashMap<>();
-    result.put("CompareTo", CompareTo);
-    result.put("TeamFullName", TeamFullName);
-    result.put("TeamShortName", TeamShortName);
-    result.put("Year", Year);
-    return result;
+    if (this.TeamShortName.isEmpty() || this.Season == 0) {
+      return "";
+    }
+
+    return String.format(Locale.ENGLISH, "%s-%d", this.TeamShortName, this.Season);
   }
 }

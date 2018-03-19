@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string-array name="teams">
+  <string-array name="team_list_entries">
+    <item>None</item>
+    <item>Atlanta United FC</item>
+    <item>Chicago Fire</item>
+    <item>Columbus Crew SC</item>
+    <item>Colorado Rapids</item>
+    <item>FC Dallas</item>
+    <item>D.C. United</item>
+    <item>Houston Dynamo</item>
+    <item>LA Galaxy</item>
+    <item>Los Angeles Football Club</item>
+    <item>Minnesota United FC</item>
+    <item>Montreal Impact</item>
+    <item>New England Revolution</item>
+    <item>New York Red Bulls</item>
+    <item>New York City FC</item>
+    <item>Orlando City SC</item>
+    <item>Philadelphia Union</item>
+    <item>Portland Timbers</item>
+    <item>Real Salt Lake</item>
+    <item>Seattle Sounders FC</item>
+    <item>San Jose Earthquakes</item>
+    <item>Sporting Kansas City</item>
+    <item>Toronto FC</item>
+    <item>Vancouver Whitecaps FC</item>
+  </string-array>
+  <string-array name="team_list_values">
+    <item>None</item>
     <item>Atlanta United FC,ATL</item>
     <item>Chicago Fire,CHI</item>
     <item>Columbus Crew SC,CLB</item>

@@ -9,10 +9,12 @@ import net.frostedbytes.android.trendo.utils.LogUtils;
 public class BaseActivity extends AppCompatActivity {
 
   public static final String ARG_COMPARE = "compare";
+  public static final String ARG_EMAIL = "email";
   public static final String ARG_MATCH_SUMMARY = "match_summary";
   public static final String ARG_TREND = "trend";
-  public static final String ARG_USER = "user";
-  public static final String ARG_USER_SETTINGS = "user_settings";
+  public static final String ARG_USER_ID = "user_id";
+  public static final String ARG_USER_NAME = "user_name";
+  public static final String ARG_USER_PREFERENCE = "user_preference";
   public static final String DEFAULT_DATE = "0000-01-01";
   public static final String DEFAULT_ID = "000000000-0000-0000-0000-000000000000";
   public static final int NUM_TRENDS = 2;

@@ -17,34 +17,35 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import net.frostedbytes.android.trendo.BaseActivity;
 import net.frostedbytes.android.trendo.models.MatchSummary;
+import net.frostedbytes.android.trendo.models.UserPreference;
 import net.frostedbytes.android.trendo.utils.LogUtils;
 import net.frostedbytes.android.trendo.R;
 import net.frostedbytes.android.trendo.models.Trend;
-import net.frostedbytes.android.trendo.models.UserSetting;
 
 public class TrendFragment extends Fragment {
 
   private static final String TAG = TrendFragment.class.getSimpleName();
 
+  private static Trend mCompare;
+  private static Trend mTrend;
+
   private ViewPager mViewPager;
 
   private MatchSummary mMatchSummary;
-  private UserSetting mSettings;
-  private static Trend mCompare;
-  private static Trend mTrend;
+  private UserPreference mUserPreference;
 
   private Query mCompareQuery;
   private Query mTrendQuery;
   private ValueEventListener mCompareValueListener;
   private ValueEventListener mTrendValueListener;
 
-  public static TrendFragment newInstance(UserSetting userSettings, MatchSummary matchSummary) {
+  public static TrendFragment newInstance(UserPreference userPreference, MatchSummary matchSummary) {
 
     LogUtils.debug(TAG, "++newInstance(String)");
     TrendFragment fragment = new TrendFragment();
     Bundle args = new Bundle();
-    args.putSerializable(BaseActivity.ARG_USER_SETTINGS, userSettings);
     args.putSerializable(BaseActivity.ARG_MATCH_SUMMARY, matchSummary);
+    args.putSerializable(BaseActivity.ARG_USER_PREFERENCE, userPreference);
     fragment.setArguments(args);
     return fragment;
   }
@@ -71,13 +72,13 @@ public class TrendFragment extends Fragment {
     Bundle arguments = getArguments();
     if (arguments != null) {
       mMatchSummary = (MatchSummary)arguments.getSerializable(BaseActivity.ARG_MATCH_SUMMARY);
-      mSettings = (UserSetting) arguments.getSerializable(BaseActivity.ARG_USER_SETTINGS);
+      mUserPreference = (UserPreference) arguments.getSerializable(BaseActivity.ARG_USER_PREFERENCE);
     } else {
       LogUtils.debug(TAG, "Arguments were null.");
     }
 
-    if (mSettings != null) {
-      String queryPath = Trend.ROOT + "/" + String.valueOf(mSettings.Year) + "/" + mSettings.TeamShortName;
+    if (mUserPreference != null) {
+      String queryPath = Trend.ROOT + "/" + String.valueOf(mUserPreference.Season) + "/" + mUserPreference.TeamShortName;
       LogUtils.debug(TAG, "Trend Query: " + queryPath);
       mTrendQuery = FirebaseDatabase.getInstance().getReference().child(queryPath);
       mTrendValueListener = new ValueEventListener() {
@@ -87,7 +88,7 @@ public class TrendFragment extends Fragment {
 
           mTrend = dataSnapshot.getValue(Trend.class);
           if (mTrend != null) {
-            mTrend.Year = mSettings.Year;
+            mTrend.Year = mUserPreference.Season;
             populateTrendData();
           } else {
             LogUtils.warn(TAG, "Could not get trend data.");
@@ -102,9 +103,9 @@ public class TrendFragment extends Fragment {
       };
       mTrendQuery.addValueEventListener(mTrendValueListener);
 
-      if (mSettings.CompareTo != 0 || mSettings.CompareTo != mSettings.Year) {
-        LogUtils.debug(TAG, "Adding %d trend data along side %d", mSettings.CompareTo, mSettings.Year);
-        String compareQueryPath = Trend.ROOT + "/" + String.valueOf(mSettings.CompareTo) + "/" + mSettings.TeamShortName;
+      if (mUserPreference.Compare != 0 || mUserPreference.Compare != mUserPreference.Season) {
+        LogUtils.debug(TAG, "Adding %d trend data along side %d", mUserPreference.Compare, mUserPreference.Season);
+        String compareQueryPath = Trend.ROOT + "/" + String.valueOf(mUserPreference.Compare) + "/" + mUserPreference.TeamShortName;
         LogUtils.debug(TAG, "CompareTo Query: " + compareQueryPath);
         mCompareQuery = FirebaseDatabase.getInstance().getReference().child(compareQueryPath);
         mCompareValueListener = new ValueEventListener() {
@@ -114,7 +115,7 @@ public class TrendFragment extends Fragment {
 
             mCompare = dataSnapshot.getValue(Trend.class);
             if (mCompare != null) {
-              mCompare.Year = mSettings.CompareTo;
+              mCompare.Year = mUserPreference.Compare;
               populateTrendData();
             } else {
               LogUtils.warn(TAG, "Could not get trend compare data.");
@@ -154,7 +155,7 @@ public class TrendFragment extends Fragment {
 
   private void populateTrendData() {
 
-    if (mSettings.CompareTo > 0 && (mCompare == null || mCompare.GoalsFor.isEmpty())) {
+    if (mUserPreference.Compare > 0 && (mCompare == null || mCompare.GoalsFor.isEmpty())) {
       return;
     }
 

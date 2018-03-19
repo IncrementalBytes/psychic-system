@@ -224,7 +224,9 @@ public class SignInActivity extends BaseActivity implements OnClickListener {
 
     LogUtils.debug(TAG, "++onAuthenticateSuccess(%1s)", user.getDisplayName());
     Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-    intent.putExtra(BaseActivity.ARG_USER, user.getUid());
+    intent.putExtra(BaseActivity.ARG_USER_ID, user.getUid());
+    intent.putExtra(BaseActivity.ARG_USER_NAME, user.getDisplayName());
+    intent.putExtra(BaseActivity.ARG_EMAIL, user.getEmail());
     startActivity(intent);
     finish();
   }
