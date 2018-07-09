@@ -23,7 +23,6 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.google.firebase.crash.FirebaseCrash;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -41,6 +40,7 @@ public class PointsLineChartFragment extends Fragment {
 
   private Switch mAverageSwitch;
   private LineChart mLineChart;
+  private Switch mMaxSwitch;
   private Switch mTotalSwitch;
 
   private LineDataSet mAverageDataSet;
@@ -48,9 +48,13 @@ public class PointsLineChartFragment extends Fragment {
   private Trend mCompare;
   private LineDataSet mCompareAverageDataSet;
   private List<Entry> mCompareAverageEntries;
+  private LineDataSet mCompareMaxDataSet;
+  private List<Entry> mCompareMaxEntries;
   private LineDataSet mCompareTotalDataSet;
   private List<Entry> mCompareTotalEntries;
   private MatchSummary mHighlightSummary;
+  private LineDataSet mMaxDataSet;
+  private List<Entry> mMaxEntries;
   private LineDataSet mTotalDataSet;
   private List<Entry> mTotalEntries;
   private Trend mTrend;
@@ -76,16 +80,18 @@ public class PointsLineChartFragment extends Fragment {
     LogUtils.debug(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
     View view = inflater.inflate(R.layout.fragment_line_chart, container, false);
     mLineChart = view.findViewById(R.id.line_chart);
-    mTotalSwitch = view.findViewById(R.id.line_chart_switch_left);
     mAverageSwitch = view.findViewById(R.id.line_chart_switch_right);
-    Switch middleSwitch = view.findViewById(R.id.line_chart_switch_center);
-    middleSwitch.setVisibility(View.INVISIBLE);
+    mMaxSwitch = view.findViewById(R.id.line_chart_switch_center);
+    mTotalSwitch = view.findViewById(R.id.line_chart_switch_left);
 
-    mTotalSwitch.setText(R.string.total_points);
     mAverageSwitch.setText(R.string.points_per_game);
+    mMaxSwitch.setText(R.string.max_points);
+    mTotalSwitch.setText(R.string.total_points);
     mTotalSwitch.setChecked(true);
-    mTotalSwitch.setOnCheckedChangeListener((compoundButton, checked) -> updateUI());
+
     mAverageSwitch.setOnCheckedChangeListener((compoundButton, checked) -> updateUI());
+    mMaxSwitch.setOnCheckedChangeListener((compoundButton, checked) -> updateUI());
+    mTotalSwitch.setOnCheckedChangeListener((compoundButton, checked) -> updateUI());
 
     if (mCompareTotalEntries.size() > 0) {
       mCompareTotalDataSet = new LineDataSet(
@@ -167,6 +173,46 @@ public class PointsLineChartFragment extends Fragment {
     mAverageDataSet.setDrawHighlightIndicators(true);
     mAverageDataSet.setDrawHorizontalHighlightIndicator(false);
 
+    if (mCompareMaxEntries.size() > 0) {
+      mCompareMaxDataSet = new LineDataSet(
+        mCompareMaxEntries,
+        String.format(Locale.ENGLISH, "%s - %d", getResources().getString(R.string.max_points), mCompare.Year));
+      mCompareMaxDataSet.setAxisDependency(AxisDependency.LEFT);
+      if (getContext() != null) {
+        mCompareMaxDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorMaxCompare));
+      } else {
+        mCompareMaxDataSet.setColor(Color.GREEN);
+      }
+
+      mCompareMaxDataSet.setLineWidth(1.0f);
+      mCompareMaxDataSet.enableDashedLine(10, 10, 0);
+      mCompareMaxDataSet.setDrawCircles(false);
+      mCompareMaxDataSet.setDrawValues(false);
+      mCompareMaxDataSet.setHighlightEnabled(false);
+      mCompareMaxDataSet.setDrawHighlightIndicators(false);
+      mCompareMaxDataSet.setDrawHorizontalHighlightIndicator(false);
+      mMaxDataSet = new LineDataSet(
+        mMaxEntries,
+        String.format(Locale.ENGLISH, "%s - %d", getResources().getString(R.string.max_points), mTrend.Year));
+    } else {
+      mMaxDataSet = new LineDataSet(mMaxEntries, getResources().getString(R.string.max_points));
+    }
+
+    mMaxDataSet.setAxisDependency(AxisDependency.LEFT);
+    if (getContext() != null) {
+      mMaxDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorMaxCompare));
+    } else {
+      mMaxDataSet.setColor(Color.GREEN);
+    }
+
+    mMaxDataSet.setLineWidth(1.5f);
+    mMaxDataSet.disableDashedLine();
+    mMaxDataSet.setDrawCircles(false);
+    mMaxDataSet.setDrawValues(false);
+    mMaxDataSet.setHighlightEnabled(true);
+    mMaxDataSet.setDrawHighlightIndicators(true);
+    mMaxDataSet.setDrawHorizontalHighlightIndicator(false);
+
     mLineChart.getDescription().setEnabled(false);
 
     if (getContext() != null) {
@@ -201,8 +247,7 @@ public class PointsLineChartFragment extends Fragment {
 
       updateUI();
     } else {
-      LogUtils.debug(TAG, "Could not set chart resources; context is null.");
-      FirebaseCrash.log("Could not set chart resources; context is null.");
+      LogUtils.error(TAG, "Could not set chart resources; context is null.");
     }
 
     return view;
@@ -214,8 +259,10 @@ public class PointsLineChartFragment extends Fragment {
 
     LogUtils.debug(TAG, "++onAttach(Context)");
     mCompareAverageEntries = new ArrayList<>();
+    mCompareMaxEntries = new ArrayList<>();
     mCompareTotalEntries = new ArrayList<>();
     mAverageEntries = new ArrayList<>();
+    mMaxEntries = new ArrayList<>();
     mTotalEntries = new ArrayList<>();
 
     Bundle arguments = getArguments();
@@ -230,7 +277,7 @@ public class PointsLineChartFragment extends Fragment {
         mHighlightSummary = (MatchSummary) arguments.getSerializable(BaseActivity.ARG_MATCH_SUMMARY);
       }
     } catch (ClassCastException cce) {
-      LogUtils.debug(TAG, cce.getMessage());
+      LogUtils.debug(TAG, "%s", cce.getMessage());
     }
 
     if (!arguments.containsKey(BaseActivity.ARG_TREND)) {
@@ -244,7 +291,7 @@ public class PointsLineChartFragment extends Fragment {
         mTrend = (Trend) arguments.getSerializable(BaseActivity.ARG_TREND);
       }
     } catch (ClassCastException cce) {
-      LogUtils.debug(TAG, cce.getMessage());
+      LogUtils.debug(TAG, "%s", cce.getMessage());
     }
 
     if (mTrend == null) {
@@ -260,7 +307,7 @@ public class PointsLineChartFragment extends Fragment {
           mCompare = (Trend) arguments.getSerializable(BaseActivity.ARG_COMPARE);
         }
       } catch (ClassCastException cce) {
-        LogUtils.debug(TAG, cce.getMessage());
+        LogUtils.debug(TAG, "%s", cce.getMessage());
       }
 
       if (mCompare == null) {
@@ -268,8 +315,7 @@ public class PointsLineChartFragment extends Fragment {
       }
     }
 
-    List<String> trendKeys = new ArrayList<>();
-    trendKeys.addAll(mTrend.GoalsFor.keySet());
+    List<String> trendKeys = new ArrayList<>(mTrend.GoalsFor.keySet());
     Collections.sort(trendKeys);
 
     for (String trendKey : trendKeys) {
@@ -277,11 +323,11 @@ public class PointsLineChartFragment extends Fragment {
       float sortedFloat = Float.parseFloat(trimmedKey);
       mTotalEntries.add(new Entry(sortedFloat, mTrend.TotalPoints.get(trendKey)));
       mAverageEntries.add(new Entry(sortedFloat, mTrend.PointsPerGame.get(trendKey).floatValue()));
+      mMaxEntries.add(new Entry(sortedFloat, mTrend.MaxPointsPossible.get(trendKey)));
     }
 
     if (mCompare != null) {
-      List<String> compareKeys = new ArrayList<>();
-      compareKeys.addAll(mCompare.GoalsFor.keySet());
+      List<String> compareKeys = new ArrayList<>(mCompare.GoalsFor.keySet());
       Collections.sort(compareKeys);
       for (String compareKey : compareKeys) {
         String trimmedKey = compareKey.substring(3, compareKey.length());
@@ -293,6 +339,10 @@ public class PointsLineChartFragment extends Fragment {
 
         if (mCompare.PointsPerGame.containsKey(compareKey)) {
           mCompareAverageEntries.add(new Entry(sortedFloat, mCompare.PointsPerGame.get(compareKey).floatValue()));
+        }
+
+        if (mCompare.MaxPointsPossible.containsKey(compareKey)) {
+          mCompareMaxEntries.add(new Entry(sortedFloat, mCompare.MaxPointsPossible.get(compareKey)));
         }
       }
     }
@@ -313,6 +363,13 @@ public class PointsLineChartFragment extends Fragment {
       dataSets.add(mAverageDataSet);
       if (mCompareAverageDataSet != null && mCompareAverageDataSet.getEntryCount() > 0) {
         dataSets.add(mCompareAverageDataSet);
+      }
+    }
+
+    if (mMaxSwitch.isChecked()) {
+      dataSets.add(mMaxDataSet);
+      if (mCompareMaxDataSet != null && mCompareMaxDataSet.getEntryCount() > 0) {
+        dataSets.add(mCompareMaxDataSet);
       }
     }
 

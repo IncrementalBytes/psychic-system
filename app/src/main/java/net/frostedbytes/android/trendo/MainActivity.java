@@ -241,7 +241,6 @@ public class MainActivity extends BaseActivity implements
   private void replaceFragment(Fragment fragment){
 
     LogUtils.debug(TAG, "++replaceFragment()");
-    LogUtils.debug(TAG, "%s (%s): %d (%d)", mUserPreference.TeamFullName, mUserPreference.TeamShortName, mUserPreference.Season, mUserPreference.Compare);
     String backStateName = fragment.getClass().getName();
     if (mUserPreference.toString().length() > 0) {
       backStateName = String.format(

@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import net.frostedbytes.android.trendo.utils.DateUtils;
 import net.frostedbytes.android.trendo.utils.LogUtils;
 import net.frostedbytes.android.trendo.R;
 import net.frostedbytes.android.trendo.models.MatchSummary;
+import net.frostedbytes.android.trendo.utils.PathUtils;
 
 public class MatchListFragment extends Fragment {
 
@@ -48,8 +50,7 @@ public class MatchListFragment extends Fragment {
 
   public static MatchListFragment newInstance(UserPreference userPreference) {
 
-    LogUtils.debug(TAG, "++newInstance(Settings)");
-    LogUtils.debug(TAG, "%s (%s): %d (%d)", userPreference.TeamFullName, userPreference.TeamShortName, userPreference.Season, userPreference.Compare);
+    LogUtils.debug(TAG, "++newInstance(UserPreference)");
     MatchListFragment fragment = new MatchListFragment();
     Bundle args = new Bundle();
     args.putSerializable(BaseActivity.ARG_USER_PREFERENCE, userPreference);
@@ -68,13 +69,13 @@ public class MatchListFragment extends Fragment {
     final LinearLayoutManager manager = new LinearLayoutManager(getActivity());
     mRecyclerView.setLayoutManager(manager);
 
-    if (mUserPreference != null && !mUserPreference.TeamShortName.isEmpty()) {
-      String queryPath = MatchSummary.ROOT + "/" + String.valueOf(mUserPreference.Season) + "/" + mUserPreference.TeamShortName;
-      LogUtils.debug(TAG, "Query: " + queryPath);
+    if (mUserPreference != null && !mUserPreference.TeamShortName.isEmpty() && mUserPreference.Season > 0) {
+      String queryPath = PathUtils.combine(MatchSummary.ROOT, mUserPreference.Season, mUserPreference.TeamShortName);
+      LogUtils.debug(TAG, "Query: %s", queryPath);
       mMatchSummaryQuery = FirebaseDatabase.getInstance().getReference().child(queryPath).orderByChild("MatchDay");
       mValueEventListener = new ValueEventListener() {
         @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
           mMatchSummaries = new ArrayList<>();
           for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -89,13 +90,16 @@ public class MatchListFragment extends Fragment {
         }
 
         @Override
-        public void onCancelled(DatabaseError databaseError) {
+        public void onCancelled(@NonNull DatabaseError databaseError) {
 
+          LogUtils.debug(TAG, "++onCancelled(DatabaseError)");
+          LogUtils.error(TAG, "%s", databaseError.getDetails());
         }
       };
       mMatchSummaryQuery.addValueEventListener(mValueEventListener);
     } else {
       LogUtils.warn(TAG, "User preferences were incomplete.");
+      LogUtils.debug(TAG, "%s (%s), Season: %d", mUserPreference.TeamFullName, mUserPreference.TeamShortName, mUserPreference.Season);
     }
 
     updateUI();
@@ -111,7 +115,8 @@ public class MatchListFragment extends Fragment {
     try {
       mCallback = (OnMatchListListener) context;
     } catch (ClassCastException e) {
-      throw new ClassCastException(context.toString() + " must implement onPopulated(int) and onSelected(String).");
+      throw new ClassCastException(
+        String.format(Locale.ENGLISH, "%s must implement onPopulated(int) and onSelected(String).", context.toString()));
     }
 
     Bundle arguments = getArguments();

@@ -23,7 +23,6 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.google.firebase.crash.FirebaseCrash;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -248,8 +247,7 @@ public class GoalsLineChartFragment extends Fragment {
 
       updateUI();
     } else {
-      LogUtils.debug(TAG, "Could not set chart resources; context is null.");
-      FirebaseCrash.log("Could not set chart resources; context is null.");
+      LogUtils.error(TAG, "Could not set chart resources; context is null.");
     }
 
     return view;
@@ -280,7 +278,7 @@ public class GoalsLineChartFragment extends Fragment {
         mHighlightSummary = (MatchSummary) arguments.getSerializable(BaseActivity.ARG_MATCH_SUMMARY);
       }
     } catch (ClassCastException cce) {
-      LogUtils.debug(TAG, cce.getMessage());
+      LogUtils.debug(TAG, "%s", cce.getMessage());
     }
 
     if (!arguments.containsKey(BaseActivity.ARG_TREND)) {
@@ -294,7 +292,7 @@ public class GoalsLineChartFragment extends Fragment {
         mTrend = (Trend) arguments.getSerializable(BaseActivity.ARG_TREND);
       }
     } catch (ClassCastException cce) {
-      LogUtils.debug(TAG, cce.getMessage());
+      LogUtils.debug(TAG, "%s", cce.getMessage());
     }
 
     if (mTrend == null) {
@@ -310,7 +308,7 @@ public class GoalsLineChartFragment extends Fragment {
           mCompare = (Trend) arguments.getSerializable(BaseActivity.ARG_COMPARE);
         }
       } catch (ClassCastException cce) {
-        LogUtils.debug(TAG, cce.getMessage());
+        LogUtils.debug(TAG, "%s", cce.getMessage());
       }
 
       if (mCompare == null) {
@@ -319,8 +317,7 @@ public class GoalsLineChartFragment extends Fragment {
     }
 
     // order the keys ascending (keys are match dates in milliseconds)
-    List<String> trendKeys = new ArrayList<>();
-    trendKeys.addAll(mTrend.GoalsFor.keySet());
+    List<String> trendKeys = new ArrayList<>(mTrend.GoalsFor.keySet());
     Collections.sort(trendKeys);
 
     for (String trendKey : trendKeys) {
@@ -332,8 +329,7 @@ public class GoalsLineChartFragment extends Fragment {
     }
 
     if (mCompare != null) {
-      List<String> compareKeys = new ArrayList<>();
-      compareKeys.addAll(mCompare.GoalsFor.keySet());
+      List<String> compareKeys = new ArrayList<>(mCompare.GoalsFor.keySet());
       Collections.sort(compareKeys);
       for (String compareKey : compareKeys) {
         String trimmedKey = compareKey.substring(3, compareKey.length());

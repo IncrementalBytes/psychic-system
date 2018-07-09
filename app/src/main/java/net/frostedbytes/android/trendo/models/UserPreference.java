@@ -82,7 +82,7 @@ public class UserPreference implements Serializable {
           return true;
         }
       } catch (ClassCastException cce) {
-        LogUtils.error(TAG, "Could not cast object to UserSetting class: " + cce.getMessage());
+        LogUtils.error(TAG, "Could not cast object to UserSetting class: %s", cce.getMessage());
       }
     }
 

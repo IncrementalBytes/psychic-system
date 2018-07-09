@@ -21,6 +21,7 @@ import net.frostedbytes.android.trendo.models.UserPreference;
 import net.frostedbytes.android.trendo.utils.LogUtils;
 import net.frostedbytes.android.trendo.R;
 import net.frostedbytes.android.trendo.models.Trend;
+import net.frostedbytes.android.trendo.utils.PathUtils;
 
 public class TrendFragment extends Fragment {
 
@@ -41,7 +42,7 @@ public class TrendFragment extends Fragment {
 
   public static TrendFragment newInstance(UserPreference userPreference, MatchSummary matchSummary) {
 
-    LogUtils.debug(TAG, "++newInstance(String)");
+    LogUtils.debug(TAG, "++newInstance(UserPreference, MatchSummary)");
     TrendFragment fragment = new TrendFragment();
     Bundle args = new Bundle();
     args.putSerializable(BaseActivity.ARG_MATCH_SUMMARY, matchSummary);
@@ -78,13 +79,13 @@ public class TrendFragment extends Fragment {
     }
 
     if (mUserPreference != null) {
-      String queryPath = Trend.ROOT + "/" + String.valueOf(mUserPreference.Season) + "/" + mUserPreference.TeamShortName;
-      LogUtils.debug(TAG, "Trend Query: " + queryPath);
+      String queryPath = PathUtils.combine(Trend.ROOT, mUserPreference.Season, mUserPreference.TeamShortName);
+      LogUtils.debug(TAG, "Trend Query: %s",  queryPath);
       mTrendQuery = FirebaseDatabase.getInstance().getReference().child(queryPath);
       mTrendValueListener = new ValueEventListener() {
 
         @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
           mTrend = dataSnapshot.getValue(Trend.class);
           if (mTrend != null) {
@@ -96,22 +97,23 @@ public class TrendFragment extends Fragment {
         }
 
         @Override
-        public void onCancelled(DatabaseError databaseError) {
+        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-          LogUtils.error(TAG, databaseError.getDetails());
+          LogUtils.debug(TAG, "++onCancelled(DatabaseError)");
+          LogUtils.error(TAG, "%s", databaseError.getDetails());
         }
       };
       mTrendQuery.addValueEventListener(mTrendValueListener);
 
       if (mUserPreference.Compare != 0 || mUserPreference.Compare != mUserPreference.Season) {
         LogUtils.debug(TAG, "Adding %d trend data along side %d", mUserPreference.Compare, mUserPreference.Season);
-        String compareQueryPath = Trend.ROOT + "/" + String.valueOf(mUserPreference.Compare) + "/" + mUserPreference.TeamShortName;
-        LogUtils.debug(TAG, "CompareTo Query: " + compareQueryPath);
+        String compareQueryPath = PathUtils.combine(Trend.ROOT, String.valueOf(mUserPreference.Compare), mUserPreference.TeamShortName);
+        LogUtils.debug(TAG, "CompareTo Query: %s", compareQueryPath);
         mCompareQuery = FirebaseDatabase.getInstance().getReference().child(compareQueryPath);
         mCompareValueListener = new ValueEventListener() {
 
           @Override
-          public void onDataChange(DataSnapshot dataSnapshot) {
+          public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
             mCompare = dataSnapshot.getValue(Trend.class);
             if (mCompare != null) {
@@ -123,9 +125,10 @@ public class TrendFragment extends Fragment {
           }
 
           @Override
-          public void onCancelled(DatabaseError databaseError) {
+          public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            LogUtils.error(TAG, databaseError.getDetails());
+            LogUtils.debug(TAG, "++onCancelled(DatabaseError)");
+            LogUtils.error(TAG, "%s", databaseError.getDetails());
           }
         };
         mCompareQuery.addValueEventListener(mCompareValueListener);

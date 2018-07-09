@@ -15,4 +15,5 @@
   <color name="colorTotalPointsCompare">#536dfe</color>
   <color name="colorPointsPerGame">#ffc400</color>
   <color name="colorPointsPerGameCompare">#ffe082</color>
+  <color name="colorMaxCompare">#66bb6a</color>
 </resources>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import java.util.Locale;
 import net.frostedbytes.android.trendo.utils.LogUtils;
 import net.frostedbytes.android.trendo.R;
 
@@ -30,7 +31,8 @@ public class UserPreferencesFragment extends PreferenceFragmentCompat implements
     try {
       mCallback = (OnPreferencesListener) context;
     } catch (ClassCastException e) {
-      throw new ClassCastException(context.toString() + " must implement onPreferenceChanged().");
+      throw new ClassCastException(
+        String.format(Locale.ENGLISH, "%s must implement onPreferenceChanged().", context.toString()));
     }
   }
 

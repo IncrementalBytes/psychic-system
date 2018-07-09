@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -88,9 +87,15 @@ public class SignInActivity extends BaseActivity implements OnClickListener {
 
     mGoogleApiClient = new GoogleApiClient.Builder(this)
       .enableAutoManage(this, connectionResult -> {
-        LogUtils.debug(TAG, "++onConnectionFailed(ConnectionResult");
-        LogUtils.debug(TAG, connectionResult.getErrorMessage());
-        Toast.makeText(SignInActivity.this, connectionResult.getErrorMessage(), Toast.LENGTH_SHORT).show();
+        LogUtils.debug(TAG, "++onConnectionFailed(ConnectionResult)");
+        LogUtils.debug(
+          TAG,
+          "%s",
+          connectionResult.getErrorMessage() != null ? connectionResult.getErrorMessage() : "Connection result was null.");
+        Snackbar.make(
+          findViewById(R.id.activity_sign_in),
+          connectionResult.getErrorMessage() != null ? connectionResult.getErrorMessage() : "Connection result was null.",
+          Snackbar.LENGTH_LONG).show();
       })
       .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
       .build();
@@ -172,7 +177,7 @@ public class SignInActivity extends BaseActivity implements OnClickListener {
     String email = mEmailEdit.getText().toString();
     String password = mPasswordEdit.getText().toString();
     mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
-      LogUtils.debug(TAG, "Sign-In complete: " + task.isSuccessful());
+      LogUtils.debug(TAG, "Sign-In complete: %s", task.isSuccessful());
       if (task.isSuccessful()) {
         onAuthenticateSuccess(task.getResult().getUser());
       } else {
@@ -205,7 +210,7 @@ public class SignInActivity extends BaseActivity implements OnClickListener {
     String email = mEmailEdit.getText().toString();
     String password = mPasswordEdit.getText().toString();
     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
-      LogUtils.debug(TAG, "Create user complete: " + task.isSuccessful());
+      LogUtils.debug(TAG, "Create user complete: %s", task.isSuccessful());
       if (task.isSuccessful()) {
         onAuthenticateSuccess(task.getResult().getUser());
       } else {
