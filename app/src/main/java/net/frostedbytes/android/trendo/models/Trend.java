@@ -31,6 +31,11 @@ public class Trend implements Serializable {
   public HashMap<String, Long> MaxPointsPossible;
 
   /**
+   * List containing the accumulated points based on PPG.
+   */
+  public HashMap<String, Long> PointsByAverage;
+
+  /**
    * List containing the accumulated points per game.
    */
   public HashMap<String, Double> PointsPerGame;
@@ -55,6 +60,7 @@ public class Trend implements Serializable {
     this.GoalDifferential = new HashMap<>();
     this.GoalsFor = new HashMap<>();
     this.MaxPointsPossible = new HashMap<>();
+    this.PointsByAverage = new HashMap<>();
     this.PointsPerGame = new HashMap<>();
     this.TotalPoints = new HashMap<>();
     this.Year = 0;
@@ -67,13 +73,14 @@ public class Trend implements Serializable {
   public Map<String, Object> toMap() {
 
     HashMap<String, Object> result = new HashMap<>();
-    result.put("GoalsAgainst", GoalsAgainst);
-    result.put("GoalDifferential", GoalDifferential);
-    result.put("GoalsFor", GoalsFor);
-    result.put("MaxPointsPossible", MaxPointsPossible);
-    result.put("PointsPerGame", PointsPerGame);
-    result.put("TotalPoints", TotalPoints);
-    result.put("Year", Year);
+    result.put("GoalsAgainst", this.GoalsAgainst);
+    result.put("GoalDifferential", this.GoalDifferential);
+    result.put("GoalsFor", this.GoalsFor);
+    result.put("MaxPointsPossible", this.MaxPointsPossible);
+    result.put("PointsByAverage", this.PointsByAverage);
+    result.put("PointsPerGame", this.PointsPerGame);
+    result.put("TotalPoints", this.TotalPoints);
+    result.put("Year", this.Year);
     return result;
   }
 }

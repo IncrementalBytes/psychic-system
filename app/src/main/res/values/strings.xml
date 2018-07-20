@@ -2,11 +2,6 @@
   <string name="app_name">Trends</string>
   <string name="placeholder">TBD</string> <!-- if this string is shown, something needs updating -->
   <string name="logout">Logout</string>
-  <string name="hint_email">Type email</string>
-  <string name="hint_password">Type password</string>
-  <string name="sign_in_or">- OR -</string>
-  <string name="sign_in">Sign-In</string>
-  <string name="sign_up">Sign Up</string>
   <string name="desc_locked">App requires authentication before continuing</string>
   <string name="home">Home</string>
   <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -21,19 +16,17 @@
   <string name="logout_message">Are you sure you want to log out?</string>
   <string name="full_time">FT</string>
   <string name="in_progress">In Progress</string>
-  <string name="forgot_password">Forgot password? Tap here.</string>
   <string name="goals_against">Against</string>
   <string name="goals_for">For</string>
   <string name="goal_differential">Differential</string>
-  <string name="total_points">Total Points</string>
-  <string name="points_per_game">Points Per Game</string>
+  <string name="total_points">Total</string>
+  <string name="points_per_game">Per Game</string>
   <string name="preferences_team">Select the team you wish to view trends for.</string>
   <string name="preferences_season">Select the season to view trends for.</string>
   <string name="preferences_compare">Select the season to compare trends with.</string>
   <!-- STATUS MESSAGES -->
-  <string name="status_processing">Processing…</string>
   <string name="status_authenticating">Authenticating…</string>
   <string name="status_initializing">Initializing…</string>
-  <string name="status_querying">Querying…</string>
-  <string name="max_points">Max Points</string>
+  <string name="max_points">Max</string>
+  <string name="points_by_average">By PPG</string>
 </resources>

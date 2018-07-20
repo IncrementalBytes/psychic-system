@@ -3,17 +3,15 @@
   <color name="colorPrimary">#005695</color>
   <color name="colorPrimaryDark">#132530</color>
   <color name="colorAccent">#5d9732</color>
-  <color name="colorError">#780000</color>
   <color name="colorTextPrimary">#ddffffff</color>
-  <color name="colorFor">#2e7d32</color>
-  <color name="colorForCompare">#66bb6a</color>
-  <color name="colorAgainst">#ff9800</color>
-  <color name="colorAgainstCompare">#fff176</color>
-  <color name="colorDifferential">#c62828</color>
-  <color name="colorDifferentialCompare">#ef5350</color>
-  <color name="colorTotalPoints">#304ffe</color>
-  <color name="colorTotalPointsCompare">#536dfe</color>
-  <color name="colorPointsPerGame">#ffc400</color>
-  <color name="colorPointsPerGameCompare">#ffe082</color>
-  <color name="colorMaxCompare">#66bb6a</color>
+  <!-- Goal trend fragment colors -->
+  <!-- Point trend fragment colors -->
+  <!-- Theoretical trend fragment colors -->
+  <!-- Dynamic trend fragment colors -->
+  <color name="colorLeft">#2e7d32</color>
+  <color name="colorLeftCompare">#66bb6a</color>
+  <color name="colorCenter">#ff9800</color>
+  <color name="colorCenterCompare">#fff176</color>
+  <color name="colorRight">#c62828</color>
+  <color name="colorRightCompare">#ef5350</color>
 </resources>

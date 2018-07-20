@@ -172,11 +172,44 @@ public class TrendFragment extends Fragment {
       @Override
       public Fragment getItem(int position) {
 
+        Trend trend = new Trend();
+        Trend compare = new Trend();
         switch (position) {
           case 0:
-            return GoalsLineChartFragment.newInstance(mTrend, mCompare, mMatchSummary);
+            trend.GoalsFor = mTrend.GoalsFor;
+            trend.GoalsAgainst = mTrend.GoalsAgainst;
+            trend.GoalDifferential= mTrend.GoalDifferential;
+            trend.Year = mTrend.Year;
+            if (mUserPreference.Compare > 0) {
+              compare.GoalsFor = mCompare.GoalsFor;
+              compare.GoalsAgainst = mCompare.GoalsAgainst;
+              compare.GoalDifferential = mCompare.GoalDifferential;
+              compare.Year = mCompare.Year;
+            }
+
+            return LineChartFragment.newInstance(trend, compare, mMatchSummary);
           case 1:
-            return PointsLineChartFragment.newInstance(mTrend, mCompare, mMatchSummary);
+            trend.TotalPoints = mTrend.TotalPoints;
+            trend.PointsPerGame = mTrend.PointsPerGame;
+            trend.Year = mTrend.Year;
+            if (mUserPreference.Compare > 0) {
+              compare.TotalPoints = mCompare.TotalPoints;
+              compare.PointsPerGame = mCompare.PointsPerGame;
+              compare.Year = mCompare.Year;
+            }
+
+            return LineChartFragment.newInstance(trend, compare, mMatchSummary);
+          case 2:
+            trend.MaxPointsPossible = mTrend.MaxPointsPossible;
+            trend.PointsByAverage = mTrend.PointsByAverage;
+            trend.Year = mTrend.Year;
+            if (mUserPreference.Compare > 0) {
+              compare.MaxPointsPossible = mCompare.MaxPointsPossible;
+              compare.PointsByAverage = mCompare.PointsByAverage;
+              compare.Year = mCompare.Year;
+            }
+
+            return LineChartFragment.newInstance(trend, compare, mMatchSummary);
           default:
             return null;
         }
@@ -196,6 +229,8 @@ public class TrendFragment extends Fragment {
             return "Goals";
           case 1:
             return "Points";
+          case 2:
+            return "Theoretical";
           default:
             return null;
         }

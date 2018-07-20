@@ -1,5 +1,6 @@
 package net.frostedbytes.android.trendo.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.TextView;
 import com.github.mikephil.charting.components.MarkerView;
@@ -11,6 +12,7 @@ import com.github.mikephil.charting.utils.Utils;
 import java.util.Locale;
 import net.frostedbytes.android.trendo.R;
 
+@SuppressLint("ViewConstructor")
 public class CustomMarkerView extends MarkerView {
 
   private final TextView mMarkerText;
