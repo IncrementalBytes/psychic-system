@@ -22,13 +22,24 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
+import java.util.UUID;
 import net.frostedbytes.android.trendo.fragments.MatchListFragment;
 import net.frostedbytes.android.trendo.fragments.TrendFragment;
 import net.frostedbytes.android.trendo.fragments.UserPreferencesFragment;
 import net.frostedbytes.android.trendo.models.MatchSummary;
+import net.frostedbytes.android.trendo.models.Team;
 import net.frostedbytes.android.trendo.models.UserPreference;
 import net.frostedbytes.android.trendo.utils.LogUtils;
+import net.frostedbytes.android.trendo.utils.PathUtils;
+import net.frostedbytes.android.trendo.utils.SortUtils;
 
 public class MainActivity extends BaseActivity implements
   NavigationView.OnNavigationItemSelectedListener,
@@ -39,7 +50,14 @@ public class MainActivity extends BaseActivity implements
 
   private DrawerLayout mDrawerLayout;
 
+  private ArrayList<MatchSummary> mMatchSummaries;
+  private ArrayList<Team> mTeams;
   private UserPreference mUserPreference;
+
+  private Query mMatchSummariesQuery;
+  private Query mTeamsQuery;
+  private ValueEventListener mMatchSummariesListener;
+  private ValueEventListener mTeamsListener;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -90,11 +108,14 @@ public class MainActivity extends BaseActivity implements
     if (sharedPreferences.contains(UserPreferencesFragment.KEY_TEAM_PREFERENCE)) {
       String preference = sharedPreferences.getString(UserPreferencesFragment.KEY_TEAM_PREFERENCE, getString(R.string.none));
       if (preference.equals(getString(R.string.none))) {
-        mUserPreference.TeamFullName = "";
-        mUserPreference.TeamShortName = "";
+        mUserPreference.TeamId = "";
       } else {
-        mUserPreference.TeamFullName = preference.substring(0, preference.indexOf(','));
-        mUserPreference.TeamShortName = preference.substring(preference.indexOf(',') + 1, preference.length());
+        try {
+          UUID temp = UUID.fromString(preference);
+          mUserPreference.TeamId = preference;
+        } catch (Exception ex) {
+          mUserPreference.TeamId = "";
+        }
       }
     }
 
@@ -118,7 +139,33 @@ public class MainActivity extends BaseActivity implements
       mUserPreference.Compare = 0;
     }
 
-    replaceFragment(MatchListFragment.newInstance(mUserPreference));
+    LogUtils.debug(TAG, "Query: %s", Team.ROOT);
+    mTeamsQuery = FirebaseDatabase.getInstance().getReference().child(Team.ROOT);
+    mTeamsListener = new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+        mTeams = new ArrayList<>();
+        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+          Team team = snapshot.getValue(Team.class);
+          if (team != null) {
+            team.Id = snapshot.getKey();
+            mTeams.add(team);
+          }
+        }
+
+        mTeams.sort(new SortUtils.ByTeamName());
+        matchSummaryQuery();
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        LogUtils.debug(TAG, "++onCancelled(DatabaseError)");
+        LogUtils.error(TAG, "%s", databaseError.getDetails());
+      }
+    };
+    mTeamsQuery.addValueEventListener(mTeamsListener);
   }
 
   @Override
@@ -136,6 +183,22 @@ public class MainActivity extends BaseActivity implements
     }
   }
 
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+
+    if (mMatchSummariesQuery != null && mMatchSummariesListener != null) {
+      mMatchSummariesQuery.removeEventListener(mMatchSummariesListener);
+    }
+
+    if (mTeamsQuery != null && mTeamsListener != null) {
+      mTeamsQuery.removeEventListener(mTeamsListener);
+    }
+
+    mTeams = null;
+    mMatchSummaries = null;
+  }
+
   @SuppressWarnings("StatementWithEmptyBody")
   @Override
   public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -143,10 +206,10 @@ public class MainActivity extends BaseActivity implements
     LogUtils.debug(TAG, "++onNavigationItemSelected(%s)", item.getTitle());
     switch (item.getItemId()) {
       case R.id.navigation_menu_home:
-        replaceFragment(MatchListFragment.newInstance(mUserPreference));
+        replaceFragment(MatchListFragment.newInstance(mTeams, mMatchSummaries));
         break;
       case R.id.navigation_menu_preferences:
-        replaceFragment(new UserPreferencesFragment());
+        replaceFragment(UserPreferencesFragment.newInstance(mTeams));
         break;
       case R.id.navigation_menu_logout:
         AlertDialog dialog = new AlertDialog.Builder(this)
@@ -184,8 +247,8 @@ public class MainActivity extends BaseActivity implements
 
     LogUtils.debug(TAG, "++onPopulated(%1d)", size);
     hideProgressDialog();
-    if (mUserPreference != null && !mUserPreference.TeamShortName.isEmpty()) {
-      setTitle(getResources().getQuantityString(R.plurals.subtitle, size, mUserPreference.TeamShortName, size));
+    if (mUserPreference != null && mUserPreference.Season > 0) {
+      setTitle(String.format(Locale.ENGLISH, "%d", mUserPreference.Season));
     } else {
       setTitle("Match Summaries");
       Snackbar.make(findViewById(R.id.main_drawer_layout), getString(R.string.no_matches), Snackbar.LENGTH_LONG).show();
@@ -201,11 +264,14 @@ public class MainActivity extends BaseActivity implements
       if (sharedPreferences.contains(UserPreferencesFragment.KEY_TEAM_PREFERENCE)) {
         String preference = sharedPreferences.getString(UserPreferencesFragment.KEY_TEAM_PREFERENCE, getString(R.string.none));
         if (preference.equals(getString(R.string.none))) {
-          mUserPreference.TeamFullName = "";
-          mUserPreference.TeamShortName = "";
+          mUserPreference.TeamId = "";
         } else {
-          mUserPreference.TeamFullName = preference.substring(0, preference.indexOf(','));
-          mUserPreference.TeamShortName = preference.substring(preference.indexOf(',') + 1, preference.length());
+          try {
+            UUID temp = UUID.fromString(preference);
+            mUserPreference.TeamId = preference;
+          } catch (Exception ex) {
+            mUserPreference.TeamId = "";
+          }
         }
       }
 
@@ -232,15 +298,48 @@ public class MainActivity extends BaseActivity implements
   }
 
   @Override
-  public void onSelected(MatchSummary matchSummary) {
+  public void onSelected() {
 
-    LogUtils.debug(TAG, "++onSelected(MatchSummary)");
-    replaceFragment(TrendFragment.newInstance(mUserPreference, matchSummary));
+    LogUtils.debug(TAG, "++onSelected()");
+    replaceFragment(TrendFragment.newInstance(mUserPreference));
+  }
+
+  private void matchSummaryQuery() {
+
+    LogUtils.debug(TAG, "++matchSummaryQuery()");
+    String queryPath = PathUtils.combine(MatchSummary.ROOT, mUserPreference.Season);
+    LogUtils.debug(TAG, "Query: %s", queryPath);
+    mMatchSummariesQuery = FirebaseDatabase.getInstance().getReference().child(queryPath).orderByChild("MatchDay");
+    mMatchSummariesListener = new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+        mMatchSummaries = new ArrayList<>();
+        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+          MatchSummary matchSummary = snapshot.getValue(MatchSummary.class);
+          if (matchSummary != null) {
+            matchSummary.MatchId = snapshot.getKey();
+            mMatchSummaries.add(matchSummary);
+          }
+        }
+
+        Collections.reverse(mMatchSummaries);
+        replaceFragment(MatchListFragment.newInstance(mTeams, mMatchSummaries));
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        LogUtils.debug(TAG, "++onCancelled(DatabaseError");
+        LogUtils.error(TAG, databaseError.getMessage());
+      }
+    };
+    mMatchSummariesQuery.addValueEventListener(mMatchSummariesListener);
   }
 
   private void replaceFragment(Fragment fragment){
 
-    LogUtils.debug(TAG, "++replaceFragment()");
+    LogUtils.debug(TAG, "++replaceFragment(Fragment)");
     String backStateName = fragment.getClass().getName();
     if (mUserPreference.toString().length() > 0) {
       backStateName = String.format(

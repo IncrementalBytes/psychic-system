@@ -8,7 +8,7 @@
   <string name="navigation_drawer_close">Close navigation drawer</string>
   <string name="preferences">Preferences</string>
   <string name="none">None</string>
-  <string name="no_matches">No data, change Team and/or Season via Preferences.</string>
+  <string name="no_matches">No data, change Season via Preferences.</string>
   <plurals name="subtitle">
     <item quantity="one">%s - %d match</item>
     <item quantity="other">%s - %d matches</item>
@@ -29,4 +29,5 @@
   <string name="status_initializing">Initializing…</string>
   <string name="max_points">Max</string>
   <string name="points_by_average">By PPG</string>
+  <string name="desc_match_list">List of matches for selected team.</string>
 </resources>

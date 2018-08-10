@@ -21,7 +21,6 @@ import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,7 +28,6 @@ import java.util.List;
 import java.util.Locale;
 import net.frostedbytes.android.trendo.BaseActivity;
 import net.frostedbytes.android.trendo.R;
-import net.frostedbytes.android.trendo.models.MatchSummary;
 import net.frostedbytes.android.trendo.models.Trend;
 import net.frostedbytes.android.trendo.utils.LogUtils;
 import net.frostedbytes.android.trendo.views.CustomMarkerView;
@@ -56,12 +54,11 @@ public class LineChartFragment extends Fragment {
   private List<Entry> mLeftEntries;
   private LineDataSet mRightDataSet;
   private List<Entry> mRightEntries;
-  private MatchSummary mHighlightSummary;
   private Trend mTrend;
 
-  public static LineChartFragment newInstance(Trend trend, Trend compare, MatchSummary matchSummary) {
+  public static LineChartFragment newInstance(Trend trend, Trend compare) {
 
-    LogUtils.debug(TAG, "++newInstance(Trend, Trend, MatchSummary)");
+    LogUtils.debug(TAG, "++newInstance(Trend, Trend)");
     LineChartFragment fragment = new LineChartFragment();
     Bundle args = new Bundle();
     args.putSerializable(BaseActivity.ARG_TREND, trend);
@@ -69,7 +66,6 @@ public class LineChartFragment extends Fragment {
       args.putSerializable(BaseActivity.ARG_COMPARE, compare);
     }
 
-    args.putSerializable(BaseActivity.ARG_MATCH_SUMMARY, matchSummary);
     fragment.setArguments(args);
     return fragment;
   }
@@ -288,15 +284,6 @@ public class LineChartFragment extends Fragment {
       return;
     }
 
-    mHighlightSummary = new MatchSummary();
-    try {
-      if (arguments.getSerializable(BaseActivity.ARG_MATCH_SUMMARY) != null) {
-        mHighlightSummary = (MatchSummary) arguments.getSerializable(BaseActivity.ARG_MATCH_SUMMARY);
-      }
-    } catch (ClassCastException cce) {
-      LogUtils.debug(TAG, "%s", cce.getMessage());
-    }
-
     if (!arguments.containsKey(BaseActivity.ARG_TREND)) {
       Toast.makeText(context, "Did not receive trend data.", Toast.LENGTH_SHORT).show();
       return;
@@ -417,11 +404,6 @@ public class LineChartFragment extends Fragment {
 
     LineData lineData = new LineData(dataSets);
     mLineChart.setData(lineData);
-
-
-    Highlight highlight = new Highlight(mHighlightSummary.MatchDay, 0, 0);
-    mLineChart.highlightValue(highlight, false);
-
     mLineChart.invalidate(); // refresh
   }
 }

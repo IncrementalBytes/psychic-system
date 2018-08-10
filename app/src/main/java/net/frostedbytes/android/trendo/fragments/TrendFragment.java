@@ -16,7 +16,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import net.frostedbytes.android.trendo.BaseActivity;
-import net.frostedbytes.android.trendo.models.MatchSummary;
 import net.frostedbytes.android.trendo.models.UserPreference;
 import net.frostedbytes.android.trendo.utils.LogUtils;
 import net.frostedbytes.android.trendo.R;
@@ -32,7 +31,6 @@ public class TrendFragment extends Fragment {
 
   private ViewPager mViewPager;
 
-  private MatchSummary mMatchSummary;
   private UserPreference mUserPreference;
 
   private Query mCompareQuery;
@@ -40,12 +38,11 @@ public class TrendFragment extends Fragment {
   private ValueEventListener mCompareValueListener;
   private ValueEventListener mTrendValueListener;
 
-  public static TrendFragment newInstance(UserPreference userPreference, MatchSummary matchSummary) {
+  public static TrendFragment newInstance(UserPreference userPreference) {
 
-    LogUtils.debug(TAG, "++newInstance(UserPreference, MatchSummary)");
+    LogUtils.debug(TAG, "++newInstance(UserPreference)");
     TrendFragment fragment = new TrendFragment();
     Bundle args = new Bundle();
-    args.putSerializable(BaseActivity.ARG_MATCH_SUMMARY, matchSummary);
     args.putSerializable(BaseActivity.ARG_USER_PREFERENCE, userPreference);
     fragment.setArguments(args);
     return fragment;
@@ -72,14 +69,13 @@ public class TrendFragment extends Fragment {
     LogUtils.debug(TAG, "++onAttach(Context)");
     Bundle arguments = getArguments();
     if (arguments != null) {
-      mMatchSummary = (MatchSummary)arguments.getSerializable(BaseActivity.ARG_MATCH_SUMMARY);
       mUserPreference = (UserPreference) arguments.getSerializable(BaseActivity.ARG_USER_PREFERENCE);
     } else {
       LogUtils.debug(TAG, "Arguments were null.");
     }
 
-    if (mUserPreference != null) {
-      String queryPath = PathUtils.combine(Trend.ROOT, mUserPreference.Season, mUserPreference.TeamShortName);
+    if (mUserPreference != null && mUserPreference.Season > 0 && !mUserPreference.TeamId.isEmpty()) {
+      String queryPath = PathUtils.combine(Trend.ROOT, mUserPreference.Season, mUserPreference.TeamId);
       LogUtils.debug(TAG, "Trend Query: %s",  queryPath);
       mTrendQuery = FirebaseDatabase.getInstance().getReference().child(queryPath);
       mTrendValueListener = new ValueEventListener() {
@@ -107,7 +103,7 @@ public class TrendFragment extends Fragment {
 
       if (mUserPreference.Compare != 0 || mUserPreference.Compare != mUserPreference.Season) {
         LogUtils.debug(TAG, "Adding %d trend data along side %d", mUserPreference.Compare, mUserPreference.Season);
-        String compareQueryPath = PathUtils.combine(Trend.ROOT, String.valueOf(mUserPreference.Compare), mUserPreference.TeamShortName);
+        String compareQueryPath = PathUtils.combine(Trend.ROOT, String.valueOf(mUserPreference.Compare), mUserPreference.TeamId);
         LogUtils.debug(TAG, "CompareTo Query: %s", compareQueryPath);
         mCompareQuery = FirebaseDatabase.getInstance().getReference().child(compareQueryPath);
         mCompareValueListener = new ValueEventListener() {
@@ -187,7 +183,7 @@ public class TrendFragment extends Fragment {
               compare.Year = mCompare.Year;
             }
 
-            return LineChartFragment.newInstance(trend, compare, mMatchSummary);
+            return LineChartFragment.newInstance(trend, compare);
           case 1:
             trend.TotalPoints = mTrend.TotalPoints;
             trend.PointsPerGame = mTrend.PointsPerGame;
@@ -198,7 +194,7 @@ public class TrendFragment extends Fragment {
               compare.Year = mCompare.Year;
             }
 
-            return LineChartFragment.newInstance(trend, compare, mMatchSummary);
+            return LineChartFragment.newInstance(trend, compare);
           case 2:
             trend.MaxPointsPossible = mTrend.MaxPointsPossible;
             trend.PointsByAverage = mTrend.PointsByAverage;
@@ -209,7 +205,7 @@ public class TrendFragment extends Fragment {
               compare.Year = mCompare.Year;
             }
 
-            return LineChartFragment.newInstance(trend, compare, mMatchSummary);
+            return LineChartFragment.newInstance(trend, compare);
           default:
             return null;
         }
