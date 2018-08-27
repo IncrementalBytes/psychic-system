@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import java.util.Locale;
 import net.frostedbytes.android.trendo.BaseActivity;
 import net.frostedbytes.android.trendo.models.UserPreference;
 import net.frostedbytes.android.trendo.utils.LogUtils;
@@ -25,6 +26,13 @@ import net.frostedbytes.android.trendo.utils.PathUtils;
 public class TrendFragment extends Fragment {
 
   private static final String TAG = TrendFragment.class.getSimpleName();
+
+  public interface OnTrendListener {
+
+    void onTrendQueryFailure();
+  }
+
+  private OnTrendListener mCallback;
 
   private static Trend mCompare;
   private static Trend mTrend;
@@ -59,21 +67,6 @@ public class TrendFragment extends Fragment {
     pagerTabStrip.getChildAt(1).setPadding(30, 15, 30, 15);
     pagerTabStrip.setDrawFullUnderline(false);
 
-    return view;
-  }
-
-  @Override
-  public void onAttach(Context context) {
-    super.onAttach(context);
-
-    LogUtils.debug(TAG, "++onAttach(Context)");
-    Bundle arguments = getArguments();
-    if (arguments != null) {
-      mUserPreference = (UserPreference) arguments.getSerializable(BaseActivity.ARG_USER_PREFERENCE);
-    } else {
-      LogUtils.debug(TAG, "Arguments were null.");
-    }
-
     if (mUserPreference != null && mUserPreference.Season > 0 && !mUserPreference.TeamId.isEmpty()) {
       String queryPath = PathUtils.combine(Trend.ROOT, mUserPreference.Season, mUserPreference.TeamId);
       LogUtils.debug(TAG, "Trend Query: %s",  queryPath);
@@ -101,7 +94,7 @@ public class TrendFragment extends Fragment {
       };
       mTrendQuery.addValueEventListener(mTrendValueListener);
 
-      if (mUserPreference.Compare != 0 || mUserPreference.Compare != mUserPreference.Season) {
+      if (mUserPreference.Compare != 0 && mUserPreference.Compare != mUserPreference.Season) {
         LogUtils.debug(TAG, "Adding %d trend data along side %d", mUserPreference.Compare, mUserPreference.Season);
         String compareQueryPath = PathUtils.combine(Trend.ROOT, String.valueOf(mUserPreference.Compare), mUserPreference.TeamId);
         LogUtils.debug(TAG, "CompareTo Query: %s", compareQueryPath);
@@ -132,6 +125,29 @@ public class TrendFragment extends Fragment {
     }
     else {
       LogUtils.error(TAG, "Failed to get user settings from arguments.");
+      mCallback.onTrendQueryFailure();
+    }
+
+    return view;
+  }
+
+  @Override
+  public void onAttach(Context context) {
+    super.onAttach(context);
+
+    LogUtils.debug(TAG, "++onAttach(Context)");
+    try {
+      mCallback = (OnTrendListener) context;
+    } catch (ClassCastException e) {
+      throw new ClassCastException(
+        String.format(Locale.ENGLISH, "%s must implement onTrendQueryFailure().", context.toString()));
+    }
+
+    Bundle arguments = getArguments();
+    if (arguments != null) {
+      mUserPreference = (UserPreference) arguments.getSerializable(BaseActivity.ARG_USER_PREFERENCE);
+    } else {
+      LogUtils.debug(TAG, "Arguments were null.");
     }
   }
 
@@ -155,82 +171,104 @@ public class TrendFragment extends Fragment {
   private void populateTrendData() {
 
     if (mUserPreference.Compare > 0 && (mCompare == null || mCompare.GoalsFor.isEmpty())) {
+      LogUtils.debug(TAG, "No comparing seasons.");
       return;
     }
 
     if (mTrend == null || mTrend.GoalsFor.isEmpty()) {
-      return;
+      LogUtils.warn(TAG, "Failed when querying trend data.");
+      mCallback.onTrendQueryFailure();
+    } else {
+      LogUtils.debug(TAG, "++populateTrendData()");
+      mViewPager.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
+
+        @Override
+        public Fragment getItem(int position) {
+
+          Trend trend = new Trend();
+          Trend compare = new Trend();
+          switch (position) {
+            case 0:
+              trend.GoalsFor = mTrend.GoalsFor;
+              trend.GoalsAgainst = mTrend.GoalsAgainst;
+              trend.Year = mTrend.Year;
+              if (mUserPreference.Compare > 0) {
+                compare.GoalsFor = mCompare.GoalsFor;
+                compare.GoalsAgainst = mCompare.GoalsAgainst;
+                compare.Year = mCompare.Year;
+              }
+
+              return LineChartFragment.newInstance(trend, compare);
+            case 1:
+              trend.GoalDifferential = mTrend.GoalDifferential;
+              trend.Year = mTrend.Year;
+              if (mUserPreference.Compare > 0) {
+                compare.GoalDifferential = mCompare.GoalDifferential;
+                compare.Year = mCompare.Year;
+              }
+
+              return LineChartFragment.newInstance(trend, compare);
+            case 2:
+              trend.TotalPoints = mTrend.TotalPoints;
+              trend.PointsByAverage = mTrend.PointsByAverage;
+              trend.Year = mTrend.Year;
+              if (mUserPreference.Compare > 0) {
+                compare.TotalPoints = mCompare.TotalPoints;
+                compare.PointsByAverage = mCompare.PointsByAverage;
+                compare.Year = mCompare.Year;
+              }
+
+              return LineChartFragment.newInstance(trend, compare);
+            case 3:
+              trend.PointsPerGame= mTrend.PointsPerGame;
+              trend.Year = mTrend.Year;
+              if (mUserPreference.Compare > 0) {
+                compare.PointsPerGame = mCompare.PointsPerGame;
+                compare.Year = mCompare.Year;
+              }
+
+              return LineChartFragment.newInstance(trend, compare);
+            case 4:
+              trend.MaxPointsPossible = mTrend.MaxPointsPossible;
+              trend.Year = mTrend.Year;
+              if (mUserPreference.Compare > 0) {
+                compare.MaxPointsPossible = mCompare.MaxPointsPossible;
+                compare.Year = mCompare.Year;
+              }
+
+              return LineChartFragment.newInstance(trend, compare);
+            default:
+              mCallback.onTrendQueryFailure();
+              return null;
+          }
+        }
+
+        @Override
+        public int getCount() {
+
+          return BaseActivity.NUM_TRENDS;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+
+          switch (position) {
+            case 0:
+              return "Goals For/Against";
+            case 1:
+              return "Goal Differential";
+            case 2:
+              return "Points";
+            case 3:
+              return "Points per Game";
+            case 4:
+              return "Max Points Possible";
+            default:
+              mCallback.onTrendQueryFailure();
+              return null;
+          }
+        }
+      });
     }
-
-    LogUtils.debug(TAG, "++populateTrendData()");
-    mViewPager.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
-
-      @Override
-      public Fragment getItem(int position) {
-
-        Trend trend = new Trend();
-        Trend compare = new Trend();
-        switch (position) {
-          case 0:
-            trend.GoalsFor = mTrend.GoalsFor;
-            trend.GoalsAgainst = mTrend.GoalsAgainst;
-            trend.GoalDifferential= mTrend.GoalDifferential;
-            trend.Year = mTrend.Year;
-            if (mUserPreference.Compare > 0) {
-              compare.GoalsFor = mCompare.GoalsFor;
-              compare.GoalsAgainst = mCompare.GoalsAgainst;
-              compare.GoalDifferential = mCompare.GoalDifferential;
-              compare.Year = mCompare.Year;
-            }
-
-            return LineChartFragment.newInstance(trend, compare);
-          case 1:
-            trend.TotalPoints = mTrend.TotalPoints;
-            trend.PointsPerGame = mTrend.PointsPerGame;
-            trend.Year = mTrend.Year;
-            if (mUserPreference.Compare > 0) {
-              compare.TotalPoints = mCompare.TotalPoints;
-              compare.PointsPerGame = mCompare.PointsPerGame;
-              compare.Year = mCompare.Year;
-            }
-
-            return LineChartFragment.newInstance(trend, compare);
-          case 2:
-            trend.MaxPointsPossible = mTrend.MaxPointsPossible;
-            trend.PointsByAverage = mTrend.PointsByAverage;
-            trend.Year = mTrend.Year;
-            if (mUserPreference.Compare > 0) {
-              compare.MaxPointsPossible = mCompare.MaxPointsPossible;
-              compare.PointsByAverage = mCompare.PointsByAverage;
-              compare.Year = mCompare.Year;
-            }
-
-            return LineChartFragment.newInstance(trend, compare);
-          default:
-            return null;
-        }
-      }
-
-      @Override
-      public int getCount() {
-
-        return BaseActivity.NUM_TRENDS;
-      }
-
-      @Override
-      public CharSequence getPageTitle(int position) {
-
-        switch (position) {
-          case 0:
-            return "Goals";
-          case 1:
-            return "Points";
-          case 2:
-            return "Theoretical";
-          default:
-            return null;
-        }
-      }
-    });
   }
 }

@@ -10,8 +10,6 @@
   <!-- Dynamic trend fragment colors -->
   <color name="colorLeft">#2e7d32</color>
   <color name="colorLeftCompare">#66bb6a</color>
-  <color name="colorCenter">#ff9800</color>
-  <color name="colorCenterCompare">#fff176</color>
-  <color name="colorRight">#c62828</color>
-  <color name="colorRightCompare">#ef5350</color>
+  <color name="colorCenter">#c62828</color>
+  <color name="colorCenterCompare">#ef5350</color>
 </resources>

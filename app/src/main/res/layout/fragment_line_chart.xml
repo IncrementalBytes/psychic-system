@@ -28,22 +28,7 @@
     android:layout_below="@id/line_chart"
     android:text=""
     app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toStartOf="@+id/line_chart_switch_right"
     app:layout_constraintStart_toEndOf="@+id/line_chart_switch_left"/>
-
-  <Switch
-    android:id="@+id/line_chart_switch_right"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
-    android:layout_marginEnd="8dp"
-    android:layout_below="@id/line_chart"
-    android:text=""
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/line_chart"
-    app:layout_constraintVertical_bias="1.0"/>
 
   <com.github.mikephil.charting.charts.LineChart
     android:id="@+id/line_chart"

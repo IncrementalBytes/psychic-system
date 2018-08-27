@@ -38,7 +38,6 @@ public class LineChartFragment extends Fragment {
 
   private Switch mCenterSwitch;
   private Switch mLeftSwitch;
-  private Switch mRightSwitch;
   private LineChart mLineChart;
 
   private LineDataSet mCenterDataSet;
@@ -48,12 +47,8 @@ public class LineChartFragment extends Fragment {
   private List<Entry> mCompareCenterEntries;
   private LineDataSet mCompareLeftDataSet;
   private List<Entry> mCompareLeftEntries;
-  private LineDataSet mCompareRightDataSet;
-  private List<Entry> mCompareRightEntries;
   private LineDataSet mLeftDataSet;
   private List<Entry> mLeftEntries;
-  private LineDataSet mRightDataSet;
-  private List<Entry> mRightEntries;
   private Trend mTrend;
 
   public static LineChartFragment newInstance(Trend trend, Trend compare) {
@@ -78,33 +73,31 @@ public class LineChartFragment extends Fragment {
     mLineChart = view.findViewById(R.id.line_chart);
     mCenterSwitch = view.findViewById(R.id.line_chart_switch_left);
     mLeftSwitch = view.findViewById(R.id.line_chart_switch_center);
-    mRightSwitch = view.findViewById(R.id.line_chart_switch_right);
 
     String centerLabel = "";
-    String leftLabel = "";
-    String rightLabel = "";
-    if (!mTrend.GoalsFor.isEmpty()) {
-      centerLabel = getString(R.string.goals_against);
+    String leftLabel;
+    if (!mTrend.GoalsFor.isEmpty() && !mTrend.GoalsAgainst.isEmpty()) {
       leftLabel = getString(R.string.goals_for);
-      rightLabel = getString(R.string.goal_differential);
-    } else if (!mTrend.TotalPoints.isEmpty()) {
+      centerLabel = getString(R.string.goals_against);
+    } else if (!mTrend.GoalDifferential.isEmpty()) {
+      leftLabel = getString(R.string.goal_differential);
+    } else if (!mTrend.TotalPoints.isEmpty() && !mTrend.PointsByAverage.isEmpty()) {
       leftLabel = getString(R.string.total_points);
-      rightLabel = getString(R.string.points_per_game);
-    } else if (!mTrend.MaxPointsPossible.isEmpty()) {
+      centerLabel = getString(R.string.points_by_average);
+    } else if (!mTrend.PointsPerGame.isEmpty()) {
+      leftLabel = getString(R.string.points_per_game);
+    } else {
       leftLabel = getString(R.string.max_points);
-      rightLabel = getString(R.string.points_by_average);
     }
 
     mCenterSwitch.setText(centerLabel);
-    mRightSwitch.setText(rightLabel);
     mLeftSwitch.setText(leftLabel);
 
     mLeftSwitch.setChecked(true);
-    mCenterSwitch.setVisibility(mTrend.GoalsFor.isEmpty() ? View.INVISIBLE : View.VISIBLE);
+    mCenterSwitch.setVisibility(mTrend.GoalsFor.isEmpty() && mTrend.TotalPoints.isEmpty() ? View.INVISIBLE : View.VISIBLE);
 
     mCenterSwitch.setOnCheckedChangeListener((compoundButton, checked) -> updateUI());
     mLeftSwitch.setOnCheckedChangeListener((compoundButton, checked) -> updateUI());
-    mRightSwitch.setOnCheckedChangeListener((compoundButton, checked) -> updateUI());
 
     if (mCompareLeftEntries.size() > 0) {
       mCompareLeftDataSet = new LineDataSet(
@@ -186,46 +179,6 @@ public class LineChartFragment extends Fragment {
     mCenterDataSet.setDrawHighlightIndicators(true);
     mCenterDataSet.setDrawHorizontalHighlightIndicator(false);
 
-    if (mCompareRightEntries.size() > 0) {
-      mCompareRightDataSet = new LineDataSet(
-        mCompareRightEntries,
-        String.format(Locale.ENGLISH, "%s - %d", rightLabel, mCompare.Year));
-      mCompareRightDataSet.setAxisDependency(AxisDependency.RIGHT);
-      if (getContext() != null) {
-        mCompareRightDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorRightCompare));
-      } else {
-        mCompareRightDataSet.setColor(Color.argb(255, 239, 83, 80));
-      }
-
-      mCompareRightDataSet.setLineWidth(1.0f);
-      mCompareRightDataSet.enableDashedLine(10, 10, 0);
-      mCompareRightDataSet.setDrawCircles(false);
-      mCompareRightDataSet.setDrawValues(false);
-      mCompareRightDataSet.setHighlightEnabled(false);
-      mCompareRightDataSet.setDrawHighlightIndicators(false);
-      mCompareRightDataSet.setDrawHorizontalHighlightIndicator(false);
-      mRightDataSet = new LineDataSet(
-        mRightEntries,
-        String.format(Locale.ENGLISH, "%s - %d", rightLabel, mTrend.Year));
-    } else {
-      mRightDataSet = new LineDataSet(mRightEntries, rightLabel);
-    }
-
-    mRightDataSet.setAxisDependency(AxisDependency.RIGHT);
-    if (getContext() != null) {
-      mRightDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorRight));
-    } else {
-      mRightDataSet.setColor(Color.RED);
-    }
-
-    mRightDataSet.setLineWidth(1.0f);
-    mRightDataSet.disableDashedLine();
-    mRightDataSet.setDrawCircles(false);
-    mRightDataSet.setDrawValues(false);
-    mRightDataSet.setHighlightEnabled(true);
-    mRightDataSet.setDrawHighlightIndicators(true);
-    mRightDataSet.setDrawHorizontalHighlightIndicator(false);
-
     mLineChart.getDescription().setEnabled(false);
 
     YAxis leftAxis = mLineChart.getAxisLeft();
@@ -274,9 +227,7 @@ public class LineChartFragment extends Fragment {
     mCenterEntries = new ArrayList<>();
     mCompareCenterEntries = new ArrayList<>();
     mCompareLeftEntries = new ArrayList<>();
-    mCompareRightEntries = new ArrayList<>();
     mLeftEntries = new ArrayList<>();
-    mRightEntries = new ArrayList<>();
 
     Bundle arguments = getArguments();
     if (arguments == null) {
@@ -320,13 +271,17 @@ public class LineChartFragment extends Fragment {
     }
 
     // order the keys ascending (keys are match dates in milliseconds)
-    List<String> trendKeys = new ArrayList<>(mTrend.GoalsFor.keySet());
-    if (mTrend.GoalsFor.isEmpty()) {
-      if (!mTrend.TotalPoints.isEmpty()) {
-        trendKeys = new ArrayList<>(mTrend.TotalPoints.keySet());
-      } else {
-        trendKeys = new ArrayList<>(mTrend.MaxPointsPossible.keySet());
-      }
+    List<String> trendKeys;
+    if (!mTrend.GoalDifferential.isEmpty()) {
+      trendKeys = new ArrayList<>(mTrend.GoalDifferential.keySet());
+    } else if (!mTrend.TotalPoints.isEmpty() && !mTrend.PointsByAverage.isEmpty()) {
+      trendKeys = new ArrayList<>(mTrend.TotalPoints.keySet());
+    } else if (!mTrend.PointsPerGame.isEmpty()) {
+      trendKeys = new ArrayList<>(mTrend.PointsPerGame.keySet());
+    } else if (!mTrend.MaxPointsPossible.isEmpty()) {
+      trendKeys = new ArrayList<>(mTrend.MaxPointsPossible.keySet());
+    } else {
+      trendKeys = new ArrayList<>(mTrend.GoalsFor.keySet());
     }
 
     Collections.sort(trendKeys);
@@ -334,27 +289,33 @@ public class LineChartFragment extends Fragment {
     for (String trendKey : trendKeys) {
       String trimmedKey = trendKey.substring(3, trendKey.length());
       float sortedFloat = Float.parseFloat(trimmedKey);
-      if (!mTrend.GoalsFor.isEmpty()) {
+      if (!mTrend.GoalsFor.isEmpty() && !mTrend.GoalsAgainst.isEmpty()) {
         mLeftEntries.add(new Entry(sortedFloat, mTrend.GoalsFor.get(trendKey)));
         mCenterEntries.add(new Entry(sortedFloat, mTrend.GoalsAgainst.get(trendKey)));
-        mRightEntries.add(new Entry(sortedFloat, mTrend.GoalDifferential.get(trendKey)));
+      } else if (!mTrend.GoalDifferential.isEmpty()) {
+        mLeftEntries.add(new Entry(sortedFloat, mTrend.GoalDifferential.get(trendKey)));
       } else if (!mTrend.TotalPoints.isEmpty()) {
         mLeftEntries.add(new Entry(sortedFloat, mTrend.TotalPoints.get(trendKey)));
-        mRightEntries.add(new Entry(sortedFloat, mTrend.PointsPerGame.get(trendKey).floatValue()));
+        mCenterEntries.add(new Entry(sortedFloat, mTrend.PointsByAverage.get(trendKey)));
+      } else if (!mTrend.PointsPerGame.isEmpty()) {
+        mLeftEntries.add(new Entry(sortedFloat, mTrend.PointsPerGame.get(trendKey).floatValue()));
       } else if (!mTrend.MaxPointsPossible.isEmpty()) {
         mLeftEntries.add(new Entry(sortedFloat, mTrend.MaxPointsPossible.get(trendKey)));
-        mRightEntries.add(new Entry(sortedFloat, mTrend.PointsByAverage.get(trendKey)));
       }
     }
 
     if (mCompare != null) { // if we have a comparison going, populate the data sets with compare data
-      List<String> compareKeys = new ArrayList<>(mCompare.GoalsFor.keySet());
-      if (mTrend.GoalsFor.isEmpty()) {
-        if (!mTrend.TotalPoints.isEmpty()) {
-          compareKeys = new ArrayList<>(mCompare.TotalPoints.keySet());
-        } else {
-          compareKeys = new ArrayList<>(mCompare.MaxPointsPossible.keySet());
-        }
+      List<String> compareKeys;
+      if (!mTrend.GoalDifferential.isEmpty()) {
+        compareKeys = new ArrayList<>(mTrend.GoalDifferential.keySet());
+      } else if (!mTrend.TotalPoints.isEmpty() && !mTrend.PointsByAverage.isEmpty()) {
+        compareKeys = new ArrayList<>(mTrend.TotalPoints.keySet());
+      } else if (!mTrend.PointsPerGame.isEmpty()) {
+        compareKeys = new ArrayList<>(mTrend.PointsPerGame.keySet());
+      } else if (!mTrend.MaxPointsPossible.isEmpty()) {
+        compareKeys = new ArrayList<>(mTrend.MaxPointsPossible.keySet());
+      } else {
+        compareKeys = new ArrayList<>(mTrend.GoalsFor.keySet());
       }
 
       Collections.sort(compareKeys);
@@ -362,16 +323,18 @@ public class LineChartFragment extends Fragment {
       for (String compareKey : compareKeys) {
         String trimmedKey = compareKey.substring(3, compareKey.length());
         float sortedFloat = Float.parseFloat(trimmedKey);
-        if (!mCompare.GoalsFor.isEmpty()) {
+        if (!mCompare.GoalsFor.isEmpty() && !mCompare.GoalsAgainst.isEmpty()) {
           mCompareLeftEntries.add(new Entry(sortedFloat, mCompare.GoalsFor.get(compareKey)));
           mCompareCenterEntries.add(new Entry(sortedFloat, mCompare.GoalsAgainst.get(compareKey)));
-          mCompareRightEntries.add(new Entry(sortedFloat, mCompare.GoalDifferential.get(compareKey)));
+        } else if (!mCompare.GoalDifferential.isEmpty()) {
+          mCompareLeftEntries.add(new Entry(sortedFloat, mCompare.GoalDifferential.get(compareKey)));
         } else if (!mCompare.TotalPoints.isEmpty()) {
           mCompareLeftEntries.add(new Entry(sortedFloat, mCompare.TotalPoints.get(compareKey)));
-          mCompareRightEntries.add(new Entry(sortedFloat, mCompare.PointsPerGame.get(compareKey).floatValue()));
+          mCompareCenterEntries.add(new Entry(sortedFloat, mCompare.PointsByAverage.get(compareKey)));
+        } else if (!mCompare.PointsPerGame.isEmpty()) {
+          mCompareLeftEntries.add(new Entry(sortedFloat, mCompare.PointsPerGame.get(compareKey).floatValue()));
         } else if (!mCompare.MaxPointsPossible.isEmpty()) {
           mCompareLeftEntries.add(new Entry(sortedFloat, mCompare.MaxPointsPossible.get(compareKey)));
-          mCompareRightEntries.add(new Entry(sortedFloat, mCompare.PointsByAverage.get(compareKey)));
         }
       }
     }
@@ -392,13 +355,6 @@ public class LineChartFragment extends Fragment {
       dataSets.add(mCenterDataSet);
       if (mCompareCenterDataSet != null && mCompareCenterDataSet.getEntryCount() > 0) {
         dataSets.add(mCompareCenterDataSet);
-      }
-    }
-
-    if (mRightSwitch.isChecked()) {
-      dataSets.add(mRightDataSet);
-      if (mCompareRightDataSet != null && mCompareRightDataSet.getEntryCount() > 0) {
-        dataSets.add(mCompareRightDataSet);
       }
     }
 

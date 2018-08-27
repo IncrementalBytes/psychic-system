@@ -19,7 +19,7 @@ public class BaseActivity extends AppCompatActivity {
   public static final String ARG_USER_PREFERENCE = "user_preference";
   public static final String DEFAULT_DATE = "0000-01-01";
   public static final String DEFAULT_ID = "000000000-0000-0000-0000-000000000000";
-  public static final int NUM_TRENDS = 3;
+  public static final int NUM_TRENDS = 5;
 
   private static final String TAG = BaseActivity.class.getSimpleName();
 

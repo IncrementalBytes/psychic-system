@@ -17,8 +17,8 @@ public class MatchSummaryUnitTest {
     assertEquals(testSummary.MatchId, BaseActivity.DEFAULT_ID);
     assertEquals(testSummary.IsFinal, false);
     assertEquals(testSummary.MatchDate, BaseActivity.DEFAULT_DATE);
-    assertEquals(testSummary.HomeTeamName, "");
-    assertEquals(testSummary.AwayTeamName, "");
+    assertEquals(testSummary.HomeId, "");
+    assertEquals(testSummary.AwayId, "");
   }
 
   @Test
@@ -27,9 +27,9 @@ public class MatchSummaryUnitTest {
     MatchSummary testSummary = new MatchSummary();
     Map<String, Object> mappedSummary = testSummary.toMap();
     assertEquals((long)mappedSummary.get("AwayScore"), 0);
-    assertEquals(mappedSummary.get("AwayTeamName"), "");
+    assertEquals(mappedSummary.get("AwayId"), "");
     assertEquals((long)mappedSummary.get("HomeScore"), 0);
-    assertEquals(mappedSummary.get("HomeTeamName"), "");
+    assertEquals(mappedSummary.get("HomeId"), "");
     assertEquals(mappedSummary.get("IsFinal"), false);
     assertEquals((long)mappedSummary.get("MatchDate"), 0);
   }

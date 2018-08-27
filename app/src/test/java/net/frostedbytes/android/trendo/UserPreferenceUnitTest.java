@@ -13,7 +13,6 @@ public class UserPreferenceUnitTest {
 
     UserPreference testPreferences = new UserPreference();
     assertEquals(testPreferences.Season, Calendar.getInstance().get(Calendar.YEAR));
-    assertEquals(testPreferences.TeamShortName, "");
-    assertEquals(testPreferences.TeamFullName, "");
+    assertEquals(testPreferences.TeamId, "");
   }
 }

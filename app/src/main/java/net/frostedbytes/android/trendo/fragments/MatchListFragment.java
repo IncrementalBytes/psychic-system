@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import net.frostedbytes.android.trendo.BaseActivity;
@@ -193,7 +194,21 @@ public class MatchListFragment extends Fragment {
         mMatchStatusTextView.setText(R.string.full_time);
         mMatchStatusTextView.setTypeface(null, Typeface.BOLD);
       } else {
-        mMatchStatusTextView.setText(R.string.in_progress);
+        Calendar calendar = Calendar.getInstance();
+        String currentDate = String.format(
+          Locale.ENGLISH,
+          "%04d%02d%02d",
+          calendar.get(Calendar.YEAR),
+          calendar.get(Calendar.MONTH) + 1, // note: month value is based on 0-11
+          calendar.get(Calendar.DAY_OF_MONTH));
+        if (mMatchSummary.MatchDate.compareTo(currentDate) == 0) {
+          mMatchStatusTextView.setText(R.string.in_progress);
+        } else if (mMatchSummary.MatchDate.compareTo(currentDate) > 0){
+          mMatchStatusTextView.setText(R.string.upcoming);
+        } else {
+          mMatchStatusTextView.setText(R.string.delayed);
+        }
+
         mMatchStatusTextView.setTypeface(null, Typeface.ITALIC);
       }
     }

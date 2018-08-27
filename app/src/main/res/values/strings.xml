@@ -20,14 +20,16 @@
   <string name="goals_for">For</string>
   <string name="goal_differential">Differential</string>
   <string name="total_points">Total</string>
-  <string name="points_per_game">Per Game</string>
+  <string name="points_per_game">Points Per Game</string>
   <string name="preferences_team">Select the team you wish to view trends for.</string>
   <string name="preferences_season">Select the season to view trends for.</string>
   <string name="preferences_compare">Select the season to compare trends with.</string>
   <!-- STATUS MESSAGES -->
   <string name="status_authenticating">Authenticating…</string>
   <string name="status_initializing">Initializing…</string>
-  <string name="max_points">Max</string>
+  <string name="max_points">Max Points Possible</string>
   <string name="points_by_average">By PPG</string>
   <string name="desc_match_list">List of matches for selected team.</string>
+  <string name="upcoming">Upcoming</string>
+  <string name="delayed">Results Delayed</string>
 </resources>

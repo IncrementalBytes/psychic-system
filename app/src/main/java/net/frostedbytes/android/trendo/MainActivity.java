@@ -28,7 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Calendar;
 import java.util.Locale;
 import java.util.UUID;
 import net.frostedbytes.android.trendo.fragments.MatchListFragment;
@@ -44,7 +44,8 @@ import net.frostedbytes.android.trendo.utils.SortUtils;
 public class MainActivity extends BaseActivity implements
   NavigationView.OnNavigationItemSelectedListener,
   UserPreferencesFragment.OnPreferencesListener,
-  MatchListFragment.OnMatchListListener {
+  MatchListFragment.OnMatchListListener,
+  TrendFragment.OnTrendListener {
 
   private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -122,7 +123,7 @@ public class MainActivity extends BaseActivity implements
     if (sharedPreferences.contains(UserPreferencesFragment.KEY_SEASON_PREFERENCE)) {
       String preference = sharedPreferences.getString(UserPreferencesFragment.KEY_SEASON_PREFERENCE, getString(R.string.none));
       if (preference.equals(getString(R.string.none))) {
-        mUserPreference.Season = 0;
+        mUserPreference.Season = Calendar.getInstance().get(Calendar.YEAR);
       } else {
         mUserPreference.Season = Integer.parseInt(preference);
       }
@@ -251,7 +252,7 @@ public class MainActivity extends BaseActivity implements
       setTitle(String.format(Locale.ENGLISH, "%d", mUserPreference.Season));
     } else {
       setTitle("Match Summaries");
-      Snackbar.make(findViewById(R.id.main_drawer_layout), getString(R.string.no_matches), Snackbar.LENGTH_LONG).show();
+      missingPreference();
     }
   }
 
@@ -278,7 +279,7 @@ public class MainActivity extends BaseActivity implements
       if (sharedPreferences.contains(UserPreferencesFragment.KEY_SEASON_PREFERENCE)) {
         String preference = sharedPreferences.getString(UserPreferencesFragment.KEY_SEASON_PREFERENCE, getString(R.string.none));
         if (preference.equals(getString(R.string.none))) {
-          mUserPreference.Season = 0;
+          mUserPreference.Season = Calendar.getInstance().get(Calendar.YEAR);
         } else {
           mUserPreference.Season = Integer.parseInt(preference);
         }
@@ -295,6 +296,12 @@ public class MainActivity extends BaseActivity implements
         mUserPreference.Compare = 0;
       }
     }
+
+    if (mUserPreference == null || mUserPreference.TeamId.isEmpty()) {
+      missingPreference();
+    } else {
+      replaceFragment(MatchListFragment.newInstance(mTeams, mMatchSummaries));
+    }
   }
 
   @Override
@@ -304,12 +311,19 @@ public class MainActivity extends BaseActivity implements
     replaceFragment(TrendFragment.newInstance(mUserPreference));
   }
 
+  @Override
+  public void onTrendQueryFailure() {
+
+    LogUtils.debug(TAG, "++onSelected()");
+    replaceFragment(MatchListFragment.newInstance(mTeams, mMatchSummaries));
+  }
+
   private void matchSummaryQuery() {
 
     LogUtils.debug(TAG, "++matchSummaryQuery()");
     String queryPath = PathUtils.combine(MatchSummary.ROOT, mUserPreference.Season);
     LogUtils.debug(TAG, "Query: %s", queryPath);
-    mMatchSummariesQuery = FirebaseDatabase.getInstance().getReference().child(queryPath).orderByChild("MatchDay");
+    mMatchSummariesQuery = FirebaseDatabase.getInstance().getReference().child(queryPath);
     mMatchSummariesListener = new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -318,12 +332,14 @@ public class MainActivity extends BaseActivity implements
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
           MatchSummary matchSummary = snapshot.getValue(MatchSummary.class);
           if (matchSummary != null) {
-            matchSummary.MatchId = snapshot.getKey();
-            mMatchSummaries.add(matchSummary);
+            if (matchSummary.HomeId.equals(mUserPreference.TeamId) || matchSummary.AwayId.equals(mUserPreference.TeamId)) {
+              matchSummary.MatchId = snapshot.getKey();
+              mMatchSummaries.add(matchSummary);
+            }
           }
         }
 
-        Collections.reverse(mMatchSummaries);
+        mMatchSummaries.sort((summary1, summary2) -> Integer.compare(summary2.MatchDate.compareTo(summary1.MatchDate), 0));
         replaceFragment(MatchListFragment.newInstance(mTeams, mMatchSummaries));
       }
 
@@ -335,6 +351,17 @@ public class MainActivity extends BaseActivity implements
       }
     };
     mMatchSummariesQuery.addValueEventListener(mMatchSummariesListener);
+  }
+
+  private void missingPreference() {
+
+    LogUtils.debug(TAG, "++missingPreference()");
+    Snackbar snackbar = Snackbar.make(findViewById(R.id.main_fragment_container), getString(R.string.no_matches), Snackbar.LENGTH_INDEFINITE);
+    snackbar.setAction("Settings", v -> {
+      snackbar.dismiss();
+      replaceFragment(UserPreferencesFragment.newInstance(mTeams));
+    });
+    snackbar.show();
   }
 
   private void replaceFragment(Fragment fragment){
