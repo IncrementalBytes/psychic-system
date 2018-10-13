@@ -1,5 +1,7 @@
 package net.frostedbytes.android.trendo.fragments;
 
+import static net.frostedbytes.android.trendo.BaseActivity.BASE_TAG;
+
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -16,7 +18,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import net.frostedbytes.android.trendo.BaseActivity;
-import net.frostedbytes.android.trendo.models.Team;
 import net.frostedbytes.android.trendo.utils.DateUtils;
 import net.frostedbytes.android.trendo.utils.LogUtils;
 import net.frostedbytes.android.trendo.R;
@@ -24,7 +25,7 @@ import net.frostedbytes.android.trendo.models.MatchSummary;
 
 public class MatchListFragment extends Fragment {
 
-  private static final String TAG = MatchListFragment.class.getSimpleName();
+  private static final String TAG = BASE_TAG + MatchListFragment.class.getSimpleName();
 
   public interface OnMatchListListener {
 
@@ -37,17 +38,35 @@ public class MatchListFragment extends Fragment {
   private RecyclerView mRecyclerView;
 
   private ArrayList<MatchSummary> mMatchSummaries;
-  private ArrayList<Team> mTeams;
 
-  public static MatchListFragment newInstance(ArrayList<Team> teams, ArrayList<MatchSummary> matchSummaries) {
+  public static MatchListFragment newInstance(ArrayList<MatchSummary> matchSummaries) {
 
-    LogUtils.debug(TAG, "++newInstance(UserPreference, ArrayList<>, ArrayList<>)");
+    LogUtils.debug(TAG, "++newInstance(ArrayList<>)");
     MatchListFragment fragment = new MatchListFragment();
     Bundle args = new Bundle();
     args.putParcelableArrayList(BaseActivity.ARG_MATCH_SUMMARIES, matchSummaries);
-    args.putParcelableArrayList(BaseActivity.ARG_TEAMS, teams);
     fragment.setArguments(args);
     return fragment;
+  }
+
+  @Override
+  public void onAttach(Context context) {
+    super.onAttach(context);
+
+    LogUtils.debug(TAG, "++onAttach(Context)");
+    try {
+      mCallback = (OnMatchListListener) context;
+    } catch (ClassCastException e) {
+      throw new ClassCastException(
+        String.format(Locale.ENGLISH, "%s must implement onPopulated(int) and onSelected(String).", context.toString()));
+    }
+
+    Bundle arguments = getArguments();
+    if (arguments != null) {
+      mMatchSummaries = arguments.getParcelableArrayList(BaseActivity.ARG_MATCH_SUMMARIES);
+    } else {
+      LogUtils.error(TAG, "Arguments were null.");
+    }
   }
 
   @Override
@@ -67,27 +86,6 @@ public class MatchListFragment extends Fragment {
   }
 
   @Override
-  public void onAttach(Context context) {
-    super.onAttach(context);
-
-    LogUtils.debug(TAG, "++onAttach(Context)");
-    try {
-      mCallback = (OnMatchListListener) context;
-    } catch (ClassCastException e) {
-      throw new ClassCastException(
-        String.format(Locale.ENGLISH, "%s must implement onPopulated(int) and onSelected(String).", context.toString()));
-    }
-
-    Bundle arguments = getArguments();
-    if (arguments != null) {
-      mMatchSummaries = arguments.getParcelableArrayList(BaseActivity.ARG_MATCH_SUMMARIES);
-      mTeams = arguments.getParcelableArrayList(BaseActivity.ARG_TEAMS);
-    } else {
-      LogUtils.error(TAG, "Arguments were null.");
-    }
-  }
-
-  @Override
   public void onDestroy() {
     super.onDestroy();
 
@@ -102,17 +100,6 @@ public class MatchListFragment extends Fragment {
 
     LogUtils.debug(TAG, "++onResume()");
     updateUI();
-  }
-
-  private String getTeamName(String teamId) {
-
-    for (Team team : mTeams) {
-      if (team.Id.equals(teamId)) {
-        return team.FullName;
-      }
-    }
-
-    return "N/A";
   }
 
   private void updateUI() {
@@ -181,8 +168,8 @@ public class MatchListFragment extends Fragment {
         String.format(
           Locale.getDefault(),
           "%1s vs %2s",
-          getTeamName(mMatchSummary.HomeId),
-          getTeamName(mMatchSummary.AwayId)));
+          mMatchSummary.HomeFullName,
+          mMatchSummary.AwayFullName));
       mMatchDateTextView.setText(DateUtils.formatDateForDisplay(mMatchSummary.MatchDate));
       mMatchScoreTextView.setText(
         String.format(

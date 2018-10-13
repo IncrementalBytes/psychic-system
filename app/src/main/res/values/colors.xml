@@ -4,12 +4,8 @@
   <color name="colorPrimaryDark">#132530</color>
   <color name="colorAccent">#5d9732</color>
   <color name="colorTextPrimary">#ddffffff</color>
-  <!-- Goal trend fragment colors -->
-  <!-- Point trend fragment colors -->
-  <!-- Theoretical trend fragment colors -->
-  <!-- Dynamic trend fragment colors -->
-  <color name="colorLeft">#2e7d32</color>
-  <color name="colorLeftCompare">#66bb6a</color>
-  <color name="colorCenter">#c62828</color>
-  <color name="colorCenterCompare">#ef5350</color>
+
+  <color name="colorFavorite">#66bb6a</color>
+  <color name="colorAhead">#c62828</color>
+  <color name="colorBehind">#ffe100</color>
 </resources>

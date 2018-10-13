@@ -8,6 +8,9 @@ import java.util.Map;
 public class Trend implements Serializable {
 
   @Exclude
+  public static final String AGGREGATE_ROOT = "Aggregate";
+
+  @Exclude
   public static final String ROOT = "Trends";
 
   /**
@@ -40,6 +43,9 @@ public class Trend implements Serializable {
    */
   public HashMap<String, Double> PointsPerGame;
 
+  @Exclude
+  public String TeamShortName;
+
   /**
    * List containing the accumulated total points.
    */
@@ -62,6 +68,7 @@ public class Trend implements Serializable {
     this.MaxPointsPossible = new HashMap<>();
     this.PointsByAverage = new HashMap<>();
     this.PointsPerGame = new HashMap<>();
+    this.TeamShortName = "";
     this.TotalPoints = new HashMap<>();
     this.Year = 0;
   }

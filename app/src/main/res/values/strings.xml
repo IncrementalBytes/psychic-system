@@ -32,4 +32,10 @@
   <string name="desc_match_list">List of matches for selected team.</string>
   <string name="upcoming">Upcoming</string>
   <string name="delayed">Results Delayed</string>
+  <string name="show_rivals">Show Rivals</string>
+  <string name="show_previous_year">Show Previous Year</string>
+  <string name="not_available">N/A</string>
+  <string name="title_preferences">Preferences</string>
+  <string name="title_match_summaries">Match Summaries</string>
+  <string name="no_trends">Unable to display trends for team.</string>
 </resources>

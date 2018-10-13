@@ -1,5 +1,7 @@
 package net.frostedbytes.android.trendo.fragments;
 
+import static net.frostedbytes.android.trendo.BaseActivity.BASE_TAG;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,7 +17,7 @@ import net.frostedbytes.android.trendo.utils.LogUtils;
 
 public class BarChartFragment extends Fragment {
 
-  private static final String TAG = BarChartFragment.class.getSimpleName();
+  private static final String TAG = BASE_TAG + BarChartFragment.class.getSimpleName();
 
   private BarChart mBarChart;
 
@@ -25,11 +27,6 @@ public class BarChartFragment extends Fragment {
     BarChartFragment fragment = new BarChartFragment();
     Bundle args = new Bundle();
     args.putSerializable(BaseActivity.ARG_TREND, trend);
-    if (compare != null) {
-      args.putSerializable(BaseActivity.ARG_COMPARE, compare);
-    }
-
-    //args.putSerializable(BaseActivity.ARG_MATCH_SUMMARY, matchSummary);
     fragment.setArguments(args);
     return fragment;
   }

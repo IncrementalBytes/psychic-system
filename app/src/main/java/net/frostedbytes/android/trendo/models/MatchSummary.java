@@ -12,6 +12,9 @@ public class MatchSummary implements Parcelable {
   @Exclude
   public static final String ROOT = "MatchSummaries";
 
+  @Exclude
+  public String AwayFullName;
+
   /**
    * Unique identifier for away team.
    */
@@ -21,6 +24,9 @@ public class MatchSummary implements Parcelable {
    * Goals scored by the away team.
    */
   public long AwayScore;
+
+  @Exclude
+  public String HomeFullName;
 
   /**
    * Unique identifier for home team.
@@ -52,9 +58,10 @@ public class MatchSummary implements Parcelable {
    */
   public MatchSummary() {
 
-    // Default constructor required for calls to DataSnapshot.getValue(MatchSummary.class)
+    this.AwayFullName = "";
     this.AwayId = BaseActivity.DEFAULT_ID;
     this.AwayScore = 0;
+    this.HomeFullName = "";
     this.HomeId = BaseActivity.DEFAULT_ID;
     this.HomeScore = 0;
     this.IsFinal = false;
@@ -80,8 +87,10 @@ public class MatchSummary implements Parcelable {
 
   protected MatchSummary(Parcel in) {
 
+    this.AwayFullName = in.readString();
     this.AwayId = in.readString();
     this.AwayScore = in.readLong();
+    this.HomeFullName = in.readString();
     this.HomeId = in.readString();
     this.HomeScore = in.readLong();
     this.IsFinal = in.readInt() != 0;
@@ -97,8 +106,10 @@ public class MatchSummary implements Parcelable {
   @Override
   public void writeToParcel(Parcel dest, int flags) {
 
+    dest.writeString(this.AwayFullName);
     dest.writeString(this.AwayId);
     dest.writeLong(this.AwayScore);
+    dest.writeString(this.AwayFullName);
     dest.writeString(this.HomeId);
     dest.writeLong(this.HomeScore);
     dest.writeInt(this.IsFinal?1:0);

@@ -1,5 +1,7 @@
 package net.frostedbytes.android.trendo.fragments;
 
+import static net.frostedbytes.android.trendo.BaseActivity.BASE_TAG;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,14 +14,13 @@ import net.frostedbytes.android.trendo.BaseActivity;
 import net.frostedbytes.android.trendo.models.Team;
 import net.frostedbytes.android.trendo.utils.LogUtils;
 import net.frostedbytes.android.trendo.R;
+import net.frostedbytes.android.trendo.utils.SortUtils;
 
 public class UserPreferencesFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-  private static final String TAG = UserPreferencesFragment.class.getSimpleName();
+  private static final String TAG = BASE_TAG + UserPreferencesFragment.class.getSimpleName();
 
   public static final String KEY_TEAM_PREFERENCE = "preference_list_team";
-  public static final String KEY_SEASON_PREFERENCE = "preference_list_season";
-  public static final String KEY_COMPARE_PREFERENCE = "preference_list_compare";
 
   public interface OnPreferencesListener {
 
@@ -55,6 +56,7 @@ public class UserPreferencesFragment extends PreferenceFragmentCompat implements
     Bundle arguments = getArguments();
     if (arguments != null) {
       mTeams = arguments.getParcelableArrayList(BaseActivity.ARG_TEAMS);
+      mTeams.sort(new SortUtils.ByTeamName());
     }
   }
 
@@ -97,7 +99,7 @@ public class UserPreferencesFragment extends PreferenceFragmentCompat implements
 
     LogUtils.debug(TAG, "++onSharedPreferenceChanged(SharedPreferences, String)");
     getPreferenceScreen().getSharedPreferences().edit().apply();
-    if (keyName.equals(KEY_TEAM_PREFERENCE) || keyName.equals(KEY_SEASON_PREFERENCE) || keyName.equals(KEY_COMPARE_PREFERENCE)) {
+    if (keyName.equals(KEY_TEAM_PREFERENCE)) {
       mCallback.onPreferenceChanged();
     } else {
       LogUtils.error(TAG, "Unknown key: ", keyName);

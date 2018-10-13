@@ -1,5 +1,7 @@
 package net.frostedbytes.android.trendo.models;
 
+import static net.frostedbytes.android.trendo.BaseActivity.BASE_TAG;
+
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import java.io.Serializable;
@@ -11,15 +13,25 @@ import net.frostedbytes.android.trendo.utils.LogUtils;
 @IgnoreExtraProperties
 public class UserPreference implements Serializable {
 
-  private static final String TAG = UserPreference.class.getSimpleName();
+  private static final String TAG = BASE_TAG + UserPreference.class.getSimpleName();
 
+  @Exclude
   private boolean mIsBarChart;
+
+  @Exclude
   private boolean mIsLineChart;
 
   /**
-   * Year to compare Year results against.
+   * Unique identifier of team ahead of TeamId.
    */
-  public int Compare;
+  @Exclude
+  public String AheadTeamId;
+
+  /**
+   * Unique identifier of team behind TeamId.
+    */
+  @Exclude
+  public String BehindTeamId;
 
   /**
    * Unique identifier for team.
@@ -43,10 +55,10 @@ public class UserPreference implements Serializable {
   @SuppressWarnings("unused")
   public UserPreference() {
 
-    // Default constructor required for calls to DataSnapshot.getValue(Settings.class)
     this.mIsBarChart = false;
     this.mIsLineChart = true;
-    this.Compare = 0;
+    this.AheadTeamId = BaseActivity.DEFAULT_ID;
+    this.BehindTeamId = BaseActivity.DEFAULT_ID;
     this.TeamId = BaseActivity.DEFAULT_ID;
     this.UserId = BaseActivity.DEFAULT_ID;
     this.Season = Calendar.getInstance().get(Calendar.YEAR);
@@ -73,15 +85,14 @@ public class UserPreference implements Serializable {
     //cast to native object is now safe
     if ((compareTo instanceof UserPreference)) {
       try {
-        UserPreference compareToSettings = (UserPreference) compareTo;
-        if (this.UserId.equals(compareToSettings.UserId) &&
-          this.TeamId.equals(compareToSettings.TeamId) &&
-          this.Season == compareToSettings.Season &&
-          this.Compare == ((UserPreference) compareTo).Compare) {
+        UserPreference compareToPreference = (UserPreference) compareTo;
+        if (this.UserId.equals(compareToPreference.UserId) &&
+          this.TeamId.equals(compareToPreference.TeamId) &&
+          this.Season == compareToPreference.Season) {
           return true;
         }
       } catch (ClassCastException cce) {
-        LogUtils.error(TAG, "Could not cast object to UserSetting class: %s", cce.getMessage());
+        LogUtils.error(TAG, "Could not cast object to UserPreference class: %s", cce.getMessage());
       }
     }
 
