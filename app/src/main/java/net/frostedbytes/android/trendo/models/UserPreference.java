@@ -1,5 +1,7 @@
 package net.frostedbytes.android.trendo.models;
 
+import android.support.annotation.NonNull;
+
 import static net.frostedbytes.android.trendo.BaseActivity.BASE_TAG;
 
 import com.google.firebase.database.Exclude;
@@ -99,6 +101,7 @@ public class UserPreference implements Serializable {
     return false;
   }
 
+  @NonNull
   @Override
   public String toString() {
 

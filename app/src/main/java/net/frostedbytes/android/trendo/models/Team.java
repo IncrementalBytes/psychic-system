@@ -2,6 +2,8 @@ package net.frostedbytes.android.trendo.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+
 import com.google.firebase.database.Exclude;
 import java.util.Locale;
 import net.frostedbytes.android.trendo.BaseActivity;
@@ -54,6 +56,7 @@ public class Team implements Parcelable {
     return 0;
   }
 
+  @NonNull
   @Override
   public String toString() {
 

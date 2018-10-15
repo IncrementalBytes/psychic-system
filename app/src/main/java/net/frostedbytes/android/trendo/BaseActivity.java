@@ -1,6 +1,5 @@
 package net.frostedbytes.android.trendo;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import com.crashlytics.android.Crashlytics;
@@ -25,8 +24,6 @@ public class BaseActivity extends AppCompatActivity {
   public static final String BASE_TAG = "Trendo::";
   private static final String TAG = BASE_TAG + BaseActivity.class.getSimpleName();
 
-  private ProgressDialog mProgressDialog;
-
   @Override
   public void onCreate(Bundle saved) {
     super.onCreate(saved);
@@ -36,26 +33,6 @@ public class BaseActivity extends AppCompatActivity {
       Fabric.with(this, new Crashlytics());
     } else {
       LogUtils.debug(TAG, "Skipping Crashlytics setup; debug build.");
-    }
-  }
-
-  void showProgressDialog(String message) {
-
-    LogUtils.debug(TAG, "++showProgressDialog()");
-    if (mProgressDialog == null) {
-      mProgressDialog = new ProgressDialog(this);
-      mProgressDialog.setCancelable(false);
-      mProgressDialog.setMessage(message);
-    }
-
-    mProgressDialog.show();
-  }
-
-  void hideProgressDialog() {
-
-    LogUtils.debug(TAG, "++hideProgressDialog()");
-    if (mProgressDialog != null && mProgressDialog.isShowing()) {
-      mProgressDialog.dismiss();
     }
   }
 }

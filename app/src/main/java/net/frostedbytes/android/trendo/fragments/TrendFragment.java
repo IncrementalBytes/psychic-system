@@ -285,19 +285,19 @@ public class TrendFragment extends Fragment {
 
           switch (position) {
             case 0:
-              return "Total Points";
+              return getString(R.string.total_points);
             case 1:
-              return "Points per Game";
+              return getString(R.string.points_per_game);
             case 2:
-              return "Goals For";
+              return getString(R.string.goals_for);
             case 3:
-              return "Goals Against";
+              return getString(R.string.goals_against);
             case 4:
-              return "Goal Differential";
+              return getString(R.string.goal_differential);
             case 5:
-              return "Total Points by PPG";
+              return getString(R.string.total_points_by_ppg);
             case 6:
-              return "Max Points Possible";
+              return getString(R.string.max_points_possible);
             default:
               mCallback.onTrendQueryFailure();
               return null;
