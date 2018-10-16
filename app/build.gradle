@@ -11,8 +11,8 @@ android {
         applicationId "net.frostedbytes.android.trendo"
         minSdkVersion 27
         targetSdkVersion 28
-        versionCode 13
-        versionName "0.9.1006"
+        versionCode 14
+        versionName "0.9.1007"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     android.applicationVariants.all { variant ->

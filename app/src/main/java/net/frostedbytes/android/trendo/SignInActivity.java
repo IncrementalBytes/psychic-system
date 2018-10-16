@@ -40,7 +40,8 @@ public class SignInActivity extends BaseActivity implements OnClickListener {
         SignInButton signInWithGoogleButton = findViewById(R.id.sign_in_button_google);
         signInWithGoogleButton.setOnClickListener(this);
 
-        mProgressBar = findViewById(R.id.main_progress);
+        mProgressBar = findViewById(R.id.sign_in_progress);
+        mProgressBar.setVisibility(View.INVISIBLE);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -111,6 +112,7 @@ public class SignInActivity extends BaseActivity implements OnClickListener {
     private void firebaseAuthenticateWithGoogle(GoogleSignInAccount acct) {
 
         LogUtils.debug(TAG, "++firebaseAuthWithGoogle(%1s)", acct.getId());
+        mProgressBar.setVisibility(View.VISIBLE);
         mProgressBar.setIndeterminate(true);
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
