@@ -145,7 +145,7 @@ public class LineChartFragment extends Fragment {
         Collections.sort(trendKeys);
 
         for (String trendKey : trendKeys) { // build the entries based on trend keys
-            String trimmedKey = trendKey.substring(3, trendKey.length());
+            String trimmedKey = trendKey.substring(3);
             float sortedFloat = Float.parseFloat(trimmedKey);
             Long longItem = null;
             Float floatItem = null;
@@ -196,7 +196,7 @@ public class LineChartFragment extends Fragment {
             Collections.sort(compareKeys);
 
             for (String compareKey : compareKeys) {
-                String trimmedKey = compareKey.substring(3, compareKey.length());
+                String trimmedKey = compareKey.substring(3);
                 float sortedFloat = Float.parseFloat(trimmedKey);
                 Long longItem = null;
                 Float floatItem = null;
@@ -248,7 +248,7 @@ public class LineChartFragment extends Fragment {
             Collections.sort(compareKeys);
 
             for (String compareKey : compareKeys) {
-                String trimmedKey = compareKey.substring(3, compareKey.length());
+                String trimmedKey = compareKey.substring(3);
                 float sortedFloat = Float.parseFloat(trimmedKey);
                 Long longItem = null;
                 Float floatItem = null;

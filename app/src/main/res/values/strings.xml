@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">Trends</string>
     <string name="placeholder">TBD</string> <!-- if this string is shown, something needs updating -->
     <string name="logout">Logout</string>
@@ -8,8 +8,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="preferences">Preferences</string>
     <string name="none">None</string>
-    <string name="no_matches">No data, change Season via Preferences.</string>
-  <string name="logout_message">Are you sure you want to log out?</string>
+    <string name="no_matches">No data, change Season or Team via Preferences.</string>
+    <string name="logout_message">Are you sure you want to log out?</string>
     <string name="full_time">FT</string>
     <string name="in_progress">In Progress</string>
     <string name="goals_against">Goals Against</string>
@@ -18,8 +18,8 @@
     <string name="total_points">Total Points</string>
     <string name="points_per_game">Points Per Game</string>
     <string name="preferences_team">Select the team you wish to view trends for.</string>
-  <string name="preferences_compare" tools:keep="@string/preferences_compare">Select the season to compare trends with.</string>
-  <string name="desc_match_list">List of matches for selected team.</string>
+    <string name="preferences_season">Select the season to view trends for.</string>
+    <string name="desc_match_list">List of matches for selected team.</string>
     <string name="upcoming">Upcoming</string>
     <string name="delayed">Results Delayed</string>
     <string name="not_available">N/A</string>
@@ -28,4 +28,6 @@
     <string name="no_trends">Unable to display trends for team.</string>
     <string name="total_points_by_ppg">Total Points by PPG</string>
     <string name="max_points_possible">Max Points Possible</string>
+    <string name="error_no_data">Missing server-side data; try again later.</string>
+    <string name="commissioner">Commissioner</string>
 </resources>

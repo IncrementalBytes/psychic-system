@@ -10,88 +10,88 @@ import net.frostedbytes.android.trendo.BaseActivity;
 
 public class Team implements Parcelable {
 
-  @Exclude
-  public static final String ROOT = "Teams";
+    @Exclude
+    public static final String ROOT = "Teams";
 
-  public int ConferenceId;
+    public int ConferenceId;
 
-  public int Defunct;
+    public int Defunct;
 
-  public int Established;
+    public int Established;
 
-  public String FullName;
+    public String FullName;
 
-  @Exclude
-  public String Id;
+    @Exclude
+    public String Id;
 
-  public String ShortName;
+    public String ShortName;
 
-  @Exclude
-  public long TablePosition;
+    @Exclude
+    public long TablePosition;
 
-  public Team() {
+    public Team() {
 
-    this.ConferenceId = 0;
-    this.Defunct = 0;
-    this.Established = 0;
-    this.FullName = "";
-    this.Id = BaseActivity.DEFAULT_ID;
-    this.ShortName = "";
-    this.TablePosition = 0;
-  }
+        this.ConferenceId = 0;
+        this.Defunct = 0;
+        this.Established = 0;
+        this.FullName = "N/A";
+        this.Id = BaseActivity.DEFAULT_ID;
+        this.ShortName = "N/A";
+        this.TablePosition = 0;
+    }
 
-  protected Team(Parcel in) {
+    protected Team(Parcel in) {
 
-    this.ConferenceId = in.readInt();
-    this.Defunct = in.readInt();
-    this.Established = in.readInt();
-    this.FullName = in.readString();
-    this.Id = in.readString();
-    this.ShortName = in.readString();
-    this.TablePosition = in.readLong();
-  }
-
-  @Override
-  public int describeContents() {
-    return 0;
-  }
-
-  @NonNull
-  @Override
-  public String toString() {
-
-    return String.format(
-      Locale.ENGLISH,
-      "%s (%d-%s)",
-      this.FullName,
-      this.Established,
-      this.Defunct == 0 ? "present" : String.valueOf(this.Defunct));
-  }
-
-  @Override
-  public void writeToParcel(Parcel dest, int flags) {
-
-    dest.writeInt(this.ConferenceId);
-    dest.writeInt(this.Defunct);
-    dest.writeInt(this.Established);
-    dest.writeString(this.FullName);
-    dest.writeString(this.Id);
-    dest.writeString(this.ShortName);
-    dest.writeLong(this.TablePosition);
-  }
-
-  public static final Creator<Team> CREATOR = new Creator<Team>() {
-
-    @Override
-    public Team createFromParcel(Parcel in) {
-
-      return new Team(in);
+        this.ConferenceId = in.readInt();
+        this.Defunct = in.readInt();
+        this.Established = in.readInt();
+        this.FullName = in.readString();
+        this.Id = in.readString();
+        this.ShortName = in.readString();
+        this.TablePosition = in.readLong();
     }
 
     @Override
-    public Team[] newArray(int size) {
-
-      return new Team[size];
+    public int describeContents() {
+        return 0;
     }
-  };
+
+    @NonNull
+    @Override
+    public String toString() {
+
+        return String.format(
+            Locale.ENGLISH,
+            "%s (%d-%s)",
+            this.FullName,
+            this.Established,
+            this.Defunct == 0 ? "present" : String.valueOf(this.Defunct));
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+        dest.writeInt(this.ConferenceId);
+        dest.writeInt(this.Defunct);
+        dest.writeInt(this.Established);
+        dest.writeString(this.FullName);
+        dest.writeString(this.Id);
+        dest.writeString(this.ShortName);
+        dest.writeLong(this.TablePosition);
+    }
+
+    public static final Creator<Team> CREATOR = new Creator<Team>() {
+
+        @Override
+        public Team createFromParcel(Parcel in) {
+
+            return new Team(in);
+        }
+
+        @Override
+        public Team[] newArray(int size) {
+
+            return new Team[size];
+        }
+    };
 }
