@@ -138,6 +138,9 @@ public class MainActivity extends BaseActivity implements
         mUser.Email = getIntent().getStringExtra(BaseActivity.ARG_EMAIL);
         mUser.FullName = getIntent().getStringExtra(BaseActivity.ARG_USER_NAME);
 
+        mTeamSummaries = new ArrayList<>();
+        mAllSummaries = new ArrayList<>();
+
         // update the navigation header
         mNavigationView = findViewById(R.id.main_navigation_view);
         mNavigationView.setNavigationItemSelectedListener(this);
@@ -313,29 +316,28 @@ public class MainActivity extends BaseActivity implements
         int previousSeason = mUser.Season;
         String previousTeam = mUser.TeamId;
         getUserPreferences();
-
-        if (previousSeason == mUser.Season && !previousTeam.equals(mUser.TeamId)) {
+        if (previousSeason != mUser.Season || !previousTeam.equals(mUser.TeamId)) {
             LogUtils.debug(
                 TAG,
-                "Team Changed; Was: %d Now: %d",
-                getTeam(previousTeam).FullName,
-                getTeam(mUser.TeamId).FullName);
-            mTeamSummaries = new ArrayList<>();
-            for (MatchSummary matchSummary : mAllSummaries) {
-                if (matchSummary.AwayId.equals(mUser.TeamId) || matchSummary.HomeId.equals(mUser.TeamId)) {
-                    mTeamSummaries.add(matchSummary);
-                }
-            }
-        } else if (previousSeason != mUser.Season) {
-            LogUtils.debug(
-                TAG,
-                "Season Changed; Was: %d Now: %d - Team; Was: %s Now: %s",
+                "User Preferences Changed | Season Was: %d Now: %d | Team Was: %s Now: %s",
                 previousSeason,
                 mUser.Season,
-                previousTeam,
-                mUser.TeamId);
-            getAggregateData();
-            getMatchSummaryData(false);
+                getTeam(previousTeam).FullName,
+                getTeam(mUser.TeamId).FullName);
+            if (previousSeason != mUser.Season || mAllSummaries.isEmpty()) {
+                getAggregateData();
+                getMatchSummaryData(true);
+            } else {
+                mTeamSummaries = new ArrayList<>();
+                for (MatchSummary matchSummary : mAllSummaries) {
+                    if (matchSummary.AwayId.equals(mUser.TeamId) || matchSummary.HomeId.equals(mUser.TeamId)) {
+                        mTeamSummaries.add(matchSummary);
+                    }
+                }
+
+                mTeamSummaries.sort((summary1, summary2) -> Integer.compare(summary2.MatchDate.compareTo(summary1.MatchDate), 0));
+                replaceFragment(MatchListFragment.newInstance(mTeamSummaries));
+            }
         }
 
         if (previousSeason != mUser.Season || !previousTeam.equals(mUser.TeamId)) {
