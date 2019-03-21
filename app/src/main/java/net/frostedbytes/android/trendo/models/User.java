@@ -16,6 +16,8 @@
 
 package net.frostedbytes.android.trendo.models;
 
+import android.support.annotation.NonNull;
+
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
@@ -23,6 +25,7 @@ import net.frostedbytes.android.trendo.BaseActivity;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Locale;
 
 import static net.frostedbytes.android.trendo.BaseActivity.BASE_TAG;
 
@@ -90,6 +93,8 @@ public class User implements Serializable {
     @SuppressWarnings("unused")
     public User() {
 
+        this.Email = "";
+        this.FullName = "";
         this.mIsBarChart = false;
         this.mIsLineChart = true;
         this.AheadTeamId = BaseActivity.DEFAULT_ID;
@@ -98,6 +103,13 @@ public class User implements Serializable {
         this.IsCommissioner = false;
         this.TeamId = BaseActivity.DEFAULT_ID;
         this.Season = Calendar.getInstance().get(Calendar.YEAR);
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+
+        return String.format(Locale.ENGLISH, "%s (%s) TeamId: %s Season: %d", this.FullName, this.Email, this.TeamId, this.Season);
     }
 
     public boolean getIsBarChart() {

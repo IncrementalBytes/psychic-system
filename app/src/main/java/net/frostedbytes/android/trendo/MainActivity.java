@@ -44,12 +44,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Locale;
 import java.util.UUID;
 
 import net.frostedbytes.android.trendo.fragments.CommissionerFragment;
 import net.frostedbytes.android.trendo.fragments.DefaultFragment;
 import net.frostedbytes.android.trendo.fragments.MatchListFragment;
+import net.frostedbytes.android.trendo.fragments.MatchSummaryDataFragment;
+import net.frostedbytes.android.trendo.fragments.TeamDataFragment;
 import net.frostedbytes.android.trendo.fragments.TrendFragment;
 import net.frostedbytes.android.trendo.fragments.UserPreferencesFragment;
 import net.frostedbytes.android.trendo.models.MatchSummary;
@@ -58,24 +61,47 @@ import net.frostedbytes.android.trendo.models.Trend;
 import net.frostedbytes.android.trendo.models.User;
 import net.frostedbytes.android.trendo.utils.LogUtils;
 import net.frostedbytes.android.trendo.utils.PathUtils;
+import net.frostedbytes.android.trendo.utils.SortUtils;
 import net.frostedbytes.android.trendo.utils.SortUtils.ByTablePosition;
 
 public class MainActivity extends BaseActivity implements
-  NavigationView.OnNavigationItemSelectedListener,
-  UserPreferencesFragment.OnPreferencesListener,
-  MatchListFragment.OnMatchListListener,
-  TrendFragment.OnTrendListener {
+    CommissionerFragment.OnCommissionerListener,
+    MatchListFragment.OnMatchListListener,
+    MatchSummaryDataFragment.OnMatchSummaryDataListener,
+    NavigationView.OnNavigationItemSelectedListener,
+    TeamDataFragment.OnTeamDataListener,
+    TrendFragment.OnTrendListener,
+    UserPreferencesFragment.OnPreferencesListener {
 
     private static final String TAG = BASE_TAG + MainActivity.class.getSimpleName();
 
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     private ProgressBar mProgressBar;
+    private Snackbar mSnackbar;
 
     private ArrayList<MatchSummary> mAllSummaries;
     private ArrayList<Team> mTeams;
     private ArrayList<MatchSummary> mTeamSummaries;
     private User mUser;
+
+    /*
+        AppCompatActivity Override(s)
+     */
+    @Override
+    public void onBackPressed() {
+
+        LogUtils.debug(TAG, "++onBackPressed()");
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+                finish();
+            } else {
+                super.onBackPressed();
+            }
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -123,6 +149,8 @@ public class MainActivity extends BaseActivity implements
         TextView navigationVersion = navigationHeaderView.findViewById(R.id.navigation_text_version);
         navigationVersion.setText(BuildConfig.VERSION_NAME);
 
+        getUserPreferences();
+
         // grab any user options from firebase
         String queryPath = PathUtils.combine(User.ROOT, mUser.Id);
         FirebaseDatabase.getInstance().getReference().child(queryPath).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -132,34 +160,27 @@ public class MainActivity extends BaseActivity implements
 
                 User user = dataSnapshot.getValue(User.class);
                 if (user != null) {
-                    mUser.TeamId = user.TeamId;
-                    mUser.Season = user.Season;
+                    if (mUser.Season == 0) {
+                        mUser.Season = user.Season;
+                    }
+
+                    if (mUser.TeamId.isEmpty()) {
+                        mUser.TeamId = user.TeamId;
+                    }
+
+                    mUser.IsCommissioner = user.IsCommissioner;
                     if (user.IsCommissioner) {
                         MenuItem commissionerMenu = mNavigationView.getMenu().findItem(R.id.navigation_menu_commissioner);
                         if (commissionerMenu != null) {
                             commissionerMenu.setVisible(true);
                         }
                     }
-                } else {
-                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                    String preference = preferences.getString(UserPreferencesFragment.KEY_TEAM_PREFERENCE, getString(R.string.none));
-                    if (preference != null && !preference.equals(getString(R.string.none))) {
-                        mUser.TeamId = preference;
-                    }
+                }
 
-                    preference = preferences.getString(UserPreferencesFragment.KEY_SEASON_PREFERENCE, getString(R.string.none));
-                    if (preference != null) {
-                        try {
-                            mUser.Season = Integer.parseInt(preference);
-                        } catch (Exception ex) {
-                            mUser.Season = 0;
-                        }
-                    }
-
-                    if ((!mUser.TeamId.isEmpty() && !mUser.TeamId.equals(BaseActivity.DEFAULT_ID)) || mUser.Season > 0) {
-                        String queryPath = PathUtils.combine(User.ROOT, mUser.Id);
-                        FirebaseDatabase.getInstance().getReference().child(queryPath).setValue(mUser);
-                    }
+                LogUtils.debug(TAG, mUser.toString());
+                if ((!mUser.TeamId.isEmpty() && !mUser.TeamId.equals(BaseActivity.DEFAULT_ID)) || mUser.Season > 0) {
+                    String queryPath = PathUtils.combine(User.ROOT, mUser.Id);
+                    FirebaseDatabase.getInstance().getReference().child(queryPath).setValue(mUser);
                 }
 
                 getTeamData();
@@ -172,21 +193,6 @@ public class MainActivity extends BaseActivity implements
                 LogUtils.error(TAG, "%s", databaseError.getDetails());
             }
         });
-    }
-
-    @Override
-    public void onBackPressed() {
-
-        LogUtils.debug(TAG, "++onBackPressed()");
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            mDrawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
-                finish();
-            } else {
-                super.onBackPressed();
-            }
-        }
     }
 
     @Override
@@ -205,7 +211,8 @@ public class MainActivity extends BaseActivity implements
         LogUtils.debug(TAG, "++onNavigationItemSelected(%s)", item.getTitle());
         switch (item.getItemId()) {
             case R.id.navigation_menu_commissioner:
-                replaceFragment(CommissionerFragment.newInstance());
+                mProgressBar.setIndeterminate(true);
+                replaceFragment(CommissionerFragment.newInstance(mUser.Season, mTeams, mAllSummaries));
                 break;
             case R.id.navigation_menu_home:
                 replaceFragment(MatchListFragment.newInstance(mTeamSummaries));
@@ -245,15 +252,56 @@ public class MainActivity extends BaseActivity implements
         return true;
     }
 
+    /*
+        Fragment Callback Overrides
+     */
+    @Override
+    public void onDataLoadFailure() {
+
+        LogUtils.debug(TAG, "++onDataLoadFailure()");
+        Snackbar.make(findViewById(R.id.main_fragment_container), getString(R.string.err_match_summary_data_load_failed), Snackbar.LENGTH_LONG);
+        replaceFragment(MatchListFragment.newInstance(mTeamSummaries));
+    }
+
+    public void onInitializeComplete() {
+
+        LogUtils.debug(TAG, "++onInitializeComplete()");
+        mProgressBar.setIndeterminate(false);
+    }
+
+    @Override
+    public void onInitializeFailure() {
+
+        LogUtils.debug(TAG, "++onInitializeFailure()");
+        Snackbar.make(findViewById(R.id.main_fragment_container), getString(R.string.err_initialize_commissioner), Snackbar.LENGTH_LONG);
+        replaceFragment(MatchListFragment.newInstance(mTeamSummaries));
+    }
+
+    @Override
+    public void onMatchSummaryDataSynchronized(boolean needsRefreshing) {
+
+        LogUtils.debug(TAG, "++onMatchSummaryDataSynchronized(%s)", String.valueOf(needsRefreshing));
+        if (needsRefreshing) {
+            getAggregateData();
+            getMatchSummaryData(true);
+        }
+    }
+
+    @Override
+    public void onTeamDataSynchronized(boolean needsRefreshing) {
+
+        LogUtils.debug(TAG, "++onTeamDataSynchronized(%s)", String.valueOf(needsRefreshing));
+        if (needsRefreshing) {
+            getTeamData();
+        }
+    }
+
     @Override
     public void onPopulated(int size) {
 
         LogUtils.debug(TAG, "++onPopulated(%1d)", size);
         mProgressBar.setIndeterminate(false);
-        if (mUser != null && mUser.Season > 0) {
-            setTitle(String.format(Locale.ENGLISH, "%s - %d", getTeam(mUser.TeamId).ShortName, mUser.Season));
-        } else {
-            setTitle(getString(R.string.title_match_summaries));
+        if (size == 0) {
             missingPreference();
         }
     }
@@ -262,67 +310,38 @@ public class MainActivity extends BaseActivity implements
     public void onPreferenceChanged() {
 
         LogUtils.debug(TAG, "++onPreferenceChanged()");
-        boolean userDataChanged = false;
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if (sharedPreferences.contains(UserPreferencesFragment.KEY_TEAM_PREFERENCE)) {
-            String preference = sharedPreferences.getString(UserPreferencesFragment.KEY_TEAM_PREFERENCE, getString(R.string.none));
-            String previousTeam = mUser.TeamId;
-            if (preference != null) {
-                if (preference.equals(getString(R.string.none))) {
-                    mUser.TeamId = "";
-                } else {
-                    try {
-                        UUID temp = UUID.fromString(preference);
-                        mUser.TeamId = preference;
-                    } catch (Exception ex) {
-                        mUser.TeamId = "";
-                    }
-                }
-            } else {
-                mUser.TeamId = "";
-            }
+        int previousSeason = mUser.Season;
+        String previousTeam = mUser.TeamId;
+        getUserPreferences();
 
-            if (!mUser.TeamId.equals(previousTeam)) {
-                userDataChanged = true;
+        if (previousSeason == mUser.Season && !previousTeam.equals(mUser.TeamId)) {
+            LogUtils.debug(
+                TAG,
+                "Team Changed; Was: %d Now: %d",
+                getTeam(previousTeam).FullName,
+                getTeam(mUser.TeamId).FullName);
+            mTeamSummaries = new ArrayList<>();
+            for (MatchSummary matchSummary : mAllSummaries) {
+                if (matchSummary.AwayId.equals(mUser.TeamId) || matchSummary.HomeId.equals(mUser.TeamId)) {
+                    mTeamSummaries.add(matchSummary);
+                }
             }
+        } else if (previousSeason != mUser.Season) {
+            LogUtils.debug(
+                TAG,
+                "Season Changed; Was: %d Now: %d - Team; Was: %s Now: %s",
+                previousSeason,
+                mUser.Season,
+                previousTeam,
+                mUser.TeamId);
+            getAggregateData();
+            getMatchSummaryData(false);
         }
 
-        if (sharedPreferences.contains(UserPreferencesFragment.KEY_SEASON_PREFERENCE)) {
-            String preference = sharedPreferences.getString(UserPreferencesFragment.KEY_SEASON_PREFERENCE, getString(R.string.none));
-            int previousSeason = mUser.Season;
-            if (preference != null) {
-                if (preference.equals(getString(R.string.none))) {
-                    mUser.Season = 0;
-                } else {
-                    try {
-                        mUser.Season = Integer.parseInt(preference);
-                    } catch (Exception ex) {
-                        mUser.Season = 0;
-                    }
-                }
-            } else {
-                mUser.Season = 0;
-            }
-
-            if (mUser.Season != previousSeason) {
-                userDataChanged = true;
-            }
-        }
-
-        if (userDataChanged) {
+        if (previousSeason != mUser.Season || !previousTeam.equals(mUser.TeamId)) {
+            LogUtils.debug(TAG, "Updating user preferences: %s", mUser.toString());
             String queryPath = PathUtils.combine(User.ROOT, mUser.Id);
             FirebaseDatabase.getInstance().getReference().child(queryPath).setValue(mUser);
-        }
-
-        if (mTeams.size() > 0) {
-            if ((mUser.TeamId.isEmpty() || mUser.TeamId.equals(BaseActivity.DEFAULT_ID)) || mUser.Season == 0) {
-                missingPreference();
-            } else {
-                getAggregateData();
-                getMatchSummaryData();
-            }
-        } else {
-            replaceFragment(DefaultFragment.newInstance(getString(R.string.error_no_data)));
         }
     }
 
@@ -341,6 +360,9 @@ public class MainActivity extends BaseActivity implements
         replaceFragment(MatchListFragment.newInstance(mTeamSummaries));
     }
 
+    /*
+        Private Methods
+     */
     private void getAggregateData() {
 
         LogUtils.debug(TAG, "++getAggregateData()");
@@ -394,6 +416,8 @@ public class MainActivity extends BaseActivity implements
                     mProgressBar.setIndeterminate(false);
                     replaceFragment(UserPreferencesFragment.newInstance(mTeams));
                 }
+
+                LogUtils.debug(TAG, "Finished querying aggregate data.");
             }
 
             @Override
@@ -405,7 +429,7 @@ public class MainActivity extends BaseActivity implements
         });
     }
 
-    private void getMatchSummaryData() {
+    private void getMatchSummaryData(boolean replaceFragment) {
 
         LogUtils.debug(TAG, "getMatchSummaryData()");
         String queryPath = PathUtils.combine(MatchSummary.ROOT, mUser.Season);
@@ -421,9 +445,10 @@ public class MainActivity extends BaseActivity implements
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     MatchSummary matchSummary = snapshot.getValue(MatchSummary.class);
                     if (matchSummary != null) {
-                        matchSummary.MatchId = snapshot.getKey();
+                        matchSummary.Id = snapshot.getKey();
                         matchSummary.AwayFullName = getTeam(matchSummary.AwayId).FullName;
                         matchSummary.HomeFullName = getTeam(matchSummary.HomeId).FullName;
+                        matchSummary.IsRemote = true;
                         mAllSummaries.add(matchSummary);
                         if (matchSummary.HomeId.equals(mUser.TeamId) || matchSummary.AwayId.equals(mUser.TeamId)) {
                             mTeamSummaries.add(matchSummary);
@@ -435,8 +460,12 @@ public class MainActivity extends BaseActivity implements
                 LogUtils.debug(TAG, "Size of summary collection: %d", mAllSummaries.size());
                 mTeamSummaries.sort((summary1, summary2) -> Integer.compare(summary2.MatchDate.compareTo(summary1.MatchDate), 0));
                 LogUtils.debug(TAG, "Size of team summary collection: %d", mTeamSummaries.size());
-                replaceFragment(MatchListFragment.newInstance(mTeamSummaries));
                 mProgressBar.setIndeterminate(false);
+                if (replaceFragment) {
+                    replaceFragment(MatchListFragment.newInstance(mTeamSummaries));
+                }
+
+                LogUtils.debug(TAG, "Finished querying match summary data.");
             }
 
             @Override
@@ -444,44 +473,6 @@ public class MainActivity extends BaseActivity implements
 
                 LogUtils.debug(TAG, "++matchSummaryQuery::onCancelled(DatabaseError");
                 LogUtils.error(TAG, databaseError.getMessage());
-            }
-        });
-    }
-
-    private void getTeamData() {
-
-        LogUtils.debug(TAG, "++getTeamData()");
-        FirebaseDatabase.getInstance().getReference().child(Team.ROOT).addListenerForSingleValueEvent(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                mTeams = new ArrayList<>();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Team team = snapshot.getValue(Team.class);
-                    if (team != null) {
-                        team.Id = snapshot.getKey();
-                        mTeams.add(team);
-                    }
-                }
-
-                if (mTeams.size() == 0) {
-                    replaceFragment(DefaultFragment.newInstance(getString(R.string.error_no_data)));
-                } else {
-                    if (mUser.TeamId.isEmpty() || mUser.TeamId.equals(BaseActivity.DEFAULT_ID)) {
-                        missingPreference();
-                    } else {
-                        getAggregateData();
-                        getMatchSummaryData();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                LogUtils.debug(TAG, "++onCancelled(DatabaseError)");
-                LogUtils.error(TAG, "%s", databaseError.getDetails());
             }
         });
     }
@@ -497,25 +488,114 @@ public class MainActivity extends BaseActivity implements
         return new Team();
     }
 
+    private void getTeamData() {
+
+        LogUtils.debug(TAG, "++getTeamData()");
+        FirebaseDatabase.getInstance().getReference().child(Team.ROOT).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                mTeams = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Team team = snapshot.getValue(Team.class);
+                    if (team != null) {
+                        team.Id = snapshot.getKey();
+                        team.IsRemote = true;
+                        mTeams.add(team);
+                    }
+                }
+
+                if (mTeams.size() == 0) {
+                    replaceFragment(DefaultFragment.newInstance(getString(R.string.err_no_data)));
+                } else {
+                    mTeams.sort(new SortUtils.ByTeamName());
+                    if (mUser.TeamId.isEmpty() || mUser.TeamId.equals(BaseActivity.DEFAULT_ID)) {
+                        missingPreference();
+                    } else {
+                        getAggregateData();
+                        getMatchSummaryData(true);
+                    }
+                }
+
+                LogUtils.debug(TAG, "Finished querying team data.");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                LogUtils.debug(TAG, "++onCancelled(DatabaseError)");
+                LogUtils.error(TAG, "%s", databaseError.getDetails());
+            }
+        });
+    }
+
+    private void getUserPreferences() {
+
+        LogUtils.debug(TAG, "++getUserPreferences()");
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (sharedPreferences.contains(UserPreferencesFragment.KEY_TEAM_PREFERENCE)) {
+            String preference = sharedPreferences.getString(UserPreferencesFragment.KEY_TEAM_PREFERENCE, getString(R.string.none));
+            if (preference != null) {
+                if (preference.equals(getString(R.string.none))) {
+                    mUser.TeamId = BaseActivity.DEFAULT_ID;
+                } else {
+                    try {
+                        UUID temp = UUID.fromString(preference);
+                        mUser.TeamId = preference;
+                    } catch (Exception ex) {
+                        mUser.TeamId = BaseActivity.DEFAULT_ID;
+                    }
+                }
+            } else {
+                mUser.TeamId = BaseActivity.DEFAULT_ID;
+            }
+        }
+
+        if (sharedPreferences.contains(UserPreferencesFragment.KEY_SEASON_PREFERENCE)) {
+            String preference = sharedPreferences.getString(UserPreferencesFragment.KEY_SEASON_PREFERENCE, getString(R.string.none));
+            if (preference != null) {
+                if (preference.equals(getString(R.string.none))) {
+                    mUser.Season = Calendar.getInstance().get(Calendar.YEAR);
+                } else {
+                    try {
+                        mUser.Season = Integer.parseInt(preference);
+                    } catch (Exception ex) {
+                        mUser.Season = Calendar.getInstance().get(Calendar.YEAR);
+                    }
+                }
+            } else {
+                mUser.Season = Calendar.getInstance().get(Calendar.YEAR);
+            }
+        }
+
+        LogUtils.debug(TAG, mUser.toString());
+    }
+
     private void missingPreference() {
 
         LogUtils.debug(TAG, "++missingPreference()");
         mProgressBar.setIndeterminate(false);
-        Snackbar snackbar = Snackbar.make(
+        mSnackbar = Snackbar.make(
             findViewById(R.id.main_fragment_container),
             getString(R.string.no_matches),
             Snackbar.LENGTH_INDEFINITE);
-        snackbar.setAction(getString(R.string.preferences), v -> {
-            snackbar.dismiss();
+        mSnackbar.setAction(getString(R.string.preferences), v -> {
+            mSnackbar.dismiss();
             mProgressBar.setIndeterminate(false);
             replaceFragment(UserPreferencesFragment.newInstance(mTeams));
         });
-        snackbar.show();
+        mSnackbar.show();
     }
 
     private void replaceFragment(Fragment fragment) {
 
         LogUtils.debug(TAG, "++replaceFragment()");
+        if (mSnackbar != null && mSnackbar.isShown()) {
+            mSnackbar.dismiss();
+        }
+
+        updateTitleAndDrawer(fragment);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.main_fragment_container, fragment);
@@ -527,7 +607,11 @@ public class MainActivity extends BaseActivity implements
         LogUtils.debug(TAG, "++updateTitleAndDrawer(Fragment)");
         String fragmentClassName = fragment.getClass().getName();
         if (fragmentClassName.equals(MatchListFragment.class.getName())) {
-            setTitle(getString(R.string.title_match_summaries));
+            if (mUser != null && mUser.Season > 0) {
+                setTitle(String.format(Locale.ENGLISH, "%s - %d", getTeam(mUser.TeamId).ShortName, mUser.Season));
+            } else {
+                setTitle(getString(R.string.title_match_summaries));
+            }
         } else if (fragmentClassName.equals(UserPreferencesFragment.class.getName())) {
             setTitle(getString(R.string.title_preferences));
         } else if (fragmentClassName.equals(CommissionerFragment.class.getName())) {

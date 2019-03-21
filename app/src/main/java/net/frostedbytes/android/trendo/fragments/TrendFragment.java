@@ -31,7 +31,6 @@ import android.view.ViewGroup;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -65,10 +64,6 @@ public class TrendFragment extends Fragment {
 
     private User mUser;
 
-    private Query mAheadQuery;
-    private Query mBehindQuery;
-    private Query mTrendQuery;
-
     public static TrendFragment newInstance(User user, ArrayList<Team> teams) {
 
         LogUtils.debug(TAG, "++newInstance(UserPreference)");
@@ -80,6 +75,9 @@ public class TrendFragment extends Fragment {
         return fragment;
     }
 
+    /*
+        Fragment Override(s)
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -89,7 +87,7 @@ public class TrendFragment extends Fragment {
             mCallback = (OnTrendListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(
-                String.format(Locale.ENGLISH, "%s must implement onTrendQueryFailure().", context.toString()));
+                String.format(Locale.ENGLISH, "Missing interface implementations for %s", context.toString()));
         }
 
         Bundle arguments = getArguments();
@@ -113,11 +111,14 @@ public class TrendFragment extends Fragment {
         pagerTabStrip.getChildAt(1).setPadding(30, 15, 30, 15);
         pagerTabStrip.setDrawFullUnderline(false);
 
+        mAhead = new Trend();
+        mBehind = new Trend();
+        mTrend = new Trend();
+
         if (mUser != null && mUser.Season > 0 && !mUser.TeamId.isEmpty()) {
             String queryPath = PathUtils.combine(Trend.ROOT, mUser.Season, mUser.TeamId);
             LogUtils.debug(TAG, "Trend Query: %s", queryPath);
-            mTrendQuery = FirebaseDatabase.getInstance().getReference().child(queryPath);
-            mTrendQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            FirebaseDatabase.getInstance().getReference().child(queryPath).addListenerForSingleValueEvent(new ValueEventListener() {
 
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -126,7 +127,12 @@ public class TrendFragment extends Fragment {
                     if (mTrend != null) {
                         mTrend.TeamShortName = getTeamShortName(mUser.TeamId);
                         mTrend.Year = mUser.Season;
-                        queryAheadTrend();
+                        if (mUser.AheadTeamId.equals(BaseActivity.DEFAULT_ID)) {
+                            LogUtils.debug(TAG, "Team is ranked first.");
+                            queryBehindTrend();
+                        } else {
+                            queryAheadTrend();
+                        }
                     } else {
                         LogUtils.warn(TAG, "Could not get trend data.");
                     }
@@ -152,20 +158,22 @@ public class TrendFragment extends Fragment {
         super.onDestroy();
 
         LogUtils.debug(TAG, "++onDestroy()");
-        mAheadQuery = null;
-        mBehindQuery = null;
-        mTrendQuery = null;
         mAhead = null;
         mBehind = null;
         mTrend = null;
     }
 
+    /*
+        Private Method(s)
+     */
     private String getTeamShortName(String teamId) {
+
         for (Team team : mTeams) {
             if (team.Id.equals(teamId)) {
                 return team.ShortName;
             }
         }
+
         return getString(R.string.not_available);
     }
 
@@ -327,8 +335,7 @@ public class TrendFragment extends Fragment {
         LogUtils.debug(TAG, "++queryAheadTrend()");
         String queryPath = PathUtils.combine(Trend.ROOT, mUser.Season, mUser.AheadTeamId);
         LogUtils.debug(TAG, "Trend Query: %s", queryPath);
-        mAheadQuery = FirebaseDatabase.getInstance().getReference().child(queryPath);
-        mAheadQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child(queryPath).addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -337,7 +344,12 @@ public class TrendFragment extends Fragment {
                 if (mAhead != null) {
                     mAhead.TeamShortName = getTeamShortName(mUser.AheadTeamId);
                     mAhead.Year = mUser.Season;
-                    queryBehindTrend();
+                    if (mUser.BehindTeamId.equals(BaseActivity.DEFAULT_ID)) {
+                        LogUtils.debug(TAG, "Team is ranked last.");
+                        populateTrendData();
+                    } else {
+                        queryBehindTrend();
+                    }
                 } else {
                     LogUtils.warn(TAG, "Could not get trend data for team ahead.");
                 }
@@ -357,8 +369,7 @@ public class TrendFragment extends Fragment {
         LogUtils.debug(TAG, "++queryBehindTrend()");
         String queryPath = PathUtils.combine(Trend.ROOT, mUser.Season, mUser.BehindTeamId);
         LogUtils.debug(TAG, "Trend Query: %s", queryPath);
-        mBehindQuery = FirebaseDatabase.getInstance().getReference().child(queryPath);
-        mBehindQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child(queryPath).addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

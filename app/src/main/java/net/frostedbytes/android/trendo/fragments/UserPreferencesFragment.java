@@ -58,6 +58,9 @@ public class UserPreferencesFragment extends PreferenceFragmentCompat implements
         return fragment;
     }
 
+    /*
+        Fragment Override(s)
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -67,7 +70,7 @@ public class UserPreferencesFragment extends PreferenceFragmentCompat implements
             mCallback = (OnPreferencesListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(
-                String.format(Locale.ENGLISH, "%s must implement onPreferenceChanged().", context.toString()));
+                String.format(Locale.ENGLISH, "Missing interface implementations for %s", context.toString()));
         }
 
         Bundle arguments = getArguments();

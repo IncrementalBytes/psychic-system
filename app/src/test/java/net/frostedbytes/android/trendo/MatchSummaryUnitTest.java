@@ -1,6 +1,7 @@
 package net.frostedbytes.android.trendo;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.util.Map;
 import net.frostedbytes.android.trendo.models.MatchSummary;
@@ -14,8 +15,8 @@ public class MatchSummaryUnitTest {
     MatchSummary testSummary = new MatchSummary();
     assertEquals(testSummary.AwayScore, 0);
     assertEquals(testSummary.HomeScore, 0);
-    assertEquals(testSummary.MatchId, BaseActivity.DEFAULT_ID);
-    assertEquals(testSummary.IsFinal, false);
+    assertEquals(testSummary.Id, BaseActivity.DEFAULT_ID);
+    assertFalse(testSummary.IsFinal);
     assertEquals(testSummary.MatchDate, BaseActivity.DEFAULT_DATE);
     assertEquals(testSummary.HomeId, "");
     assertEquals(testSummary.AwayId, "");

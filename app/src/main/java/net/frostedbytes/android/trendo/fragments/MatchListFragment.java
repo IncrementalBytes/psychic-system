@@ -66,6 +66,9 @@ public class MatchListFragment extends Fragment {
         return fragment;
     }
 
+    /*
+        Fragment Override(s)
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -75,7 +78,7 @@ public class MatchListFragment extends Fragment {
             mCallback = (OnMatchListListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(
-                String.format(Locale.ENGLISH, "%s must implement onPopulated(int) and onSelected(String).", context.toString()));
+                String.format(Locale.ENGLISH, "Missing interface implementations for %s", context.toString()));
         }
 
         Bundle arguments = getArguments();
@@ -107,7 +110,6 @@ public class MatchListFragment extends Fragment {
         super.onDestroy();
 
         LogUtils.debug(TAG, "++onDestroy()");
-
         mMatchSummaries = null;
     }
 
@@ -119,6 +121,9 @@ public class MatchListFragment extends Fragment {
         updateUI();
     }
 
+    /*
+        Private Method(s)
+     */
     private void updateUI() {
 
         if (mMatchSummaries != null && mMatchSummaries.size() > 0) {
@@ -131,6 +136,9 @@ public class MatchListFragment extends Fragment {
         }
     }
 
+    /**
+     * Adapter class for MatchSummary objects
+     */
     private class MatchSummaryAdapter extends RecyclerView.Adapter<MatchSummaryHolder> {
 
         private final List<MatchSummary> mMatchSummaries;
@@ -161,6 +169,9 @@ public class MatchListFragment extends Fragment {
         }
     }
 
+    /**
+     * Holder class for MatchSummary objects
+     */
     private class MatchSummaryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final TextView mTitleTextView;

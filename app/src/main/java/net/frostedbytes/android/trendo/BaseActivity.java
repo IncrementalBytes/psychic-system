@@ -27,6 +27,7 @@ public class BaseActivity extends AppCompatActivity {
     public static final String ARG_EMAIL = "email";
     public static final String ARG_MATCH_SUMMARIES = "match_summaries";
     public static final String ARG_MESSAGE = "message";
+    public static final String ARG_SEASON = "season";
     public static final String ARG_TEAMS = "teams";
     public static final String ARG_TREND = "trend";
     public static final String ARG_USER_ID = "user_id";
@@ -34,6 +35,7 @@ public class BaseActivity extends AppCompatActivity {
     public static final String ARG_USER = "user";
     public static final String DEFAULT_DATE = "0000-01-01";
     public static final String DEFAULT_ID = "000000000-0000-0000-0000-000000000000";
+    public static final int NUM_COMMISSIONER_DATA = 2;
     public static final int NUM_TRENDS = 7;
 
     public static final String BASE_TAG = "Trendo::";
