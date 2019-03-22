@@ -3,8 +3,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         tools:showIn="navigation_view">
 
-    <group
-        android:checkableBehavior="single">
+    <group>
         <item
             android:id="@+id/navigation_menu_home"
             android:icon="@drawable/ic_home_dark"
@@ -20,8 +19,7 @@
             android:visible="false"/>
     </group>
 
-    <group
-        android:checkableBehavior="single">
+    <group>
         <item
             android:id="@+id/navigation_menu_logout"
             android:icon="@drawable/ic_logout_dark"

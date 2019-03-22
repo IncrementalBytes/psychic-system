@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_view_margin"
         android:text="@string/placeholder"
+        android:textColor="@color/colorTextPrimary"
         android:textSize="12sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toStartOf="@+id/data_image_local"
@@ -38,8 +39,9 @@
         android:layout_margin="@dimen/default_view_margin"
         android:layout_marginTop="8dp"
         android:text="@string/local"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/data_text_remote" />
+        android:textColor="@color/colorTextPrimary"
+        app:layout_constraintEnd_toStartOf="@id/data_text_remote"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/data_image_local"
@@ -59,6 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_view_margin"
         android:text="@string/remote"
+        android:textColor="@color/colorTextPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

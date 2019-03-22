@@ -286,7 +286,7 @@ public class MainActivity extends BaseActivity implements
         LogUtils.debug(TAG, "++onMatchSummaryDataSynchronized(%s)", String.valueOf(needsRefreshing));
         if (needsRefreshing) {
             getAggregateData();
-            getMatchSummaryData(true);
+            getMatchSummaryData();
         }
     }
 
@@ -326,7 +326,7 @@ public class MainActivity extends BaseActivity implements
                 getTeam(mUser.TeamId).FullName);
             if (previousSeason != mUser.Season || mAllSummaries.isEmpty()) {
                 getAggregateData();
-                getMatchSummaryData(true);
+                getMatchSummaryData();
             } else {
                 mTeamSummaries = new ArrayList<>();
                 for (MatchSummary matchSummary : mAllSummaries) {
@@ -336,6 +336,9 @@ public class MainActivity extends BaseActivity implements
                 }
 
                 mTeamSummaries.sort((summary1, summary2) -> Integer.compare(summary2.MatchDate.compareTo(summary1.MatchDate), 0));
+
+                // update this new team's immediate opponents
+                getNearestOpponents();
                 replaceFragment(MatchListFragment.newInstance(mTeamSummaries));
             }
         }
@@ -390,29 +393,7 @@ public class MainActivity extends BaseActivity implements
 
                 // figure out which teams are ahead and behind the user's preferred team (based on conference)
                 if (!mUser.TeamId.isEmpty() && !mUser.TeamId.equals(BaseActivity.DEFAULT_ID)) {
-                    mTeams.sort(new ByTablePosition());
-                    int targetIndex = 0;
-                    for (; targetIndex < mTeams.size(); targetIndex++) {
-                        if (mTeams.get(targetIndex).Id.equals(mUser.TeamId)) {
-                            break;
-                        }
-                    }
-
-                    int targetConferenceId = mTeams.get(targetIndex).ConferenceId;
-                    for (int index = 0; index < targetIndex; index++) {
-                        if (mTeams.get(index).ConferenceId == targetConferenceId) { // want the last conference team before target
-                            mUser.AheadTeamId = mTeams.get(index).Id;
-                        }
-                    }
-
-                    if (mTeams.size() > targetIndex + 1) {
-                        for (int index = targetIndex + 1; index < mTeams.size(); index++) {
-                            if (mTeams.get(index).ConferenceId == targetConferenceId) { // want the first conference team after target
-                                mUser.BehindTeamId = mTeams.get(index).Id;
-                                break;
-                            }
-                        }
-                    }
+                    getNearestOpponents();
                 } else {
                     LogUtils.warn(TAG, "User preferences are incomplete.");
                     mProgressBar.setIndeterminate(false);
@@ -431,7 +412,7 @@ public class MainActivity extends BaseActivity implements
         });
     }
 
-    private void getMatchSummaryData(boolean replaceFragment) {
+    private void getMatchSummaryData() {
 
         LogUtils.debug(TAG, "getMatchSummaryData()");
         String queryPath = PathUtils.combine(MatchSummary.ROOT, mUser.Season);
@@ -463,10 +444,7 @@ public class MainActivity extends BaseActivity implements
                 mTeamSummaries.sort((summary1, summary2) -> Integer.compare(summary2.MatchDate.compareTo(summary1.MatchDate), 0));
                 LogUtils.debug(TAG, "Size of team summary collection: %d", mTeamSummaries.size());
                 mProgressBar.setIndeterminate(false);
-                if (replaceFragment) {
-                    replaceFragment(MatchListFragment.newInstance(mTeamSummaries));
-                }
-
+                replaceFragment(MatchListFragment.newInstance(mTeamSummaries));
                 LogUtils.debug(TAG, "Finished querying match summary data.");
             }
 
@@ -477,6 +455,35 @@ public class MainActivity extends BaseActivity implements
                 LogUtils.error(TAG, databaseError.getMessage());
             }
         });
+    }
+
+    private void getNearestOpponents() {
+
+        LogUtils.debug(TAG, "++getNearestOpponents()");
+        mTeams.sort(new ByTablePosition());
+        mUser.AheadTeamId = mUser.BehindTeamId = BaseActivity.DEFAULT_ID;
+        int targetIndex = 0;
+        for (; targetIndex < mTeams.size(); targetIndex++) {
+            if (mTeams.get(targetIndex).Id.equals(mUser.TeamId)) {
+                break;
+            }
+        }
+
+        int targetConferenceId = mTeams.get(targetIndex).ConferenceId;
+        for (int index = 0; index < targetIndex; index++) {
+            if (mTeams.get(index).ConferenceId == targetConferenceId) { // want the last conference team before target
+                mUser.AheadTeamId = mTeams.get(index).Id;
+            }
+        }
+
+        if (mTeams.size() > targetIndex + 1) {
+            for (int index = targetIndex + 1; index < mTeams.size(); index++) {
+                if (mTeams.get(index).ConferenceId == targetConferenceId) { // want the first conference team after target
+                    mUser.BehindTeamId = mTeams.get(index).Id;
+                    break;
+                }
+            }
+        }
     }
 
     private Team getTeam(String teamId) {
@@ -516,7 +523,7 @@ public class MainActivity extends BaseActivity implements
                         missingPreference();
                     } else {
                         getAggregateData();
-                        getMatchSummaryData(true);
+                        getMatchSummaryData();
                     }
                 }
 
@@ -581,7 +588,7 @@ public class MainActivity extends BaseActivity implements
         mSnackbar = Snackbar.make(
             findViewById(R.id.main_fragment_container),
             getString(R.string.no_matches),
-            Snackbar.LENGTH_INDEFINITE);
+            Snackbar.LENGTH_LONG);
         mSnackbar.setAction(getString(R.string.preferences), v -> {
             mSnackbar.dismiss();
             mProgressBar.setIndeterminate(false);

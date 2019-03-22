@@ -25,7 +25,7 @@ android {
 
         defaultConfig {
             applicationId "net.frostedbytes.android.trendo"
-            minSdkVersion 27
+            minSdkVersion 24
             targetSdkVersion 28
             versionCode versionCodeProperty
             versionName updatedVersionName
