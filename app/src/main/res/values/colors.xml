@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="colorPrimary">#005695</color>
-  <color name="colorPrimaryDark">#132530</color>
-  <color name="colorAccent">#81C784</color>
-  <color name="colorTextPrimary">#DDFFFFFF</color>
+    <color name="primary">#455a64</color> <!-- primaryTextColor & accentTextColor  -->
+    <color name="primaryLight">#546E7A</color> <!-- primaryTextColor & accentTextColor -->
+    <color name="primaryDark">#37474F</color> <!-- primaryTextColor & accentTextColor -->
 
-  <color name="colorFavorite">#66bb6a</color>
-  <color name="colorAhead">#c62828</color>
-  <color name="colorBehind">#ffe100</color>
+    <color name="secondary">#bbdefb</color> <!-- secondaryTextColor -->
+    <color name="secondaryLight">#e3f2fd</color> <!-- secondaryTextColor -->
+    <color name="secondaryDark">#90caf9</color> <!-- secondaryTextColor -->
+
+    <color name="primaryText">#ffffff</color>
+    <color name="primaryAccentText">#84FFFF</color>
+    <color name="secondaryText">#000000</color>
+    <color name="secondaryAccentText">#0d47a1</color>
+
+    <color name="error">#8e0000</color>
+    <color name="favorite">#76ff03</color>
+    <color name="ahead">#f44336</color>
+    <color name="behind">#ffeb3b</color>
 </resources>

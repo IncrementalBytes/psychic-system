@@ -108,7 +108,7 @@ public class MainActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
 
         LogUtils.debug(TAG, "++onCreate(Bundle)");
-        setContentView(R.layout.activity_match_list);
+        setContentView(R.layout.activity_main);
 
         mDrawerLayout = findViewById(R.id.main_drawer_layout);
         mProgressBar = findViewById(R.id.main_progress);
@@ -167,7 +167,7 @@ public class MainActivity extends BaseActivity implements
                         mUser.Season = user.Season;
                     }
 
-                    if (mUser.TeamId.isEmpty()) {
+                    if (mUser.TeamId.isEmpty() || mUser.TeamId.equals(BaseActivity.DEFAULT_ID)) {
                         mUser.TeamId = user.TeamId;
                     }
 
@@ -221,7 +221,7 @@ public class MainActivity extends BaseActivity implements
                 replaceFragment(MatchListFragment.newInstance(mTeamSummaries));
                 break;
             case R.id.navigation_menu_preferences:
-                mProgressBar.setIndeterminate(false);
+                mProgressBar.setVisibility(View.INVISIBLE);
                 replaceFragment(UserPreferencesFragment.newInstance(mTeams));
                 break;
             case R.id.navigation_menu_logout:
@@ -371,7 +371,7 @@ public class MainActivity extends BaseActivity implements
     private void getAggregateData() {
 
         LogUtils.debug(TAG, "++getAggregateData()");
-        mProgressBar.setIndeterminate(true);
+        mProgressBar.setVisibility(View.VISIBLE);
         String aggregatePath = PathUtils.combine(Trend.AGGREGATE_ROOT, mUser.Season);
         LogUtils.debug(TAG, "Query: %s", aggregatePath);
         FirebaseDatabase.getInstance().getReference().child(aggregatePath).addListenerForSingleValueEvent(new ValueEventListener() {

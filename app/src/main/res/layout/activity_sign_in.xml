@@ -6,10 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal|center_vertical"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="net.frostedbytes.android.trendo.SignInActivity">
 
     <TextView
@@ -20,7 +20,7 @@
         android:text="@string/app_name"
         android:textAlignment="center"
         android:textAllCaps="true"
-        android:textColor="@color/colorTextPrimary"
+        android:textColor="@color/primaryText"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,21 +40,23 @@
 
     <ProgressBar
         android:id="@+id/sign_in_progress"
-        style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_view_margin"
+        android:indeterminateTint="@color/primaryAccentText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sign_in_image_lock" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button_google"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_view_margin"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sign_in_progress"/>
+        app:layout_constraintTop_toBottomOf="@id/sign_in_progress" />
 
 </android.support.constraint.ConstraintLayout>

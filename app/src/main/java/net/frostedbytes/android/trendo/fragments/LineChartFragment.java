@@ -291,7 +291,7 @@ public class LineChartFragment extends Fragment {
             mAheadDataSet = new LineDataSet(mAheadEntries, mAheadTrend.TeamShortName);
             mAheadDataSet.setAxisDependency(AxisDependency.LEFT);
             if (getContext() != null) {
-                mAheadDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorAhead));
+                mAheadDataSet.setColor(ContextCompat.getColor(getContext(), R.color.ahead));
             } else {
                 mAheadDataSet.setColor(Color.GREEN);
             }
@@ -309,7 +309,7 @@ public class LineChartFragment extends Fragment {
             mBehindDataSet = new LineDataSet(mBehindEntries, mBehindTrend.TeamShortName);
             mBehindDataSet.setAxisDependency(AxisDependency.LEFT);
             if (getContext() != null) {
-                mBehindDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorBehind));
+                mBehindDataSet.setColor(ContextCompat.getColor(getContext(), R.color.behind));
             } else {
                 mBehindDataSet.setColor(Color.YELLOW);
             }
@@ -326,7 +326,7 @@ public class LineChartFragment extends Fragment {
         mMainDataSet = new LineDataSet(mMainEntries, mTrend.TeamShortName);
         mMainDataSet.setAxisDependency(AxisDependency.LEFT);
         if (getContext() != null) {
-            mMainDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorFavorite));
+            mMainDataSet.setColor(ContextCompat.getColor(getContext(), R.color.favorite));
         } else {
             mMainDataSet.setColor(Color.YELLOW);
         }
@@ -343,17 +343,17 @@ public class LineChartFragment extends Fragment {
 
         YAxis leftAxis = mLineChart.getAxisLeft();
         if (getContext() != null) {
-            leftAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextPrimary));
+            leftAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.primaryText));
             leftAxis.setPosition(YAxisLabelPosition.OUTSIDE_CHART);
             leftAxis.setDrawGridLines(false);
             leftAxis.setDrawZeroLine(true);
 
             YAxis rightAxis = mLineChart.getAxisRight();
-            rightAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextPrimary));
+            rightAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.primaryText));
             rightAxis.setEnabled(true);
 
             XAxis bottomAxis = mLineChart.getXAxis();
-            bottomAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextPrimary));
+            bottomAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.primaryText));
             bottomAxis.setDrawGridLines(false);
             bottomAxis.setPosition(XAxisPosition.BOTTOM);
             bottomAxis.setEnabled(false);
@@ -364,7 +364,7 @@ public class LineChartFragment extends Fragment {
             legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
             legend.setMaxSizePercent(.80f);
             legend.setOrientation(Legend.LegendOrientation.VERTICAL);
-            legend.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextPrimary));
+            legend.setTextColor(ContextCompat.getColor(getContext(), R.color.primaryText));
             legend.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
             legend.setWordWrapEnabled(true);
             legend.setXEntrySpace(10f);
