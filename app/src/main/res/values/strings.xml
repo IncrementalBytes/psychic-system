@@ -42,4 +42,8 @@
     <string name="synchronize">Synchronize</string>
     <string name="err_aggregate_not_created">Could not create aggregate data.</string>
     <string name="err_initialize_commissioner">Could not create commissioner object. Try again later.</string>
+    <string name="overall">Overall</string>
+    <string name="conference">Conference</string>
+    <string name="data_synchronized">Data between local and remote already synchronized.</string>
+    <string name="err_trend_data_load_failed">Unable to create data charts. Try again later.</string>
 </resources>

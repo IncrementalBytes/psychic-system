@@ -50,6 +50,7 @@ import java.util.UUID;
 
 import net.frostedbytes.android.trendo.fragments.CommissionerFragment;
 import net.frostedbytes.android.trendo.fragments.DefaultFragment;
+import net.frostedbytes.android.trendo.fragments.LineChartFragment;
 import net.frostedbytes.android.trendo.fragments.MatchListFragment;
 import net.frostedbytes.android.trendo.fragments.MatchSummaryDataFragment;
 import net.frostedbytes.android.trendo.fragments.TeamDataFragment;
@@ -66,6 +67,7 @@ import net.frostedbytes.android.trendo.utils.SortUtils.ByTablePosition;
 
 public class MainActivity extends BaseActivity implements
     CommissionerFragment.OnCommissionerListener,
+    LineChartFragment.OnLineChartListener,
     MatchListFragment.OnMatchListListener,
     MatchSummaryDataFragment.OnMatchSummaryDataListener,
     NavigationView.OnNavigationItemSelectedListener,
@@ -259,25 +261,42 @@ public class MainActivity extends BaseActivity implements
         Fragment Callback Overrides
      */
     @Override
-    public void onDataLoadFailure() {
+    public void onCommissionerInit(boolean isSuccessful) {
 
-        LogUtils.debug(TAG, "++onDataLoadFailure()");
-        Snackbar.make(findViewById(R.id.main_fragment_container), getString(R.string.err_match_summary_data_load_failed), Snackbar.LENGTH_LONG);
-        replaceFragment(MatchListFragment.newInstance(mTeamSummaries));
-    }
-
-    public void onInitializeComplete() {
-
-        LogUtils.debug(TAG, "++onInitializeComplete()");
+        LogUtils.debug(TAG, "++onCommissionerInit(%s)", String.valueOf(isSuccessful));
         mProgressBar.setIndeterminate(false);
+        if (!isSuccessful) {
+            Snackbar.make(findViewById(R.id.main_fragment_container), getString(R.string.err_match_summary_data_load_failed), Snackbar.LENGTH_LONG);
+            replaceFragment(MatchListFragment.newInstance(mTeamSummaries));
+        }
     }
 
     @Override
-    public void onInitializeFailure() {
+    public void onLineChartInit(boolean isSuccessful) {
 
-        LogUtils.debug(TAG, "++onInitializeFailure()");
-        Snackbar.make(findViewById(R.id.main_fragment_container), getString(R.string.err_initialize_commissioner), Snackbar.LENGTH_LONG);
-        replaceFragment(MatchListFragment.newInstance(mTeamSummaries));
+        LogUtils.debug(TAG, "++onLineChartInit(%s)", String.valueOf(isSuccessful));
+        mProgressBar.setIndeterminate(false);
+        if (!isSuccessful) {
+            Snackbar.make(findViewById(R.id.main_fragment_container), getString(R.string.err_trend_data_load_failed), Snackbar.LENGTH_LONG);
+            replaceFragment(MatchListFragment.newInstance(mTeamSummaries));
+        }
+    }
+
+    @Override
+    public void onMatchListPopulated(int size) {
+
+        LogUtils.debug(TAG, "++onMatchListPopulated(%1d)", size);
+        mProgressBar.setIndeterminate(false);
+        if (size == 0) {
+            missingPreference();
+        }
+    }
+
+    @Override
+    public void onMatchListItemSelected() {
+
+        LogUtils.debug(TAG, "++onMatchListItemSelected()");
+        replaceFragment(TrendFragment.newInstance(mUser, mTeams));
     }
 
     @Override
@@ -287,25 +306,6 @@ public class MainActivity extends BaseActivity implements
         if (needsRefreshing) {
             getAggregateData();
             getMatchSummaryData();
-        }
-    }
-
-    @Override
-    public void onTeamDataSynchronized(boolean needsRefreshing) {
-
-        LogUtils.debug(TAG, "++onTeamDataSynchronized(%s)", String.valueOf(needsRefreshing));
-        if (needsRefreshing) {
-            getTeamData();
-        }
-    }
-
-    @Override
-    public void onPopulated(int size) {
-
-        LogUtils.debug(TAG, "++onPopulated(%1d)", size);
-        mProgressBar.setIndeterminate(false);
-        if (size == 0) {
-            missingPreference();
         }
     }
 
@@ -338,7 +338,7 @@ public class MainActivity extends BaseActivity implements
                 mTeamSummaries.sort((summary1, summary2) -> Integer.compare(summary2.MatchDate.compareTo(summary1.MatchDate), 0));
 
                 // update this new team's immediate opponents
-                getNearestOpponents();
+                getNearestOpponents(false);
                 replaceFragment(MatchListFragment.newInstance(mTeamSummaries));
             }
         }
@@ -351,18 +351,32 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
-    public void onSelected() {
+    public void onShowByConference(boolean showByConference) {
 
-        LogUtils.debug(TAG, "++onSelected()");
-        replaceFragment(TrendFragment.newInstance(mUser, mTeams));
+        LogUtils.debug(TAG, "++onShowByConference(%s)", String.valueOf(showByConference));
+        mProgressBar.setIndeterminate(true);
+        getNearestOpponents(showByConference);
+        replaceFragment(TrendFragment.newInstance(mUser, mTeams, showByConference));
     }
 
     @Override
-    public void onTrendQueryFailure() {
+    public void onTeamDataSynchronized(boolean needsRefreshing) {
 
-        LogUtils.debug(TAG, "++onTrendQueryFailure()");
-        Snackbar.make(findViewById(R.id.main_fragment_container), getString(R.string.no_trends), Snackbar.LENGTH_LONG);
-        replaceFragment(MatchListFragment.newInstance(mTeamSummaries));
+        LogUtils.debug(TAG, "++onTeamDataSynchronized(%s)", String.valueOf(needsRefreshing));
+        if (needsRefreshing) {
+            getTeamData();
+        }
+    }
+
+    @Override
+    public void onTrendInit(boolean isSuccessful) {
+
+        LogUtils.debug(TAG, "++onTrendFail(%s)", String.valueOf(isSuccessful));
+        mProgressBar.setIndeterminate(false);
+        if (!isSuccessful) {
+            Snackbar.make(findViewById(R.id.main_fragment_container), getString(R.string.no_trends), Snackbar.LENGTH_LONG);
+            replaceFragment(MatchListFragment.newInstance(mTeamSummaries));
+        }
     }
 
     /*
@@ -393,7 +407,7 @@ public class MainActivity extends BaseActivity implements
 
                 // figure out which teams are ahead and behind the user's preferred team (based on conference)
                 if (!mUser.TeamId.isEmpty() && !mUser.TeamId.equals(BaseActivity.DEFAULT_ID)) {
-                    getNearestOpponents();
+                    getNearestOpponents(false);
                 } else {
                     LogUtils.warn(TAG, "User preferences are incomplete.");
                     mProgressBar.setIndeterminate(false);
@@ -457,9 +471,9 @@ public class MainActivity extends BaseActivity implements
         });
     }
 
-    private void getNearestOpponents() {
+    private void getNearestOpponents(boolean isByConference) {
 
-        LogUtils.debug(TAG, "++getNearestOpponents()");
+        LogUtils.debug(TAG, "++getNearestOpponents(%s)", String.valueOf(isByConference));
         mTeams.sort(new ByTablePosition());
         mUser.AheadTeamId = mUser.BehindTeamId = BaseActivity.DEFAULT_ID;
         int targetIndex = 0;
@@ -469,16 +483,23 @@ public class MainActivity extends BaseActivity implements
             }
         }
 
+        // get the team that is ahead of selected team
         int targetConferenceId = mTeams.get(targetIndex).ConferenceId;
         for (int index = 0; index < targetIndex; index++) {
-            if (mTeams.get(index).ConferenceId == targetConferenceId) { // want the last conference team before target
+            if (!isByConference) {
+                mUser.AheadTeamId = mTeams.get(index).Id;
+            } else if (mTeams.get(index).ConferenceId == targetConferenceId) {
                 mUser.AheadTeamId = mTeams.get(index).Id;
             }
         }
 
+        // get the team that is behind the selected team
         if (mTeams.size() > targetIndex + 1) {
             for (int index = targetIndex + 1; index < mTeams.size(); index++) {
-                if (mTeams.get(index).ConferenceId == targetConferenceId) { // want the first conference team after target
+                if (!isByConference) {
+                    mUser.BehindTeamId = mTeams.get(index).Id;
+                    break;
+                } else if (mTeams.get(index).ConferenceId == targetConferenceId) {
                     mUser.BehindTeamId = mTeams.get(index).Id;
                     break;
                 }
@@ -550,7 +571,8 @@ public class MainActivity extends BaseActivity implements
                     mUser.TeamId = BaseActivity.DEFAULT_ID;
                 } else {
                     try {
-                        UUID temp = UUID.fromString(preference);
+                        //noinspection ResultOfMethodCallIgnored
+                        UUID.fromString(preference);
                         mUser.TeamId = preference;
                     } catch (Exception ex) {
                         mUser.TeamId = BaseActivity.DEFAULT_ID;

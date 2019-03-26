@@ -28,6 +28,8 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ToggleButton;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -49,7 +51,8 @@ public class TrendFragment extends Fragment {
 
     public interface OnTrendListener {
 
-        void onTrendQueryFailure();
+        void onShowByConference(boolean showBy);
+        void onTrendInit(boolean isSuccessful);
     }
 
     private OnTrendListener mCallback;
@@ -62,15 +65,22 @@ public class TrendFragment extends Fragment {
 
     private ViewPager mViewPager;
 
+    private boolean mOrderByConference;
     private User mUser;
 
     public static TrendFragment newInstance(User user, ArrayList<Team> teams) {
 
+        return newInstance(user, teams, false);
+    }
+
+    public static TrendFragment newInstance(User user, ArrayList<Team> teams, boolean orderByConference) {
+
         LogUtils.debug(TAG, "++newInstance(UserPreference)");
         TrendFragment fragment = new TrendFragment();
         Bundle args = new Bundle();
-        args.putSerializable(BaseActivity.ARG_USER, user);
+        args.putBoolean(BaseActivity.ARG_ORDER_BY, orderByConference);
         args.putParcelableArrayList(BaseActivity.ARG_TEAMS, teams);
+        args.putSerializable(BaseActivity.ARG_USER, user);
         fragment.setArguments(args);
         return fragment;
     }
@@ -92,6 +102,7 @@ public class TrendFragment extends Fragment {
 
         Bundle arguments = getArguments();
         if (arguments != null) {
+            mOrderByConference = arguments.getBoolean(BaseActivity.ARG_ORDER_BY);
             mUser = (User) arguments.getSerializable(BaseActivity.ARG_USER);
             mTeams = arguments.getParcelableArrayList(BaseActivity.ARG_TEAMS);
             mTeams.sort(new SortUtils.ByTeamName());
@@ -106,10 +117,21 @@ public class TrendFragment extends Fragment {
         LogUtils.debug(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
         View view = inflater.inflate(R.layout.fragment_trend, container, false);
         mViewPager = view.findViewById(R.id.trend_view_pager);
-        PagerTabStrip pagerTabStrip = view.findViewById(R.id.trend_view_pager_header);
 
+        PagerTabStrip pagerTabStrip = view.findViewById(R.id.trend_view_pager_header);
         pagerTabStrip.getChildAt(1).setPadding(30, 15, 30, 15);
         pagerTabStrip.setDrawFullUnderline(false);
+
+        ToggleButton orderingToggle = view.findViewById(R.id.trend_toggle_standing);
+        orderingToggle.setChecked(mOrderByConference);
+        orderingToggle.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
+            if (isChecked) {
+                mCallback.onShowByConference(true);
+            } else {
+                mCallback.onShowByConference(false);
+            }
+        });
 
         mAhead = new Trend();
         mBehind = new Trend();
@@ -125,7 +147,7 @@ public class TrendFragment extends Fragment {
 
                     mTrend = dataSnapshot.getValue(Trend.class);
                     if (mTrend != null) {
-                        mTrend.TeamShortName = getTeamShortName(mUser.TeamId);
+                        mTrend.TeamObj = getTeam(mUser.TeamId);
                         mTrend.Year = mUser.Season;
                         if (mUser.AheadTeamId.equals(BaseActivity.DEFAULT_ID)) {
                             LogUtils.debug(TAG, "Team is ranked first.");
@@ -147,7 +169,7 @@ public class TrendFragment extends Fragment {
             });
         } else {
             LogUtils.error(TAG, "Failed to get user preferences from arguments.");
-            mCallback.onTrendQueryFailure();
+            mCallback.onTrendInit(false);
         }
 
         return view;
@@ -166,15 +188,18 @@ public class TrendFragment extends Fragment {
     /*
         Private Method(s)
      */
-    private String getTeamShortName(String teamId) {
+    //private String getTeamShortName(String teamId) {
+    private Team getTeam(String teamId) {
 
         for (Team team : mTeams) {
             if (team.Id.equals(teamId)) {
-                return team.ShortName;
+                //return team.ShortName;
+                return team;
             }
         }
 
-        return getString(R.string.not_available);
+        //return getString(R.string.not_available);
+        return new Team();
     }
 
     private void populateTrendData() {
@@ -182,7 +207,7 @@ public class TrendFragment extends Fragment {
         LogUtils.debug(TAG, "++populateTrendData()");
         if (mTrend == null || mTrend.GoalsFor.isEmpty()) {
             LogUtils.warn(TAG, "Failed when querying trend data.");
-            mCallback.onTrendQueryFailure();
+            mCallback.onTrendInit(false);
         } else {
             mViewPager.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
 
@@ -194,105 +219,105 @@ public class TrendFragment extends Fragment {
                     Trend behind = new Trend();
                     switch (position) {
                         case 0:
-                            trend.TeamShortName = mTrend.TeamShortName;
+                            trend.TeamObj = mTrend.TeamObj;
                             trend.TotalPoints = mTrend.TotalPoints;
                             trend.Year = mTrend.Year;
 
-                            ahead.TeamShortName = mAhead.TeamShortName;
+                            ahead.TeamObj = mAhead.TeamObj;
                             ahead.TotalPoints = mAhead.TotalPoints;
                             ahead.Year = mAhead.Year;
 
-                            behind.TeamShortName = mBehind.TeamShortName;
+                            behind.TeamObj = mBehind.TeamObj;
                             behind.TotalPoints = mBehind.TotalPoints;
                             behind.Year = mBehind.Year;
 
                             return LineChartFragment.newInstance(trend, ahead, behind);
                         case 1:
-                            trend.TeamShortName = mTrend.TeamShortName;
+                            trend.TeamObj = mTrend.TeamObj;
                             trend.PointsPerGame = mTrend.PointsPerGame;
                             trend.Year = mTrend.Year;
 
-                            ahead.TeamShortName = mAhead.TeamShortName;
+                            ahead.TeamObj = mAhead.TeamObj;
                             ahead.PointsPerGame = mAhead.PointsPerGame;
                             ahead.Year = mAhead.Year;
 
-                            behind.TeamShortName = mBehind.TeamShortName;
+                            behind.TeamObj = mBehind.TeamObj;
                             behind.PointsPerGame = mBehind.PointsPerGame;
                             behind.Year = mBehind.Year;
 
                             return LineChartFragment.newInstance(trend, ahead, behind);
                         case 2:
-                            trend.TeamShortName = mTrend.TeamShortName;
+                            trend.TeamObj = mTrend.TeamObj;
                             trend.GoalsFor = mTrend.GoalsFor;
                             trend.Year = mTrend.Year;
 
-                            ahead.TeamShortName = mAhead.TeamShortName;
+                            ahead.TeamObj = mAhead.TeamObj;
                             ahead.GoalsFor = mAhead.GoalsFor;
                             ahead.Year = mAhead.Year;
 
-                            behind.TeamShortName = mBehind.TeamShortName;
+                            behind.TeamObj = mBehind.TeamObj;
                             behind.GoalsFor = mBehind.GoalsFor;
                             behind.Year = mBehind.Year;
 
                             return LineChartFragment.newInstance(trend, ahead, behind);
                         case 3:
-                            trend.TeamShortName = mTrend.TeamShortName;
+                            trend.TeamObj = mTrend.TeamObj;
                             trend.GoalsAgainst = mTrend.GoalsAgainst;
                             trend.Year = mTrend.Year;
 
-                            ahead.TeamShortName = mAhead.TeamShortName;
+                            ahead.TeamObj = mAhead.TeamObj;
                             ahead.GoalsAgainst = mAhead.GoalsAgainst;
                             ahead.Year = mAhead.Year;
 
-                            behind.TeamShortName = mBehind.TeamShortName;
+                            behind.TeamObj = mBehind.TeamObj;
                             behind.GoalsAgainst = mBehind.GoalsAgainst;
                             behind.Year = mBehind.Year;
 
                             return LineChartFragment.newInstance(trend, ahead, behind);
                         case 4:
-                            trend.TeamShortName = mTrend.TeamShortName;
+                            trend.TeamObj = mTrend.TeamObj;
                             trend.GoalDifferential = mTrend.GoalDifferential;
                             trend.Year = mTrend.Year;
 
-                            ahead.TeamShortName = mAhead.TeamShortName;
+                            ahead.TeamObj = mAhead.TeamObj;
                             ahead.GoalDifferential = mAhead.GoalDifferential;
                             ahead.Year = mAhead.Year;
 
-                            behind.TeamShortName = mBehind.TeamShortName;
+                            behind.TeamObj = mBehind.TeamObj;
                             behind.GoalDifferential = mBehind.GoalDifferential;
                             behind.Year = mBehind.Year;
 
                             return LineChartFragment.newInstance(trend, ahead, behind);
                         case 5:
-                            trend.TeamShortName = mTrend.TeamShortName;
+                            trend.TeamObj = mTrend.TeamObj;
                             trend.PointsByAverage = mTrend.PointsByAverage;
                             trend.Year = mTrend.Year;
 
-                            ahead.TeamShortName = mAhead.TeamShortName;
+                            ahead.TeamObj = mAhead.TeamObj;
                             ahead.PointsByAverage = mAhead.PointsByAverage;
                             ahead.Year = mAhead.Year;
 
-                            behind.TeamShortName = mBehind.TeamShortName;
+                            behind.TeamObj = mBehind.TeamObj;
                             behind.PointsByAverage = mBehind.PointsByAverage;
                             behind.Year = mBehind.Year;
 
                             return LineChartFragment.newInstance(trend, ahead, behind);
                         case 6:
-                            trend.TeamShortName = mTrend.TeamShortName;
+                            trend.TeamObj = mTrend.TeamObj;
                             trend.MaxPointsPossible = mTrend.MaxPointsPossible;
                             trend.Year = mTrend.Year;
 
-                            ahead.TeamShortName = mAhead.TeamShortName;
+                            ahead.TeamObj = mAhead.TeamObj;
                             ahead.MaxPointsPossible = mAhead.MaxPointsPossible;
                             ahead.Year = mAhead.Year;
 
-                            behind.TeamShortName = mBehind.TeamShortName;
+                            behind.TeamObj = mBehind.TeamObj;
                             behind.MaxPointsPossible = mBehind.MaxPointsPossible;
                             behind.Year = mBehind.Year;
 
                             return LineChartFragment.newInstance(trend, ahead, behind);
                         default:
-                            mCallback.onTrendQueryFailure();
+                            mCallback.onTrendInit(false);
                             return null;
                     }
                 }
@@ -322,7 +347,7 @@ public class TrendFragment extends Fragment {
                         case 6:
                             return getString(R.string.max_points_possible);
                         default:
-                            mCallback.onTrendQueryFailure();
+                            mCallback.onTrendInit(false);
                             return null;
                     }
                 }
@@ -342,7 +367,7 @@ public class TrendFragment extends Fragment {
 
                 mAhead = dataSnapshot.getValue(Trend.class);
                 if (mAhead != null) {
-                    mAhead.TeamShortName = getTeamShortName(mUser.AheadTeamId);
+                    mAhead.TeamObj = getTeam(mUser.AheadTeamId);
                     mAhead.Year = mUser.Season;
                     if (mUser.BehindTeamId.equals(BaseActivity.DEFAULT_ID)) {
                         LogUtils.debug(TAG, "Team is ranked last.");
@@ -376,7 +401,7 @@ public class TrendFragment extends Fragment {
 
                 mBehind = dataSnapshot.getValue(Trend.class);
                 if (mBehind != null) {
-                    mBehind.TeamShortName = getTeamShortName(mUser.BehindTeamId);
+                    mBehind.TeamObj = getTeam(mUser.BehindTeamId);
                     mBehind.Year = mUser.Season;
                     populateTrendData();
                 } else {

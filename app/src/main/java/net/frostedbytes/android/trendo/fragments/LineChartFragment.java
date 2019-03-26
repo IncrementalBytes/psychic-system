@@ -26,6 +26,8 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
+
 import net.frostedbytes.android.trendo.BaseActivity;
 import net.frostedbytes.android.trendo.R;
 import net.frostedbytes.android.trendo.models.Trend;
@@ -34,6 +36,13 @@ import net.frostedbytes.android.trendo.utils.LogUtils;
 public class LineChartFragment extends Fragment {
 
     private static final String TAG = BASE_TAG + LineChartFragment.class.getSimpleName();
+
+    public interface OnLineChartListener {
+
+        void onLineChartInit(boolean isSuccessful);
+    }
+
+    private OnLineChartListener mCallback;
 
     private LineChart mLineChart;
 
@@ -69,9 +78,17 @@ public class LineChartFragment extends Fragment {
         mBehindEntries = new ArrayList<>();
         mMainEntries = new ArrayList<>();
 
+        try {
+            mCallback = (OnLineChartListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(
+                String.format(Locale.ENGLISH, "Missing interface implementations for %s", context.toString()));
+        }
+
         Bundle arguments = getArguments();
         if (arguments == null) {
             Toast.makeText(context, "Did not receive details about match.", Toast.LENGTH_SHORT).show();
+            mCallback.onLineChartInit(false);
             return;
         }
 
@@ -125,26 +142,112 @@ public class LineChartFragment extends Fragment {
             return;
         }
 
+        // must get max value of trend keys
         List<String> trendKeys;
-        if (!mTrend.GoalDifferential.isEmpty()) { // order the keys ascending (keys are match dates in milliseconds)
-            trendKeys = new ArrayList<>(mTrend.GoalDifferential.keySet());
+        if (!mTrend.GoalDifferential.isEmpty()) {
+            if (mAheadTrend.GoalDifferential.size() > mBehindTrend.GoalDifferential.size()) {
+                if (mTrend.GoalDifferential.size() > mAheadTrend.GoalDifferential.size()) {
+                    trendKeys = new ArrayList<>(mTrend.GoalDifferential.keySet());
+                } else {
+                    trendKeys = new ArrayList<>(mBehindTrend.GoalDifferential.keySet());
+                }
+            } else {
+                if (mBehindTrend.GoalDifferential.size() > mAheadTrend.GoalDifferential.size()) {
+                    trendKeys = new ArrayList<>(mBehindTrend.GoalDifferential.keySet());
+                } else {
+                    trendKeys = new ArrayList<>(mAheadTrend.GoalDifferential.keySet());
+                }
+            }
         } else if (!mTrend.TotalPoints.isEmpty()) {
-            trendKeys = new ArrayList<>(mTrend.TotalPoints.keySet());
+            if (mAheadTrend.TotalPoints.size() > mBehindTrend.TotalPoints.size()) {
+                if (mTrend.TotalPoints.size() > mAheadTrend.TotalPoints.size()) {
+                    trendKeys = new ArrayList<>(mTrend.TotalPoints.keySet());
+                } else {
+                    trendKeys = new ArrayList<>(mBehindTrend.TotalPoints.keySet());
+                }
+            } else {
+                if (mBehindTrend.TotalPoints.size() > mAheadTrend.TotalPoints.size()) {
+                    trendKeys = new ArrayList<>(mBehindTrend.TotalPoints.keySet());
+                } else {
+                    trendKeys = new ArrayList<>(mAheadTrend.TotalPoints.keySet());
+                }
+            }
         } else if (!mTrend.PointsPerGame.isEmpty()) {
-            trendKeys = new ArrayList<>(mTrend.PointsPerGame.keySet());
+            if (mAheadTrend.PointsPerGame.size() > mBehindTrend.PointsPerGame.size()) {
+                if (mTrend.PointsPerGame.size() > mAheadTrend.PointsPerGame.size()) {
+                    trendKeys = new ArrayList<>(mTrend.PointsPerGame.keySet());
+                } else {
+                    trendKeys = new ArrayList<>(mBehindTrend.PointsPerGame.keySet());
+                }
+            } else {
+                if (mBehindTrend.PointsPerGame.size() > mAheadTrend.PointsPerGame.size()) {
+                    trendKeys = new ArrayList<>(mBehindTrend.PointsPerGame.keySet());
+                } else {
+                    trendKeys = new ArrayList<>(mAheadTrend.PointsPerGame.keySet());
+                }
+            }
         } else if (!mTrend.MaxPointsPossible.isEmpty()) {
-            trendKeys = new ArrayList<>(mTrend.MaxPointsPossible.keySet());
+            if (mAheadTrend.MaxPointsPossible.size() > mBehindTrend.MaxPointsPossible.size()) {
+                if (mTrend.MaxPointsPossible.size() > mAheadTrend.MaxPointsPossible.size()) {
+                    trendKeys = new ArrayList<>(mTrend.MaxPointsPossible.keySet());
+                } else {
+                    trendKeys = new ArrayList<>(mBehindTrend.MaxPointsPossible.keySet());
+                }
+            } else {
+                if (mBehindTrend.MaxPointsPossible.size() > mAheadTrend.MaxPointsPossible.size()) {
+                    trendKeys = new ArrayList<>(mBehindTrend.MaxPointsPossible.keySet());
+                } else {
+                    trendKeys = new ArrayList<>(mAheadTrend.MaxPointsPossible.keySet());
+                }
+            }
         } else if (!mTrend.GoalsAgainst.isEmpty()) {
-            trendKeys = new ArrayList<>(mTrend.GoalsAgainst.keySet());
+            if (mAheadTrend.GoalsAgainst.size() > mBehindTrend.GoalsAgainst.size()) {
+                if (mTrend.GoalsAgainst.size() > mAheadTrend.GoalsAgainst.size()) {
+                    trendKeys = new ArrayList<>(mTrend.GoalsAgainst.keySet());
+                } else {
+                    trendKeys = new ArrayList<>(mBehindTrend.GoalsAgainst.keySet());
+                }
+            } else {
+                if (mBehindTrend.GoalsAgainst.size() > mAheadTrend.GoalsAgainst.size()) {
+                    trendKeys = new ArrayList<>(mBehindTrend.GoalsAgainst.keySet());
+                } else {
+                    trendKeys = new ArrayList<>(mAheadTrend.GoalsAgainst.keySet());
+                }
+            }
         } else if (!mTrend.PointsByAverage.isEmpty()) {
-            trendKeys = new ArrayList<>(mTrend.PointsByAverage.keySet());
+            if (mAheadTrend.PointsByAverage.size() > mBehindTrend.PointsByAverage.size()) {
+                if (mTrend.PointsByAverage.size() > mAheadTrend.PointsByAverage.size()) {
+                    trendKeys = new ArrayList<>(mTrend.PointsByAverage.keySet());
+                } else {
+                    trendKeys = new ArrayList<>(mBehindTrend.PointsByAverage.keySet());
+                }
+            } else {
+                if (mBehindTrend.PointsByAverage.size() > mAheadTrend.PointsByAverage.size()) {
+                    trendKeys = new ArrayList<>(mBehindTrend.PointsByAverage.keySet());
+                } else {
+                    trendKeys = new ArrayList<>(mAheadTrend.PointsByAverage.keySet());
+                }
+            }
         } else {
-            trendKeys = new ArrayList<>(mTrend.GoalsFor.keySet());
+            if (mAheadTrend.GoalsFor.size() > mBehindTrend.GoalsFor.size()) {
+                if (mTrend.GoalsFor.size() > mAheadTrend.GoalsFor.size()) {
+                    trendKeys = new ArrayList<>(mTrend.GoalsFor.keySet());
+                } else {
+                    trendKeys = new ArrayList<>(mBehindTrend.GoalsFor.keySet());
+                }
+            } else {
+                if (mBehindTrend.GoalsFor.size() > mAheadTrend.GoalsFor.size()) {
+                    trendKeys = new ArrayList<>(mBehindTrend.GoalsFor.keySet());
+                } else {
+                    trendKeys = new ArrayList<>(mAheadTrend.GoalsFor.keySet());
+                }
+            }
         }
 
         Collections.sort(trendKeys);
 
-        for (String trendKey : trendKeys) { // build the entries based on trend keys
+        // build the entries based on trend keys
+        for (String trendKey : trendKeys) {
             String trimmedKey = trendKey.substring(3);
             float sortedFloat = Float.parseFloat(trimmedKey);
             Long longItem = null;
@@ -172,30 +275,14 @@ public class LineChartFragment extends Fragment {
                 mMainEntries.add(new Entry(sortedFloat, longItem));
             } else if (floatItem != null) {
                 mMainEntries.add(new Entry(sortedFloat, floatItem));
+            } else {
+                mMainEntries.add(new Entry());
             }
         }
 
-        if (mAheadTrend != null) { // populate the data sets with data from the team ahead
-            List<String> compareKeys;
-            if (!mTrend.GoalDifferential.isEmpty()) {
-                compareKeys = new ArrayList<>(mTrend.GoalDifferential.keySet());
-            } else if (!mTrend.TotalPoints.isEmpty()) {
-                compareKeys = new ArrayList<>(mTrend.TotalPoints.keySet());
-            } else if (!mTrend.PointsByAverage.isEmpty()) {
-                compareKeys = new ArrayList<>(mTrend.PointsByAverage.keySet());
-            } else if (!mTrend.PointsPerGame.isEmpty()) {
-                compareKeys = new ArrayList<>(mTrend.PointsPerGame.keySet());
-            } else if (!mTrend.MaxPointsPossible.isEmpty()) {
-                compareKeys = new ArrayList<>(mTrend.MaxPointsPossible.keySet());
-            } else if (!mTrend.GoalsAgainst.isEmpty()) {
-                compareKeys = new ArrayList<>(mTrend.GoalsAgainst.keySet());
-            } else {
-                compareKeys = new ArrayList<>(mTrend.GoalsFor.keySet());
-            }
-
-            Collections.sort(compareKeys);
-
-            for (String compareKey : compareKeys) {
+        // populate the data sets with data from the team ahead
+        if (mAheadTrend != null) {
+            for (String compareKey : trendKeys) {
                 String trimmedKey = compareKey.substring(3);
                 float sortedFloat = Float.parseFloat(trimmedKey);
                 Long longItem = null;
@@ -223,31 +310,15 @@ public class LineChartFragment extends Fragment {
                     mAheadEntries.add(new Entry(sortedFloat, longItem));
                 } else if (floatItem != null) {
                     mAheadEntries.add(new Entry(sortedFloat, floatItem));
+                } else {
+                    mAheadEntries.add(new Entry());
                 }
             }
         }
 
-        if (mBehindTrend != null) { // populate the data sets with data from the team behind
-            List<String> compareKeys;
-            if (!mTrend.GoalDifferential.isEmpty()) {
-                compareKeys = new ArrayList<>(mTrend.GoalDifferential.keySet());
-            } else if (!mTrend.TotalPoints.isEmpty()) {
-                compareKeys = new ArrayList<>(mTrend.TotalPoints.keySet());
-            } else if (!mTrend.PointsByAverage.isEmpty()) {
-                compareKeys = new ArrayList<>(mTrend.PointsByAverage.keySet());
-            } else if (!mTrend.PointsPerGame.isEmpty()) {
-                compareKeys = new ArrayList<>(mTrend.PointsPerGame.keySet());
-            } else if (!mTrend.MaxPointsPossible.isEmpty()) {
-                compareKeys = new ArrayList<>(mTrend.MaxPointsPossible.keySet());
-            } else if (!mTrend.GoalsAgainst.isEmpty()) {
-                compareKeys = new ArrayList<>(mTrend.GoalsAgainst.keySet());
-            } else {
-                compareKeys = new ArrayList<>(mTrend.GoalsFor.keySet());
-            }
-
-            Collections.sort(compareKeys);
-
-            for (String compareKey : compareKeys) {
+        // populate the data sets with data from the team behind
+        if (mBehindTrend != null) {
+            for (String compareKey : trendKeys) {
                 String trimmedKey = compareKey.substring(3);
                 float sortedFloat = Float.parseFloat(trimmedKey);
                 Long longItem = null;
@@ -275,6 +346,8 @@ public class LineChartFragment extends Fragment {
                     mBehindEntries.add(new Entry(sortedFloat, longItem));
                 } else if (floatItem != null) {
                     mBehindEntries.add(new Entry(sortedFloat, floatItem));
+                } else {
+                    mBehindEntries.add(new Entry());
                 }
             }
         }
@@ -288,7 +361,13 @@ public class LineChartFragment extends Fragment {
         mLineChart = view.findViewById(R.id.line_chart);
 
         if (mAheadEntries.size() > 0) { // add data and customize line with team ahead of target
-            mAheadDataSet = new LineDataSet(mAheadEntries, mAheadTrend.TeamShortName);
+            mAheadDataSet = new LineDataSet(
+                mAheadEntries,
+                String.format(
+                    Locale.ENGLISH,
+                    "%d. %s",
+                    mAheadTrend.TeamObj.TablePosition,
+                    mAheadTrend.TeamObj.ShortName));
             mAheadDataSet.setAxisDependency(AxisDependency.LEFT);
             if (getContext() != null) {
                 mAheadDataSet.setColor(ContextCompat.getColor(getContext(), R.color.ahead));
@@ -306,7 +385,13 @@ public class LineChartFragment extends Fragment {
         }
 
         if (mBehindEntries.size() > 0) { // add data and customize line with team behind target
-            mBehindDataSet = new LineDataSet(mBehindEntries, mBehindTrend.TeamShortName);
+            mBehindDataSet = new LineDataSet(
+                mBehindEntries,
+                String.format(
+                    Locale.ENGLISH,
+                    "%d. %s",
+                    mBehindTrend.TeamObj.TablePosition,
+                    mBehindTrend.TeamObj.ShortName));
             mBehindDataSet.setAxisDependency(AxisDependency.LEFT);
             if (getContext() != null) {
                 mBehindDataSet.setColor(ContextCompat.getColor(getContext(), R.color.behind));
@@ -323,7 +408,13 @@ public class LineChartFragment extends Fragment {
             mBehindDataSet.setDrawHorizontalHighlightIndicator(false);
         }
 
-        mMainDataSet = new LineDataSet(mMainEntries, mTrend.TeamShortName);
+        mMainDataSet = new LineDataSet(
+            mMainEntries,
+            String.format(
+                Locale.ENGLISH,
+                "%d. %s",
+                mTrend.TeamObj.TablePosition,
+                mTrend.TeamObj.ShortName));
         mMainDataSet.setAxisDependency(AxisDependency.LEFT);
         if (getContext() != null) {
             mMainDataSet.setColor(ContextCompat.getColor(getContext(), R.color.favorite));
@@ -370,14 +461,11 @@ public class LineChartFragment extends Fragment {
             legend.setXEntrySpace(10f);
             legend.setYEntrySpace(10f);
 
-            // TODO: what should we do when multiple values are drawn? reset marker to upper line?
-//      CustomMarkerView customMaker = new CustomMarkerView(getContext(), R.layout.custom_marker);
-//      customMaker.setChartView(mLineChart);
-//      mLineChart.setMarker(customMaker);
-
+            mCallback.onLineChartInit(true);
             updateUI();
         } else {
             LogUtils.error(TAG, "Could not set chart resources; context is null.");
+            mCallback.onLineChartInit(false);
         }
 
         return view;

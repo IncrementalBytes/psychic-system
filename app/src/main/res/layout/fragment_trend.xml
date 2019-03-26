@@ -1,21 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-  <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
-      android:id="@+id/trend_view_pager"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent">
+    <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/trend_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/trend_toggle_standing"
+        app:layout_constraintTop_toTopOf="parent">
 
-      <android.support.v4.view.PagerTabStrip
-          android:id="@+id/trend_view_pager_header"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_gravity="top"
-          android:background="@color/primaryDark"
-          android:paddingTop="4dp"
-          android:paddingBottom="4dp" />
-  </android.support.v4.view.ViewPager>
+        <android.support.v4.view.PagerTabStrip
+            android:id="@+id/trend_view_pager_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="@color/primaryDark"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp" />
+    </android.support.v4.view.ViewPager>
+
+    <ToggleButton
+        android:id="@+id/trend_toggle_standing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_view_margin"
+        android:checked="false"
+        android:showText="true"
+        android:textOff="@string/overall"
+        android:textOn="@string/conference"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

@@ -27,6 +27,7 @@ public class BaseActivity extends AppCompatActivity {
     public static final String ARG_EMAIL = "email";
     public static final String ARG_MATCH_SUMMARIES = "match_summaries";
     public static final String ARG_MESSAGE = "message";
+    public static final String ARG_ORDER_BY = "order_by";
     public static final String ARG_SEASON = "season";
     public static final String ARG_TEAMS = "teams";
     public static final String ARG_TREND = "trend";

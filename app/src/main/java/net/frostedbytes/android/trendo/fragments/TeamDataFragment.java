@@ -85,21 +85,21 @@ public class TeamDataFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         LogUtils.debug(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
-        View view = inflater.inflate(R.layout.fragment_data_list, container, false);
-        mRecyclerView = view.findViewById(R.id.data_list_view);
-        final LinearLayoutManager manager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(manager);
-        Button synchronizeButton = view.findViewById(R.id.data_button_synchronize);
-        synchronizeButton.setEnabled(false);
-        for (Team team : mTeams) {
-            if (!team.IsRemote) {
-                synchronizeButton.setEnabled(true);
-                synchronizeButton.setOnClickListener(v -> synchronizeTeamData());
-                break;
-            }
+        View view = inflater.inflate(R.layout.fragment_default, container, false);
+        if (mTeams.size() > 0) {
+            view = inflater.inflate(R.layout.fragment_data_list, container, false);
+            mRecyclerView = view.findViewById(R.id.data_list_view);
+            final LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+            mRecyclerView.setLayoutManager(manager);
+            Button synchronizeButton = view.findViewById(R.id.data_button_synchronize);
+            synchronizeButton.setEnabled(true);
+            synchronizeButton.setOnClickListener(v -> synchronizeTeamData());
+            updateUI();
+        } else {
+            TextView defaultMessage = view.findViewById(R.id.default_text_message);
+            defaultMessage.setText(getString(R.string.data_synchronized));
         }
 
-        updateUI();
         return view;
     }
 

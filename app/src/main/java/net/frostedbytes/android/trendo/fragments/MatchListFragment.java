@@ -45,9 +45,9 @@ public class MatchListFragment extends Fragment {
 
     public interface OnMatchListListener {
 
-        void onPopulated(int size);
+        void onMatchListPopulated(int size);
 
-        void onSelected();
+        void onMatchListItemSelected();
     }
 
     private OnMatchListListener mCallback;
@@ -130,9 +130,9 @@ public class MatchListFragment extends Fragment {
             LogUtils.debug(TAG, "++updateUI()");
             MatchSummaryAdapter matchAdapter = new MatchSummaryAdapter(mMatchSummaries);
             mRecyclerView.setAdapter(matchAdapter);
-            mCallback.onPopulated(matchAdapter.getItemCount());
+            mCallback.onMatchListPopulated(matchAdapter.getItemCount());
         } else {
-            mCallback.onPopulated(0);
+            mCallback.onMatchListPopulated(0);
         }
     }
 
@@ -234,7 +234,7 @@ public class MatchListFragment extends Fragment {
         public void onClick(View view) {
 
             LogUtils.debug(TAG, "++MatchSummaryHolder::onClick(View)");
-            mCallback.onSelected();
+            mCallback.onMatchListItemSelected();
         }
     }
 }

@@ -34,27 +34,27 @@ public class CommissionerFragment extends Fragment {
 
     public interface OnCommissionerListener {
 
-        void onDataLoadFailure();
-        void onInitializeComplete();
-        void onInitializeFailure();
+        void onCommissionerInit(boolean isSuccessful);
     }
 
     private OnCommissionerListener mCallback;
 
-    private ArrayList<MatchSummary> mMatchSummaries;
+    private ArrayList<MatchSummary> mRemoteMatchSummaries;
+    private ArrayList<MatchSummary> mReviewMatchSummaries;
     private int mSeason;
-    private ArrayList<Team> mTeams;
+    private ArrayList<Team> mRemoteTeams;
+    private ArrayList<Team> mReviewTeams;
 
     private ViewPager mViewPager;
 
-    public static CommissionerFragment newInstance(int season, ArrayList<Team> teams, ArrayList<MatchSummary> matchSummaries) {
+    public static CommissionerFragment newInstance(int season, ArrayList<Team> remoteTeams, ArrayList<MatchSummary> remoteMatchSummaries) {
 
         LogUtils.debug(TAG, "++newInstance(%d)", season);
         CommissionerFragment fragment = new CommissionerFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList(BaseActivity.ARG_MATCH_SUMMARIES, matchSummaries);
+        args.putParcelableArrayList(BaseActivity.ARG_MATCH_SUMMARIES, remoteMatchSummaries);
         args.putInt(BaseActivity.ARG_SEASON, season);
-        args.putParcelableArrayList(BaseActivity.ARG_TEAMS, teams);
+        args.putParcelableArrayList(BaseActivity.ARG_TEAMS, remoteTeams);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,12 +76,12 @@ public class CommissionerFragment extends Fragment {
 
         Bundle arguments = getArguments();
         if (arguments != null) {
-            mMatchSummaries = arguments.getParcelableArrayList(BaseActivity.ARG_MATCH_SUMMARIES);
+            mRemoteMatchSummaries = arguments.getParcelableArrayList(BaseActivity.ARG_MATCH_SUMMARIES);
+            mRemoteTeams = arguments.getParcelableArrayList(BaseActivity.ARG_TEAMS);
             mSeason = arguments.getInt(BaseActivity.ARG_SEASON);
-            mTeams = arguments.getParcelableArrayList(BaseActivity.ARG_TEAMS);
         } else {
             LogUtils.warn(TAG, "Arguments were null.");
-            mCallback.onInitializeFailure();
+            mCallback.onCommissionerInit(false);
         }
     }
 
@@ -97,15 +97,21 @@ public class CommissionerFragment extends Fragment {
         return view;
     }
 
-    /*
-        Interface Override(s)
-     */
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        LogUtils.debug(TAG, "++onDestroy()");
+        mReviewMatchSummaries = null;
+        mReviewTeams = null;
+    }
+
     /*
         Private Method(s)
      */
     private Team getTeam(String teamId) {
 
-        for (Team team : mTeams) {
+        for (Team team : mRemoteTeams) {
             if (team.Id.equals(teamId)) {
                 return team;
             }
@@ -121,9 +127,8 @@ public class CommissionerFragment extends Fragment {
         String resourcePath = String.format(Locale.ENGLISH, "%d.txt", mSeason);
         LogUtils.debug(TAG, "Loading %s", resourcePath);
         BufferedReader reader = null;
-        if (mMatchSummaries == null) {
-            LogUtils.warn(TAG, "Match collection was empty before local load.");
-            mMatchSummaries = new ArrayList<>();
+        if (mReviewMatchSummaries == null) {
+            mReviewMatchSummaries = new ArrayList<>();
         }
 
         try {
@@ -160,7 +165,7 @@ public class CommissionerFragment extends Fragment {
 
                 // attempt to locate this match in existing list
                 boolean matchFound = false;
-                for (MatchSummary matchSummary : mMatchSummaries) {
+                for (MatchSummary matchSummary : mRemoteMatchSummaries) {
                     if (matchSummary.equals(currentSummary)) {
                         matchFound = true;
                         matchSummary.IsLocal = true;
@@ -169,7 +174,7 @@ public class CommissionerFragment extends Fragment {
                 }
 
                 if (!matchFound) {
-                    mMatchSummaries.add(currentSummary);
+                    mReviewMatchSummaries.add(currentSummary);
                     LogUtils.debug(TAG, "Adding %s to match summary collection.", currentSummary.toString());
                 }
             }
@@ -195,9 +200,8 @@ public class CommissionerFragment extends Fragment {
         String resourcePath = "Teams.txt";
         LogUtils.debug(TAG, "Loading %s", resourcePath);
         BufferedReader reader = null;
-        if (mTeams == null) {
-            LogUtils.warn(TAG, "Team collection was empty before local load.");
-            mTeams = new ArrayList<>();
+        if (mReviewTeams == null) {
+            mReviewTeams = new ArrayList<>();
         }
 
         try {
@@ -220,7 +224,7 @@ public class CommissionerFragment extends Fragment {
 
                 // attempt to locate this team in existing list
                 boolean teamFound = false;
-                for (Team team : mTeams) {
+                for (Team team : mRemoteTeams) {
                     if (team.equals(currentTeam)) {
                         teamFound = true;
                         team.IsLocal = true;
@@ -229,7 +233,7 @@ public class CommissionerFragment extends Fragment {
                 }
 
                 if (!teamFound) {
-                    mTeams.add(currentTeam);
+                    mReviewTeams.add(currentTeam);
                     LogUtils.debug(TAG, "Adding %s to team collection.", currentTeam.toString());
                 }
             }
@@ -258,11 +262,11 @@ public class CommissionerFragment extends Fragment {
 
                 switch (position) {
                     case 0:
-                        return TeamDataFragment.newInstance(mTeams);
+                        return TeamDataFragment.newInstance(mReviewTeams);
                     case 1:
-                        return MatchSummaryDataFragment.newInstance(mSeason, mMatchSummaries, mTeams);
+                        return MatchSummaryDataFragment.newInstance(mSeason, mReviewMatchSummaries, mRemoteTeams);
                     default:
-                        mCallback.onDataLoadFailure();
+                        mCallback.onCommissionerInit(false);
                         return null;
                 }
             }
@@ -282,12 +286,12 @@ public class CommissionerFragment extends Fragment {
                     case 1:
                         return getString(R.string.matches);
                     default:
-                        mCallback.onDataLoadFailure();
+                        mCallback.onCommissionerInit(false);
                         return null;
                 }
             }
         });
 
-        mCallback.onInitializeComplete();
+        mCallback.onCommissionerInit(true);
     }
 }
