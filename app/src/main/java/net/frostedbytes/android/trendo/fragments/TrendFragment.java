@@ -188,17 +188,14 @@ public class TrendFragment extends Fragment {
     /*
         Private Method(s)
      */
-    //private String getTeamShortName(String teamId) {
     private Team getTeam(String teamId) {
 
         for (Team team : mTeams) {
             if (team.Id.equals(teamId)) {
-                //return team.ShortName;
                 return team;
             }
         }
 
-        //return getString(R.string.not_available);
         return new Team();
     }
 

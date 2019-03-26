@@ -40,10 +40,8 @@ public class CommissionerFragment extends Fragment {
     private OnCommissionerListener mCallback;
 
     private ArrayList<MatchSummary> mRemoteMatchSummaries;
-    private ArrayList<MatchSummary> mReviewMatchSummaries;
     private int mSeason;
     private ArrayList<Team> mRemoteTeams;
-    private ArrayList<Team> mReviewTeams;
 
     private ViewPager mViewPager;
 
@@ -102,8 +100,8 @@ public class CommissionerFragment extends Fragment {
         super.onDestroy();
 
         LogUtils.debug(TAG, "++onDestroy()");
-        mReviewMatchSummaries = null;
-        mReviewTeams = null;
+        mRemoteMatchSummaries = null;
+        mRemoteTeams = null;
     }
 
     /*
@@ -127,8 +125,9 @@ public class CommissionerFragment extends Fragment {
         String resourcePath = String.format(Locale.ENGLISH, "%d.txt", mSeason);
         LogUtils.debug(TAG, "Loading %s", resourcePath);
         BufferedReader reader = null;
-        if (mReviewMatchSummaries == null) {
-            mReviewMatchSummaries = new ArrayList<>();
+        if (mRemoteMatchSummaries == null) {
+            LogUtils.warn(TAG, "Match Summary data was null.");
+            mRemoteMatchSummaries = new ArrayList<>();
         }
 
         try {
@@ -174,7 +173,7 @@ public class CommissionerFragment extends Fragment {
                 }
 
                 if (!matchFound) {
-                    mReviewMatchSummaries.add(currentSummary);
+                    mRemoteMatchSummaries.add(currentSummary);
                     LogUtils.debug(TAG, "Adding %s to match summary collection.", currentSummary.toString());
                 }
             }
@@ -200,8 +199,9 @@ public class CommissionerFragment extends Fragment {
         String resourcePath = "Teams.txt";
         LogUtils.debug(TAG, "Loading %s", resourcePath);
         BufferedReader reader = null;
-        if (mReviewTeams == null) {
-            mReviewTeams = new ArrayList<>();
+        if (mRemoteTeams == null) {
+            LogUtils.warn(TAG, "Team data was null.");
+            mRemoteTeams = new ArrayList<>();
         }
 
         try {
@@ -233,7 +233,7 @@ public class CommissionerFragment extends Fragment {
                 }
 
                 if (!teamFound) {
-                    mReviewTeams.add(currentTeam);
+                    mRemoteTeams.add(currentTeam);
                     LogUtils.debug(TAG, "Adding %s to team collection.", currentTeam.toString());
                 }
             }
@@ -262,9 +262,9 @@ public class CommissionerFragment extends Fragment {
 
                 switch (position) {
                     case 0:
-                        return TeamDataFragment.newInstance(mReviewTeams);
+                        return TeamDataFragment.newInstance(mRemoteTeams);
                     case 1:
-                        return MatchSummaryDataFragment.newInstance(mSeason, mReviewMatchSummaries, mRemoteTeams);
+                        return MatchSummaryDataFragment.newInstance(mSeason, mRemoteMatchSummaries, mRemoteTeams);
                     default:
                         mCallback.onCommissionerInit(false);
                         return null;

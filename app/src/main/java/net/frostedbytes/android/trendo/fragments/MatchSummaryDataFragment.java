@@ -20,6 +20,7 @@ import net.frostedbytes.android.trendo.R;
 import net.frostedbytes.android.trendo.models.MatchSummary;
 import net.frostedbytes.android.trendo.models.Team;
 import net.frostedbytes.android.trendo.models.Trend;
+import net.frostedbytes.android.trendo.utils.DateUtils;
 import net.frostedbytes.android.trendo.utils.LogUtils;
 import net.frostedbytes.android.trendo.utils.PathUtils;
 import net.frostedbytes.android.trendo.utils.SortUtils;
@@ -47,6 +48,7 @@ public class MatchSummaryDataFragment extends Fragment {
     private RecyclerView mRecyclerView;
 
     private ArrayList<MatchSummary> mMatchSummaries;
+    private ArrayList<MatchSummary> mReviewMatchSummaries;
     private int mSeason;
     private ArrayList<Team> mTeams;
 
@@ -91,8 +93,15 @@ public class MatchSummaryDataFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         LogUtils.debug(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
+        mReviewMatchSummaries = new ArrayList<>();
+        for (MatchSummary matchSummary : mMatchSummaries) {
+            if (!matchSummary.IsLocal || !matchSummary.IsRemote) {
+                mReviewMatchSummaries.add(matchSummary);
+            }
+        }
+
         View view = inflater.inflate(R.layout.fragment_default, container, false);
-        if (mMatchSummaries.size() > 0) {
+        if (mReviewMatchSummaries.size() > 0) {
             view = inflater.inflate(R.layout.fragment_data_list, container, false);
             mRecyclerView = view.findViewById(R.id.data_list_view);
             final LinearLayoutManager manager = new LinearLayoutManager(getActivity());
@@ -115,6 +124,8 @@ public class MatchSummaryDataFragment extends Fragment {
 
         LogUtils.debug(TAG, "++onDestroy()");
         mMatchSummaries = null;
+        mReviewMatchSummaries = null;
+        mTeams = null;
     }
 
     @Override
@@ -261,7 +272,7 @@ public class MatchSummaryDataFragment extends Fragment {
 
         LogUtils.debug(TAG, "++synchronizeMatchSummaries()");
         boolean needsRefreshing = false;
-        for (MatchSummary matchSummary : mMatchSummaries) {
+        for (MatchSummary matchSummary : mReviewMatchSummaries) {
             LogUtils.debug(TAG, "Checking %s", matchSummary.toString());
             if (matchSummary.IsLocal && !matchSummary.IsRemote) {
                 LogUtils.debug(TAG, "Missing %s from server data", matchSummary.toString());
@@ -297,9 +308,9 @@ public class MatchSummaryDataFragment extends Fragment {
 
     private void updateUI() {
 
-        if (mMatchSummaries != null && mMatchSummaries.size() > 0) {
+        if (mReviewMatchSummaries != null && mReviewMatchSummaries.size() > 0) {
             LogUtils.debug(TAG, "++updateUI()");
-            MatchSummaryDataAdapter matchSummaryDataAdapter = new MatchSummaryDataAdapter(mMatchSummaries);
+            MatchSummaryDataAdapter matchSummaryDataAdapter = new MatchSummaryDataAdapter(mReviewMatchSummaries);
             mRecyclerView.setAdapter(matchSummaryDataAdapter);
         }
     }
@@ -344,6 +355,7 @@ public class MatchSummaryDataFragment extends Fragment {
     private class MatchSummaryDataHolder extends RecyclerView.ViewHolder {
 
         private final TextView mTitleTextView;
+        private final TextView mDateTextView;
         private final TextView mDetailsTextView;
         private final ImageView mLocalImageView;
         private final ImageView mRemoteImageView;
@@ -354,6 +366,7 @@ public class MatchSummaryDataFragment extends Fragment {
             super(inflater.inflate(R.layout.data_item, parent, false));
 
             mTitleTextView = itemView.findViewById(R.id.data_text_title);
+            mDateTextView = itemView.findViewById(R.id.data_text_date);
             mDetailsTextView = itemView.findViewById(R.id.data_text_details);
             mLocalImageView = itemView.findViewById(R.id.data_image_local);
             mRemoteImageView = itemView.findViewById(R.id.data_image_remote);
@@ -368,6 +381,7 @@ public class MatchSummaryDataFragment extends Fragment {
                     "%s vs. %s",
                     mMatchSummary.HomeFullName,
                     mMatchSummary.AwayFullName));
+            mDateTextView.setText(DateUtils.formatDateForDisplay(mMatchSummary.MatchDate));
             mDetailsTextView.setText(
                 String.format(
                     Locale.getDefault(),

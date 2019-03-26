@@ -39,6 +39,7 @@ public class TeamDataFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
 
+    private ArrayList<Team> mReviewTeams;
     private ArrayList<Team> mTeams;
 
     public static TeamDataFragment newInstance(ArrayList<Team> teams) {
@@ -85,8 +86,15 @@ public class TeamDataFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         LogUtils.debug(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
+        mReviewTeams = new ArrayList<>();
+        for (Team team : mTeams) {
+            if (!team.IsLocal || !team.IsRemote) {
+                mReviewTeams.add(team);
+            }
+        }
+
         View view = inflater.inflate(R.layout.fragment_default, container, false);
-        if (mTeams.size() > 0) {
+        if (mReviewTeams.size() > 0) {
             view = inflater.inflate(R.layout.fragment_data_list, container, false);
             mRecyclerView = view.findViewById(R.id.data_list_view);
             final LinearLayoutManager manager = new LinearLayoutManager(getActivity());
@@ -108,6 +116,7 @@ public class TeamDataFragment extends Fragment {
         super.onDestroy();
 
         LogUtils.debug(TAG, "++onDestroy()");
+        mReviewTeams = null;
         mTeams = null;
     }
 
@@ -126,7 +135,7 @@ public class TeamDataFragment extends Fragment {
 
         LogUtils.debug(TAG, "++synchronizeTeamData()");
         boolean needsRefreshing = false;
-        for (Team team : mTeams) {
+        for (Team team : mReviewTeams) {
             LogUtils.debug(TAG, "Checking %s", team.toString());
             if (team.IsLocal && !team.IsRemote) {
                 LogUtils.debug(TAG, "Missing %s from server data", team.toString());
@@ -154,9 +163,9 @@ public class TeamDataFragment extends Fragment {
 
     private void updateUI() {
 
-        if (mTeams != null && mTeams.size() > 0) {
+        if (mReviewTeams != null && mReviewTeams.size() > 0) {
             LogUtils.debug(TAG, "++updateUI()");
-            TeamDataAdapter teamAdapter = new TeamDataAdapter(mTeams);
+            TeamDataAdapter teamAdapter = new TeamDataAdapter(mReviewTeams);
             mRecyclerView.setAdapter(teamAdapter);
         }
     }
@@ -200,6 +209,7 @@ public class TeamDataFragment extends Fragment {
     private class TeamDataHolder extends RecyclerView.ViewHolder {
 
         private final TextView mTitleTextView;
+        private final TextView mDateTextView;
         private final TextView mDetailsTextView;
         private final ImageView mLocalImageView;
         private final ImageView mRemoteImageView;
@@ -210,6 +220,7 @@ public class TeamDataFragment extends Fragment {
             super(inflater.inflate(R.layout.data_item, parent, false));
 
             mTitleTextView = itemView.findViewById(R.id.data_text_title);
+            mDateTextView = itemView.findViewById(R.id.data_text_date);
             mDetailsTextView = itemView.findViewById(R.id.data_text_details);
             mLocalImageView = itemView.findViewById(R.id.data_image_local);
             mRemoteImageView = itemView.findViewById(R.id.data_image_remote);
@@ -219,6 +230,7 @@ public class TeamDataFragment extends Fragment {
 
             mTeam = team;
             mTitleTextView.setText(mTeam.FullName);
+            mDateTextView.setText("");
             mDetailsTextView.setText(
                 String.format(
                     Locale.getDefault(),

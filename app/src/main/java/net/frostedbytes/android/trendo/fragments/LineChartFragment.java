@@ -69,6 +69,9 @@ public class LineChartFragment extends Fragment {
         return fragment;
     }
 
+    /*
+        Fragment Override(s)
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -145,102 +148,88 @@ public class LineChartFragment extends Fragment {
         // must get max value of trend keys
         List<String> trendKeys;
         if (!mTrend.GoalDifferential.isEmpty()) {
-            if (mAheadTrend.GoalDifferential.size() > mBehindTrend.GoalDifferential.size()) {
+            if (mTrend.GoalDifferential.size() > mBehindTrend.GoalDifferential.size()) {
                 if (mTrend.GoalDifferential.size() > mAheadTrend.GoalDifferential.size()) {
                     trendKeys = new ArrayList<>(mTrend.GoalDifferential.keySet());
                 } else {
-                    trendKeys = new ArrayList<>(mBehindTrend.GoalDifferential.keySet());
-                }
-            } else {
-                if (mBehindTrend.GoalDifferential.size() > mAheadTrend.GoalDifferential.size()) {
-                    trendKeys = new ArrayList<>(mBehindTrend.GoalDifferential.keySet());
-                } else {
                     trendKeys = new ArrayList<>(mAheadTrend.GoalDifferential.keySet());
                 }
+            } else if (mBehindTrend.GoalDifferential.size() > mAheadTrend.GoalDifferential.size()) {
+                trendKeys = new ArrayList<>(mBehindTrend.GoalDifferential.keySet());
+            } else {
+                trendKeys = new ArrayList<>(mAheadTrend.GoalDifferential.keySet());
             }
         } else if (!mTrend.TotalPoints.isEmpty()) {
-            if (mAheadTrend.TotalPoints.size() > mBehindTrend.TotalPoints.size()) {
+            if (mTrend.TotalPoints.size() > mBehindTrend.TotalPoints.size()) {
                 if (mTrend.TotalPoints.size() > mAheadTrend.TotalPoints.size()) {
                     trendKeys = new ArrayList<>(mTrend.TotalPoints.keySet());
                 } else {
                     trendKeys = new ArrayList<>(mBehindTrend.TotalPoints.keySet());
                 }
+            } else if (mBehindTrend.TotalPoints.size() > mAheadTrend.TotalPoints.size()) {
+                trendKeys = new ArrayList<>(mBehindTrend.TotalPoints.keySet());
             } else {
-                if (mBehindTrend.TotalPoints.size() > mAheadTrend.TotalPoints.size()) {
-                    trendKeys = new ArrayList<>(mBehindTrend.TotalPoints.keySet());
-                } else {
-                    trendKeys = new ArrayList<>(mAheadTrend.TotalPoints.keySet());
-                }
+                trendKeys = new ArrayList<>(mAheadTrend.TotalPoints.keySet());
             }
         } else if (!mTrend.PointsPerGame.isEmpty()) {
-            if (mAheadTrend.PointsPerGame.size() > mBehindTrend.PointsPerGame.size()) {
+            if (mTrend.PointsPerGame.size() > mBehindTrend.PointsPerGame.size()) {
                 if (mTrend.PointsPerGame.size() > mAheadTrend.PointsPerGame.size()) {
                     trendKeys = new ArrayList<>(mTrend.PointsPerGame.keySet());
                 } else {
                     trendKeys = new ArrayList<>(mBehindTrend.PointsPerGame.keySet());
                 }
+            } else if (mBehindTrend.PointsPerGame.size() > mAheadTrend.PointsPerGame.size()) {
+                trendKeys = new ArrayList<>(mBehindTrend.PointsPerGame.keySet());
             } else {
-                if (mBehindTrend.PointsPerGame.size() > mAheadTrend.PointsPerGame.size()) {
-                    trendKeys = new ArrayList<>(mBehindTrend.PointsPerGame.keySet());
-                } else {
-                    trendKeys = new ArrayList<>(mAheadTrend.PointsPerGame.keySet());
-                }
+                trendKeys = new ArrayList<>(mAheadTrend.PointsPerGame.keySet());
             }
         } else if (!mTrend.MaxPointsPossible.isEmpty()) {
-            if (mAheadTrend.MaxPointsPossible.size() > mBehindTrend.MaxPointsPossible.size()) {
+            if (mTrend.MaxPointsPossible.size() > mBehindTrend.MaxPointsPossible.size()) {
                 if (mTrend.MaxPointsPossible.size() > mAheadTrend.MaxPointsPossible.size()) {
                     trendKeys = new ArrayList<>(mTrend.MaxPointsPossible.keySet());
                 } else {
                     trendKeys = new ArrayList<>(mBehindTrend.MaxPointsPossible.keySet());
                 }
+            } else if (mBehindTrend.MaxPointsPossible.size() > mAheadTrend.MaxPointsPossible.size()) {
+                trendKeys = new ArrayList<>(mBehindTrend.MaxPointsPossible.keySet());
             } else {
-                if (mBehindTrend.MaxPointsPossible.size() > mAheadTrend.MaxPointsPossible.size()) {
-                    trendKeys = new ArrayList<>(mBehindTrend.MaxPointsPossible.keySet());
-                } else {
-                    trendKeys = new ArrayList<>(mAheadTrend.MaxPointsPossible.keySet());
-                }
+                trendKeys = new ArrayList<>(mAheadTrend.MaxPointsPossible.keySet());
             }
         } else if (!mTrend.GoalsAgainst.isEmpty()) {
-            if (mAheadTrend.GoalsAgainst.size() > mBehindTrend.GoalsAgainst.size()) {
+            if (mTrend.GoalsAgainst.size() > mBehindTrend.GoalsAgainst.size()) {
                 if (mTrend.GoalsAgainst.size() > mAheadTrend.GoalsAgainst.size()) {
                     trendKeys = new ArrayList<>(mTrend.GoalsAgainst.keySet());
                 } else {
                     trendKeys = new ArrayList<>(mBehindTrend.GoalsAgainst.keySet());
                 }
+            } else if (mBehindTrend.GoalsAgainst.size() > mAheadTrend.GoalsAgainst.size()) {
+                trendKeys = new ArrayList<>(mBehindTrend.GoalsAgainst.keySet());
             } else {
-                if (mBehindTrend.GoalsAgainst.size() > mAheadTrend.GoalsAgainst.size()) {
-                    trendKeys = new ArrayList<>(mBehindTrend.GoalsAgainst.keySet());
-                } else {
-                    trendKeys = new ArrayList<>(mAheadTrend.GoalsAgainst.keySet());
-                }
+                trendKeys = new ArrayList<>(mAheadTrend.GoalsAgainst.keySet());
             }
         } else if (!mTrend.PointsByAverage.isEmpty()) {
-            if (mAheadTrend.PointsByAverage.size() > mBehindTrend.PointsByAverage.size()) {
+            if (mTrend.PointsByAverage.size() > mBehindTrend.PointsByAverage.size()) {
                 if (mTrend.PointsByAverage.size() > mAheadTrend.PointsByAverage.size()) {
                     trendKeys = new ArrayList<>(mTrend.PointsByAverage.keySet());
                 } else {
                     trendKeys = new ArrayList<>(mBehindTrend.PointsByAverage.keySet());
                 }
+            } else if (mBehindTrend.PointsByAverage.size() > mAheadTrend.PointsByAverage.size()) {
+                trendKeys = new ArrayList<>(mBehindTrend.PointsByAverage.keySet());
             } else {
-                if (mBehindTrend.PointsByAverage.size() > mAheadTrend.PointsByAverage.size()) {
-                    trendKeys = new ArrayList<>(mBehindTrend.PointsByAverage.keySet());
-                } else {
-                    trendKeys = new ArrayList<>(mAheadTrend.PointsByAverage.keySet());
-                }
+                trendKeys = new ArrayList<>(mAheadTrend.PointsByAverage.keySet());
             }
         } else {
-            if (mAheadTrend.GoalsFor.size() > mBehindTrend.GoalsFor.size()) {
+            if (mTrend.GoalsFor.size() > mBehindTrend.GoalsFor.size()) {
                 if (mTrend.GoalsFor.size() > mAheadTrend.GoalsFor.size()) {
                     trendKeys = new ArrayList<>(mTrend.GoalsFor.keySet());
                 } else {
                     trendKeys = new ArrayList<>(mBehindTrend.GoalsFor.keySet());
                 }
+            } else if (mBehindTrend.GoalsFor.size() > mAheadTrend.GoalsFor.size()) {
+                trendKeys = new ArrayList<>(mBehindTrend.GoalsFor.keySet());
             } else {
-                if (mBehindTrend.GoalsFor.size() > mAheadTrend.GoalsFor.size()) {
-                    trendKeys = new ArrayList<>(mBehindTrend.GoalsFor.keySet());
-                } else {
-                    trendKeys = new ArrayList<>(mAheadTrend.GoalsFor.keySet());
-                }
+                trendKeys = new ArrayList<>(mAheadTrend.GoalsFor.keySet());
             }
         }
 
@@ -275,8 +264,6 @@ public class LineChartFragment extends Fragment {
                 mMainEntries.add(new Entry(sortedFloat, longItem));
             } else if (floatItem != null) {
                 mMainEntries.add(new Entry(sortedFloat, floatItem));
-            } else {
-                mMainEntries.add(new Entry());
             }
         }
 
@@ -310,8 +297,6 @@ public class LineChartFragment extends Fragment {
                     mAheadEntries.add(new Entry(sortedFloat, longItem));
                 } else if (floatItem != null) {
                     mAheadEntries.add(new Entry(sortedFloat, floatItem));
-                } else {
-                    mAheadEntries.add(new Entry());
                 }
             }
         }
@@ -346,8 +331,6 @@ public class LineChartFragment extends Fragment {
                     mBehindEntries.add(new Entry(sortedFloat, longItem));
                 } else if (floatItem != null) {
                     mBehindEntries.add(new Entry(sortedFloat, floatItem));
-                } else {
-                    mBehindEntries.add(new Entry());
                 }
             }
         }
@@ -471,6 +454,25 @@ public class LineChartFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        LogUtils.debug(TAG, "++onDestroy()");
+        mAheadDataSet = null;
+        mAheadEntries = null;
+        mAheadTrend = null;
+        mMainEntries = null;
+        mMainDataSet = null;
+        mTrend = null;
+        mBehindDataSet = null;
+        mBehindEntries = null;
+        mBehindTrend = null;
+    }
+
+    /*
+        Private Method(s)
+     */
     private void updateUI() {
 
         LogUtils.debug(TAG, "++updateUI()");
