@@ -165,14 +165,6 @@ public class MainActivity extends BaseActivity implements
 
                 User user = dataSnapshot.getValue(User.class);
                 if (user != null) {
-                    if (mUser.Season == 0) {
-                        mUser.Season = user.Season;
-                    }
-
-                    if (mUser.TeamId.isEmpty() || mUser.TeamId.equals(BaseActivity.DEFAULT_ID)) {
-                        mUser.TeamId = user.TeamId;
-                    }
-
                     mUser.IsCommissioner = user.IsCommissioner;
                     if (user.IsCommissioner) {
                         MenuItem commissionerMenu = mNavigationView.getMenu().findItem(R.id.navigation_menu_commissioner);
@@ -180,12 +172,6 @@ public class MainActivity extends BaseActivity implements
                             commissionerMenu.setVisible(true);
                         }
                     }
-                }
-
-                LogUtils.debug(TAG, mUser.toString());
-                if ((!mUser.TeamId.isEmpty() && !mUser.TeamId.equals(BaseActivity.DEFAULT_ID)) || mUser.Season > 0) {
-                    String queryPath = PathUtils.combine(User.ROOT, mUser.Id);
-                    FirebaseDatabase.getInstance().getReference().child(queryPath).setValue(mUser);
                 }
 
                 getTeamData();
@@ -220,7 +206,7 @@ public class MainActivity extends BaseActivity implements
                 replaceFragment(CommissionerFragment.newInstance(mUser.Season, mTeams, mAllSummaries));
                 break;
             case R.id.navigation_menu_home:
-                replaceFragment(MatchListFragment.newInstance(mTeamSummaries));
+                replaceFragment(MatchListFragment.newInstance(mTeamSummaries, mUser.TeamId));
                 break;
             case R.id.navigation_menu_preferences:
                 mProgressBar.setVisibility(View.INVISIBLE);
@@ -267,7 +253,7 @@ public class MainActivity extends BaseActivity implements
         mProgressBar.setIndeterminate(false);
         if (!isSuccessful) {
             Snackbar.make(findViewById(R.id.main_fragment_container), getString(R.string.err_match_summary_data_load_failed), Snackbar.LENGTH_LONG);
-            replaceFragment(MatchListFragment.newInstance(mTeamSummaries));
+            replaceFragment(MatchListFragment.newInstance(mTeamSummaries, mUser.TeamId));
         }
     }
 
@@ -278,7 +264,7 @@ public class MainActivity extends BaseActivity implements
         mProgressBar.setIndeterminate(false);
         if (!isSuccessful) {
             Snackbar.make(findViewById(R.id.main_fragment_container), getString(R.string.err_trend_data_load_failed), Snackbar.LENGTH_LONG);
-            replaceFragment(MatchListFragment.newInstance(mTeamSummaries));
+            replaceFragment(MatchListFragment.newInstance(mTeamSummaries, mUser.TeamId));
         }
     }
 
@@ -339,14 +325,8 @@ public class MainActivity extends BaseActivity implements
 
                 // update this new team's immediate opponents
                 getNearestOpponents(false);
-                replaceFragment(MatchListFragment.newInstance(mTeamSummaries));
+                replaceFragment(MatchListFragment.newInstance(mTeamSummaries, mUser.TeamId));
             }
-        }
-
-        if (previousSeason != mUser.Season || !previousTeam.equals(mUser.TeamId)) {
-            LogUtils.debug(TAG, "Updating user preferences: %s", mUser.toString());
-            String queryPath = PathUtils.combine(User.ROOT, mUser.Id);
-            FirebaseDatabase.getInstance().getReference().child(queryPath).setValue(mUser);
         }
     }
 
@@ -375,7 +355,7 @@ public class MainActivity extends BaseActivity implements
         mProgressBar.setIndeterminate(false);
         if (!isSuccessful) {
             Snackbar.make(findViewById(R.id.main_fragment_container), getString(R.string.no_trends), Snackbar.LENGTH_LONG);
-            replaceFragment(MatchListFragment.newInstance(mTeamSummaries));
+            replaceFragment(MatchListFragment.newInstance(mTeamSummaries, mUser.TeamId));
         }
     }
 
@@ -458,7 +438,7 @@ public class MainActivity extends BaseActivity implements
                 mTeamSummaries.sort((summary1, summary2) -> Integer.compare(summary2.MatchDate.compareTo(summary1.MatchDate), 0));
                 LogUtils.debug(TAG, "Size of team summary collection: %d", mTeamSummaries.size());
                 mProgressBar.setIndeterminate(false);
-                replaceFragment(MatchListFragment.newInstance(mTeamSummaries));
+                replaceFragment(MatchListFragment.newInstance(mTeamSummaries, mUser.TeamId));
                 LogUtils.debug(TAG, "Finished querying match summary data.");
             }
 
@@ -630,7 +610,7 @@ public class MainActivity extends BaseActivity implements
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.main_fragment_container, fragment);
-        fragmentTransaction.commit();
+        fragmentTransaction.commitAllowingStateLoss();
     }
 
     private void updateTitleAndDrawer(Fragment fragment) {

@@ -96,10 +96,8 @@ public class SignInActivity extends BaseActivity implements OnClickListener {
     public void onClick(View view) {
 
         LogUtils.debug(TAG, "++onClick()");
-        switch (view.getId()) {
-            case R.id.sign_in_button_google:
-                signInWithGoogle();
-                break;
+        if (view.getId() == R.id.sign_in_button_google) {
+            signInWithGoogle();
         }
     }
 

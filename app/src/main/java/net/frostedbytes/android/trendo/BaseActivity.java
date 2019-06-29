@@ -29,13 +29,16 @@ public class BaseActivity extends AppCompatActivity {
     public static final String ARG_MESSAGE = "message";
     public static final String ARG_ORDER_BY = "order_by";
     public static final String ARG_SEASON = "season";
+    public static final String ARG_TEAM_ID = "team_id";
     public static final String ARG_TEAMS = "teams";
     public static final String ARG_TREND = "trend";
     public static final String ARG_USER_ID = "user_id";
     public static final String ARG_USER_NAME = "user_name";
     public static final String ARG_USER = "user";
+
     public static final String DEFAULT_DATE = "0000-01-01";
     public static final String DEFAULT_ID = "000000000-0000-0000-0000-000000000000";
+
     public static final int NUM_COMMISSIONER_DATA = 2;
     public static final int NUM_TRENDS = 7;
 

@@ -16,8 +16,6 @@
 
 package net.frostedbytes.android.trendo.fragments;
 
-import static net.frostedbytes.android.trendo.BaseActivity.BASE_TAG;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -34,7 +32,7 @@ import net.frostedbytes.android.trendo.utils.SortUtils;
 
 public class UserPreferencesFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private static final String TAG = BASE_TAG + UserPreferencesFragment.class.getSimpleName();
+    private static final String TAG = BaseActivity.BASE_TAG + UserPreferencesFragment.class.getSimpleName();
 
     public static final String KEY_SEASON_PREFERENCE = "preference_list_season";
     public static final String KEY_TEAM_PREFERENCE = "preference_list_team";
@@ -50,7 +48,7 @@ public class UserPreferencesFragment extends PreferenceFragmentCompat implements
 
     public static UserPreferencesFragment newInstance(ArrayList<Team> teams) {
 
-        LogUtils.debug(TAG, "++newInstance(ArrayList<>)");
+        LogUtils.debug(TAG, "++newInstance(%d)", teams.size());
         UserPreferencesFragment fragment = new UserPreferencesFragment();
         Bundle args = new Bundle();
         args.putParcelableArrayList(BaseActivity.ARG_TEAMS, teams);
@@ -117,12 +115,8 @@ public class UserPreferencesFragment extends PreferenceFragmentCompat implements
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String keyName) {
 
-        LogUtils.debug(TAG, "++onSharedPreferenceChanged(SharedPreferences, String)");
+        LogUtils.debug(TAG, "++onSharedPreferenceChanged(SharedPreferences, %s)", keyName);
         getPreferenceScreen().getSharedPreferences().edit().apply();
-        if (keyName.equals(KEY_TEAM_PREFERENCE) || keyName.equals(KEY_SEASON_PREFERENCE)) {
-            mCallback.onPreferenceChanged();
-        } else {
-            LogUtils.error(TAG, "Unknown key: ", keyName);
-        }
+        mCallback.onPreferenceChanged();
     }
 }

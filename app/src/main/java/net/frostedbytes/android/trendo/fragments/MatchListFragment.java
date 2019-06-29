@@ -16,13 +16,12 @@
 
 package net.frostedbytes.android.trendo.fragments;
 
-import static net.frostedbytes.android.trendo.BaseActivity.BASE_TAG;
-
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -41,7 +40,7 @@ import net.frostedbytes.android.trendo.models.MatchSummary;
 
 public class MatchListFragment extends Fragment {
 
-    private static final String TAG = BASE_TAG + MatchListFragment.class.getSimpleName();
+    private static final String TAG = BaseActivity.BASE_TAG + MatchListFragment.class.getSimpleName();
 
     public interface OnMatchListListener {
 
@@ -55,13 +54,15 @@ public class MatchListFragment extends Fragment {
     private RecyclerView mRecyclerView;
 
     private ArrayList<MatchSummary> mMatchSummaries;
+    private String mTeamId;
 
-    public static MatchListFragment newInstance(ArrayList<MatchSummary> matchSummaries) {
+    public static MatchListFragment newInstance(ArrayList<MatchSummary> matchSummaries, String teamId) {
 
         LogUtils.debug(TAG, "++newInstance(ArrayList<>)");
         MatchListFragment fragment = new MatchListFragment();
         Bundle args = new Bundle();
         args.putParcelableArrayList(BaseActivity.ARG_MATCH_SUMMARIES, matchSummaries);
+        args.putString(BaseActivity.ARG_TEAM_ID, teamId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -84,6 +85,7 @@ public class MatchListFragment extends Fragment {
         Bundle arguments = getArguments();
         if (arguments != null) {
             mMatchSummaries = arguments.getParcelableArrayList(BaseActivity.ARG_MATCH_SUMMARIES);
+            mTeamId = arguments.getString(BaseActivity.ARG_TEAM_ID);
         } else {
             LogUtils.error(TAG, "Arguments were null.");
         }
@@ -207,6 +209,18 @@ public class MatchListFragment extends Fragment {
                     "%1d - %2d",
                     mMatchSummary.HomeScore,
                     mMatchSummary.AwayScore));
+            if (getContext() != null && !mTeamId.equals(BaseActivity.DEFAULT_ID)) {
+                if ((mTeamId.equals(mMatchSummary.HomeId) && mMatchSummary.HomeScore > mMatchSummary.AwayScore) ||
+                    (mTeamId.equals(mMatchSummary.AwayId) && mMatchSummary.AwayScore > mMatchSummary.HomeScore)) {
+                    mMatchScoreTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.favorite));
+                } else if ((mTeamId.equals(mMatchSummary.HomeId) && mMatchSummary.HomeScore < mMatchSummary.AwayScore) ||
+                    (mTeamId.equals(mMatchSummary.AwayId) && mMatchSummary.AwayScore < mMatchSummary.HomeScore)) {
+                    mMatchScoreTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.ahead));
+                } else {
+                    mMatchScoreTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.behind));
+                }
+            }
+
             if (mMatchSummary.IsFinal) {
                 mMatchStatusTextView.setText(R.string.full_time);
                 mMatchStatusTextView.setTypeface(null, Typeface.BOLD);
