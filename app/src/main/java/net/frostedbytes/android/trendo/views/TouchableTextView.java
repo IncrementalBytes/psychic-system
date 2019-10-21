@@ -3,7 +3,7 @@ package net.frostedbytes.android.trendo.views;
 import android.content.Context;
 import android.util.AttributeSet;
 
-public class TouchableTextView extends android.support.v7.widget.AppCompatTextView {
+public class TouchableTextView extends androidx.appcompat.widget.AppCompatTextView {
 
   public TouchableTextView(Context context) {
     super(context);

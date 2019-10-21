@@ -2,10 +2,11 @@ package net.frostedbytes.android.trendo.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -144,6 +145,7 @@ public class MatchSummaryDataFragment extends Fragment {
         LogUtils.debug(TAG, "++generateTrends()");
         Map<String, Integer> aggregateMap = new HashMap<>();
         for (Team team : mTeams) {
+            LogUtils.debug(TAG, "Generating trends for %s (%s)", team.FullName, team.Id);
             Map<String, Object> mappedTrends = new HashMap<>();
             Map<String, Long> goalsAgainstMap = new HashMap<>();
             Map<String, Long> goalsForMap = new HashMap<>();
@@ -173,39 +175,73 @@ public class MatchSummaryDataFragment extends Fragment {
                 }
 
                 if (summary.HomeId.equals(team.Id)) { // targetTeam is the home team
+                    LogUtils.debug(TAG, "Processing match for %s on %s", team.ShortName, summary.MatchDate);
                     goalsAgainst = summary.AwayScore;
                     goalDifferential = summary.HomeScore - summary.AwayScore;
                     goalsFor = summary.HomeScore;
                     if (summary.HomeScore > summary.AwayScore) {
                         totalPoints = (long) 3;
                         team.TotalWins++;
+                        LogUtils.debug(TAG, "%s won %d time(s): %d", team.ShortName, team.TotalWins, totalPoints);
                     } else if (summary.HomeScore < summary.AwayScore) {
                         totalPoints = (long) 0;
+                        LogUtils.debug(TAG, "%s lost: %d", team.ShortName, totalPoints);
                     } else {
                         totalPoints = (long) 1;
+                        LogUtils.debug(TAG, "%s tied: %d", team.ShortName, totalPoints);
                     }
                 } else if (summary.AwayId.equals(team.Id)) { // targetTeam is the away team
+                    LogUtils.debug(TAG, "Processing match for %s on %s", team.ShortName, summary.MatchDate);
                     goalsAgainst = summary.HomeScore;
                     goalDifferential = summary.AwayScore - summary.HomeScore;
                     goalsFor = summary.AwayScore;
                     if (summary.AwayScore > summary.HomeScore) {
                         totalPoints = (long) 3;
                         team.TotalWins++;
+                        LogUtils.debug(TAG, "%s won %d time(s): %d", team.ShortName, team.TotalWins, totalPoints);
                     } else if (summary.AwayScore < summary.HomeScore) {
                         totalPoints = (long) 0;
+                        LogUtils.debug(TAG, "%s lost: %d", team.ShortName, totalPoints);
                     } else {
                         totalPoints = (long) 1;
+                        LogUtils.debug(TAG, "%s tied: %d", team.ShortName, totalPoints);
                     }
                 } else { // not a match where team.Id played
                     continue;
                 }
 
                 String key = String.format(Locale.ENGLISH, "ID_%02d", ++matchDay);
+                LogUtils.debug(
+                    TAG,
+                    "Calculating Goals Against, was %d, now %d",
+                    prevGoalAgainst,
+                    goalsAgainst + prevGoalAgainst);
                 goalsAgainstMap.put(key, goalsAgainst + prevGoalAgainst);
+                LogUtils.debug(
+                    TAG,
+                    "Calculating Goal Differential, was %d, now %d",
+                    prevGoalDifferential,
+                    goalDifferential + prevGoalDifferential);
                 goalDifferentialMap.put(key, goalDifferential + prevGoalDifferential);
+                LogUtils.debug(
+                    TAG,
+                    "Calculating Goals For, was %d, now %d",
+                    prevGoalFor,
+                    goalsFor + prevGoalFor);
                 goalsForMap.put(key, goalsFor + prevGoalFor);
+                LogUtils.debug(
+                    TAG,
+                    "Calculating Total Points, was %d, now %d",
+                    prevTotalPoints,
+                    totalPoints + prevTotalPoints);
                 totalPointsMap.put(key, totalPoints + prevTotalPoints);
-                maxPointsPossibleMap.put(key, (totalPoints + prevTotalPoints) + (--matchesRemaining * 3));
+                long remainingMatches = --matchesRemaining;
+                LogUtils.debug(
+                    TAG,
+                    "Calculating Max Possible Points, was %d, now %d",
+                    prevTotalPoints,
+                    (totalPoints + prevTotalPoints) + (remainingMatches * 3));
+                maxPointsPossibleMap.put(key, (totalPoints + prevTotalPoints) + (remainingMatches * 3));
 
                 double result = (double) totalPoints + prevTotalPoints;
                 if (result > 0) {
@@ -216,9 +252,29 @@ public class MatchSummaryDataFragment extends Fragment {
                 pointsByAverageMap.put(key, (long) (result * totalMatches));
 
                 // update previous values for next pass
+                LogUtils.debug(
+                    TAG,
+                    "Setting previous Goals Against, was %d, now %d",
+                    prevGoalAgainst,
+                    goalsAgainst + prevGoalAgainst);
                 prevGoalAgainst = goalsAgainst + prevGoalAgainst;
+                LogUtils.debug(
+                    TAG,
+                    "Setting previous Goal Differential, was %d, now %d",
+                    prevGoalDifferential,
+                    goalDifferential + prevGoalDifferential);
                 prevGoalDifferential = goalDifferential + prevGoalDifferential;
+                LogUtils.debug(
+                    TAG,
+                    "Setting previous Goals For, was %d, now %d",
+                    prevGoalFor,
+                    goalsFor + prevGoalFor);
                 prevGoalFor = goalsFor + prevGoalFor;
+                LogUtils.debug(
+                    TAG,
+                    "Setting previous Total Points, was %d, now %d",
+                    prevTotalPoints,
+                    totalPoints + prevTotalPoints);
                 prevTotalPoints = totalPoints + prevTotalPoints;
             }
 

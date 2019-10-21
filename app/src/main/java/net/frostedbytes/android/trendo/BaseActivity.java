@@ -17,7 +17,7 @@
 package net.frostedbytes.android.trendo;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import net.frostedbytes.android.trendo.utils.LogUtils;
 
 public class BaseActivity extends AppCompatActivity {
@@ -39,8 +39,9 @@ public class BaseActivity extends AppCompatActivity {
     public static final String DEFAULT_DATE = "0000-01-01";
     public static final String DEFAULT_ID = "000000000-0000-0000-0000-000000000000";
 
-    public static final int NUM_COMMISSIONER_DATA = 2;
     public static final int NUM_TRENDS = 7;
+
+    public static final int RC_COMMISSIONER = 4701;
 
     public static final String BASE_TAG = "Trendo::";
     private static final String TAG = BASE_TAG + BaseActivity.class.getSimpleName();

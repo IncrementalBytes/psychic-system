@@ -24,6 +24,7 @@
 # Add this global rule
 -keepattributes Signature
 -keepattributes *Annotation*
+-keep class * implements android.os.Parcelable { public static final android.os.Parcelable$Creator *; }
 
 # This rule will properly ProGuard all the model classes in
 # the package com.yourcompany.models. Modify to fit the structure

@@ -16,7 +16,7 @@
 
 package net.frostedbytes.android.trendo.models;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;

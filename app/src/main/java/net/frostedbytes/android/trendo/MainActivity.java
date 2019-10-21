@@ -20,17 +20,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -52,8 +52,6 @@ import net.frostedbytes.android.trendo.fragments.CommissionerFragment;
 import net.frostedbytes.android.trendo.fragments.DefaultFragment;
 import net.frostedbytes.android.trendo.fragments.LineChartFragment;
 import net.frostedbytes.android.trendo.fragments.MatchListFragment;
-import net.frostedbytes.android.trendo.fragments.MatchSummaryDataFragment;
-import net.frostedbytes.android.trendo.fragments.TeamDataFragment;
 import net.frostedbytes.android.trendo.fragments.TrendFragment;
 import net.frostedbytes.android.trendo.fragments.UserPreferencesFragment;
 import net.frostedbytes.android.trendo.models.MatchSummary;
@@ -66,12 +64,9 @@ import net.frostedbytes.android.trendo.utils.SortUtils;
 import net.frostedbytes.android.trendo.utils.SortUtils.ByTablePosition;
 
 public class MainActivity extends BaseActivity implements
-    CommissionerFragment.OnCommissionerListener,
     LineChartFragment.OnLineChartListener,
     MatchListFragment.OnMatchListListener,
-    MatchSummaryDataFragment.OnMatchSummaryDataListener,
     NavigationView.OnNavigationItemSelectedListener,
-    TeamDataFragment.OnTeamDataListener,
     TrendFragment.OnTrendListener,
     UserPreferencesFragment.OnPreferencesListener {
 
@@ -203,7 +198,11 @@ public class MainActivity extends BaseActivity implements
         switch (item.getItemId()) {
             case R.id.navigation_menu_commissioner:
                 mProgressBar.setIndeterminate(true);
-                replaceFragment(CommissionerFragment.newInstance(mUser.Season, mTeams, mAllSummaries));
+                Intent commissionerIntent = new Intent(MainActivity.this, CommissionerActivity.class);
+                commissionerIntent.putExtra(BaseActivity.ARG_SEASON, mUser.Season);
+                commissionerIntent.putParcelableArrayListExtra(BaseActivity.ARG_TEAMS, mTeams);
+                commissionerIntent.putParcelableArrayListExtra(BaseActivity.ARG_MATCH_SUMMARIES, mAllSummaries);
+                startActivityForResult(commissionerIntent, BaseActivity.RC_COMMISSIONER);
                 break;
             case R.id.navigation_menu_home:
                 replaceFragment(MatchListFragment.newInstance(mTeamSummaries, mUser.TeamId));
@@ -243,20 +242,24 @@ public class MainActivity extends BaseActivity implements
         return true;
     }
 
-    /*
-        Fragment Callback Overrides
-     */
     @Override
-    public void onCommissionerInit(boolean isSuccessful) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-        LogUtils.debug(TAG, "++onCommissionerInit(%s)", String.valueOf(isSuccessful));
-        mProgressBar.setIndeterminate(false);
-        if (!isSuccessful) {
-            Snackbar.make(findViewById(R.id.main_fragment_container), getString(R.string.err_match_summary_data_load_failed), Snackbar.LENGTH_LONG);
-            replaceFragment(MatchListFragment.newInstance(mTeamSummaries, mUser.TeamId));
+        LogUtils.debug(TAG, "++onActivityResult(%1d, %2d, Intent)", requestCode, resultCode);
+        if (requestCode == BaseActivity.RC_COMMISSIONER) {
+            // HOORAY! Now what?
+            if (resultCode == RESULT_OK) {
+            } else if (resultCode == RESULT_CANCELED){
+                Snackbar.make(findViewById(R.id.main_fragment_container), R.string.err_commissioner_activity, Snackbar.LENGTH_LONG);
+                replaceFragment(MatchListFragment.newInstance(mTeamSummaries, mUser.TeamId));
+            }
         }
     }
 
+    /*
+        Fragment Callback Overrides
+     */
     @Override
     public void onLineChartInit(boolean isSuccessful) {
 
@@ -283,16 +286,6 @@ public class MainActivity extends BaseActivity implements
 
         LogUtils.debug(TAG, "++onMatchListItemSelected()");
         replaceFragment(TrendFragment.newInstance(mUser, mTeams));
-    }
-
-    @Override
-    public void onMatchSummaryDataSynchronized(boolean needsRefreshing) {
-
-        LogUtils.debug(TAG, "++onMatchSummaryDataSynchronized(%s)", String.valueOf(needsRefreshing));
-        if (needsRefreshing) {
-            getAggregateData();
-            getMatchSummaryData();
-        }
     }
 
     @Override
@@ -337,15 +330,6 @@ public class MainActivity extends BaseActivity implements
         mProgressBar.setIndeterminate(true);
         getNearestOpponents(showByConference);
         replaceFragment(TrendFragment.newInstance(mUser, mTeams, showByConference));
-    }
-
-    @Override
-    public void onTeamDataSynchronized(boolean needsRefreshing) {
-
-        LogUtils.debug(TAG, "++onTeamDataSynchronized(%s)", String.valueOf(needsRefreshing));
-        if (needsRefreshing) {
-            getTeamData();
-        }
     }
 
     @Override

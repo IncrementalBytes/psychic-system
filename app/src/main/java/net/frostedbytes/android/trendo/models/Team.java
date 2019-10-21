@@ -2,7 +2,7 @@ package net.frostedbytes.android.trendo.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.firebase.database.Exclude;
 import java.util.Locale;
@@ -84,9 +84,9 @@ public class Team implements Parcelable {
         this.ConferenceId = in.readInt();
         this.Defunct = in.readInt();
         this.Established = in.readInt();
+        this.FullName = in.readString();
         this.GoalDifferential = in.readLong();
         this.GoalsScored = in.readLong();
-        this.FullName = in.readString();
         this.Id = in.readString();
         this.ShortName = in.readString();
         this.TablePosition = in.readLong();

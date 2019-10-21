@@ -2,7 +2,7 @@ package net.frostedbytes.android.trendo.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.firebase.database.Exclude;
 import java.util.HashMap;
@@ -168,7 +168,7 @@ public class MatchSummary implements Parcelable {
         dest.writeString(this.AwayFullName);
         dest.writeString(this.AwayId);
         dest.writeLong(this.AwayScore);
-        dest.writeString(this.AwayFullName);
+        dest.writeString(this.HomeFullName);
         dest.writeString(this.HomeId);
         dest.writeLong(this.HomeScore);
         dest.writeInt(this.IsFinal ? 1 : 0);

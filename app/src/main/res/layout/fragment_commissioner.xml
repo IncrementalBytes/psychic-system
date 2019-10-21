@@ -1,20 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/commissioner_view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+  <TextView
+    android:id="@+id/commissioner_text_team"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    android:text="@string/team_data_status"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@id/commissioner_progress_team"
+    app:layout_constraintBottom_toBottomOf="@id/commissioner_progress_team"/>
 
-        <android.support.v4.view.PagerTabStrip
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:background="@color/primaryDark"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp" />
-    </android.support.v4.view.ViewPager>
+  <TextView
+    android:id="@+id/commissioner_text_team_status"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    android:text="@string/placeholder"
+    android:textColor="@color/primaryAccentText"
+    android:textSize="18sp"
+    app:layout_constraintEnd_toStartOf="@id/commissioner_progress_team"
+    app:layout_constraintTop_toTopOf="@id/commissioner_progress_team"
+    app:layout_constraintBottom_toBottomOf="@id/commissioner_progress_team"/>
 
-</android.support.constraint.ConstraintLayout>
+  <ProgressBar
+    android:id="@+id/commissioner_progress_team"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    android:indeterminateTint="@color/primaryAccentText"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <Button
+    android:id="@+id/commissioner_button_team"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    android:text="@string/reload_team_data_from_server"
+    android:visibility="invisible"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/commissioner_progress_team" />
+
+  <TextView
+    android:id="@+id/commissioner_text_match"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    android:text="@string/match_summary_data_status"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@id/commissioner_progress_match"
+    app:layout_constraintBottom_toBottomOf="@id/commissioner_progress_match"/>
+
+  <TextView
+    android:id="@+id/commissioner_text_match_status"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    android:text="@string/placeholder"
+    android:textColor="@color/primaryAccentText"
+    android:textSize="18sp"
+    app:layout_constraintEnd_toStartOf="@id/commissioner_progress_match"
+    app:layout_constraintTop_toTopOf="@id/commissioner_progress_match"
+    app:layout_constraintBottom_toBottomOf="@id/commissioner_progress_match"/>
+
+  <ProgressBar
+    android:id="@+id/commissioner_progress_match"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    android:indeterminateTint="@color/primaryAccentText"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/commissioner_button_team" />
+
+  <Button
+    android:id="@+id/commissioner_button_match"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    android:text="@string/reload_match_data_from_server"
+    android:visibility="invisible"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/commissioner_text_match" />
+
+  <TextView
+    android:id="@+id/commissioner_text_generate"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    android:text="@string/trends"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/commissioner_button_match"/>
+
+  <Button
+    android:id="@+id/commissioner_button_generate"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    android:text="@string/generate_trends"
+    app:layout_constraintTop_toBottomOf="@id/commissioner_text_generate"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -46,4 +46,13 @@
     <string name="conference">Conference</string>
     <string name="data_synchronized">Data between local and remote already synchronized.</string>
     <string name="err_trend_data_load_failed">Unable to create data charts. Try again later.</string>
+    <string name="tab_data_refresh">Data Refresh</string>
+    <string name="err_commissioner_activity">Commissioner activity failed.</string>
+    <string name="menu_back">Back</string>
+  <string name="team_data_status">Team Data Status:</string>
+    <string name="reload_team_data_from_server">Reload Team Data from Server</string>
+    <string name="match_summary_data_status">Match Summary Data Status:</string>
+    <string name="reload_match_data_from_server">Reload Match Data from Server</string>
+    <string name="generate_trends">Generate Trends</string>
+    <string name="trends">Trends:</string>
 </resources>

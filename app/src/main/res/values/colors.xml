@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#455a64</color> <!-- primaryTextColor & accentTextColor  -->
+    <color name="primary">#455A64</color> <!-- primaryTextColor & accentTextColor  -->
     <color name="primaryLight">#546E7A</color> <!-- primaryTextColor & accentTextColor -->
     <color name="primaryDark">#37474F</color> <!-- primaryTextColor & accentTextColor -->
 
