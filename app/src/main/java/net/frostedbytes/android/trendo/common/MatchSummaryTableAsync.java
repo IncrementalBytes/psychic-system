@@ -35,7 +35,6 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 
 public class MatchSummaryTableAsync extends AsyncTask<Void, Void, List<MatchSummaryEntity>> {
 

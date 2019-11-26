@@ -28,7 +28,6 @@ import net.frostedbytes.android.trendo.common.ConferenceTableAsync;
 import net.frostedbytes.android.trendo.common.MatchSummaryTableAsync;
 import net.frostedbytes.android.trendo.common.TeamTableAsync;
 import net.frostedbytes.android.trendo.common.TrendTableAsync;
-import net.frostedbytes.android.trendo.db.TrendoDatabase;
 import net.frostedbytes.android.trendo.db.TrendoRepository;
 import net.frostedbytes.android.trendo.db.entity.MatchSummaryEntity;
 import net.frostedbytes.android.trendo.db.entity.TeamEntity;

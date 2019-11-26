@@ -22,8 +22,7 @@ import java.io.Serializable;
 import java.util.Locale;
 
 @DatabaseView(
-  "SELECT Summary.id AS Id, " +
-    "Summary.home_score AS HomeScore, " +
+  "SELECT Summary.home_score AS HomeScore, " +
     "Summary.away_score AS AwayScore, " +
     "HomeTeam.Name AS HomeName, " +
     "AwayTeam.Name AS AwayName " +

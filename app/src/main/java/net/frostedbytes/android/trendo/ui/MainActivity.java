@@ -20,22 +20,18 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
-import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -45,7 +41,6 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.UUID;
 
-import net.frostedbytes.android.trendo.BuildConfig;
 import net.frostedbytes.android.trendo.R;
 import net.frostedbytes.android.trendo.common.PackagedData;
 import net.frostedbytes.android.trendo.common.QueryDataAsync;
@@ -62,14 +57,11 @@ public class MainActivity extends BaseActivity implements
   CardSummaryFragment.OnCardSummaryListener,
   LineChartFragment.OnLineChartListener,
   MatchListFragment.OnMatchListListener,
-  NavigationView.OnNavigationItemSelectedListener,
   TrendFragment.OnTrendListener,
   UserPreferencesFragment.OnPreferencesListener {
 
   private static final String TAG = BASE_TAG + "MainActivity";
 
-  private DrawerLayout mDrawerLayout;
-  private NavigationView mNavigationView;
   private ProgressBar mProgressBar;
   private Snackbar mSnackbar;
 
@@ -93,14 +85,12 @@ public class MainActivity extends BaseActivity implements
 
     // TODO: validate user?
 
-    // TODO: remove drawer
-    mDrawerLayout = findViewById(R.id.main_drawer_layout);
     mProgressBar = findViewById(R.id.main_progress);
-    mNavigationView = findViewById(R.id.main_navigation_view);
 
     mProgressBar.setIndeterminate(true);
     Toolbar toolbar = findViewById(R.id.main_toolbar);
     setSupportActionBar(toolbar);
+
     getSupportFragmentManager().addOnBackStackChangedListener(() -> {
       Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_fragment_container);
       if (fragment != null) {
@@ -108,22 +98,15 @@ public class MainActivity extends BaseActivity implements
       }
     });
 
-    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-      this,
-      mDrawerLayout,
-      toolbar,
-      R.string.navigation_drawer_open,
-      R.string.navigation_drawer_close);
-    mDrawerLayout.addDrawerListener(toggle);
-    toggle.syncState();
-
-    // update the navigation header
-    mNavigationView.setNavigationItemSelectedListener(this);
-    View navigationHeaderView = mNavigationView.inflateHeaderView(R.layout.main_navigation_header);
-    TextView navigationVersion = navigationHeaderView.findViewById(R.id.navigation_text_version);
-    navigationVersion.setText(BuildConfig.VERSION_NAME);
-
     queryData();
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+
+    Log.d(TAG, "++onCreateOptionsMenu(Menu)");
+    getMenuInflater().inflate(R.menu.main, menu);
+    return true;
   }
 
   @Override
@@ -135,16 +118,12 @@ public class MainActivity extends BaseActivity implements
   }
 
   @Override
-  public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+  public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-    Log.d(TAG, "++onNavigationItemSelected(MenuItem)");
+    Log.d(TAG, "++onOptionsItemSelected(MenuItem)");
     switch (item.getItemId()) {
       case R.id.navigation_menu_home:
-//        List<Trend> trends = mTrendoViewModel.getAllTrendsByTeamAndYear(mUser.TeamId, mUser.Year);
-//          if (trends != null && trends.size() > 0) {
-//            replaceFragment(CardSummaryFragment.newInstance(new ArrayList<>(trends)));
-//          }
-
+        replaceFragment(CardSummaryFragment.newInstance(mPackagedData.Trends));
         break;
       case R.id.navigation_menu_preferences:
         mProgressBar.setVisibility(View.INVISIBLE);
@@ -177,7 +156,6 @@ public class MainActivity extends BaseActivity implements
         break;
     }
 
-    mDrawerLayout.closeDrawer(GravityCompat.START);
     return true;
   }
 

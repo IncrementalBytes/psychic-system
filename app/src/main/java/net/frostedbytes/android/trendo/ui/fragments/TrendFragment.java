@@ -22,7 +22,6 @@ import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.PagerTabStrip;
 import androidx.viewpager.widget.ViewPager;
 
@@ -32,10 +31,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ToggleButton;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -44,7 +39,6 @@ import net.frostedbytes.android.trendo.ui.BaseActivity;
 import net.frostedbytes.android.trendo.db.entity.TeamEntity;
 import net.frostedbytes.android.trendo.db.entity.User;
 import net.frostedbytes.android.trendo.R;
-import net.frostedbytes.android.trendo.utils.PathUtils;
 import net.frostedbytes.android.trendo.utils.SortUtils;
 
 public class TrendFragment extends Fragment {

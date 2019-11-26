@@ -3,11 +3,9 @@ package net.frostedbytes.android.trendo.ui.fragments;
 import static net.frostedbytes.android.trendo.ui.BaseActivity.BASE_TAG;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.core.content.ContextCompat;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,18 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.XAxis.XAxisPosition;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.components.YAxis.AxisDependency;
-import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
