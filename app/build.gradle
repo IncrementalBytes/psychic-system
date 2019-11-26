@@ -96,17 +96,22 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     // Google
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    implementation 'com.google.code.gson:gson:2.8.5'
     // Firebase
-    implementation 'com.google.firebase:firebase-core:17.2.0'
+    implementation 'com.google.firebase:firebase-core:17.2.1'
     implementation 'com.google.firebase:firebase-database:19.2.0'
     implementation 'com.google.firebase:firebase-auth:19.1.0'
     implementation 'com.google.firebase:firebase-config:19.0.3'
-    implementation 'com.google.firebase:firebase-analytics:17.2.0'
+    implementation 'com.google.firebase:firebase-analytics:17.2.1'
     // Firebase UI
     implementation('com.firebaseui:firebase-ui-database:3.1.0') {
         exclude module:'runtime'
         exclude module:'extensions'
     }
+    // Room
+    implementation "androidx.room:room-runtime:2.2.1"
+    annotationProcessor "androidx.room:room-compiler:2.2.1"
+    androidTestImplementation "androidx.room:room-testing:2.2.1"
     // Crashlytics
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     // Testing dependencies

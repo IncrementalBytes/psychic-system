@@ -3,6 +3,9 @@ package net.frostedbytes.android.trendo;
 import android.widget.ImageView;
 
 import com.google.android.gms.common.SignInButton;
+
+import net.frostedbytes.android.trendo.ui.SignInActivity;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

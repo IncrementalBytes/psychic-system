@@ -12,11 +12,6 @@
             android:id="@+id/navigation_menu_preferences"
             android:icon="@drawable/ic_preferences_dark"
             android:title="@string/preferences" />
-        <item
-            android:id="@+id/navigation_menu_commissioner"
-            android:icon="@drawable/ic_commissioner_dark"
-            android:title="@string/commissioner"
-            android:visible="false" />
     </group>
 
     <group>

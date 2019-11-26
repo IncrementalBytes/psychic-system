@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
 import java.util.Map;
-import net.frostedbytes.android.trendo.models.Trend;
+
 import org.junit.Test;
 
 public class TrendUnitTest {

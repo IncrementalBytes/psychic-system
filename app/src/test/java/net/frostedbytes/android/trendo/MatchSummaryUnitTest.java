@@ -4,7 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import java.util.Map;
-import net.frostedbytes.android.trendo.models.MatchSummary;
+
+import net.frostedbytes.android.trendo.ui.BaseActivity;
+
 import org.junit.Test;
 
 public class MatchSummaryUnitTest {

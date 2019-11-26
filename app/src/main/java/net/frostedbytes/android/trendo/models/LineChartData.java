@@ -18,7 +18,7 @@ public class LineChartData implements Serializable {
   public String RightLabel;
 
   /**
-   * Year (season) this represents.
+   * Year this represents.
    */
   public int Year;
 
