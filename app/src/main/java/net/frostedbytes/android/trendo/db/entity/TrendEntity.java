@@ -26,17 +26,19 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
-import androidx.room.PrimaryKey;
 
 @Entity(
   tableName = "trend_table",
-  foreignKeys = {@ForeignKey(entity = TeamEntity.class, parentColumns = "id", childColumns = "team_id")},
-  indices = {@Index(value = {"team_id","year"})})
+  primaryKeys = {
+    "team_id", "year", "match"
+  },
+  foreignKeys = {
+    @ForeignKey(entity = TeamEntity.class, parentColumns = "id", childColumns = "team_id")
+  },
+  indices = {
+    @Index(value = {"team_id","year","match"})
+  })
 public class TrendEntity implements Serializable {
-
-  @PrimaryKey(autoGenerate = true)
-  @ColumnInfo(name = "id")
-  public long Id;
 
   @NonNull
   @ColumnInfo(name = "team_id")
@@ -83,7 +85,6 @@ public class TrendEntity implements Serializable {
 
   public TrendEntity() {
 
-    Id = 0;
     GoalsAgainst = 0;
     GoalDifferential = 0;
     GoalsFor = 0;

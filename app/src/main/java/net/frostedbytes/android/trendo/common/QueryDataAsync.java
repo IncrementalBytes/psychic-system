@@ -18,7 +18,7 @@ package net.frostedbytes.android.trendo.common;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import net.frostedbytes.android.trendo.db.TrendoDatabase;
+import net.frostedbytes.android.trendo.db.TrendoRepository;
 import net.frostedbytes.android.trendo.ui.BaseActivity;
 import net.frostedbytes.android.trendo.ui.MainActivity;
 
@@ -30,15 +30,15 @@ public class QueryDataAsync extends AsyncTask<Void, Void, PackagedData> {
   private static final String TAG = BaseActivity.BASE_TAG + "QueryDataAsync";
 
   private WeakReference<MainActivity> mActivityWeakReference;
-  private TrendoDatabase mDatabase;
+  private TrendoRepository mRepository;
   private String mTeamId;
   private int mYear;
 
-  public QueryDataAsync(MainActivity context, TrendoDatabase db, String teamId, int year) {
+  public QueryDataAsync(MainActivity context, TrendoRepository repository, String teamId, int year) {
 
     Log.d(TAG, "QueryDataAsync(MainActivity, TrendoDatabase, String, int)");
     mActivityWeakReference = new WeakReference<>(context);
-    mDatabase = db;
+    mRepository = repository;
     mTeamId = teamId;
     mYear = year;
   }
@@ -47,12 +47,12 @@ public class QueryDataAsync extends AsyncTask<Void, Void, PackagedData> {
   protected PackagedData doInBackground(final Void... params) {
 
     PackagedData packagedData = new PackagedData();
-    packagedData.Conferences = new ArrayList<>(mDatabase.conferenceDao().getAll());
-    packagedData.Teams = new ArrayList<>(mDatabase.teamDao().getAll());
+    packagedData.Conferences = new ArrayList<>(mRepository.getAllConferences());
+    packagedData.Teams = new ArrayList<>(mRepository.getAllTeams());
 
     if (!mTeamId.isEmpty() && !mTeamId.equals(BaseActivity.DEFAULT_ID)) {
-      packagedData.MatchSummaries = new ArrayList<>(mDatabase.matchSummaryDao().getAll(mTeamId, mYear));
-      packagedData.Trends = new ArrayList<>(mDatabase.trendDao().getAll(mTeamId, mYear));
+      packagedData.MatchSummaries = new ArrayList<>(mRepository.getAllMatchSummaries(mTeamId, mYear));
+      packagedData.Trends = new ArrayList<>(mRepository.getAllTrends(mTeamId, mYear));
     }
 
     return packagedData;

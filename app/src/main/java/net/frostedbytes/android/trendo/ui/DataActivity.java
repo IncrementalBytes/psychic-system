@@ -29,6 +29,7 @@ import net.frostedbytes.android.trendo.common.MatchSummaryTableAsync;
 import net.frostedbytes.android.trendo.common.TeamTableAsync;
 import net.frostedbytes.android.trendo.common.TrendTableAsync;
 import net.frostedbytes.android.trendo.db.TrendoDatabase;
+import net.frostedbytes.android.trendo.db.TrendoRepository;
 import net.frostedbytes.android.trendo.db.entity.MatchSummaryEntity;
 import net.frostedbytes.android.trendo.db.entity.TeamEntity;
 import net.frostedbytes.android.trendo.ui.fragments.UserPreferencesFragment;
@@ -99,7 +100,7 @@ public class DataActivity extends BaseActivity {
       Log.w(TAG, "Could not get assets.", ioe);
     }
 
-    new ConferenceTableAsync(this, TrendoDatabase.getInstance(this), conferenceData).execute();
+    new ConferenceTableAsync(this, TrendoRepository.getInstance(this), conferenceData).execute();
   }
 
   public void conferenceTableSynced() {
@@ -127,7 +128,7 @@ public class DataActivity extends BaseActivity {
       Log.w(TAG, "Could not get assets.", ioe);
     }
 
-    new TeamTableAsync(this, TrendoDatabase.getInstance(this), teamData).execute();
+    new TeamTableAsync(this, TrendoRepository.getInstance(this), teamData).execute();
   }
 
   public void matchSummaryTableSynced(List<MatchSummaryEntity> matchSummaries) {
@@ -136,7 +137,7 @@ public class DataActivity extends BaseActivity {
     mMatchSummaryList = matchSummaries;
     mMatchSummariesStatusText.setText(getString(R.string.complete));
     mMatchSummariesStatusImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_success_dark, getTheme()));
-    new TrendTableAsync(this, TrendoDatabase.getInstance(this), mMatchSummaryList, mTeamList).execute();
+    new TrendTableAsync(this, TrendoRepository.getInstance(this), mMatchSummaryList, mTeamList, mYear).execute();
   }
 
   public void teamTableSynced(List<TeamEntity> teamList) {
@@ -180,7 +181,7 @@ public class DataActivity extends BaseActivity {
       Log.w(TAG, "Could not get assets.", ioe);
     }
 
-    new MatchSummaryTableAsync(this, TrendoDatabase.getInstance(this), seasonalData, mYear).execute();
+    new MatchSummaryTableAsync(this, TrendoRepository.getInstance(this), seasonalData, mYear).execute();
   }
 
   public void trendTableSynced() {

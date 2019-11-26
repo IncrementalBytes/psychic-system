@@ -33,7 +33,7 @@ public interface TrendDao {
   @Query("SELECT COUNT(*) FROM trend_table WHERE year == :year")
   int count(int year);
 
-  @Query("SELECT * FROM trend_table WHERE team_id == :teamId AND year == :year")
+  @Query("SELECT * FROM trend_table WHERE team_id == :teamId AND year == :year ORDER BY `match`")
   List<TrendEntity> getAll(String teamId, int year);
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)

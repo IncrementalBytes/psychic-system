@@ -21,9 +21,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import net.frostedbytes.android.trendo.db.TrendoDatabase;
-import net.frostedbytes.android.trendo.db.dao.ConferenceDao;
-import net.frostedbytes.android.trendo.db.entity.ConferenceEntity;
+import net.frostedbytes.android.trendo.db.TrendoRepository;
 import net.frostedbytes.android.trendo.ui.BaseActivity;
 import net.frostedbytes.android.trendo.ui.DataActivity;
 
@@ -42,13 +40,13 @@ public class ConferenceTableAsync  extends AsyncTask<Void, Void, Void> {
 
   private WeakReference<DataActivity> mActivityWeakReference;
 
-  private final ConferenceDao mConferenceDao;
-  private final File mConferenceData;
+  private File mConferenceData;
+  private TrendoRepository mRepository;
 
-  public ConferenceTableAsync(DataActivity context, TrendoDatabase db, File conferenceData) {
+  public ConferenceTableAsync(DataActivity context, TrendoRepository repository, File conferenceData) {
 
     mActivityWeakReference = new WeakReference<>(context);
-    mConferenceDao = db.conferenceDao();
+    mRepository = repository;
     mConferenceData = conferenceData;
   }
 
@@ -70,10 +68,10 @@ public class ConferenceTableAsync  extends AsyncTask<Void, Void, Void> {
       }
 
       if (packagedData != null && packagedData.Conferences != null) {
-        if (packagedData.Conferences.size() != mConferenceDao.count()) {
+        if (packagedData.Conferences.size() != mRepository.countConferences()) {
           String message = "Conference data processing:";
           try {
-            mConferenceDao.insertAll(packagedData.Conferences);
+            mRepository.insertAllConferences(packagedData.Conferences);
             message = String.format(Locale.US, "%s %d...", message, packagedData.Conferences.size());
           } catch (Exception e) {
             Log.w(TAG, "Could not process Conference data.", e);

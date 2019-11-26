@@ -18,13 +18,12 @@ package net.frostedbytes.android.trendo.common;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import net.frostedbytes.android.trendo.db.TrendoRepository;
 import net.frostedbytes.android.trendo.db.entity.MatchSummaryEntity;
 import net.frostedbytes.android.trendo.db.entity.TeamEntity;
 import net.frostedbytes.android.trendo.db.entity.TrendEntity;
 import net.frostedbytes.android.trendo.ui.BaseActivity;
 import net.frostedbytes.android.trendo.ui.DataActivity;
-import net.frostedbytes.android.trendo.db.TrendoDatabase;
-import net.frostedbytes.android.trendo.db.dao.TrendDao;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -34,25 +33,34 @@ public class TrendTableAsync extends AsyncTask<Void, Void, Void> {
   private static final String TAG = BaseActivity.BASE_TAG + "TrendTableAsync";
 
   private WeakReference<DataActivity> mActivityWeakReference;
-
-  private final TrendDao mTrendDao;
-
   private List<MatchSummaryEntity> mMatchSummaries;
+  private TrendoRepository mRepository;
   private List<TeamEntity> mTeams;
+  private int mYear;
 
-  public TrendTableAsync(DataActivity context, TrendoDatabase db, List<MatchSummaryEntity> matchSummaries, List<TeamEntity> teams) {
+  public TrendTableAsync(
+    DataActivity context,
+    TrendoRepository repository,
+    List<MatchSummaryEntity> matchSummaries,
+    List<TeamEntity> teams,
+    int year) {
 
     mActivityWeakReference = new WeakReference<>(context);
-    mTrendDao = db.trendDao();
+    mRepository = repository;
     mMatchSummaries = matchSummaries;
     mTeams = teams;
+    mYear = year;
   }
 
   @Override
   protected Void doInBackground(final Void... params) {
 
     Log.d(TAG, "Generating trends");
-    // TODO: skip if already done
+    if (mRepository.countTrends(mYear) > 0) {
+      Log.d(TAG, "Trend data exists.");
+      return null;
+    }
+
     for (TeamEntity team : mTeams) {
       long prevGoalAgainst = 0;
       long prevGoalDifferential = 0;
@@ -62,7 +70,6 @@ public class TrendTableAsync extends AsyncTask<Void, Void, Void> {
       long matchesRemaining = totalMatches;
       int matchDay = 0;
       for (MatchSummaryEntity summary : mMatchSummaries) {
-        matchDay++;
         long pointsFromMatch;
         long goalsAgainst;
         long goalDifferential;
@@ -103,6 +110,7 @@ public class TrendTableAsync extends AsyncTask<Void, Void, Void> {
           continue;
         }
 
+        matchDay++;
         TrendEntity newTrend = new TrendEntity();
         newTrend.TeamId = team.Id;
         newTrend.Year = summary.Year;
@@ -131,7 +139,7 @@ public class TrendTableAsync extends AsyncTask<Void, Void, Void> {
         newTrend.PointsPerGame = totalPoints;
         newTrend.PointsByAverage = (long) (totalPoints * totalMatches);
 
-        mTrendDao.insert(newTrend);
+        mRepository.insertTrend(newTrend);
 
         // update previous values for next pass
         prevGoalAgainst = goalsAgainst + prevGoalAgainst;

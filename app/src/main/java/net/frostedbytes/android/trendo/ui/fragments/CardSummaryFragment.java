@@ -11,17 +11,14 @@ import android.widget.TextView;
 import net.frostedbytes.android.trendo.ui.BaseActivity;
 import net.frostedbytes.android.trendo.R;
 import net.frostedbytes.android.trendo.db.entity.TrendEntity;
-import net.frostedbytes.android.trendo.viewmodel.TrendoViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 public class CardSummaryFragment extends Fragment {
 
@@ -30,12 +27,20 @@ public class CardSummaryFragment extends Fragment {
   public interface OnCardSummaryListener {
 
     void onCardSummaryItemClicked();
+    void onCardSummaryLoaded();
   }
 
   private OnCardSummaryListener mCallback;
 
   private CardView mCardMatches;
+  private TextView mGoalDifferentialText;
+  private TextView mGoalsAgainstText;
+  private TextView mGoalsForText;
+  private TextView mMaxPointsText;
+  private TextView mPointsByAverageText;
+  private TextView mPointsPerGameText;
   private TextView mTotalMatchesText;
+  private TextView mTotalPointsText;
 
   private List<TrendEntity> mTrends;
 
@@ -107,7 +112,15 @@ public class CardSummaryFragment extends Fragment {
 
     Log.d(TAG, "++onViewCreated(View, Bundle)");
     mCardMatches = view.findViewById(R.id.summary_card_matches);
+    mGoalDifferentialText = view.findViewById(R.id.summary_text_goals_differential_value);
+    mGoalsAgainstText = view.findViewById(R.id.summary_text_goals_against_value);
+    mGoalsForText = view.findViewById(R.id.summary_text_goals_for_value);
+    mMaxPointsText = view.findViewById(R.id.summary_text_max_points_value);
+    mPointsByAverageText = view.findViewById(R.id.summary_text_points_by_average_value);
+    mPointsPerGameText = view.findViewById(R.id.summary_text_points_per_game_value);
     mTotalMatchesText = view.findViewById(R.id.summary_text_matches_value);
+    mTotalPointsText = view.findViewById(R.id.summary_text_total_points_value);
+
     updateUI();
   }
 
@@ -118,9 +131,17 @@ public class CardSummaryFragment extends Fragment {
 
     if (mTrends != null && mTrends.size() > 0) {
       Log.d(TAG, "++updateUI()");
-      // TODO: update card deck with details from match summaries
       mCardMatches.setEnabled(true);
+      TrendEntity valueTrend = mTrends.get(mTrends.size() - 1);
+      mGoalDifferentialText.setText(String.valueOf(valueTrend.GoalDifferential));
+      mGoalsAgainstText.setText(String.valueOf(valueTrend.GoalsAgainst));
+      mGoalsForText.setText(String.valueOf(valueTrend.GoalsFor));
+      mMaxPointsText.setText(String.valueOf(valueTrend.MaxPointsPossible));
+      mPointsByAverageText.setText(String.valueOf(valueTrend.PointsByAverage));
+      mPointsPerGameText.setText(String.format(Locale.US, "%.03f", valueTrend.PointsPerGame));
       mTotalMatchesText.setText(String.valueOf(mTrends.size()));
+      mTotalPointsText.setText(String.valueOf(valueTrend.TotalPoints));
+      mCallback.onCardSummaryLoaded();
     } else {
       Log.d(TAG, "matchSummaries is empty.");
       mCardMatches.setEnabled(false);

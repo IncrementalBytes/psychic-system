@@ -21,8 +21,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import net.frostedbytes.android.trendo.db.TrendoDatabase;
-import net.frostedbytes.android.trendo.db.dao.TeamDao;
+import net.frostedbytes.android.trendo.db.TrendoRepository;
 import net.frostedbytes.android.trendo.db.entity.TeamEntity;
 import net.frostedbytes.android.trendo.ui.BaseActivity;
 import net.frostedbytes.android.trendo.ui.DataActivity;
@@ -44,13 +43,13 @@ public class TeamTableAsync extends AsyncTask<Void, Void, List<TeamEntity>> {
   private WeakReference<DataActivity> mActivityWeakReference;
 
   private final File mTeamData;
-  private final TeamDao mTeamDao;
+  private final TrendoRepository mRepository;
 
-  public TeamTableAsync(DataActivity context, TrendoDatabase db, File teamData) {
+  public TeamTableAsync(DataActivity context, TrendoRepository repository, File teamData) {
 
     mActivityWeakReference = new WeakReference<>(context);
     mTeamData = teamData;
-    mTeamDao = db.teamDao();
+    mRepository = repository;
   }
 
   @Override
@@ -70,10 +69,10 @@ public class TeamTableAsync extends AsyncTask<Void, Void, List<TeamEntity>> {
         Log.w(TAG, "Could not read the source data.");
       }
 
-      if (packagedData.Teams != null && packagedData.Teams.size() != mTeamDao.count()) {
+      if (packagedData.Teams != null && packagedData.Teams.size() != mRepository.countTeams()) {
         String message = "Team data processing:";
         try {
-          mTeamDao.insertAll(packagedData.Teams);
+          mRepository.insertAllTeams(packagedData.Teams);
           message = String.format(Locale.US, "%s %d...", message, packagedData.Teams.size());
         } catch (Exception e) {
           Log.w(TAG, "Could not process Team data.", e);

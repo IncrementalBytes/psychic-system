@@ -15,6 +15,7 @@
  */
 package net.frostedbytes.android.trendo.db;
 
+import android.content.Context;
 import android.util.Log;
 
 import net.frostedbytes.android.trendo.ui.BaseActivity;
@@ -33,18 +34,18 @@ public class TrendoRepository {
 
   private final TrendoDatabase mDatabase;
 
-  private TrendoRepository(final TrendoDatabase database) {
+  private TrendoRepository(final Context context) {
 
     Log.d(TAG, "++TrendoRepository()");
-    mDatabase = database;
+    mDatabase = TrendoDatabase.getInstance(context);
   }
 
-  public static TrendoRepository getInstance(final TrendoDatabase database) {
+  public static TrendoRepository getInstance(final Context context) {
 
     if (sInstance == null) {
       synchronized (TrendoRepository.class) {
         if (sInstance == null) {
-          sInstance = new TrendoRepository(database);
+          sInstance = new TrendoRepository(context);
         }
       }
     }

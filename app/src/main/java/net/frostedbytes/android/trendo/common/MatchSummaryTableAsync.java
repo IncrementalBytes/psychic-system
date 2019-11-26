@@ -21,8 +21,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import net.frostedbytes.android.trendo.db.TrendoDatabase;
-import net.frostedbytes.android.trendo.db.dao.MatchSummaryDao;
+import net.frostedbytes.android.trendo.db.TrendoRepository;
 import net.frostedbytes.android.trendo.db.entity.MatchSummaryEntity;
 import net.frostedbytes.android.trendo.ui.BaseActivity;
 import net.frostedbytes.android.trendo.ui.DataActivity;
@@ -44,15 +43,15 @@ public class MatchSummaryTableAsync extends AsyncTask<Void, Void, List<MatchSumm
 
   private WeakReference<DataActivity> mActivityWeakReference;
 
-  private final MatchSummaryDao mMatchSummaryDao;
+  private final TrendoRepository mRepository;
   private final File mMatchSummaryData;
 
   private int mYear;
 
-  public MatchSummaryTableAsync(DataActivity context, TrendoDatabase db, File matchSummaryData, int year) {
+  public MatchSummaryTableAsync(DataActivity context, TrendoRepository repository, File matchSummaryData, int year) {
 
     mActivityWeakReference = new WeakReference<>(context);
-    mMatchSummaryDao = db.matchSummaryDao();
+    mRepository = repository;
     mMatchSummaryData = matchSummaryData;
     mYear = year;
   }
@@ -74,15 +73,11 @@ public class MatchSummaryTableAsync extends AsyncTask<Void, Void, List<MatchSumm
         Log.w(TAG, "Could not read the source data.");
       }
 
-      if (packagedData.MatchSummaries != null && packagedData.MatchSummaries.size() != mMatchSummaryDao.count(mYear)) {
+      if (packagedData.MatchSummaries != null && packagedData.MatchSummaries.size() != mRepository.countMatchSummaries(mYear)) {
         String message = "MatchSummary data processing:";
         int count = 0;
         try {
           for (MatchSummaryEntity matchSummary : packagedData.MatchSummaries) {
-            if (matchSummary.Id.isEmpty() || matchSummary.Id.equals(BaseActivity.DEFAULT_ID)) {
-              matchSummary.Id = UUID.randomUUID().toString();
-            }
-
             if (matchSummary.MatchDate == null ||
               (matchSummary.MatchDate.isEmpty() || matchSummary.MatchDate.equals(BaseActivity.DEFAULT_DATE))) {
               matchSummary.MatchDate =
@@ -94,7 +89,8 @@ public class MatchSummaryTableAsync extends AsyncTask<Void, Void, List<MatchSumm
                   matchSummary.Day);
             }
 
-            mMatchSummaryDao.insert(matchSummary);
+            // TODO: if we've updated a match summary (e.g. id, matchdate) we should write an updated json for future packaging
+            mRepository.insertMatchSummary(matchSummary);
             count++;
           }
 
@@ -105,7 +101,7 @@ public class MatchSummaryTableAsync extends AsyncTask<Void, Void, List<MatchSumm
           Log.d(TAG, message);
         }
       } else {
-        Log.e(TAG, "MatchSummary source data was incomplete.");
+        Log.e(TAG, "MatchSummary data exists.");
       }
     } else {
       Log.e(TAG, "Does not exist yet " + mMatchSummaryData.getAbsoluteFile());
