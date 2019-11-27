@@ -24,7 +24,7 @@ android {
         def updatedVersionName = majorVersionProperty + "." + minorVersionProperty + "." + versionCodeProperty + "." + updatedBuildVersion
 
         defaultConfig {
-            applicationId "net.frostedbytes.android.trendo"
+            applicationId "net.whollynugatory.android.trendo"
             minSdkVersion 24
             targetSdkVersion 28
             versionCode versionCodeProperty
