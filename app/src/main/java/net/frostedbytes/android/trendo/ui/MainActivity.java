@@ -51,14 +51,12 @@ import net.frostedbytes.android.trendo.db.entity.User;
 import net.frostedbytes.android.trendo.ui.fragments.CardSummaryFragment;
 import net.frostedbytes.android.trendo.ui.fragments.LineChartFragment;
 import net.frostedbytes.android.trendo.ui.fragments.MatchListFragment;
-import net.frostedbytes.android.trendo.ui.fragments.TrendFragment;
 import net.frostedbytes.android.trendo.ui.fragments.UserPreferencesFragment;
 
 public class MainActivity extends BaseActivity implements
   CardSummaryFragment.OnCardSummaryListener,
   LineChartFragment.OnLineChartListener,
   MatchListFragment.OnMatchListListener,
-  TrendFragment.OnTrendListener,
   UserPreferencesFragment.OnPreferencesListener {
 
   private static final String TAG = BASE_TAG + "MainActivity";
@@ -174,7 +172,7 @@ public class MainActivity extends BaseActivity implements
   public void onCardSummaryTrendClicked(Trend selectedTrend) {
 
     Log.d(TAG, "++onCardSummaryTrendClicked(Trend)");
-    // TODO: show chart of selected trend
+    replaceFragment(LineChartFragment.newInstance(mPackagedData.Trends, selectedTrend));
   }
 
   @Override
@@ -209,7 +207,7 @@ public class MainActivity extends BaseActivity implements
   public void onMatchListItemSelected() {
 
     Log.d(TAG, "++onMatchListItemSelected()");
-    replaceFragment(TrendFragment.newInstance(mUser, new ArrayList<>(mPackagedData.Teams)));
+//    replaceFragment(TrendFragment.newInstance(mUser, new ArrayList<>(mPackagedData.Teams)));
   }
 
   @Override
@@ -244,26 +242,6 @@ public class MainActivity extends BaseActivity implements
 //        getNearestOpponents(false);
 //        replaceFragment(MatchListFragment.newInstance(mTeamSummaries, mUser.TeamId));
       }
-    }
-  }
-
-  @Override
-  public void onShowByConference(boolean showByConference) {
-
-    Log.d(TAG, "++onShowByConference(boolean)");
-    mProgressBar.setIndeterminate(true);
-    getNearestOpponents(showByConference);
-    replaceFragment(TrendFragment.newInstance(mUser, new ArrayList<>(mPackagedData.Teams), showByConference));
-  }
-
-  @Override
-  public void onTrendInit(boolean isSuccessful) {
-
-    Log.d(TAG, "++onTrendFail(boolean)");
-    mProgressBar.setIndeterminate(false);
-    if (!isSuccessful) {
-      Snackbar.make(findViewById(R.id.main_fragment_container), getString(R.string.no_trends), Snackbar.LENGTH_LONG);
-      replaceFragment(MatchListFragment.newInstance(mPackagedData.MatchDetails, mUser.TeamId));
     }
   }
 

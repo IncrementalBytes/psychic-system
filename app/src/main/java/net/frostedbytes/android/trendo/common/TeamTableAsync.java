@@ -80,7 +80,7 @@ public class TeamTableAsync extends AsyncTask<Void, Void, List<TeamEntity>> {
           Log.d(TAG, message);
         }
       } else {
-        Log.e(TAG, "Team source data was incomplete.");
+        Log.d(TAG, "Team data exists.");
       }
     } else {
       Log.e(TAG, "Does not exist yet " + mTeamData.getAbsoluteFile());
