@@ -22,30 +22,44 @@ import java.io.Serializable;
 import java.util.Locale;
 
 @DatabaseView(
-  "SELECT Summary.home_score AS HomeScore, " +
-    "Summary.away_score AS AwayScore, " +
+  "SELECT Summary.match_date AS MatchDate, " +
     "HomeTeam.Name AS HomeName, " +
-    "AwayTeam.Name AS AwayName " +
+    "HomeTeam.Id AS HomeId, " +
+    "Summary.home_score AS HomeScore, " +
+    "AwayTeam.Name AS AwayName, " +
+    "AwayTeam.Id AS AwayId, " +
+    "Summary.away_score AS AwayScore, " +
+    "Summary.month AS Month, " +
+    "Summary.day AS Day, " +
+    "Summary.year AS Year " +
   "FROM match_summary_table AS Summary " +
   "INNER JOIN team_table AS AwayTeam ON Summary.away_id = AwayTeam.id " +
   "INNER JOIN team_table AS HomeTeam ON Summary.home_id = HomeTeam.id")
-public class MatchSummaryDetails implements Serializable {
+public class MatchSummaryDetail implements Serializable {
 
-  public String Id;
-  public String HomeTeam;
-  public String AwayTeam;
   public String MatchDate;
+  public String HomeName;
+  public String HomeId;
   public int HomeScore;
+  public String AwayName;
+  public String AwayId;
   public int AwayScore;
+  public int Month;
+  public int Day;
+  public int Year;
 
-  public MatchSummaryDetails() {
+  public MatchSummaryDetail() {
 
-    Id = BaseActivity.DEFAULT_ID;
-    HomeTeam = "";
-    AwayTeam = "";
-    HomeScore = 0;
-    AwayScore = 0;
     MatchDate = BaseActivity.DEFAULT_DATE;
+    HomeName = "";
+    HomeId = BaseActivity.DEFAULT_ID;
+    HomeScore = 0;
+    AwayName = "";
+    AwayId = BaseActivity.DEFAULT_ID;
+    AwayScore = 0;
+    Month = 1;
+    Day = 1;
+    Year = 1990;
   }
 
   /*
@@ -57,8 +71,8 @@ public class MatchSummaryDetails implements Serializable {
     return String.format(
       Locale.US,
       "%s vs %s - %d-%d",
-      HomeTeam,
-      AwayTeam,
+      HomeName,
+      AwayName,
       HomeScore,
       AwayScore);
   }

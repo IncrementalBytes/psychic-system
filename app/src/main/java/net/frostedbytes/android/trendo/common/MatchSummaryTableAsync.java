@@ -88,7 +88,7 @@ public class MatchSummaryTableAsync extends AsyncTask<Void, Void, List<MatchSumm
                   matchSummary.Day);
             }
 
-            // TODO: if we've updated a match summary (e.g. id, matchdate) we should write an updated json for future packaging
+            // TODO: if we've updated a match summary (e.g. matchdate) we should write an updated json for future packaging
             mRepository.insertMatchSummary(matchSummary);
             count++;
           }
@@ -100,7 +100,7 @@ public class MatchSummaryTableAsync extends AsyncTask<Void, Void, List<MatchSumm
           Log.d(TAG, message);
         }
       } else {
-        Log.e(TAG, "MatchSummary data exists.");
+        Log.d(TAG, "MatchSummary data exists.");
       }
     } else {
       Log.e(TAG, "Does not exist yet " + mMatchSummaryData.getAbsoluteFile());

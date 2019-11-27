@@ -21,6 +21,7 @@ import net.frostedbytes.android.trendo.db.entity.ConferenceEntity;
 import net.frostedbytes.android.trendo.db.entity.MatchSummaryEntity;
 import net.frostedbytes.android.trendo.db.entity.TeamEntity;
 import net.frostedbytes.android.trendo.db.entity.TrendEntity;
+import net.frostedbytes.android.trendo.db.views.MatchSummaryDetail;
 
 import java.util.ArrayList;
 
@@ -29,18 +30,20 @@ public class PackagedData {
   @SerializedName("conferences")
   public ArrayList<ConferenceEntity> Conferences;
 
+  public ArrayList<MatchSummaryDetail> MatchDetails;
+
   @SerializedName("match_summaries")
   public ArrayList<MatchSummaryEntity> MatchSummaries;
 
   @SerializedName("teams")
   public ArrayList<TeamEntity> Teams;
 
-  @SerializedName("trends")
   public ArrayList<TrendEntity> Trends;
 
   public PackagedData() {
 
     Conferences = new ArrayList<>();
+    MatchDetails = new ArrayList<>();
     MatchSummaries = new ArrayList<>();
     Teams = new ArrayList<>();
     Trends = new ArrayList<>();

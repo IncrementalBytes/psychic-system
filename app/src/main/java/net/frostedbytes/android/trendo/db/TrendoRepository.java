@@ -18,6 +18,7 @@ package net.frostedbytes.android.trendo.db;
 import android.content.Context;
 import android.util.Log;
 
+import net.frostedbytes.android.trendo.db.views.MatchSummaryDetail;
 import net.frostedbytes.android.trendo.ui.BaseActivity;
 import net.frostedbytes.android.trendo.db.entity.ConferenceEntity;
 import net.frostedbytes.android.trendo.db.entity.MatchSummaryEntity;
@@ -89,7 +90,7 @@ public class TrendoRepository {
     return mDatabase.matchSummaryDao().count(year);
   }
 
-  public List<MatchSummaryEntity> getAllMatchSummaries(String teamId, int year) {
+  public List<MatchSummaryDetail> getAllMatchSummaries(String teamId, int year) {
 
     return mDatabase.matchSummaryDao().getAll(teamId, year);
   }

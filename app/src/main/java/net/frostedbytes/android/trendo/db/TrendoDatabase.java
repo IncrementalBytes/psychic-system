@@ -25,6 +25,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import net.frostedbytes.android.trendo.db.views.MatchSummaryDetail;
 import net.frostedbytes.android.trendo.ui.BaseActivity;
 import net.frostedbytes.android.trendo.db.dao.ConferenceDao;
 import net.frostedbytes.android.trendo.db.dao.MatchSummaryDao;
@@ -40,6 +41,7 @@ import java.util.concurrent.Executors;
 
 @Database(
   entities = {ConferenceEntity.class, MatchSummaryEntity.class, TeamEntity.class, TrendEntity.class},
+  views = {MatchSummaryDetail.class},
   version = 1,
   exportSchema = false)
 public abstract class TrendoDatabase extends RoomDatabase {

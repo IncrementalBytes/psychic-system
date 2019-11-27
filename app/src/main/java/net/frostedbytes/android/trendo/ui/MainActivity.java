@@ -44,6 +44,7 @@ import java.util.UUID;
 import net.frostedbytes.android.trendo.R;
 import net.frostedbytes.android.trendo.common.PackagedData;
 import net.frostedbytes.android.trendo.common.QueryDataAsync;
+import net.frostedbytes.android.trendo.common.Trend;
 import net.frostedbytes.android.trendo.db.TrendoRepository;
 import net.frostedbytes.android.trendo.db.entity.TeamEntity;
 import net.frostedbytes.android.trendo.db.entity.User;
@@ -159,31 +160,21 @@ public class MainActivity extends BaseActivity implements
     return true;
   }
 
-  @Override
-  public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-
-    Log.d(TAG, "++onActivityResult(int, int, Intent)");
-    if (requestCode == BaseActivity.RC_COMMISSIONER) {
-      if (resultCode == RESULT_OK) {
-        // HOORAY! Now what?
-      } else if (resultCode == RESULT_CANCELED) {
-        Snackbar.make(findViewById(R.id.main_fragment_container), R.string.err_commissioner_activity, Snackbar.LENGTH_LONG);
-//        List<Trend> trends = mTrendoViewModel.getAllTrendsByTeamAndYear(mUser.TeamId, mUser.Year);
-//        if (trends != null && trends.size() > 0) {
-//          replaceFragment(CardSummaryFragment.newInstance(new ArrayList<>(trends)));
-//        }
-      }
-    }
-  }
-
   /*
       Fragment Callback Overrides
    */
   @Override
-  public void onCardSummaryItemClicked() {
+  public void onCardSummaryMatchListClicked() {
 
     Log.d(TAG, "++onCardSummaryItemClicked()");
+    replaceFragment(MatchListFragment.newInstance(mPackagedData.MatchDetails, mUser.TeamId));
+  }
+
+  @Override
+  public void onCardSummaryTrendClicked(Trend selectedTrend) {
+
+    Log.d(TAG, "++onCardSummaryTrendClicked(Trend)");
+    // TODO: show chart of selected trend
   }
 
   @Override
@@ -200,7 +191,7 @@ public class MainActivity extends BaseActivity implements
     mProgressBar.setIndeterminate(false);
     if (!isSuccessful) {
       Snackbar.make(findViewById(R.id.main_fragment_container), getString(R.string.err_trend_data_load_failed), Snackbar.LENGTH_LONG);
-      replaceFragment(MatchListFragment.newInstance(mPackagedData.MatchSummaries, mUser.TeamId));
+      replaceFragment(MatchListFragment.newInstance(mPackagedData.MatchDetails, mUser.TeamId));
     }
   }
 
@@ -272,7 +263,7 @@ public class MainActivity extends BaseActivity implements
     mProgressBar.setIndeterminate(false);
     if (!isSuccessful) {
       Snackbar.make(findViewById(R.id.main_fragment_container), getString(R.string.no_trends), Snackbar.LENGTH_LONG);
-      replaceFragment(MatchListFragment.newInstance(mPackagedData.MatchSummaries, mUser.TeamId));
+      replaceFragment(MatchListFragment.newInstance(mPackagedData.MatchDetails, mUser.TeamId));
     }
   }
 
@@ -557,7 +548,7 @@ public class MainActivity extends BaseActivity implements
     String fragmentClassName = fragment.getClass().getName();
     if (fragmentClassName.equals(MatchListFragment.class.getName())) {
       if (mUser != null && mUser.Year > 0) {
-        setTitle(String.format(Locale.ENGLISH, "%s - %d", getTeam(mUser.TeamId).ShortName, mUser.Year));
+        setTitle(String.format(Locale.ENGLISH, "%s - %d", getTeam(mUser.TeamId).Name, mUser.Year));
       } else {
         setTitle(getString(R.string.title_match_summaries));
       }

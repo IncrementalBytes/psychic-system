@@ -51,7 +51,7 @@ public class QueryDataAsync extends AsyncTask<Void, Void, PackagedData> {
     packagedData.Teams = new ArrayList<>(mRepository.getAllTeams());
 
     if (!mTeamId.isEmpty() && !mTeamId.equals(BaseActivity.DEFAULT_ID)) {
-      packagedData.MatchSummaries = new ArrayList<>(mRepository.getAllMatchSummaries(mTeamId, mYear));
+      packagedData.MatchDetails = new ArrayList<>(mRepository.getAllMatchSummaries(mTeamId, mYear));
       packagedData.Trends = new ArrayList<>(mRepository.getAllTrends(mTeamId, mYear));
     }
 
