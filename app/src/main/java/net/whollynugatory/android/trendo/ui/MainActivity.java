@@ -172,7 +172,12 @@ public class MainActivity extends BaseActivity implements
   public void onCardSummaryTrendClicked(Trend selectedTrend) {
 
     Log.d(TAG, "++onCardSummaryTrendClicked(Trend)");
-    replaceFragment(LineChartFragment.newInstance(mPackagedData.Trends, selectedTrend));
+    replaceFragment(
+      LineChartFragment.newInstance(
+        mPackagedData.Trends,
+        mPackagedData.TrendsAhead,
+        mPackagedData.TrendsBehind,
+        selectedTrend));
   }
 
   @Override
@@ -214,35 +219,7 @@ public class MainActivity extends BaseActivity implements
   public void onPreferenceChanged() {
 
     Log.d(TAG, "++onPreferenceChanged()");
-    int previousYear = mUser.Year;
-    String previousTeam = mUser.TeamId;
-    getUserPreferences();
-    if (previousYear != mUser.Year || !previousTeam.equals(mUser.TeamId)) {
-//            Log.d(
-//                TAG,
-//                "User Preferences Changed | Season Was: %d Now: %d | Team Was: %s Now: %s",
-//                previousSeason,
-//                mUser.Season,
-//                getTeam(previousTeam).FullName,
-//                getTeam(mUser.TeamId).FullName);
-      if (previousYear != mUser.Year || mPackagedData.MatchSummaries.isEmpty()) {
-        getAggregateData();
-        getMatchSummaryData();
-      } else {
-//        mTeamSummaries = new ArrayList<>();
-//        for (MatchSummaryEntity matchSummary : mAllSummaries) {
-//          if (matchSummary.AwayId.equals(mUser.TeamId) || matchSummary.HomeId.equals(mUser.TeamId)) {
-//            mTeamSummaries.add(matchSummary);
-//          }
-//        }
-
-//                mTeamSummaries.sort((summary1, summary2) -> Integer.compare(summary2.MatchDate.compareTo(summary1.MatchDate), 0));
-
-        // update this new team's immediate opponents
-//        getNearestOpponents(false);
-//        replaceFragment(MatchListFragment.newInstance(mTeamSummaries, mUser.TeamId));
-      }
-    }
+    queryData();
   }
 
   /*
@@ -271,133 +248,7 @@ public class MainActivity extends BaseActivity implements
   /*
       Private Methods
    */
-  // TODO: is this still necessary?
-  private void getAggregateData() {
 
-    Log.d(TAG, "++getAggregateData()");
-//        mProgressBar.setVisibility(View.VISIBLE);
-//        String aggregatePath = PathUtils.combine(Trend.AGGREGATE_ROOT, mUser.Season);
-//        Log.d(TAG, "Query: " + aggregatePath);
-//        FirebaseDatabase.getInstance().getReference().child(aggregatePath).addListenerForSingleValueEvent(new ValueEventListener() {
-//
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//                Log.d(TAG, "Data changed under " + aggregatePath);
-//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                    String teamId = snapshot.getKey();
-//                    long tablePosition = (long) snapshot.getValue();
-//                    for (Team team : mTeams) {
-//                        if (team.Id.equals(teamId)) {
-//                            team.TablePosition = tablePosition;
-//                            break;
-//                        }
-//                    }
-//                }
-//
-//                // figure out which teams are ahead and behind the user's preferred team (based on conference)
-//                if (!mUser.TeamId.isEmpty() && !mUser.TeamId.equals(BaseActivity.DEFAULT_ID)) {
-//                    getNearestOpponents(false);
-//                } else {
-//                    Log.w(TAG, "User preferences are incomplete.");
-//                    mProgressBar.setIndeterminate(false);
-//                    replaceFragment(UserPreferencesFragment.newInstance(mTeams));
-//                }
-//
-//                Log.d(TAG, "Finished querying aggregate data.");
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                Log.d(TAG, "++aggregateDataQuery::onCancelled(DatabaseError)");
-//                Log.e(TAG, databaseError.getDetails());
-//            }
-//        });
-  }
-
-  // TODO: is this still necessary?
-  private void getMatchSummaryData() {
-
-    Log.d(TAG, "getMatchSummaryData()");
-//        String queryPath = PathUtils.combine(MatchSummary.ROOT, mUser.Season);
-//        Log.d(TAG, "Query: " + queryPath);
-//        FirebaseDatabase.getInstance().getReference().child(queryPath).addListenerForSingleValueEvent(new ValueEventListener() {
-//
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//                Log.d(TAG, "Data changed under " + queryPath);
-//                mAllSummaries = new ArrayList<>();
-//                mTeamSummaries = new ArrayList<>();
-//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                    MatchSummary matchSummary = snapshot.getValue(MatchSummary.class);
-//                    if (matchSummary != null) {
-//                        matchSummary.Id = snapshot.getKey();
-//                        matchSummary.AwayFullName = getTeam(matchSummary.AwayId).FullName;
-//                        matchSummary.HomeFullName = getTeam(matchSummary.HomeId).FullName;
-//                        matchSummary.IsRemote = true;
-//                        mAllSummaries.add(matchSummary);
-//                        if (matchSummary.HomeId.equals(mUser.TeamId) || matchSummary.AwayId.equals(mUser.TeamId)) {
-//                            mTeamSummaries.add(matchSummary);
-//                        }
-//                    }
-//                }
-//
-//                mAllSummaries.sort((summary1, summary2) -> Integer.compare(summary2.MatchDate.compareTo(summary1.MatchDate), 0));
-//                Log.d(TAG, "Size of summary collection: " + mAllSummaries.size());
-//                mTeamSummaries.sort((summary1, summary2) -> Integer.compare(summary2.MatchDate.compareTo(summary1.MatchDate), 0));
-//                Log.d(TAG, "Size of team summary collection: " + mTeamSummaries.size());
-//                mProgressBar.setIndeterminate(false);
-//                replaceFragment(MatchListFragment.newInstance(mTeamSummaries, mUser.TeamId));
-//                Log.d(TAG, "Finished querying match summary data.");
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                Log.d(TAG, "++matchSummaryQuery::onCancelled(DatabaseError");
-//                Log.e(TAG, databaseError.getMessage());
-//            }
-//        });
-  }
-
-  // TODO: is this still necessary?
-  private void getNearestOpponents(boolean isByConference) {
-
-    Log.d(TAG, "++getNearestOpponents(boolean)");
-//        mTeams.sort(new ByTablePosition());
-//        mUser.AheadTeamId = mUser.BehindTeamId = BaseActivity.DEFAULT_ID;
-//        int targetIndex = 0;
-//        for (; targetIndex < mTeams.size(); targetIndex++) {
-//            if (mTeams.get(targetIndex).Id.equals(mUser.TeamId)) {
-//                break;
-//            }
-//        }
-//
-//        // get the team that is ahead of selected team
-//        int targetConferenceId = mTeams.get(targetIndex).ConferenceId;
-//        for (int index = 0; index < targetIndex; index++) {
-//            if (!isByConference) {
-//                mUser.AheadTeamId = mTeams.get(index).Id;
-//            } else if (mTeams.get(index).ConferenceId == targetConferenceId) {
-//                mUser.AheadTeamId = mTeams.get(index).Id;
-//            }
-//        }
-//
-//        // get the team that is behind the selected team
-//        if (mTeams.size() > targetIndex + 1) {
-//            for (int index = targetIndex + 1; index < mTeams.size(); index++) {
-//                if (!isByConference) {
-//                    mUser.BehindTeamId = mTeams.get(index).Id;
-//                    break;
-//                } else if (mTeams.get(index).ConferenceId == targetConferenceId) {
-//                    mUser.BehindTeamId = mTeams.get(index).Id;
-//                    break;
-//                }
-//            }
-//        }
-  }
 
   private TeamEntity getTeam(String teamId) {
 
@@ -410,9 +261,9 @@ public class MainActivity extends BaseActivity implements
     return new TeamEntity();
   }
 
-  private void getUserPreferences() {
+  private void queryData() {
 
-    Log.d(TAG, "++getUserPreferences()");
+    Log.d(TAG, "++queryData()");
     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     if (sharedPreferences.contains(UserPreferencesFragment.KEY_TEAM_PREFERENCE)) {
       String preference = sharedPreferences.getString(UserPreferencesFragment.KEY_TEAM_PREFERENCE, getString(R.string.none));
@@ -459,51 +310,12 @@ public class MainActivity extends BaseActivity implements
       mSnackbar.show();
       replaceFragment(UserPreferencesFragment.newInstance(new ArrayList<>(mPackagedData.Teams)));
     } else {
-      queryData();
+      new QueryDataAsync(
+        this,
+        TrendoRepository.getInstance(this),
+        mUser.TeamId,
+        mUser.Year).execute();
     }
-  }
-
-  private void queryData() {
-
-    Log.d(TAG, "++queryData()");
-    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-    if (sharedPreferences.contains(UserPreferencesFragment.KEY_TEAM_PREFERENCE)) {
-      String preference = sharedPreferences.getString(UserPreferencesFragment.KEY_TEAM_PREFERENCE, getString(R.string.none));
-      if (preference != null) {
-        if (preference.equals(getString(R.string.none))) {
-          mUser.TeamId = BaseActivity.DEFAULT_ID;
-        } else {
-          try {
-            //noinspection ResultOfMethodCallIgnored
-            UUID.fromString(preference);
-            mUser.TeamId = preference;
-          } catch (Exception ex) {
-            mUser.TeamId = BaseActivity.DEFAULT_ID;
-          }
-        }
-      } else {
-        mUser.TeamId = BaseActivity.DEFAULT_ID;
-      }
-    }
-
-    if (sharedPreferences.contains(UserPreferencesFragment.KEY_YEAR_PREFERENCE)) {
-      String preference = sharedPreferences.getString(UserPreferencesFragment.KEY_YEAR_PREFERENCE, getString(R.string.none));
-      if (preference != null) {
-        if (preference.equals(getString(R.string.none))) {
-          mUser.Year = Calendar.getInstance().get(Calendar.YEAR);
-        } else {
-          try {
-            mUser.Year = Integer.parseInt(preference);
-          } catch (Exception ex) {
-            mUser.Year = Calendar.getInstance().get(Calendar.YEAR);
-          }
-        }
-      } else {
-        mUser.Year = Calendar.getInstance().get(Calendar.YEAR);
-      }
-    }
-
-    new QueryDataAsync(this, TrendoRepository.getInstance(this), mUser.TeamId, mUser.Year).execute();
   }
 
   private void replaceFragment(Fragment fragment) {

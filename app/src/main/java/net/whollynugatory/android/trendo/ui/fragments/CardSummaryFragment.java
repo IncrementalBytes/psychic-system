@@ -25,8 +25,8 @@ import android.widget.TextView;
 
 import net.whollynugatory.android.trendo.R;
 import net.whollynugatory.android.trendo.common.Trend;
+import net.whollynugatory.android.trendo.db.views.TrendDetails;
 import net.whollynugatory.android.trendo.ui.BaseActivity;
-import net.whollynugatory.android.trendo.db.entity.TrendEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,9 +66,9 @@ public class CardSummaryFragment extends Fragment {
   private CardView mTotalPointsCard;
   private TextView mTotalPointsText;
 
-  private List<TrendEntity> mTrends;
+  private List<TrendDetails> mTrends;
 
-  public static CardSummaryFragment newInstance(ArrayList<TrendEntity> trends) {
+  public static CardSummaryFragment newInstance(ArrayList<TrendDetails> trends) {
 
     Log.d(TAG, "++newInstance(ArrayList<>)");
     CardSummaryFragment fragment = new CardSummaryFragment();
@@ -101,7 +101,7 @@ public class CardSummaryFragment extends Fragment {
     Log.d(TAG, "++onCreate(Bundle)");
     Bundle arguments = getArguments();
     if (arguments != null) {
-      mTrends = (ArrayList<TrendEntity>)arguments.getSerializable(BaseActivity.ARG_TRENDS);
+      mTrends = (ArrayList<TrendDetails>)arguments.getSerializable(BaseActivity.ARG_TRENDS);
     } else {
       Log.e(TAG, "Arguments were null.");
     }
@@ -162,7 +162,7 @@ public class CardSummaryFragment extends Fragment {
 
     if (mTrends != null && mTrends.size() > 0) {
       Log.d(TAG, "++updateUI()");
-      TrendEntity valueTrend = mTrends.get(mTrends.size() - 1);
+      TrendDetails valueTrend = mTrends.get(mTrends.size() - 1);
 
       mGoalDifferentialCard.setOnClickListener(v -> mCallback.onCardSummaryTrendClicked(Trend.GoalDifferential));
       mGoalDifferentialText.setText(String.valueOf(valueTrend.GoalDifferential));

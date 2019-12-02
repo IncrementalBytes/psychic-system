@@ -24,6 +24,7 @@ import net.whollynugatory.android.trendo.db.entity.TeamEntity;
 import net.whollynugatory.android.trendo.db.entity.TrendEntity;
 import net.whollynugatory.android.trendo.ui.BaseActivity;
 import net.whollynugatory.android.trendo.ui.DataActivity;
+import net.whollynugatory.android.trendo.utils.SortUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -68,7 +69,7 @@ public class TrendTableAsync extends AsyncTask<Void, Void, Void> {
       long prevTotalPoints = 0;
       long totalMatches = 34;
       long matchesRemaining = totalMatches;
-      int matchDay = 0;
+      int matchNumber = 0;
       for (MatchSummaryEntity summary : mMatchSummaries) {
         long pointsFromMatch;
         long goalsAgainst;
@@ -83,6 +84,7 @@ public class TrendTableAsync extends AsyncTask<Void, Void, Void> {
           goalsFor = summary.HomeScore;
           if (summary.HomeScore > summary.AwayScore) {
             pointsFromMatch = (long) 3;
+            team.TotalWins++;
             Log.d(TAG, String.format("%s won: %d", team.ShortName, pointsFromMatch));
           } else if (summary.HomeScore < summary.AwayScore) {
             pointsFromMatch = (long) 0;
@@ -98,6 +100,7 @@ public class TrendTableAsync extends AsyncTask<Void, Void, Void> {
           goalsFor = summary.AwayScore;
           if (summary.AwayScore > summary.HomeScore) {
             pointsFromMatch = (long) 3;
+            team.TotalWins++;
             Log.d(TAG, String.format("%s won: %d", team.ShortName, pointsFromMatch));
           } else if (summary.AwayScore < summary.HomeScore) {
             pointsFromMatch = (long) 0;
@@ -110,11 +113,11 @@ public class TrendTableAsync extends AsyncTask<Void, Void, Void> {
           continue;
         }
 
-        matchDay++;
+        matchNumber++;
         TrendEntity newTrend = new TrendEntity();
         newTrend.TeamId = team.Id;
         newTrend.Year = summary.Year;
-        newTrend.Match = matchDay;
+        newTrend.MatchNumber = matchNumber;
         newTrend.GoalsAgainst = goalsAgainst + prevGoalAgainst;
         Log.d(
           TAG,
@@ -133,7 +136,7 @@ public class TrendTableAsync extends AsyncTask<Void, Void, Void> {
 
         double totalPoints = (double) pointsFromMatch + prevTotalPoints;
         if (totalPoints > 0) {
-          totalPoints = (pointsFromMatch + prevTotalPoints) / (double) (matchDay);
+          totalPoints = (pointsFromMatch + prevTotalPoints) / (double) (matchNumber);
         }
 
         newTrend.PointsPerGame = totalPoints;
@@ -147,6 +150,17 @@ public class TrendTableAsync extends AsyncTask<Void, Void, Void> {
         prevGoalFor = goalsFor + prevGoalFor;
         prevTotalPoints = pointsFromMatch + prevTotalPoints;
       }
+
+      team.GoalDifferential = prevGoalDifferential;
+      team.GoalsScored = prevGoalFor;
+      team.TotalPoints = prevTotalPoints;
+    }
+
+    mTeams.sort(new SortUtils.ByTotalPoints());
+    int tablePosition = mTeams.size() + 1;
+    for (TeamEntity team : mTeams) {
+      team.TablePosition = --tablePosition;
+      mRepository.insertTeam(team);
     }
 
     return null;

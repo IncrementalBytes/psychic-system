@@ -26,6 +26,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import net.whollynugatory.android.trendo.db.views.MatchSummaryDetail;
+import net.whollynugatory.android.trendo.db.views.TrendDetails;
 import net.whollynugatory.android.trendo.ui.BaseActivity;
 import net.whollynugatory.android.trendo.db.dao.ConferenceDao;
 import net.whollynugatory.android.trendo.db.dao.MatchSummaryDao;
@@ -41,7 +42,7 @@ import java.util.concurrent.Executors;
 
 @Database(
   entities = {ConferenceEntity.class, MatchSummaryEntity.class, TeamEntity.class, TrendEntity.class},
-  views = {MatchSummaryDetail.class},
+  views = {MatchSummaryDetail.class, TrendDetails.class},
   version = 1,
   exportSchema = false)
 public abstract class TrendoDatabase extends RoomDatabase {

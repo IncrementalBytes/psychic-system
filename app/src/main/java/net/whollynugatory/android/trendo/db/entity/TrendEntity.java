@@ -30,13 +30,13 @@ import androidx.room.Index;
 @Entity(
   tableName = "trend_table",
   primaryKeys = {
-    "team_id", "year", "match"
+    "team_id", "year", "match_number"
   },
   foreignKeys = {
     @ForeignKey(entity = TeamEntity.class, parentColumns = "id", childColumns = "team_id")
   },
   indices = {
-    @Index(value = {"team_id","year","match"})
+    @Index(value = {"team_id","year","match_number"})
   })
 public class TrendEntity implements Serializable {
 
@@ -51,9 +51,9 @@ public class TrendEntity implements Serializable {
   public int Year;
 
   @NonNull
-  @ColumnInfo(name = "match")
-  @SerializedName("match")
-  public int Match;
+  @ColumnInfo(name = "match_number")
+  @SerializedName("match_number")
+  public int MatchNumber;
 
   @ColumnInfo(name = "goals_against")
   @SerializedName("goals_against")
@@ -88,7 +88,7 @@ public class TrendEntity implements Serializable {
     GoalsAgainst = 0;
     GoalDifferential = 0;
     GoalsFor = 0;
-    Match = 0;
+    MatchNumber = 0;
     MaxPointsPossible = 0;
     PointsByAverage = 0;
     PointsPerGame = 0.0;

@@ -19,6 +19,7 @@ import android.content.Context;
 import android.util.Log;
 
 import net.whollynugatory.android.trendo.db.views.MatchSummaryDetail;
+import net.whollynugatory.android.trendo.db.views.TrendDetails;
 import net.whollynugatory.android.trendo.ui.BaseActivity;
 import net.whollynugatory.android.trendo.db.entity.ConferenceEntity;
 import net.whollynugatory.android.trendo.db.entity.MatchSummaryEntity;
@@ -140,7 +141,7 @@ public class TrendoRepository {
     return mDatabase.trendDao().count(year);
   }
 
-  public List<TrendEntity> getAllTrends(String teamId, int year) {
+  public List<TrendDetails> getAllTrends(String teamId, int year) {
 
     return mDatabase.trendDao().getAll(teamId, year);
   }

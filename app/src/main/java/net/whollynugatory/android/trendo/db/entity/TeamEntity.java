@@ -65,6 +65,21 @@ public class TeamEntity implements Serializable {
   @ColumnInfo(name = "defunct")
   public boolean Defunct;
 
+  @ColumnInfo(name = "goal_differential")
+  public long GoalDifferential;
+
+  @ColumnInfo(name = "goals_scored")
+  public long GoalsScored;
+
+  @ColumnInfo(name = "table_position")
+  public int TablePosition;
+
+  @ColumnInfo(name = "total_points")
+  public long TotalPoints;
+
+  @ColumnInfo(name = "total_wins")
+  public long TotalWins;
+
   public TeamEntity() {
 
     Id = BaseActivity.DEFAULT_ID;
@@ -73,6 +88,11 @@ public class TeamEntity implements Serializable {
     ShortName = "";
     Established = -1;
     Defunct = false;
+    GoalDifferential = 0;
+    GoalsScored = 0;
+    TablePosition = -1;
+    TotalPoints = -1;
+    TotalWins = 0;
   }
 
   /**

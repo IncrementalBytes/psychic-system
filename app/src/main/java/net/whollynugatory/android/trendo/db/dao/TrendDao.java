@@ -16,6 +16,7 @@
 package net.whollynugatory.android.trendo.db.dao;
 
 import net.whollynugatory.android.trendo.db.entity.TrendEntity;
+import net.whollynugatory.android.trendo.db.views.TrendDetails;
 
 import java.util.List;
 
@@ -33,8 +34,8 @@ public interface TrendDao {
   @Query("SELECT COUNT(*) FROM trend_table WHERE year == :year")
   int count(int year);
 
-  @Query("SELECT * FROM trend_table WHERE team_id == :teamId AND year == :year ORDER BY `match`")
-  List<TrendEntity> getAll(String teamId, int year);
+  @Query("SELECT * FROM TrendDetails WHERE TeamId == :teamId AND Year == :year ORDER BY MatchNumber")
+  List<TrendDetails> getAll(String teamId, int year);
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   void insert(TrendEntity trend);

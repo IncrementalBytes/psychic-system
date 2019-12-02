@@ -20,8 +20,8 @@ import com.google.gson.annotations.SerializedName;
 import net.whollynugatory.android.trendo.db.entity.ConferenceEntity;
 import net.whollynugatory.android.trendo.db.entity.MatchSummaryEntity;
 import net.whollynugatory.android.trendo.db.entity.TeamEntity;
-import net.whollynugatory.android.trendo.db.entity.TrendEntity;
 import net.whollynugatory.android.trendo.db.views.MatchSummaryDetail;
+import net.whollynugatory.android.trendo.db.views.TrendDetails;
 
 import java.util.ArrayList;
 
@@ -38,7 +38,11 @@ public class PackagedData {
   @SerializedName("teams")
   public ArrayList<TeamEntity> Teams;
 
-  public ArrayList<TrendEntity> Trends;
+  public ArrayList<TrendDetails> Trends;
+
+  public ArrayList<TrendDetails> TrendsAhead;
+
+  public ArrayList<TrendDetails> TrendsBehind;
 
   public PackagedData() {
 
@@ -47,5 +51,7 @@ public class PackagedData {
     MatchSummaries = new ArrayList<>();
     Teams = new ArrayList<>();
     Trends = new ArrayList<>();
+    TrendsAhead = new ArrayList<>();
+    TrendsBehind = new ArrayList<>();
   }
 }

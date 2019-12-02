@@ -13,7 +13,6 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 package net.whollynugatory.android.trendo.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,18 +21,14 @@ public class BaseActivity extends AppCompatActivity {
 
     public static final String BASE_TAG = "Trendo::";
 
-    public static final String ARG_AHEAD = "ahead";
-    public static final String ARG_BEHIND = "behind";
     public static final String ARG_MATCH_SUMMARIES = "match_summaries";
-    public static final String ARG_MESSAGE = "message";
-    public static final String ARG_ORDER_BY = "order_by";
     public static final String ARG_TEAM_ID = "team_id";
     public static final String ARG_TEAMS = "teams";
     public static final String ARG_TREND = "trend";
     public static final String ARG_TRENDS = "trends";
+    public static final String ARG_TRENDS_AHEAD = "ahead";
+    public static final String ARG_TRENDS_BEHIND = "behind";
     public static final String ARG_USER_ID = "user_id";
-    public static final String ARG_USER = "user";
-    public static final String ARG_YEAR = "year";
 
     public static final String DEFAULT_CONFERENCE_DATA = "Conferences.json";
     public static final String DEFAULT_DATE = "00000101";
@@ -41,7 +36,4 @@ public class BaseActivity extends AppCompatActivity {
     public static final String DEFAULT_TEAM_DATA = "Teams.json";
 
     public static final String DATABASE_NAME = "trendo-db.sqlite";
-    public static final int NUM_TRENDS = 7;
-
-    public static final int RC_COMMISSIONER = 4701;
 }
