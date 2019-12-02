@@ -16,9 +16,6 @@
 package net.whollynugatory.android.trendo;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-
-import java.util.Map;
 
 import net.whollynugatory.android.trendo.db.entity.MatchSummaryEntity;
 import net.whollynugatory.android.trendo.ui.BaseActivity;

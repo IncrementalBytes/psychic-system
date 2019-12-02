@@ -22,8 +22,6 @@ import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 
@@ -65,6 +63,7 @@ public class MainActivity extends BaseActivity implements
   private Snackbar mSnackbar;
 
   private PackagedData mPackagedData;
+  private int mQueryAttempts;
   private User mUser;
 
   /*
@@ -79,8 +78,9 @@ public class MainActivity extends BaseActivity implements
 
     // get parameters from previous activity
     mPackagedData = new PackagedData();
+    mQueryAttempts++;
     mUser = new User();
-    mUser.Id = getIntent().getStringExtra(BaseActivity.ARG_USER_ID);
+    mUser.Uid = getIntent().getStringExtra(BaseActivity.ARG_UID);
 
     // TODO: validate user?
 
@@ -93,7 +93,30 @@ public class MainActivity extends BaseActivity implements
     getSupportFragmentManager().addOnBackStackChangedListener(() -> {
       Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_fragment_container);
       if (fragment != null) {
-        updateTitleAndDrawer(fragment);
+        String fragmentClassName = fragment.getClass().getName();
+        if (fragmentClassName.equals(MatchListFragment.class.getName())) {
+          if (mUser != null && mUser.Year > 0) {
+            setTitle(String.format(Locale.ENGLISH, "%s - %d", getTeam(mUser.TeamId).Name, mUser.Year));
+          } else {
+            setTitle(getString(R.string.title_match_summaries));
+          }
+        } else if (fragmentClassName.equals(UserPreferencesFragment.class.getName())) {
+          setTitle(getString(R.string.title_preferences));
+        } else if (fragmentClassName.equals(LineChartFragment.class.getName())) {
+          if (mUser != null && mUser.Year > 0) {
+            setTitle(String.format(Locale.ENGLISH, "%s - %d", getTeam(mUser.TeamId).Name, mUser.Year));
+          } else {
+            setTitle(getString(R.string.title_trend_chart));
+          }
+        } else if (fragmentClassName.equals(CardSummaryFragment.class.getName())) {
+          if (mUser != null && mUser.Year > 0) {
+            setTitle(String.format(Locale.ENGLISH, "%s - %d", getTeam(mUser.TeamId).Name, mUser.Year));
+          } else {
+            setTitle(getString(R.string.title_summary));
+          }
+        } else {
+          setTitle(getString(R.string.app_name));
+        }
       }
     });
 
@@ -203,16 +226,13 @@ public class MainActivity extends BaseActivity implements
 
     Log.d(TAG, "++onMatchListPopulated(int)");
     mProgressBar.setIndeterminate(false);
-    if (size == 0) {
-      // TODO: match list empty
-    }
   }
 
   @Override
   public void onMatchListItemSelected() {
 
     Log.d(TAG, "++onMatchListItemSelected()");
-//    replaceFragment(TrendFragment.newInstance(mUser, new ArrayList<>(mPackagedData.Teams)));
+    // TODO: open line chart and highlight match?
   }
 
   @Override
@@ -237,9 +257,10 @@ public class MainActivity extends BaseActivity implements
         Snackbar.LENGTH_LONG);
       mSnackbar.show();
       replaceFragment(UserPreferencesFragment.newInstance(new ArrayList<>(mPackagedData.Teams)));
-    } else if (packagedData.Trends.size() == 0) {
-      // TODO: handle no trends for team/year
+    } else if (packagedData.Trends.size() == 0 && mQueryAttempts < 4) {
       Log.w(TAG, "No trends data found for " + mUser.TeamId);
+      mQueryAttempts++;
+      new QueryDataAsync(this, TrendoRepository.getInstance(this), mUser).execute();
     } else {
       replaceFragment(CardSummaryFragment.newInstance(mPackagedData.Trends));
     }
@@ -301,51 +322,16 @@ public class MainActivity extends BaseActivity implements
       }
     }
 
-    if (mUser.TeamId.isEmpty() || mUser.TeamId.equals(BaseActivity.DEFAULT_ID)) {
-      mProgressBar.setIndeterminate(false);
-      mSnackbar = Snackbar.make(
-        findViewById(R.id.main_fragment_container),
-        getString(R.string.no_matches),
-        Snackbar.LENGTH_LONG);
-      mSnackbar.show();
-      replaceFragment(UserPreferencesFragment.newInstance(new ArrayList<>(mPackagedData.Teams)));
-    } else {
-      new QueryDataAsync(
-        this,
-        TrendoRepository.getInstance(this),
-        mUser.TeamId,
-        mUser.Year).execute();
-    }
+    new QueryDataAsync(this, TrendoRepository.getInstance(this), mUser).execute();
   }
 
   private void replaceFragment(Fragment fragment) {
 
     Log.d(TAG, "++replaceFragment()");
-    if (mSnackbar != null && mSnackbar.isShown()) {
-      mSnackbar.dismiss();
-    }
-
-    updateTitleAndDrawer(fragment);
-    FragmentManager fragmentManager = getSupportFragmentManager();
-    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-    fragmentTransaction.replace(R.id.main_fragment_container, fragment);
-    fragmentTransaction.commitAllowingStateLoss();
-  }
-
-  private void updateTitleAndDrawer(Fragment fragment) {
-
-    Log.d(TAG, "++updateTitleAndDrawer(Fragment)");
-    String fragmentClassName = fragment.getClass().getName();
-    if (fragmentClassName.equals(MatchListFragment.class.getName())) {
-      if (mUser != null && mUser.Year > 0) {
-        setTitle(String.format(Locale.ENGLISH, "%s - %d", getTeam(mUser.TeamId).Name, mUser.Year));
-      } else {
-        setTitle(getString(R.string.title_match_summaries));
-      }
-    } else if (fragmentClassName.equals(UserPreferencesFragment.class.getName())) {
-      setTitle(getString(R.string.title_preferences));
-    } else {
-      setTitle(getString(R.string.app_name));
-    }
+    getSupportFragmentManager()
+      .beginTransaction()
+      .replace(R.id.main_fragment_container, fragment)
+      .addToBackStack(null)
+      .commit();
   }
 }

@@ -28,12 +28,13 @@ public class BaseActivity extends AppCompatActivity {
     public static final String ARG_TRENDS = "trends";
     public static final String ARG_TRENDS_AHEAD = "ahead";
     public static final String ARG_TRENDS_BEHIND = "behind";
-    public static final String ARG_USER_ID = "user_id";
+    public static final String ARG_UID = "user_id";
 
     public static final String DEFAULT_CONFERENCE_DATA = "Conferences.json";
     public static final String DEFAULT_DATE = "00000101";
     public static final String DEFAULT_ID = "000000000-0000-0000-0000-000000000000";
     public static final String DEFAULT_TEAM_DATA = "Teams.json";
+    public static final String DEFAULT_UID = "0000000000000000000000000000";
 
     public static final String DATABASE_NAME = "trendo-db.sqlite";
 }

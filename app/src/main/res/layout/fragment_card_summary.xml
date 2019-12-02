@@ -28,16 +28,19 @@
     <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
+
       <TextView
         android:id="@+id/summary_text_matches"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_view_margin"
-        android:text="@string/matches_played"
         android:gravity="center"
+        android:text="@string/matches_played"
         android:textColor="@color/primaryAccentText"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
       <TextView
         android:id="@+id/summary_text_matches_value"
         android:layout_width="match_parent"
@@ -69,16 +72,20 @@
     <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
+
       <TextView
         android:id="@+id/summary_text_total_points"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_view_margin"
-        android:text="@string/total_points"
+        android:elevation="2dp"
         android:gravity="center"
+        android:text="@string/total_points"
         android:textColor="@color/primaryAccentText"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
       <TextView
         android:id="@+id/summary_text_total_points_value"
         android:layout_width="match_parent"
@@ -88,10 +95,21 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/summary_text_total_points"
+        android:elevation="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+      <ImageView
+        android:id="@+id/summary_image_total_points"
+        android:layout_width="@dimen/image_width_thumbnail"
+        android:layout_height="@dimen/image_height_thumbnail"
+        android:layout_margin="@dimen/default_view_margin"
+        android:contentDescription="@string/total_points"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_line_chart_dark" />
     </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.cardview.widget.CardView>
 
@@ -110,16 +128,19 @@
     <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
+
       <TextView
         android:id="@+id/summary_text_points_per_game"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_view_margin"
-        android:text="@string/points_per_game"
         android:gravity="center"
+        android:text="@string/points_per_game"
         android:textColor="@color/primaryAccentText"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
       <TextView
         android:id="@+id/summary_text_points_per_game_value"
         android:layout_width="match_parent"
@@ -129,10 +150,20 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/summary_text_points_per_game"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+      <ImageView
+        android:id="@+id/summary_image_points_per_game"
+        android:layout_width="@dimen/image_width_thumbnail"
+        android:layout_height="@dimen/image_height_thumbnail"
+        android:layout_margin="@dimen/default_view_margin"
+        android:contentDescription="@string/points_per_game"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_line_chart_dark" />
     </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.cardview.widget.CardView>
 
@@ -151,16 +182,19 @@
     <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
+
       <TextView
         android:id="@+id/summary_text_max_points"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_view_margin"
-        android:text="@string/max_points_possible"
         android:gravity="center"
+        android:text="@string/max_points_possible"
         android:textColor="@color/primaryAccentText"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
       <TextView
         android:id="@+id/summary_text_max_points_value"
         android:layout_width="match_parent"
@@ -170,10 +204,20 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/summary_text_max_points"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+      <ImageView
+        android:id="@+id/summary_image_max_points"
+        android:layout_width="@dimen/image_width_thumbnail"
+        android:layout_height="@dimen/image_height_thumbnail"
+        android:layout_margin="@dimen/default_view_margin"
+        android:contentDescription="@string/max_points_possible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_line_chart_dark" />
     </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.cardview.widget.CardView>
 
@@ -192,16 +236,19 @@
     <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
+
       <TextView
         android:id="@+id/summary_text_points_by_average"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_view_margin"
-        android:text="@string/total_points_by_ppg"
         android:gravity="center"
+        android:text="@string/total_points_by_ppg"
         android:textColor="@color/primaryAccentText"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
       <TextView
         android:id="@+id/summary_text_points_by_average_value"
         android:layout_width="match_parent"
@@ -211,10 +258,20 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/summary_text_points_by_average"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+      <ImageView
+        android:id="@+id/summary_image_points_by_average"
+        android:layout_width="@dimen/image_width_thumbnail"
+        android:layout_height="@dimen/image_height_thumbnail"
+        android:layout_margin="@dimen/default_view_margin"
+        android:contentDescription="@string/total_points_by_ppg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_line_chart_dark" />
     </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.cardview.widget.CardView>
 
@@ -235,16 +292,19 @@
     <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
+
       <TextView
         android:id="@+id/summary_text_goals_for"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_view_margin"
-        android:text="@string/goals_for"
         android:gravity="center"
+        android:text="@string/goals_for"
         android:textColor="@color/primaryAccentText"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
       <TextView
         android:id="@+id/summary_text_goals_for_value"
         android:layout_width="match_parent"
@@ -254,10 +314,20 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/summary_text_goals_for"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+      <ImageView
+        android:id="@+id/summary_image_goals_for"
+        android:layout_width="@dimen/image_width_thumbnail"
+        android:layout_height="@dimen/image_height_thumbnail"
+        android:layout_margin="@dimen/default_view_margin"
+        android:contentDescription="@string/goals_for"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_line_chart_dark" />
     </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.cardview.widget.CardView>
 
@@ -276,16 +346,19 @@
     <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
+
       <TextView
         android:id="@+id/summary_text_goals_against"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_view_margin"
-        android:text="@string/goals_against"
         android:gravity="center"
+        android:text="@string/goals_against"
         android:textColor="@color/primaryAccentText"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
       <TextView
         android:id="@+id/summary_text_goals_against_value"
         android:layout_width="match_parent"
@@ -295,10 +368,20 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/summary_text_goals_against"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+      <ImageView
+        android:id="@+id/summary_image_goals_against"
+        android:layout_width="@dimen/image_width_thumbnail"
+        android:layout_height="@dimen/image_height_thumbnail"
+        android:layout_margin="@dimen/default_view_margin"
+        android:contentDescription="@string/goals_against"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_line_chart_dark" />
     </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.cardview.widget.CardView>
 
@@ -317,16 +400,19 @@
     <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
+
       <TextView
         android:id="@+id/summary_text_goals_differential"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_view_margin"
-        android:text="@string/goal_differential"
         android:gravity="center"
+        android:text="@string/goal_differential"
         android:textColor="@color/primaryAccentText"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
       <TextView
         android:id="@+id/summary_text_goals_differential_value"
         android:layout_width="match_parent"
@@ -336,10 +422,20 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/summary_text_goals_differential"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+      <ImageView
+        android:id="@+id/summary_image_goal_differential"
+        android:layout_width="@dimen/image_width_thumbnail"
+        android:layout_height="@dimen/image_height_thumbnail"
+        android:layout_margin="@dimen/default_view_margin"
+        android:contentDescription="@string/goal_differential"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_line_chart_dark" />
     </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

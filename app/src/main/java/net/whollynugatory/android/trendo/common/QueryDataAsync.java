@@ -20,6 +20,7 @@ import android.util.Log;
 
 import net.whollynugatory.android.trendo.db.TrendoRepository;
 import net.whollynugatory.android.trendo.db.entity.TeamEntity;
+import net.whollynugatory.android.trendo.db.entity.User;
 import net.whollynugatory.android.trendo.ui.BaseActivity;
 import net.whollynugatory.android.trendo.ui.MainActivity;
 import net.whollynugatory.android.trendo.utils.SortUtils;
@@ -36,23 +37,17 @@ public class QueryDataAsync extends AsyncTask<Void, Void, PackagedData> {
   private TrendoRepository mRepository;
   private String mTeamAheadId;
   private String mTeamBehindId;
-  private String mTeamId;
-  private int mYear;
+  private User mUser;
 
-  public QueryDataAsync(
-    MainActivity context,
-    TrendoRepository repository,
-    String teamId,
-    int year) {
+  public QueryDataAsync(MainActivity context, TrendoRepository repository, User user) {
 
-    Log.d(TAG, "QueryDataAsync(MainActivity, TrendoDatabase, String, String, String, int)");
+    Log.d(TAG, "QueryDataAsync(MainActivity, TrendoDatabase, User)");
     mActivityWeakReference = new WeakReference<>(context);
     mPackagedData = new PackagedData();
     mRepository = repository;
     mTeamAheadId = BaseActivity.DEFAULT_ID;
     mTeamBehindId = BaseActivity.DEFAULT_ID;
-    mTeamId = teamId;
-    mYear = year;
+    mUser = user;
   }
 
   @Override
@@ -60,16 +55,16 @@ public class QueryDataAsync extends AsyncTask<Void, Void, PackagedData> {
 
     mPackagedData.Conferences = new ArrayList<>(mRepository.getAllConferences());
     mPackagedData.Teams = new ArrayList<>(mRepository.getAllTeams());
-    getNearestOpponents();
-    if (!mTeamId.isEmpty() && !mTeamId.equals(BaseActivity.DEFAULT_ID)) {
-      mPackagedData.MatchDetails = new ArrayList<>(mRepository.getAllMatchSummaries(mTeamId, mYear));
-      mPackagedData.Trends = new ArrayList<>(mRepository.getAllTrends(mTeamId, mYear));
+    if (!mUser.TeamId.isEmpty() && !mUser.TeamId.equals(BaseActivity.DEFAULT_ID)) {
+      mPackagedData.MatchDetails = new ArrayList<>(mRepository.getAllMatchSummaries(mUser.TeamId, mUser.Year));
+      mPackagedData.Trends = new ArrayList<>(mRepository.getAllTrends(mUser.TeamId, mUser.Year));
+      getNearestOpponents();
       if (!mTeamAheadId.isEmpty() && !mTeamAheadId.equals(BaseActivity.DEFAULT_ID)) {
-        mPackagedData.TrendsAhead = new ArrayList<>(mRepository.getAllTrends(mTeamAheadId, mYear));
+        mPackagedData.TrendsAhead = new ArrayList<>(mRepository.getAllTrends(mTeamAheadId, mUser.Year));
       }
 
       if (!mTeamBehindId.isEmpty() && !mTeamBehindId.equals(BaseActivity.DEFAULT_ID)) {
-        mPackagedData.TrendsBehind = new ArrayList<>(mRepository.getAllTrends(mTeamBehindId, mYear));
+        mPackagedData.TrendsBehind = new ArrayList<>(mRepository.getAllTrends(mTeamBehindId, mUser.Year));
       }
     }
 
@@ -95,7 +90,7 @@ public class QueryDataAsync extends AsyncTask<Void, Void, PackagedData> {
     teams.sort(new SortUtils.ByTablePosition());
     int targetIndex = 0;
     for (; targetIndex < teams.size(); targetIndex++) {
-      if (teams.get(targetIndex).Id.equals(mTeamId)) {
+      if (teams.get(targetIndex).Id.equals(mUser.TeamId)) {
         break;
       }
     }

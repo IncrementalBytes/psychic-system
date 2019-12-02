@@ -57,4 +57,7 @@
   <string name="trends">Trends:</string>
   <string name="matches_played">Matches Played</string>
   <string name="complete">Complete</string>
+  <string name="title_trend_chart">Trend Chart</string>
+  <string name="title_summary">Summary</string>
+  <string name="pending">Pending</string>
 </resources>

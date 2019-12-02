@@ -45,12 +45,10 @@ public class TrendEntity implements Serializable {
   @SerializedName("team_id")
   public String TeamId;
 
-  @NonNull
   @ColumnInfo(name = "year")
   @SerializedName("year")
   public int Year;
 
-  @NonNull
   @ColumnInfo(name = "match_number")
   @SerializedName("match_number")
   public int MatchNumber;

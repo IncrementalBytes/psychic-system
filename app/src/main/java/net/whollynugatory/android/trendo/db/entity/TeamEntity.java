@@ -56,12 +56,10 @@ public class TeamEntity implements Serializable {
   @SerializedName("short_name")
   public String ShortName;
 
-  @NonNull
   @ColumnInfo(name = "established")
   @SerializedName("established")
   public int Established;
 
-  @NonNull
   @ColumnInfo(name = "defunct")
   public boolean Defunct;
 

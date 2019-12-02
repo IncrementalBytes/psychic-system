@@ -43,7 +43,6 @@ public class MatchListFragment extends Fragment {
   public interface OnMatchListListener {
 
     void onMatchListPopulated(int size);
-
     void onMatchListItemSelected();
   }
 
@@ -69,7 +68,7 @@ public class MatchListFragment extends Fragment {
       Fragment Override(s)
    */
   @Override
-  public void onAttach(Context context) {
+  public void onAttach(@NonNull Context context) {
     super.onAttach(context);
 
     Log.d(TAG, "++onAttach(Context)");

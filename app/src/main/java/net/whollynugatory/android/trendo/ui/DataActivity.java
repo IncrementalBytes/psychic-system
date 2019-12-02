@@ -42,6 +42,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.core.content.ContextCompat;
+
 public class DataActivity extends BaseActivity {
 
   private static final String TAG = BASE_TAG + "DataActivity";
@@ -78,7 +80,7 @@ public class DataActivity extends BaseActivity {
 
     mMatchSummaryList = new ArrayList<>();
     mTeamList = new ArrayList<>();
-    mUserId = getIntent().getStringExtra(BaseActivity.ARG_USER_ID);
+    mUserId = getIntent().getStringExtra(BaseActivity.ARG_UID);
 
     File conferenceData = new File(getCacheDir(), BaseActivity.DEFAULT_CONFERENCE_DATA);
     try {
@@ -93,7 +95,7 @@ public class DataActivity extends BaseActivity {
         }
       }
 
-      mConferencesStatusImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_success_dark));
+      mConferencesStatusImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_success_dark));
       mConferencesStatusText.setText(getString(R.string.complete));
     } catch (IOException ioe) {
       Log.w(TAG, "Could not get assets.", ioe);
@@ -121,7 +123,7 @@ public class DataActivity extends BaseActivity {
         }
       }
 
-      mTeamsStatusImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_success_dark));
+      mTeamsStatusImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_success_dark));
       mTeamsStatusText.setText(getString(R.string.complete));
     } catch (IOException ioe) {
       Log.w(TAG, "Could not get assets.", ioe);
@@ -174,7 +176,7 @@ public class DataActivity extends BaseActivity {
         }
       }
 
-      mMatchSummariesStatusImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_success_dark));
+      mMatchSummariesStatusImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_success_dark));
       mMatchSummariesStatusText.setText(getString(R.string.complete));
     } catch (IOException ioe) {
       Log.w(TAG, "Could not get assets.", ioe);
@@ -189,7 +191,7 @@ public class DataActivity extends BaseActivity {
     mTrendsStatusText.setText(getString(R.string.complete));
     mTrendsStatusImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_success_dark, getTheme()));
     Intent intent = new Intent(DataActivity.this, MainActivity.class);
-    intent.putExtra(BaseActivity.ARG_USER_ID, mUserId);
+    intent.putExtra(BaseActivity.ARG_UID, mUserId);
     startActivity(intent);
     finish();
   }

@@ -165,7 +165,7 @@ public class SignInActivity extends BaseActivity implements OnClickListener {
 
     Log.d(TAG, "++onAuthenticateSuccess(FirebaseUser)");
     Intent intent = new Intent(SignInActivity.this, DataActivity.class);
-    intent.putExtra(ARG_USER_ID, user.getUid());
+    intent.putExtra(ARG_UID, user.getUid());
     startActivity(intent);
     finish();
   }

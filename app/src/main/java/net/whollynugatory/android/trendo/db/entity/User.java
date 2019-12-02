@@ -55,7 +55,7 @@ public class User implements Serializable {
    * Unique identifier of user.
    */
   @Exclude
-  public String Id;
+  public String Uid;
 
   /**
    * Unique identifier for team.
@@ -73,13 +73,13 @@ public class User implements Serializable {
   @SuppressWarnings("unused")
   public User() {
 
-    this.mIsBarChart = false;
-    this.mIsLineChart = true;
-    this.AheadTeamId = BaseActivity.DEFAULT_ID;
-    this.BehindTeamId = BaseActivity.DEFAULT_ID;
-    this.Id = BaseActivity.DEFAULT_ID;
-    this.TeamId = BaseActivity.DEFAULT_ID;
-    this.Year = Calendar.getInstance().get(Calendar.YEAR);
+    mIsBarChart = false;
+    mIsLineChart = true;
+    AheadTeamId = BaseActivity.DEFAULT_ID;
+    BehindTeamId = BaseActivity.DEFAULT_ID;
+    Uid = BaseActivity.DEFAULT_UID;
+    TeamId = BaseActivity.DEFAULT_ID;
+    Year = Calendar.getInstance().get(Calendar.YEAR);
   }
 
   @NonNull
@@ -88,31 +88,9 @@ public class User implements Serializable {
 
     return String.format(
       Locale.ENGLISH,
-      "{Id:%s, TeamId:%s, Year:%d}",
-      this.Id,
-      this.TeamId,
-      this.Year);
-  }
-
-  public boolean getIsBarChart() {
-
-    return this.mIsBarChart;
-  }
-
-  public boolean getIsLineChart() {
-
-    return this.mIsLineChart;
-  }
-
-  public void setIsBarChart() {
-
-    this.mIsBarChart = true;
-    this.mIsLineChart = false;
-  }
-
-  public void setIsLineChart() {
-
-    this.mIsBarChart = false;
-    this.mIsLineChart = true;
+      "{Uid:%s, TeamId:%s, Year:%d}",
+      Uid,
+      TeamId,
+      Year);
   }
 }
