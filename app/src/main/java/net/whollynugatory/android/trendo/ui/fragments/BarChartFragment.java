@@ -17,7 +17,7 @@ import net.whollynugatory.android.trendo.ui.BaseActivity;
 
 public class BarChartFragment extends Fragment {
 
-  private static final String TAG = BaseActivity.BASE_TAG + BarChartFragment.class.getSimpleName();
+  private static final String TAG = BaseActivity.BASE_TAG + "BarChartFragment";
 
   private BarChart mBarChart;
 

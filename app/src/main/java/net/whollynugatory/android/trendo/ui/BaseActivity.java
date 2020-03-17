@@ -31,6 +31,7 @@ public class BaseActivity extends AppCompatActivity {
     public static final String ARG_UID = "user_id";
 
     public static final String DEFAULT_CONFERENCE_DATA = "Conferences.json";
+    public static final String DEFAULT_DATA_FILE = "ConferencesAndTeams.json";
     public static final String DEFAULT_DATE = "00000101";
     public static final String DEFAULT_ID = "000000000-0000-0000-0000-000000000000";
     public static final String DEFAULT_TEAM_DATA = "Teams.json";

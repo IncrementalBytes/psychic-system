@@ -16,28 +16,17 @@
 
 package net.whollynugatory.android.trendo.db.dao;
 
-import androidx.lifecycle.LiveData;
-import androidx.room.Dao;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
-import androidx.room.Query;
-
-import net.whollynugatory.android.trendo.db.entity.ConferenceEntity;
+import net.whollynugatory.android.trendo.db.views.TrendDetails;
 
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
+import androidx.room.Dao;
+import androidx.room.Query;
+
 @Dao
-public interface ConferenceDao {
+public interface TrendDetailsDao {
 
-  @Query("SELECT COUNT(*) FROM conference_table")
-  int count();
-
-  @Query("SELECT * FROM conference_table")
-  LiveData<List<ConferenceEntity>> getAll();
-
-  @Insert(onConflict = OnConflictStrategy.IGNORE)
-  void insert(ConferenceEntity conference);
-
-  @Insert(onConflict = OnConflictStrategy.IGNORE)
-  void insertAll(List<ConferenceEntity> conferences);
+  @Query("SELECT * FROM TrendDetails WHERE TeamId == :teamId AND Year == :year ORDER BY MatchNumber")
+  LiveData<List<TrendDetails>> getAll(String teamId, int year);
 }

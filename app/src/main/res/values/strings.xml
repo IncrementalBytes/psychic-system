@@ -60,4 +60,12 @@
   <string name="title_trend_chart">Trend Chart</string>
   <string name="title_summary">Summary</string>
   <string name="pending">Pending</string>
+
+  <string name="pref_key_season" translatable="false">selected_season</string>
+  <string name="pref_key_team" translatable="false">selected_team</string>
+  <string-array name="seasons">
+    <item>2017</item>
+    <item>2018</item>
+    <item>2019</item>
+  </string-array>
 </resources>

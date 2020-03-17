@@ -14,45 +14,27 @@
  *    limitations under the License.
  */
 
-package net.whollynugatory.android.trendo.common;
+package net.whollynugatory.android.trendo.db.entity;
 
 import com.google.gson.annotations.SerializedName;
 
-import net.whollynugatory.android.trendo.db.entity.ConferenceEntity;
-import net.whollynugatory.android.trendo.db.entity.MatchSummaryEntity;
-import net.whollynugatory.android.trendo.db.entity.TeamEntity;
-import net.whollynugatory.android.trendo.db.views.MatchSummaryDetails;
-import net.whollynugatory.android.trendo.db.views.TrendDetails;
-
 import java.util.ArrayList;
 
-public class PackagedData {
+public class RemoteData {
 
   @SerializedName("conferences")
   public ArrayList<ConferenceEntity> Conferences;
 
-  public ArrayList<MatchSummaryDetails> MatchDetails;
-
   @SerializedName("match_summaries")
-  public ArrayList<MatchSummaryEntity> MatchSummaries;
+  public ArrayList<MatchSummaryEntity> Matches;
 
   @SerializedName("teams")
   public ArrayList<TeamEntity> Teams;
 
-  public ArrayList<TrendDetails> Trends;
-
-  public ArrayList<TrendDetails> TrendsAhead;
-
-  public ArrayList<TrendDetails> TrendsBehind;
-
-  public PackagedData() {
+  public RemoteData() {
 
     Conferences = new ArrayList<>();
-    MatchDetails = new ArrayList<>();
-    MatchSummaries = new ArrayList<>();
+    Matches = new ArrayList<>();
     Teams = new ArrayList<>();
-    Trends = new ArrayList<>();
-    TrendsAhead = new ArrayList<>();
-    TrendsBehind = new ArrayList<>();
   }
 }

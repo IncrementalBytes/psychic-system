@@ -46,7 +46,7 @@ import net.whollynugatory.android.trendo.ui.BaseActivity;
 
 public class LineChartFragment extends Fragment {
 
-  private static final String TAG = BaseActivity.BASE_TAG + LineChartFragment.class.getSimpleName();
+  private static final String TAG = BaseActivity.BASE_TAG + "LineChartFragment";
 
   public interface OnLineChartListener {
 
@@ -269,7 +269,8 @@ public class LineChartFragment extends Fragment {
         String.format(
           Locale.ENGLISH,
           "%d. %s",
-          mTrendsAhead.get(0).TablePosition,
+//          mTrendsAhead.get(0).TablePosition,
+          0, // TODO: replace
           mTrendsAhead.get(0).ShortName));
       mAheadDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
       if (getContext() != null) {
@@ -293,7 +294,8 @@ public class LineChartFragment extends Fragment {
         String.format(
           Locale.ENGLISH,
           "%d. %s",
-          mTrendsBehind.get(0).TablePosition,
+//          mTrendsBehind.get(0).TablePosition,
+          0, // TODO: replace
           mTrendsBehind.get(0).ShortName));
       mBehindDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
       if (getContext() != null) {
@@ -316,7 +318,8 @@ public class LineChartFragment extends Fragment {
       String.format(
         Locale.ENGLISH,
         "%d. %s",
-        mTrends.get(0).TablePosition,
+//        mTrends.get(0).TablePosition,
+        0, // TODO: replace
         mTrends.get(0).ShortName));
     mMainDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
     if (getContext() != null) {
@@ -330,7 +333,8 @@ public class LineChartFragment extends Fragment {
       String.format(
         Locale.ENGLISH,
         "%d. %s",
-        mTrends.get(0).TablePosition,
+//        mTrends.get(0).TablePosition,
+        0, // TODO: replace
         mTrends.get(0).ShortName));
     mMainDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
     if (getContext() != null) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Ryan Ward
+ * Copyright 2020 Ryan Ward
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
 package net.whollynugatory.android.trendo.db.views;
 
 import net.whollynugatory.android.trendo.ui.BaseActivity;
@@ -35,7 +36,7 @@ import java.util.Locale;
   "FROM match_summary_table AS Summary " +
   "INNER JOIN team_table AS AwayTeam ON Summary.away_id = AwayTeam.id " +
   "INNER JOIN team_table AS HomeTeam ON Summary.home_id = HomeTeam.id")
-public class MatchSummaryDetail implements Serializable {
+public class MatchSummaryDetails implements Serializable {
 
   public String MatchDate;
   public String HomeName;
@@ -48,7 +49,7 @@ public class MatchSummaryDetail implements Serializable {
   public int Day;
   public int Year;
 
-  public MatchSummaryDetail() {
+  public MatchSummaryDetails() {
 
     MatchDate = BaseActivity.DEFAULT_DATE;
     HomeName = "";

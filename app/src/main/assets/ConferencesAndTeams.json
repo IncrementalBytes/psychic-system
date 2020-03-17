@@ -1,4 +1,16 @@
 {
+  "conferences": [
+    {
+      "id": "59b2bb04-8736-484f-a2e3-6fca89560770",
+      "name": "Eastern Conference",
+      "defunct": false
+    },
+    {
+      "id": "78b1b08b-2237-420c-adc2-9c3b26ace530",
+      "name": "Western Conference",
+      "defunct": false
+    }
+  ],
   "teams": [
     {
       "id":"dcf07e65-0570-4bbf-9eb4-743d1cd52e36",

@@ -24,7 +24,6 @@ import androidx.room.DatabaseView;
 @DatabaseView(
   "SELECT TeamTable.id AS TeamId," +
     "TeamTable.short_name AS ShortName, " +
-    "TeamTable.table_position AS TablePosition," +
     "TrendTable.year AS Year, " +
     "TrendTable.match_number AS MatchNumber, " +
     "TrendTable.goals_against AS GoalsAgainst, " +
@@ -40,7 +39,7 @@ public class TrendDetails implements Serializable {
 
   public String TeamId;
   public String ShortName;
-  public int TablePosition;
+//  public int TablePosition;
   public int Year;
   public int MatchNumber;
   public long GoalsAgainst;
@@ -55,7 +54,7 @@ public class TrendDetails implements Serializable {
 
     TeamId = BaseActivity.DEFAULT_ID;
     ShortName = "";
-    TablePosition = 0;
+//    TablePosition = 0;
     Year = 1990;
     MatchNumber = 0;
     GoalsAgainst = 0;

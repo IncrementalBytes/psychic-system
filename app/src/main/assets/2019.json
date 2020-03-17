@@ -3,1657 +3,1327 @@
     {
       "away_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "away_score": 1,
-      "day": 6,
+      "match_date": "06102019",
       "home_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "home_score": 3,
-      "id": "39c0c164-8312-4e60-9ed7-58c5cc35c58e",
-      "month": 10,
-      "year": 2019
+      "id": "39c0c164-8312-4e60-9ed7-58c5cc35c58e"
     },
     {
       "away_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "away_score": 0,
-      "day": 6,
+      "match_date": "06102019",
       "home_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "home_score": 0,
-      "id": "833cf7b7-6b57-4546-92d5-350e4c2055f0",
-      "month": 10,
-      "year": 2019
+      "id": "833cf7b7-6b57-4546-92d5-350e4c2055f0"
     },
     {
       "away_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "away_score": 0,
-      "day": 6,
+      "match_date": "06102019",
       "home_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "home_score": 6,
-      "id": "1b804606-9246-414b-9a5a-a3bf12040a2b",
-      "month": 10,
-      "year": 2019
+      "id": "1b804606-9246-414b-9a5a-a3bf12040a2b"
     },
     {
       "away_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "away_score": 2,
-      "day": 6,
+      "match_date": "06102019",
       "home_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "home_score": 4,
-      "id": "8b70280a-0f3c-48f9-a56c-1f40b9c2a9b4",
-      "month": 10,
-      "year": 2019
+      "id": "8b70280a-0f3c-48f9-a56c-1f40b9c2a9b4"
     },
     {
       "away_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "away_score": 1,
-      "day": 6,
+      "match_date": "06102019",
       "home_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "home_score": 3,
-      "id": "f20ab50d-7a89-4425-85cb-7a1d7b25d2e9",
-      "month": 10,
-      "year": 2019
+      "id": "f20ab50d-7a89-4425-85cb-7a1d7b25d2e9"
     },
     {
       "away_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "away_score": 0,
-      "day": 6,
+      "match_date": "06102019",
       "home_id": "93eba939-30e6-4702-b854-87051111edbd",
       "home_score": 3,
-      "id": "bc2e5de6-acb9-4f56-a498-84c4b1b4a7f4",
-      "month": 10,
-      "year": 2019
+      "id": "bc2e5de6-acb9-4f56-a498-84c4b1b4a7f4"
     },
     {
       "away_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "away_score": 5,
-      "day": 6,
+      "match_date": "06102019",
       "home_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "home_score": 2,
-      "id": "1cc30edb-0b8c-412e-a6d2-75ad1716a3f2",
-      "month": 10,
-      "year": 2019
+      "id": "1cc30edb-0b8c-412e-a6d2-75ad1716a3f2"
     },
     {
       "away_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "away_score": 2,
-      "day": 6,
+      "match_date": "06102019",
       "home_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "home_score": 1,
-      "id": "79bb5059-b224-4d1f-a02c-b311b21895ae",
-      "month": 10,
-      "year": 2019
+      "id": "79bb5059-b224-4d1f-a02c-b311b21895ae"
     },
     {
       "away_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "away_score": 1,
-      "day": 6,
+      "match_date": "06102019",
       "home_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "home_score": 3,
-      "id": "5ada41ca-b705-4fa2-9b05-4859830d07a2",
-      "month": 10,
-      "year": 2019
+      "id": "5ada41ca-b705-4fa2-9b05-4859830d07a2"
     },
     {
       "away_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "away_score": 0,
-      "day": 6,
+      "match_date": "06102019",
       "home_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "home_score": 1,
-      "id": "51e50008-fdd0-4a49-875a-0a8f9f1c3f6f",
-      "month": 10,
-      "year": 2019
+      "id": "51e50008-fdd0-4a49-875a-0a8f9f1c3f6f"
     },
     {
       "away_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "away_score": 0,
-      "day": 6,
+      "match_date": "06102019",
       "home_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "home_score": 1,
-      "id": "0153233e-15c3-4a81-bf2b-de50472a223f",
-      "month": 10,
-      "year": 2019
+      "id": "0153233e-15c3-4a81-bf2b-de50472a223f"
     },
     {
       "away_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "away_score": 1,
-      "day": 6,
+      "match_date": "06102019",
       "home_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "home_score": 0,
-      "id": "ed22766e-a0d0-4c9b-9920-9d26226af9d5",
-      "month": 10,
-      "year": 2019
+      "id": "ed22766e-a0d0-4c9b-9920-9d26226af9d5"
     },
     {
       "away_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "away_score": 0,
-      "day": 29,
+      "match_date": "29092019",
       "home_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "home_score": 3,
-      "id": "2b09f583-8512-4ea3-a407-88c6c07ff7b9",
-      "month": 9,
-      "year": 2019
+      "id": "2b09f583-8512-4ea3-a407-88c6c07ff7b9"
     },
     {
       "away_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "away_score": 4,
-      "day": 29,
+      "match_date": "29092019",
       "home_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "home_score": 3,
-      "id": "f3cefa9c-c637-48f0-91e9-f8b03c801b82",
-      "month": 9,
-      "year": 2019
+      "id": "f3cefa9c-c637-48f0-91e9-f8b03c801b82"
     },
     {
       "away_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "away_score": 1,
-      "day": 29,
+      "match_date": "29092019",
       "home_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "home_score": 1,
-      "id": "2295e68a-2678-452f-a55a-01cf08efe5fd",
-      "month": 9,
-      "year": 2019
+      "id": "2295e68a-2678-452f-a55a-01cf08efe5fd"
     },
     {
       "away_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "away_score": 1,
-      "day": 29,
+      "match_date": "29092019",
       "home_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "home_score": 2,
-      "id": "aed53ab4-d3a9-428d-8122-a443a9e7f2a3",
-      "month": 9,
-      "year": 2019
+      "id": "aed53ab4-d3a9-428d-8122-a443a9e7f2a3"
     },
     {
       "away_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "away_score": 1,
-      "day": 29,
+      "match_date": "29092019",
       "home_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "home_score": 0,
-      "id": "a2a220b5-a3e7-460c-be7b-f95b1baa2762",
-      "month": 9,
-      "year": 2019
+      "id": "a2a220b5-a3e7-460c-be7b-f95b1baa2762"
     },
     {
       "away_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "away_score": 2,
-      "day": 29,
+      "match_date": "29092019",
       "home_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "home_score": 2,
-      "id": "8fd983d2-5e05-446e-87ee-4cb52631e18e",
-      "month": 9,
-      "year": 2019
+      "id": "8fd983d2-5e05-446e-87ee-4cb52631e18e"
     },
     {
       "away_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "away_score": 2,
-      "day": 29,
+      "match_date": "29092019",
       "home_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "home_score": 2,
-      "id": "b7532906-e997-462e-b75f-88d3139fd071",
-      "month": 9,
-      "year": 2019
+      "id": "b7532906-e997-462e-b75f-88d3139fd071"
     },
     {
       "away_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "away_score": 0,
-      "day": 29,
+      "match_date": "29092019",
       "home_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "home_score": 2,
-      "id": "1d966bff-7a6e-432d-a363-a1454a36b09a",
-      "month": 9,
-      "year": 2019
+      "id": "1d966bff-7a6e-432d-a363-a1454a36b09a"
     },
     {
       "away_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "away_score": 1,
-      "day": 29,
+      "match_date": "29092019",
       "home_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "home_score": 1,
-      "id": "6fe51677-1b23-41f5-acb2-eaeffe0dab87",
-      "month": 9,
-      "year": 2019
+      "id": "6fe51677-1b23-41f5-acb2-eaeffe0dab87"
     },
     {
       "away_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "away_score": 1,
-      "day": 29,
+      "match_date": "29092019",
       "home_id": "93eba939-30e6-4702-b854-87051111edbd",
       "home_score": 1,
-      "id": "edaf67e5-521d-4a64-a3c5-0affc22e2af9",
-      "month": 9,
-      "year": 2019
+      "id": "edaf67e5-521d-4a64-a3c5-0affc22e2af9"
     },
     {
       "away_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "away_score": 0,
-      "day": 29,
+      "match_date": "29092019",
       "home_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "home_score": 2,
-      "id": "c6c6c1b0-7331-42a3-b30e-be3232c05b71",
-      "month": 9,
-      "year": 2019
+      "id": "c6c6c1b0-7331-42a3-b30e-be3232c05b71"
     },
     {
       "away_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "away_score": 0,
-      "day": 29,
+      "match_date": "29092019",
       "home_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "home_score": 0,
-      "id": "2fd1351c-0c27-4848-a311-0c5e6784ad14",
-      "month": 9,
-      "year": 2019
+      "id": "2fd1351c-0c27-4848-a311-0c5e6784ad14"
     },
     {
       "away_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "away_score": 2,
-      "day": 25,
+      "match_date": "25092019",
       "home_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "home_score": 1,
-      "id": "281f3497-18fa-426b-959b-cc3f4be7e30f",
-      "month": 9,
-      "year": 2019
+      "id": "281f3497-18fa-426b-959b-cc3f4be7e30f"
     },
     {
       "away_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "away_score": 1,
-      "day": 25,
+      "match_date": "25092019",
       "home_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "home_score": 3,
-      "id": "f149c93d-6b57-4810-8fb2-6e82a30b15e1",
-      "month": 9,
-      "year": 2019
+      "id": "f149c93d-6b57-4810-8fb2-6e82a30b15e1"
     },
     {
       "away_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "away_score": 2,
-      "day": 25,
+      "match_date": "25092019",
       "home_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "home_score": 2,
-      "id": "c37e540f-2682-47fa-a029-de15596cb3e8",
-      "month": 9,
-      "year": 2019
+      "id": "c37e540f-2682-47fa-a029-de15596cb3e8"
     },
     {
       "away_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "away_score": 2,
-      "day": 25,
+      "match_date": "25092019",
       "home_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "home_score": 1,
-      "id": "bb5145a9-e6a9-492a-ab53-c9a98e97d9f6",
-      "month": 9,
-      "year": 2019
+      "id": "bb5145a9-e6a9-492a-ab53-c9a98e97d9f6"
     },
     {
       "away_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "away_score": 1,
-      "day": 25,
+      "match_date": "25092019",
       "home_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "home_score": 2,
-      "id": "9d9163fa-9561-46a1-90c1-c3cd7a5b78aa",
-      "month": 9,
-      "year": 2019
+      "id": "9d9163fa-9561-46a1-90c1-c3cd7a5b78aa"
     },
     {
       "away_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "away_score": 1,
-      "day": 25,
+      "match_date": "25092019",
       "home_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "home_score": 4,
-      "id": "63fa61e6-4931-4828-816f-c881a873c7b6",
-      "month": 9,
-      "year": 2019
+      "id": "63fa61e6-4931-4828-816f-c881a873c7b6"
     },
     {
       "away_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "away_score": 0,
-      "day": 22,
+      "match_date": "22092019",
       "home_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "home_score": 2,
-      "id": "2e7c4d2b-aae0-4ea3-a58c-f7d59f01ca70",
-      "month": 9,
-      "year": 2019
+      "id": "2e7c4d2b-aae0-4ea3-a58c-f7d59f01ca70"
     },
     {
       "away_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "away_score": 0,
-      "day": 22,
+      "match_date": "22092019",
       "home_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "home_score": 2,
-      "id": "ed78a039-1337-4d5a-a227-81987ff1e3d4",
-      "month": 9,
-      "year": 2019
+      "id": "ed78a039-1337-4d5a-a227-81987ff1e3d4"
     },
     {
       "away_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "away_score": 1,
-      "day": 22,
+      "match_date": "22092019",
       "home_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "home_score": 1,
-      "id": "ce042f9c-f1d5-49e0-86ff-65fa4c9a3c68",
-      "month": 9,
-      "year": 2019
+      "id": "ce042f9c-f1d5-49e0-86ff-65fa4c9a3c68"
     },
     {
       "away_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "away_score": 0,
-      "day": 22,
+      "match_date": "22092019",
       "home_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "home_score": 0,
-      "id": "88d33b1a-715c-4f8c-9077-f41a6e4ef793",
-      "month": 9,
-      "year": 2019
+      "id": "88d33b1a-715c-4f8c-9077-f41a6e4ef793"
     },
     {
       "away_id": "93eba939-30e6-4702-b854-87051111edbd",
       "away_score": 1,
-      "day": 21,
+      "match_date": "21092019",
       "home_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "home_score": 2,
-      "id": "d5d2be4c-f7c0-4a15-af97-58e55129cefd",
-      "month": 9,
-      "year": 2019
+      "id": "d5d2be4c-f7c0-4a15-af97-58e55129cefd"
     },
     {
       "away_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "away_score": 1,
-      "day": 21,
+      "match_date": "21092019",
       "home_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "home_score": 1,
-      "id": "77d40c18-a8c8-4173-8f7b-c2150e41a20d",
-      "month": 9,
-      "year": 2019
+      "id": "77d40c18-a8c8-4173-8f7b-c2150e41a20d"
     },
     {
       "away_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "away_score": 1,
-      "day": 21,
+      "match_date": "21092019",
       "home_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "home_score": 2,
-      "id": "1bfb88d2-1a60-4efb-9655-5587b773d8d2",
-      "month": 9,
-      "year": 2019
+      "id": "1bfb88d2-1a60-4efb-9655-5587b773d8d2"
     },
     {
       "away_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "away_score": 3,
-      "day": 21,
+      "match_date": "21092019",
       "home_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "home_score": 2,
-      "id": "7395418f-19e1-4e62-a2c3-2e4d68160bc5",
-      "month": 9,
-      "year": 2019
+      "id": "7395418f-19e1-4e62-a2c3-2e4d68160bc5"
     },
     {
       "away_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "away_score": 0,
-      "day": 21,
+      "match_date": "21092019",
       "home_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "home_score": 0,
-      "id": "b39fe10f-c958-4dce-81be-d7b7da07d181",
-      "month": 9,
-      "year": 2019
+      "id": "b39fe10f-c958-4dce-81be-d7b7da07d181"
     },
     {
       "away_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "away_score": 0,
-      "day": 21,
+      "match_date": "21092019",
       "home_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "home_score": 0,
-      "id": "9a3f8ed3-286e-4996-a268-f935bd23eeb2",
-      "month": 9,
-      "year": 2019
+      "id": "9a3f8ed3-286e-4996-a268-f935bd23eeb2"
     },
     {
       "away_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "away_score": 1,
-      "day": 21,
+      "match_date": "21092019",
       "home_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "home_score": 1,
-      "id": "2852ed72-36cf-4565-b27d-2357fa91f71c",
-      "month": 9,
-      "year": 2019
+      "id": "2852ed72-36cf-4565-b27d-2357fa91f71c"
     },
     {
       "away_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "away_score": 1,
-      "day": 21,
+      "match_date": "21092019",
       "home_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "home_score": 3,
-      "id": "563e2cc5-326c-4445-9459-2338e6929900",
-      "month": 9,
-      "year": 2019
+      "id": "563e2cc5-326c-4445-9459-2338e6929900"
     },
     {
       "away_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "away_score": 2,
-      "day": 18,
+      "match_date": "18092019",
       "home_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "home_score": 0,
-      "id": "ea5ad93a-af25-4b54-b97b-671f88048b46",
-      "month": 9,
-      "year": 2019
+      "id": "ea5ad93a-af25-4b54-b97b-671f88048b46"
     },
     {
       "away_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "away_score": 0,
-      "day": 18,
+      "match_date": "18092019",
       "home_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "home_score": 0,
-      "id": "d57c6299-103d-4da5-b64b-d3dc42ed010f",
-      "month": 9,
-      "year": 2019
+      "id": "d57c6299-103d-4da5-b64b-d3dc42ed010f"
     },
     {
       "away_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "away_score": 2,
-      "day": 18,
+      "match_date": "18092019",
       "home_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "home_score": 0,
-      "id": "405997b5-fa2b-48a8-bedc-db732a46ec04",
-      "month": 9,
-      "year": 2019
+      "id": "405997b5-fa2b-48a8-bedc-db732a46ec04"
     },
     {
       "away_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "away_score": 2,
-      "day": 15,
+      "match_date": "15092019",
       "home_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "home_score": 7,
-      "id": "6589be30-ae23-43e4-9d7e-52e3a2bcbf75",
-      "month": 9,
-      "year": 2019
+      "id": "6589be30-ae23-43e4-9d7e-52e3a2bcbf75"
     },
     {
       "away_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "away_score": 2,
-      "day": 15,
+      "match_date": "15092019",
       "home_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "home_score": 4,
-      "id": "4af8fb9e-c229-40ed-b805-983c72e8635c",
-      "month": 9,
-      "year": 2019
+      "id": "4af8fb9e-c229-40ed-b805-983c72e8635c"
     },
     {
       "away_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "away_score": 1,
-      "day": 15,
+      "match_date": "15092019",
       "home_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "home_score": 3,
-      "id": "5f80cbc6-74f5-455e-af4d-b6e6d00caff9",
-      "month": 9,
-      "year": 2019
+      "id": "5f80cbc6-74f5-455e-af4d-b6e6d00caff9"
     },
     {
       "away_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "away_score": 2,
-      "day": 15,
+      "match_date": "15092019",
       "home_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "home_score": 3,
-      "id": "f83972a7-eefc-48b2-a3c4-5158245f3783",
-      "month": 9,
-      "year": 2019
+      "id": "f83972a7-eefc-48b2-a3c4-5158245f3783"
     },
     {
       "away_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "away_score": 1,
-      "day": 15,
+      "match_date": "15092019",
       "home_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "home_score": 0,
-      "id": "7e6269b2-2b49-4ca2-b64e-e3bae9543e2a",
-      "month": 9,
-      "year": 2019
+      "id": "7e6269b2-2b49-4ca2-b64e-e3bae9543e2a"
     },
     {
       "away_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "away_score": 1,
-      "day": 14,
+      "match_date": "14092019",
       "home_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "home_score": 2,
-      "id": "104a90df-785d-47bb-9289-57ff652c909c",
-      "month": 9,
-      "year": 2019
+      "id": "104a90df-785d-47bb-9289-57ff652c909c"
     },
     {
       "away_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "away_score": 1,
-      "day": 14,
+      "match_date": "14092019",
       "home_id": "93eba939-30e6-4702-b854-87051111edbd",
       "home_score": 0,
-      "id": "50cd24c2-706f-4613-b2da-9967ae22cf74",
-      "month": 9,
-      "year": 2019
+      "id": "50cd24c2-706f-4613-b2da-9967ae22cf74"
     },
     {
       "away_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "away_score": 3,
-      "day": 14,
+      "match_date": "14092019",
       "home_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "home_score": 3,
-      "id": "b9baa954-4f5e-419c-942b-1e28b0599c23",
-      "month": 9,
-      "year": 2019
+      "id": "b9baa954-4f5e-419c-942b-1e28b0599c23"
     },
     {
       "away_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "away_score": 1,
-      "day": 14,
+      "match_date": "14092019",
       "home_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "home_score": 1,
-      "id": "9f6ba46a-d17a-41df-92e1-d608fc86368f",
-      "month": 9,
-      "year": 2019
+      "id": "9f6ba46a-d17a-41df-92e1-d608fc86368f"
     },
     {
       "away_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "away_score": 3,
-      "day": 14,
+      "match_date": "14092019",
       "home_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "home_score": 1,
-      "id": "afe9048f-b3e8-4297-84c3-a52940e3ba00",
-      "month": 9,
-      "year": 2019
+      "id": "afe9048f-b3e8-4297-84c3-a52940e3ba00"
     },
     {
       "away_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "away_score": 0,
-      "day": 14,
+      "match_date": "14092019",
       "home_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "home_score": 4,
-      "id": "4d9e23e0-4db1-4872-aa24-ac29fc7da4d3",
-      "month": 9,
-      "year": 2019
+      "id": "4d9e23e0-4db1-4872-aa24-ac29fc7da4d3"
     },
     {
       "away_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "away_score": 1,
-      "day": 14,
+      "match_date": "14092019",
       "home_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "home_score": 2,
-      "id": "026c2471-207e-4981-b340-825acfb2f598",
-      "month": 9,
-      "year": 2019
+      "id": "026c2471-207e-4981-b340-825acfb2f598"
     },
     {
       "away_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "away_score": 0,
-      "day": 11,
+      "match_date": "11092019",
       "home_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "home_score": 1,
-      "id": "d632a426-c4b1-4f7d-afed-d5156f06a6f6",
-      "month": 9,
-      "year": 2019
+      "id": "d632a426-c4b1-4f7d-afed-d5156f06a6f6"
     },
     {
       "away_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "away_score": 1,
-      "day": 11,
+      "match_date": "11092019",
       "home_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "home_score": 2,
-      "id": "e355dfd2-31ad-44cd-8c04-131ebac04708",
-      "month": 9,
-      "year": 2019
+      "id": "e355dfd2-31ad-44cd-8c04-131ebac04708"
     },
     {
       "away_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "away_score": 0,
-      "day": 11,
+      "match_date": "11092019",
       "home_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "home_score": 2,
-      "id": "aec4ce5f-4a90-4e98-bcbb-c922956e3898",
-      "month": 9,
-      "year": 2019
+      "id": "aec4ce5f-4a90-4e98-bcbb-c922956e3898"
     },
     {
       "away_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "away_score": 1,
-      "day": 11,
+      "match_date": "11092019",
       "home_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "home_score": 1,
-      "id": "d1fc3b8d-4ecc-44ff-a778-b92e2b5fe652",
-      "month": 9,
-      "year": 2019
+      "id": "d1fc3b8d-4ecc-44ff-a778-b92e2b5fe652"
     },
     {
       "away_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "away_score": 1,
-      "day": 7,
+      "match_date": "07092019",
       "home_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "home_score": 2,
-      "id": "436fbc5a-1390-4ecc-8312-2b6e6b435a59",
-      "month": 9,
-      "year": 2019
+      "id": "436fbc5a-1390-4ecc-8312-2b6e6b435a59"
     },
     {
       "away_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "away_score": 0,
-      "day": 7,
+      "match_date": "07092019",
       "home_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "home_score": 2,
-      "id": "ca33f61e-dbb1-4c2c-b9e7-5b1dbb1d4137",
-      "month": 9,
-      "year": 2019
+      "id": "ca33f61e-dbb1-4c2c-b9e7-5b1dbb1d4137"
     },
     {
       "away_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "away_score": 5,
-      "day": 7,
+      "match_date": "07092019",
       "home_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "home_score": 1,
-      "id": "9e5113cd-5956-434d-b7f6-63e0cda42621",
-      "month": 9,
-      "year": 2019
+      "id": "9e5113cd-5956-434d-b7f6-63e0cda42621"
     },
     {
       "away_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "away_score": 2,
-      "day": 7,
+      "match_date": "07092019",
       "home_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "home_score": 2,
-      "id": "cf35f368-80a1-4467-aa2a-a8dd2f716040",
-      "month": 9,
-      "year": 2019
+      "id": "cf35f368-80a1-4467-aa2a-a8dd2f716040"
     },
     {
       "away_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "away_score": 1,
-      "day": 7,
+      "match_date": "07092019",
       "home_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "home_score": 2,
-      "id": "45950aa2-d648-4a85-919d-fe99655b79e4",
-      "month": 9,
-      "year": 2019
+      "id": "45950aa2-d648-4a85-919d-fe99655b79e4"
     },
     {
       "away_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "away_score": 2,
-      "day": 1,
+      "match_date": "01092019",
       "home_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "home_score": 0,
-      "id": "b8d672cf-2e2a-47d9-bf03-9e31f879f6ba",
-      "month": 9,
-      "year": 2019
+      "id": "b8d672cf-2e2a-47d9-bf03-9e31f879f6ba"
     },
     {
       "away_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "away_score": 3,
-      "day": 1,
+      "match_date": "01092019",
       "home_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "home_score": 4,
-      "id": "14280a3d-9c81-4354-9dad-196ff5f43eee",
-      "month": 9,
-      "year": 2019
+      "id": "14280a3d-9c81-4354-9dad-196ff5f43eee"
     },
     {
       "away_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "away_score": 0,
-      "day": 31,
+      "match_date": "31082019",
       "home_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "home_score": 1,
-      "id": "12b83080-58d6-401b-86a8-80f63601e4b0",
-      "month": 8,
-      "year": 2019
+      "id": "12b83080-58d6-401b-86a8-80f63601e4b0"
     },
     {
       "away_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "away_score": 0,
-      "day": 31,
+      "match_date": "31082019",
       "home_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "home_score": 3,
-      "id": "7b9fe908-6d98-453c-bc48-178c3302534b",
-      "month": 8,
-      "year": 2019
+      "id": "7b9fe908-6d98-453c-bc48-178c3302534b"
     },
     {
       "away_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "away_score": 3,
-      "day": 31,
+      "match_date": "31082019",
       "home_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "home_score": 1,
-      "id": "f7e2196b-bed3-41d1-bf99-eaf76d17f51f",
-      "month": 8,
-      "year": 2019
+      "id": "f7e2196b-bed3-41d1-bf99-eaf76d17f51f"
     },
     {
       "away_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "away_score": 0,
-      "day": 31,
+      "match_date": "31082019",
       "home_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "home_score": 1,
-      "id": "7ec0b8dc-0285-4734-8ba8-eb77d39af582",
-      "month": 8,
-      "year": 2019
+      "id": "7ec0b8dc-0285-4734-8ba8-eb77d39af582"
     },
     {
       "away_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "away_score": 1,
-      "day": 31,
+      "match_date": "31082019",
       "home_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "home_score": 3,
-      "id": "9cea95c4-a22e-4a20-9fe0-989d87dc0024",
-      "month": 8,
-      "year": 2019
+      "id": "9cea95c4-a22e-4a20-9fe0-989d87dc0024"
     },
     {
       "away_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "away_score": 1,
-      "day": 31,
+      "match_date": "31082019",
       "home_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "home_score": 1,
-      "id": "2c8f3d78-39c7-47f0-b554-562555c808fb",
-      "month": 8,
-      "year": 2019
+      "id": "2c8f3d78-39c7-47f0-b554-562555c808fb"
     },
     {
       "away_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "away_score": 3,
-      "day": 31,
+      "match_date": "31082019",
       "home_id": "93eba939-30e6-4702-b854-87051111edbd",
       "home_score": 0,
-      "id": "a1f4b72f-b4f7-4e16-a911-b345ec4266b9",
-      "month": 8,
-      "year": 2019
+      "id": "a1f4b72f-b4f7-4e16-a911-b345ec4266b9"
     },
     {
       "away_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "away_score": 1,
-      "day": 31,
+      "match_date": "31082019",
       "home_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "home_score": 1,
-      "id": "c414d9d9-f34d-4c27-a9c6-021b22678875",
-      "month": 8,
-      "year": 2019
+      "id": "c414d9d9-f34d-4c27-a9c6-021b22678875"
     },
     {
       "away_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "away_score": 1,
-      "day": 31,
+      "match_date": "31082019",
       "home_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "home_score": 3,
-      "id": "2e201e01-998d-4255-90e2-d504ee7fc724",
-      "month": 8,
-      "year": 2019
+      "id": "2e201e01-998d-4255-90e2-d504ee7fc724"
     },
     {
       "away_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "away_score": 2,
-      "day": 31,
+      "match_date": "31082019",
       "home_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "home_score": 0,
-      "id": "2ac64445-5f57-4beb-b4f8-8861d51af7fa",
-      "month": 8,
-      "year": 2019
+      "id": "2ac64445-5f57-4beb-b4f8-8861d51af7fa"
     },
     {
       "away_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "away_score": 1,
-      "day": 28,
+      "match_date": "28082019",
       "home_id": "93eba939-30e6-4702-b854-87051111edbd",
       "home_score": 2,
-      "id": "51a17004-e8b1-4ca8-8a07-a4b032b5d184",
-      "month": 8,
-      "year": 2019
+      "id": "51a17004-e8b1-4ca8-8a07-a4b032b5d184"
     },
     {
       "away_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "away_score": 3,
-      "day": 25,
+      "match_date": "25082019",
       "home_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "home_score": 3,
-      "id": "9b6bafc1-5df5-420a-9e60-7fa36c1853f8",
-      "month": 8,
-      "year": 2019
+      "id": "9b6bafc1-5df5-420a-9e60-7fa36c1853f8"
     },
     {
       "away_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "away_score": 1,
-      "day": 25,
+      "match_date": "25082019",
       "home_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "home_score": 5,
-      "id": "668a1769-f835-463d-b3ee-5491ee8bdc68",
-      "month": 8,
-      "year": 2019
+      "id": "668a1769-f835-463d-b3ee-5491ee8bdc68"
     },
     {
       "away_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "away_score": 3,
-      "day": 25,
+      "match_date": "25082019",
       "home_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "home_score": 1,
-      "id": "300a2ea3-5d61-4bda-9968-93cfe25c9cfb",
-      "month": 8,
-      "year": 2019
+      "id": "300a2ea3-5d61-4bda-9968-93cfe25c9cfb"
     },
     {
       "away_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "away_score": 0,
-      "day": 24,
+      "match_date": "24082019",
       "home_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "home_score": 2,
-      "id": "072630ee-dc09-4475-bfe8-acf1944d40ba",
-      "month": 8,
-      "year": 2019
+      "id": "072630ee-dc09-4475-bfe8-acf1944d40ba"
     },
     {
       "away_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "away_score": 1,
-      "day": 24,
+      "match_date": "24082019",
       "home_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "home_score": 3,
-      "id": "ac3c3de3-279a-4ae0-9201-f1f4b9b7a00d",
-      "month": 8,
-      "year": 2019
+      "id": "ac3c3de3-279a-4ae0-9201-f1f4b9b7a00d"
     },
     {
       "away_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "away_score": 1,
-      "day": 24,
+      "match_date": "24082019",
       "home_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "home_score": 2,
-      "id": "16884a3a-68a2-46e2-adf7-c418740bcdf6",
-      "month": 8,
-      "year": 2019
+      "id": "16884a3a-68a2-46e2-adf7-c418740bcdf6"
     },
     {
       "away_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "away_score": 1,
-      "day": 24,
+      "match_date": "24082019",
       "home_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "home_score": 3,
-      "id": "8f001431-05ae-47f3-b7cb-b04daa0ff09a",
-      "month": 8,
-      "year": 2019
+      "id": "8f001431-05ae-47f3-b7cb-b04daa0ff09a"
     },
     {
       "away_id": "93eba939-30e6-4702-b854-87051111edbd",
       "away_score": 1,
-      "day": 24,
+      "match_date": "24082019",
       "home_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "home_score": 2,
-      "id": "821889a1-d847-497b-9ddf-e7368c7ba558",
-      "month": 8,
-      "year": 2019
+      "id": "821889a1-d847-497b-9ddf-e7368c7ba558"
     },
     {
       "away_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "away_score": 1,
-      "day": 24,
+      "match_date": "24082019",
       "home_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "home_score": 2,
-      "id": "cda0b93f-643b-4530-b8c3-f3a6b238403f",
-      "month": 8,
-      "year": 2019
+      "id": "cda0b93f-643b-4530-b8c3-f3a6b238403f"
     },
     {
       "away_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "away_score": 2,
-      "day": 23,
+      "match_date": "23082019",
       "home_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "home_score": 1,
-      "id": "a5ff0211-20d7-4b17-8655-6d261a032e6f",
-      "month": 8,
-      "year": 2019
+      "id": "a5ff0211-20d7-4b17-8655-6d261a032e6f"
     },
     {
       "away_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "away_score": 1,
-      "day": 23,
+      "match_date": "23082019",
       "home_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "home_score": 0,
-      "id": "a0054e96-09e0-4a75-902e-b96159342d85",
-      "month": 8,
-      "year": 2019
+      "id": "a0054e96-09e0-4a75-902e-b96159342d85"
     },
     {
       "away_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "away_score": 0,
-      "day": 22,
+      "match_date": "22082019",
       "home_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "home_score": 1,
-      "id": "6ccab737-956a-4f30-b2ef-4e72a93f6432",
-      "month": 8,
-      "year": 2019
+      "id": "6ccab737-956a-4f30-b2ef-4e72a93f6432"
     },
     {
       "away_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "away_score": 0,
-      "day": 21,
+      "match_date": "21082019",
       "home_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "home_score": 4,
-      "id": "318b589d-d363-451c-acd8-85c6d9ad9d8f",
-      "month": 8,
-      "year": 2019
+      "id": "318b589d-d363-451c-acd8-85c6d9ad9d8f"
     },
     {
       "away_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "away_score": 2,
-      "day": 21,
+      "match_date": "21082019",
       "home_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "home_score": 1,
-      "id": "f3b8ba03-6cf2-4606-9b38-0fe8f8eccbe2",
-      "month": 8,
-      "year": 2019
+      "id": "f3b8ba03-6cf2-4606-9b38-0fe8f8eccbe2"
     },
     {
       "away_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "away_score": 0,
-      "day": 21,
+      "match_date": "21082019",
       "home_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "home_score": 1,
-      "id": "40827578-940e-485c-8d66-eaac11e571f8",
-      "month": 8,
-      "year": 2019
+      "id": "40827578-940e-485c-8d66-eaac11e571f8"
     },
     {
       "away_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "away_score": 2,
-      "day": 18,
+      "match_date": "18082019",
       "home_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "home_score": 0,
-      "id": "c4c6dd98-1b74-412e-b9b1-41f62f7a86aa",
-      "month": 8,
-      "year": 2019
+      "id": "c4c6dd98-1b74-412e-b9b1-41f62f7a86aa"
     },
     {
       "away_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "away_score": 2,
-      "day": 17,
+      "match_date": "17082019",
       "home_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "home_score": 2,
-      "id": "1a1c2d0c-cb81-4904-a78a-cddcdeb546a1",
-      "month": 8,
-      "year": 2019
+      "id": "1a1c2d0c-cb81-4904-a78a-cddcdeb546a1"
     },
     {
       "away_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "away_score": 2,
-      "day": 17,
+      "match_date": "17082019",
       "home_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "home_score": 0,
-      "id": "61ef5975-ad6b-4154-9bb2-fc308cc5433f",
-      "month": 8,
-      "year": 2019
+      "id": "61ef5975-ad6b-4154-9bb2-fc308cc5433f"
     },
     {
       "away_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "away_score": 0,
-      "day": 17,
+      "match_date": "17082019",
       "home_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "home_score": 1,
-      "id": "a1dc1018-b2d2-4aa7-8117-64bcb47bba4f",
-      "month": 8,
-      "year": 2019
+      "id": "a1dc1018-b2d2-4aa7-8117-64bcb47bba4f"
     },
     {
       "away_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "away_score": 2,
-      "day": 17,
+      "match_date": "17082019",
       "home_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "home_score": 2,
-      "id": "60d2b32d-4021-4c04-b188-6112f619c5ad",
-      "month": 8,
-      "year": 2019
+      "id": "60d2b32d-4021-4c04-b188-6112f619c5ad"
     },
     {
       "away_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "away_score": 1,
-      "day": 17,
+      "match_date": "17082019",
       "home_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "home_score": 2,
-      "id": "efa50117-3a74-49f4-ab9f-1e102ee02c29",
-      "month": 8,
-      "year": 2019
+      "id": "efa50117-3a74-49f4-ab9f-1e102ee02c29"
     },
     {
       "away_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "away_score": 0,
-      "day": 17,
+      "match_date": "17082019",
       "home_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "home_score": 2,
-      "id": "c5aa88cd-f4fe-4e3f-b592-defc01b64de9",
-      "month": 8,
-      "year": 2019
+      "id": "c5aa88cd-f4fe-4e3f-b592-defc01b64de9"
     },
     {
       "away_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "away_score": 1,
-      "day": 17,
+      "match_date": "17082019",
       "home_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "home_score": 1,
-      "id": "285b68ae-3dba-441f-b588-dc7eff3cf4bd",
-      "month": 8,
-      "year": 2019
+      "id": "285b68ae-3dba-441f-b588-dc7eff3cf4bd"
     },
     {
       "away_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "away_score": 2,
-      "day": 17,
+      "match_date": "17082019",
       "home_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "home_score": 2,
-      "id": "bcd192fa-1c52-4bd5-9384-91b30f6a3f44",
-      "month": 8,
-      "year": 2019
+      "id": "bcd192fa-1c52-4bd5-9384-91b30f6a3f44"
     },
     {
       "away_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "away_score": 4,
-      "day": 17,
+      "match_date": "17082019",
       "home_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "home_score": 1,
-      "id": "af341b58-4b6e-412c-8e1d-990e7c8564ac",
-      "month": 8,
-      "year": 2019
+      "id": "af341b58-4b6e-412c-8e1d-990e7c8564ac"
     },
     {
       "away_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "away_score": 3,
-      "day": 17,
+      "match_date": "17082019",
       "home_id": "93eba939-30e6-4702-b854-87051111edbd",
       "home_score": 3,
-      "id": "70f4d071-c2c8-452f-a333-54a5268f15b9",
-      "month": 8,
-      "year": 2019
+      "id": "70f4d071-c2c8-452f-a333-54a5268f15b9"
     },
     {
       "away_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "away_score": 1,
-      "day": 17,
+      "match_date": "17082019",
       "home_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "home_score": 1,
-      "id": "f070253e-c5e2-44fe-b1a2-6175368b1ef2",
-      "month": 8,
-      "year": 2019
+      "id": "f070253e-c5e2-44fe-b1a2-6175368b1ef2"
     },
     {
       "away_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "away_score": 2,
-      "day": 14,
+      "match_date": "14082019",
       "home_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "home_score": 3,
-      "id": "4d78c5cf-aca0-4a07-a21d-7392d86d0d3e",
-      "month": 8,
-      "year": 2019
+      "id": "4d78c5cf-aca0-4a07-a21d-7392d86d0d3e"
     },
     {
       "away_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "away_score": 0,
-      "day": 14,
+      "match_date": "14082019",
       "home_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "home_score": 2,
-      "id": "db8c1600-a2a1-4c45-818e-5fcc4a5af40e",
-      "month": 8,
-      "year": 2019
+      "id": "db8c1600-a2a1-4c45-818e-5fcc4a5af40e"
     },
     {
       "away_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "away_score": 0,
-      "day": 14,
+      "match_date": "14082019",
       "home_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "home_score": 3,
-      "id": "fe5a94eb-1e13-41a3-9097-a1035d63d614",
-      "month": 8,
-      "year": 2019
+      "id": "fe5a94eb-1e13-41a3-9097-a1035d63d614"
     },
     {
       "away_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "away_score": 0,
-      "day": 14,
+      "match_date": "14082019",
       "home_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "home_score": 1,
-      "id": "a16178d4-54c6-4fc2-9442-91d045fa974e",
-      "month": 8,
-      "year": 2019
+      "id": "a16178d4-54c6-4fc2-9442-91d045fa974e"
     },
     {
       "away_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "away_score": 0,
-      "day": 14,
+      "match_date": "14082019",
       "home_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "home_score": 1,
-      "id": "3a0baf5e-ce0c-45d8-b67a-bffed8212b82",
-      "month": 8,
-      "year": 2019
+      "id": "3a0baf5e-ce0c-45d8-b67a-bffed8212b82"
     },
     {
       "away_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "away_score": 2,
-      "day": 11,
+      "match_date": "11082019",
       "home_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "home_score": 4,
-      "id": "55d71647-9d15-44b7-bd8e-d54ce9a9e7f8",
-      "month": 8,
-      "year": 2019
+      "id": "55d71647-9d15-44b7-bd8e-d54ce9a9e7f8"
     },
     {
       "away_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "away_score": 1,
-      "day": 11,
+      "match_date": "11082019",
       "home_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "home_score": 2,
-      "id": "9d993f16-6703-4f82-8942-9d54052d0974",
-      "month": 8,
-      "year": 2019
+      "id": "9d993f16-6703-4f82-8942-9d54052d0974"
     },
     {
       "away_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "away_score": 1,
-      "day": 11,
+      "match_date": "11082019",
       "home_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "home_score": 2,
-      "id": "7b13915f-c9e6-4897-9a4b-cb7c7c60e9ad",
-      "month": 8,
-      "year": 2019
+      "id": "7b13915f-c9e6-4897-9a4b-cb7c7c60e9ad"
     },
     {
       "away_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "away_score": 1,
-      "day": 11,
+      "match_date": "11082019",
       "home_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "home_score": 2,
-      "id": "7439df28-a424-463c-8a1f-0ca61c3d28d6",
-      "month": 8,
-      "year": 2019
+      "id": "7439df28-a424-463c-8a1f-0ca61c3d28d6"
     },
     {
       "away_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "away_score": 1,
-      "day": 10,
+      "match_date": "10082019",
       "home_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "home_score": 3,
-      "id": "58f55941-a7d5-4459-a6d8-9216dc4b61a2",
-      "month": 8,
-      "year": 2019
+      "id": "58f55941-a7d5-4459-a6d8-9216dc4b61a2"
     },
     {
       "away_id": "93eba939-30e6-4702-b854-87051111edbd",
       "away_score": 2,
-      "day": 10,
+      "match_date": "10082019",
       "home_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "home_score": 3,
-      "id": "6ff7cc89-4c7a-497a-88d1-863b931529b4",
-      "month": 8,
-      "year": 2019
+      "id": "6ff7cc89-4c7a-497a-88d1-863b931529b4"
     },
     {
       "away_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "away_score": 1,
-      "day": 10,
+      "match_date": "10082019",
       "home_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "home_score": 2,
-      "id": "21512538-3f7c-418e-b484-e11347f5fa21",
-      "month": 8,
-      "year": 2019
+      "id": "21512538-3f7c-418e-b484-e11347f5fa21"
     },
     {
       "away_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "away_score": 2,
-      "day": 10,
+      "match_date": "10082019",
       "home_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "home_score": 1,
-      "id": "3c937563-7df0-42e9-88c9-210f3d7804e3",
-      "month": 8,
-      "year": 2019
+      "id": "3c937563-7df0-42e9-88c9-210f3d7804e3"
     },
     {
       "away_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "away_score": 3,
-      "day": 10,
+      "match_date": "10082019",
       "home_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "home_score": 5,
-      "id": "355c6dce-56ae-4afd-adf9-3b2296b3c1a4",
-      "month": 8,
-      "year": 2019
+      "id": "355c6dce-56ae-4afd-adf9-3b2296b3c1a4"
     },
     {
       "away_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "away_score": 2,
-      "day": 10,
+      "match_date": "10082019",
       "home_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "home_score": 2,
-      "id": "7bfa5bf7-6c44-44d6-859f-2c33288445a7",
-      "month": 8,
-      "year": 2019
+      "id": "7bfa5bf7-6c44-44d6-859f-2c33288445a7"
     },
     {
       "away_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "away_score": 1,
-      "day": 10,
+      "match_date": "10082019",
       "home_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "home_score": 1,
-      "id": "2a65f301-4274-4f7c-9d11-23df0a6a3a01",
-      "month": 8,
-      "year": 2019
+      "id": "2a65f301-4274-4f7c-9d11-23df0a6a3a01"
     },
     {
       "away_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "away_score": 3,
-      "day": 10,
+      "match_date": "10082019",
       "home_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "home_score": 3,
-      "id": "0dd3ddfa-a000-4026-b477-f70b0d5a17a6",
-      "month": 8,
-      "year": 2019
+      "id": "0dd3ddfa-a000-4026-b477-f70b0d5a17a6"
     },
     {
       "away_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "away_score": 2,
-      "day": 8,
+      "match_date": "08082019",
       "home_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "home_score": 3,
-      "id": "e103d7f2-fe93-443f-b37f-12795e0e81d2",
-      "month": 8,
-      "year": 2019
+      "id": "e103d7f2-fe93-443f-b37f-12795e0e81d2"
     },
     {
       "away_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "away_score": 3,
-      "day": 4,
+      "match_date": "04082019",
       "home_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "home_score": 2,
-      "id": "8e369878-36ca-485f-bf95-2bfbd705a25f",
-      "month": 8,
-      "year": 2019
+      "id": "8e369878-36ca-485f-bf95-2bfbd705a25f"
     },
     {
       "away_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "away_score": 5,
-      "day": 4,
+      "match_date": "04082019",
       "home_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "home_score": 1,
-      "id": "cf6eb2f9-bcc4-450b-bd35-7c79a54fa72a",
-      "month": 8,
-      "year": 2019
+      "id": "cf6eb2f9-bcc4-450b-bd35-7c79a54fa72a"
     },
     {
       "away_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "away_score": 0,
-      "day": 4,
+      "match_date": "04082019",
       "home_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "home_score": 1,
-      "id": "861fb83e-2cbc-401a-9bfd-ff63ba5a927f",
-      "month": 8,
-      "year": 2019
+      "id": "861fb83e-2cbc-401a-9bfd-ff63ba5a927f"
     },
     {
       "away_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "away_score": 1,
-      "day": 3,
+      "match_date": "03082019",
       "home_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "home_score": 3,
-      "id": "f5e79b88-3276-4f10-a171-cf3e5551ad16",
-      "month": 8,
-      "year": 2019
+      "id": "f5e79b88-3276-4f10-a171-cf3e5551ad16"
     },
     {
       "away_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "away_score": 1,
-      "day": 3,
+      "match_date": "03082019",
       "home_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "home_score": 1,
-      "id": "420f7f1a-2cb1-4015-9854-db829a326de0",
-      "month": 8,
-      "year": 2019
+      "id": "420f7f1a-2cb1-4015-9854-db829a326de0"
     },
     {
       "away_id": "93eba939-30e6-4702-b854-87051111edbd",
       "away_score": 3,
-      "day": 3,
+      "match_date": "03082019",
       "home_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "home_score": 6,
-      "id": "cfcbdd72-3593-40da-b08c-d0887892cb64",
-      "month": 8,
-      "year": 2019
+      "id": "cfcbdd72-3593-40da-b08c-d0887892cb64"
     },
     {
       "away_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "away_score": 1,
-      "day": 3,
+      "match_date": "03082019",
       "home_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "home_score": 0,
-      "id": "dc6f46ee-0dc2-4e05-97c1-b23f950643d8",
-      "month": 8,
-      "year": 2019
+      "id": "dc6f46ee-0dc2-4e05-97c1-b23f950643d8"
     },
     {
       "away_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "away_score": 2,
-      "day": 3,
+      "match_date": "03082019",
       "home_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "home_score": 1,
-      "id": "5699e7d4-9cd4-4360-9df4-a19f21b58c13",
-      "month": 8,
-      "year": 2019
+      "id": "5699e7d4-9cd4-4360-9df4-a19f21b58c13"
     },
     {
       "away_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "away_score": 2,
-      "day": 3,
+      "match_date": "03082019",
       "home_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "home_score": 0,
-      "id": "28832ca0-373a-40f6-a9c5-9c8baf1d2489",
-      "month": 8,
-      "year": 2019
+      "id": "28832ca0-373a-40f6-a9c5-9c8baf1d2489"
     },
     {
       "away_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "away_score": 0,
-      "day": 3,
+      "match_date": "03082019",
       "home_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "home_score": 2,
-      "id": "7d52cc4d-9b70-4b17-8d6a-5878409b9c77",
-      "month": 8,
-      "year": 2019
+      "id": "7d52cc4d-9b70-4b17-8d6a-5878409b9c77"
     },
     {
       "away_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "away_score": 0,
-      "day": 3,
+      "match_date": "03082019",
       "home_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "home_score": 2,
-      "id": "ad33344f-8fc4-47b2-b2ce-693d7a06f927",
-      "month": 8,
-      "year": 2019
+      "id": "ad33344f-8fc4-47b2-b2ce-693d7a06f927"
     },
     {
       "away_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "away_score": 0,
-      "day": 3,
+      "match_date": "03082019",
       "home_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "home_score": 3,
-      "id": "a866a843-6aa6-4ae5-a444-7766476a542e",
-      "month": 8,
-      "year": 2019
+      "id": "a866a843-6aa6-4ae5-a444-7766476a542e"
     },
     {
       "away_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "away_score": 0,
-      "day": 27,
+      "match_date": "27072019",
       "home_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "home_score": 4,
-      "id": "265d01ca-6f57-44a1-aafb-df277d40e210",
-      "month": 7,
-      "year": 2019
+      "id": "265d01ca-6f57-44a1-aafb-df277d40e210"
     },
     {
       "away_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "away_score": 1,
-      "day": 27,
+      "match_date": "27072019",
       "home_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "home_score": 3,
-      "id": "b5c3b26c-a42a-4ba4-bec5-4e653110d5f1",
-      "month": 7,
-      "year": 2019
+      "id": "b5c3b26c-a42a-4ba4-bec5-4e653110d5f1"
     },
     {
       "away_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "away_score": 0,
-      "day": 27,
+      "match_date": "27072019",
       "home_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "home_score": 0,
-      "id": "a34ccc04-bfd9-4481-bd23-ef64cba89694",
-      "month": 7,
-      "year": 2019
+      "id": "a34ccc04-bfd9-4481-bd23-ef64cba89694"
     },
     {
       "away_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "away_score": 0,
-      "day": 27,
+      "match_date": "27072019",
       "home_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "home_score": 0,
-      "id": "5534651d-f3f6-4ed2-b1a4-bf8caa97b9a6",
-      "month": 7,
-      "year": 2019
+      "id": "5534651d-f3f6-4ed2-b1a4-bf8caa97b9a6"
     },
     {
       "away_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "away_score": 1,
-      "day": 27,
+      "match_date": "27072019",
       "home_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "home_score": 0,
-      "id": "0204e107-31b1-4a30-922d-b39ccbe15897",
-      "month": 7,
-      "year": 2019
+      "id": "0204e107-31b1-4a30-922d-b39ccbe15897"
     },
     {
       "away_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "away_score": 0,
-      "day": 27,
+      "match_date": "27072019",
       "home_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "home_score": 0,
-      "id": "23d5d8b6-dfc7-4408-b998-b3649256e63a",
-      "month": 7,
-      "year": 2019
+      "id": "23d5d8b6-dfc7-4408-b998-b3649256e63a"
     },
     {
       "away_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "away_score": 0,
-      "day": 27,
+      "match_date": "27072019",
       "home_id": "93eba939-30e6-4702-b854-87051111edbd",
       "home_score": 4,
-      "id": "0d4b6068-2bfe-4820-8f08-9caf7bb97107",
-      "month": 7,
-      "year": 2019
+      "id": "0d4b6068-2bfe-4820-8f08-9caf7bb97107"
     },
     {
       "away_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "away_score": 1,
-      "day": 27,
+      "match_date": "27072019",
       "home_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "home_score": 2,
-      "id": "21ef09ec-11bd-4b4d-bb50-7a637c8ae80a",
-      "month": 7,
-      "year": 2019
+      "id": "21ef09ec-11bd-4b4d-bb50-7a637c8ae80a"
     },
     {
       "away_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "away_score": 3,
-      "day": 27,
+      "match_date": "27072019",
       "home_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "home_score": 2,
-      "id": "10ea7b09-4942-4b06-8d50-d98ed8af4dad",
-      "month": 7,
-      "year": 2019
+      "id": "10ea7b09-4942-4b06-8d50-d98ed8af4dad"
     },
     {
       "away_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "away_score": 1,
-      "day": 27,
+      "match_date": "27072019",
       "home_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "home_score": 4,
-      "id": "6896217e-a5b3-462c-bd0c-8a705628dfc4",
-      "month": 7,
-      "year": 2019
+      "id": "6896217e-a5b3-462c-bd0c-8a705628dfc4"
     },
     {
       "away_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "away_score": 3,
-      "day": 26,
+      "match_date": "26072019",
       "home_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "home_score": 4,
-      "id": "df2e5f4c-9e6b-47df-a59c-913472b20553",
-      "month": 7,
-      "year": 2019
+      "id": "df2e5f4c-9e6b-47df-a59c-913472b20553"
     },
     {
       "away_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "away_score": 1,
-      "day": 26,
+      "match_date": "26072019",
       "home_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "home_score": 3,
-      "id": "739817da-575d-4c8f-9b08-b95ff8c19043",
-      "month": 7,
-      "year": 2019
+      "id": "739817da-575d-4c8f-9b08-b95ff8c19043"
     },
     {
       "away_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "away_score": 2,
-      "day": 21,
+      "match_date": "21072019",
       "home_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "home_score": 1,
-      "id": "04a95291-fc41-4c64-a4df-5a2c5fadb935",
-      "month": 7,
-      "year": 2019
+      "id": "04a95291-fc41-4c64-a4df-5a2c5fadb935"
     },
     {
       "away_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "away_score": 1,
-      "day": 21,
+      "match_date": "21072019",
       "home_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "home_score": 0,
-      "id": "8798eb0e-67fa-404a-861f-dda4fe78cd7f",
-      "month": 7,
-      "year": 2019
+      "id": "8798eb0e-67fa-404a-861f-dda4fe78cd7f"
     },
     {
       "away_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "away_score": 2,
-      "day": 21,
+      "match_date": "21072019",
       "home_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "home_score": 0,
-      "id": "361a7f81-ccc7-4dbd-a814-3796ae552ebc",
-      "month": 7,
-      "year": 2019
+      "id": "361a7f81-ccc7-4dbd-a814-3796ae552ebc"
     },
     {
       "away_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "away_score": 0,
-      "day": 21,
+      "match_date": "21072019",
       "home_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "home_score": 2,
-      "id": "ff93c9a5-9969-4a48-8c0a-2d072c5b6bc5",
-      "month": 7,
-      "year": 2019
+      "id": "ff93c9a5-9969-4a48-8c0a-2d072c5b6bc5"
     },
     {
       "away_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "away_score": 1,
-      "day": 20,
+      "match_date": "20072019",
       "home_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "home_score": 1,
-      "id": "0328597f-84e2-461b-b326-16ad96a32374",
-      "month": 7,
-      "year": 2019
+      "id": "0328597f-84e2-461b-b326-16ad96a32374"
     },
     {
       "away_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "away_score": 3,
-      "day": 20,
+      "match_date": "20072019",
       "home_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "home_score": 1,
-      "id": "5f0a61fa-984d-42ee-9b8e-a0c122869692",
-      "month": 7,
-      "year": 2019
+      "id": "5f0a61fa-984d-42ee-9b8e-a0c122869692"
     },
     {
       "away_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "away_score": 2,
-      "day": 20,
+      "match_date": "20072019",
       "home_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "home_score": 1,
-      "id": "6cb63b37-eb8a-46d2-878f-4f40cc9f9dd0",
-      "month": 7,
-      "year": 2019
+      "id": "6cb63b37-eb8a-46d2-878f-4f40cc9f9dd0"
     },
     {
       "away_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "away_score": 2,
-      "day": 20,
+      "match_date": "20072019",
       "home_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "home_score": 0,
-      "id": "23851bcd-c6e6-4ef5-8455-bb4c71ef5b3b",
-      "month": 7,
-      "year": 2019
+      "id": "23851bcd-c6e6-4ef5-8455-bb4c71ef5b3b"
     },
     {
       "away_id": "93eba939-30e6-4702-b854-87051111edbd",
       "away_score": 1,
-      "day": 20,
+      "match_date": "20072019",
       "home_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "home_score": 2,
-      "id": "ff2fb03d-b099-4ef7-9b68-4009a248035f",
-      "month": 7,
-      "year": 2019
+      "id": "ff2fb03d-b099-4ef7-9b68-4009a248035f"
     },
     {
       "away_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "away_score": 0,
-      "day": 20,
+      "match_date": "20072019",
       "home_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "home_score": 2,
-      "id": "5163819f-c696-4265-ba56-0042352baaef",
-      "month": 7,
-      "year": 2019
+      "id": "5163819f-c696-4265-ba56-0042352baaef"
     },
     {
       "away_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "away_score": 3,
-      "day": 20,
+      "match_date": "20072019",
       "home_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "home_score": 1,
-      "id": "6b3163b0-c308-4c51-aedc-9ac9e29013e8",
-      "month": 7,
-      "year": 2019
+      "id": "6b3163b0-c308-4c51-aedc-9ac9e29013e8"
     },
     {
       "away_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "away_score": 2,
-      "day": 19,
+      "match_date": "19072019",
       "home_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "home_score": 3,
-      "id": "5149b1ba-a3ec-4e2f-b3d1-f134f96680d6",
-      "month": 7,
-      "year": 2019
+      "id": "5149b1ba-a3ec-4e2f-b3d1-f134f96680d6"
     },
     {
       "away_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "away_score": 1,
-      "day": 18,
+      "match_date": "18072019",
       "home_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "home_score": 1,
-      "id": "c857badb-6bf8-4381-9bf6-715c6dd070f7",
-      "month": 7,
-      "year": 2019
+      "id": "c857badb-6bf8-4381-9bf6-715c6dd070f7"
     },
     {
       "away_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "away_score": 4,
-      "day": 18,
+      "match_date": "18072019",
       "home_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "home_score": 1,
-      "id": "a407d7fd-183a-4a13-b2c6-9c06c2ddc516",
-      "month": 7,
-      "year": 2019
+      "id": "a407d7fd-183a-4a13-b2c6-9c06c2ddc516"
     },
     {
       "away_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "away_score": 2,
-      "day": 17,
+      "match_date": "17072019",
       "home_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "home_score": 2,
-      "id": "b548c93d-748b-4394-8a93-a23ccf363edc",
-      "month": 7,
-      "year": 2019
+      "id": "b548c93d-748b-4394-8a93-a23ccf363edc"
     },
     {
       "away_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "away_score": 1,
-      "day": 17,
+      "match_date": "17072019",
       "home_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "home_score": 3,
-      "id": "78e1098b-45e4-4061-9b92-7491963e12b4",
-      "month": 7,
-      "year": 2019
+      "id": "78e1098b-45e4-4061-9b92-7491963e12b4"
     },
     {
       "away_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "away_score": 0,
-      "day": 17,
+      "match_date": "17072019",
       "home_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "home_score": 5,
-      "id": "e8334365-8f2a-4e60-9aa3-6c5df1452e10",
-      "month": 7,
-      "year": 2019
+      "id": "e8334365-8f2a-4e60-9aa3-6c5df1452e10"
     },
     {
       "away_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "away_score": 0,
-      "day": 17,
+      "match_date": "17072019",
       "home_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "home_score": 4,
       "id": "b4be9916-6459-4bfe-b30c-b44f12a4a1ad",
@@ -1663,2422 +1333,1938 @@
     {
       "away_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "away_score": 1,
-      "day": 14,
+      "match_date": "14072019",
       "home_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "home_score": 2,
-      "id": "4372262c-96ba-44f6-8a3d-7114e8a9eca1",
-      "month": 7,
-      "year": 2019
+      "id": "4372262c-96ba-44f6-8a3d-7114e8a9eca1"
     },
     {
       "away_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "away_score": 1,
-      "day": 14,
+      "match_date": "14072019",
       "home_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "home_score": 2,
-      "id": "6910bfd9-b38e-44aa-ae3b-1d2e7b1d8841",
-      "month": 7,
-      "year": 2019
+      "id": "6910bfd9-b38e-44aa-ae3b-1d2e7b1d8841"
     },
     {
       "away_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "away_score": 2,
-      "day": 13,
+      "match_date": "13072019",
       "home_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "home_score": 2,
-      "id": "8e12988a-546a-4d42-87a7-57e1b46d0443",
-      "month": 7,
-      "year": 2019
+      "id": "8e12988a-546a-4d42-87a7-57e1b46d0443"
     },
     {
       "away_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "away_score": 0,
-      "day": 13,
+      "match_date": "13072019",
       "home_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "home_score": 4,
-      "id": "2194c5a6-e069-4bb6-9bbe-7212a22c9e94",
-      "month": 7,
-      "year": 2019
+      "id": "2194c5a6-e069-4bb6-9bbe-7212a22c9e94"
     },
     {
       "away_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "away_score": 3,
-      "day": 13,
+      "match_date": "13072019",
       "home_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "home_score": 0,
-      "id": "40442ec6-fd13-4a74-bee4-0ed51e8f481d",
-      "month": 7,
-      "year": 2019
+      "id": "40442ec6-fd13-4a74-bee4-0ed51e8f481d"
     },
     {
       "away_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "away_score": 2,
-      "day": 13,
+      "match_date": "13072019",
       "home_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "home_score": 1,
-      "id": "720344ba-c999-4568-a195-1db9b20d0b84",
-      "month": 7,
-      "year": 2019
+      "id": "720344ba-c999-4568-a195-1db9b20d0b84"
     },
     {
       "away_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "away_score": 0,
-      "day": 13,
+      "match_date": "13072019",
       "home_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "home_score": 1,
-      "id": "0608e1a6-3ae1-417d-847c-9162191a9d7a",
-      "month": 7,
-      "year": 2019
+      "id": "0608e1a6-3ae1-417d-847c-9162191a9d7a"
     },
     {
       "away_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "away_score": 2,
-      "day": 13,
+      "match_date": "13072019",
       "home_id": "93eba939-30e6-4702-b854-87051111edbd",
       "home_score": 0,
-      "id": "a3a02303-3c9e-4ed4-ab4b-c71e556842e6",
-      "month": 7,
-      "year": 2019
+      "id": "a3a02303-3c9e-4ed4-ab4b-c71e556842e6"
     },
     {
       "away_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "away_score": 0,
-      "day": 13,
+      "match_date": "13072019",
       "home_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "home_score": 1,
-      "id": "86bf2eb0-9f8a-4021-ac38-34e7cbb3e775",
-      "month": 7,
-      "year": 2019
+      "id": "86bf2eb0-9f8a-4021-ac38-34e7cbb3e775"
     },
     {
       "away_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "away_score": 3,
-      "day": 12,
+      "match_date": "13072019",
       "home_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "home_score": 1,
-      "id": "5875902c-091c-4b5c-851b-07d5f01866e9",
-      "month": 7,
-      "year": 2019
+      "id": "5875902c-091c-4b5c-851b-07d5f01866e9"
     },
     {
       "away_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "away_score": 3,
-      "day": 12,
+      "match_date": "12072019",
       "home_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "home_score": 1,
-      "id": "2b7e6c29-ef77-4f06-9f17-e69df756fb17",
-      "month": 7,
-      "year": 2019
+      "id": "2b7e6c29-ef77-4f06-9f17-e69df756fb17"
     },
     {
       "away_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "away_score": 2,
-      "day": 12,
+      "match_date": "12072019",
       "home_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "home_score": 2,
-      "id": "c4c9c5c1-1471-40dd-a8c6-d044dc074831",
-      "month": 7,
-      "year": 2019
+      "id": "c4c9c5c1-1471-40dd-a8c6-d044dc074831"
     },
     {
       "away_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "away_score": 1,
-      "day": 7,
+      "match_date": "07072019",
       "home_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "home_score": 0,
-      "id": "cc4cbd8b-0fac-4fda-9ded-6a4a224b2ffb",
-      "month": 7,
-      "year": 2019
+      "id": "cc4cbd8b-0fac-4fda-9ded-6a4a224b2ffb"
     },
     {
       "away_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "away_score": 2,
-      "day": 7,
+      "match_date": "07072019",
       "home_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "home_score": 2,
-      "id": "81fb5bbe-edf5-4269-8a89-aaf955d4b2e1",
-      "month": 7,
-      "year": 2019
+      "id": "81fb5bbe-edf5-4269-8a89-aaf955d4b2e1"
     },
     {
       "away_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "away_score": 3,
-      "day": 7,
+      "match_date": "07072019",
       "home_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "home_score": 3,
-      "id": "436a0aab-f7a2-424b-977b-6d1adf7ed760",
-      "month": 7,
-      "year": 2019
+      "id": "436a0aab-f7a2-424b-977b-6d1adf7ed760"
     },
     {
       "away_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "away_score": 1,
-      "day": 6,
+      "match_date": "06072019",
       "home_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "home_score": 6,
-      "id": "4155db2b-a0b6-4c9f-a7f7-c28e335389c7",
-      "month": 7,
-      "year": 2019
+      "id": "4155db2b-a0b6-4c9f-a7f7-c28e335389c7"
     },
     {
       "away_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "away_score": 0,
-      "day": 6,
+      "match_date": "06072019",
       "home_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "home_score": 1,
-      "id": "d5528f41-6a8e-440a-911a-a939a9824aad",
-      "month": 7,
-      "year": 2019
+      "id": "d5528f41-6a8e-440a-911a-a939a9824aad"
     },
     {
       "away_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "away_score": 0,
-      "day": 6,
+      "match_date": "06072019",
       "home_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "home_score": 1,
-      "id": "5dca9f9c-6a8c-4b7b-bc78-cc5d079c3c9a",
-      "month": 7,
-      "year": 2019
+      "id": "5dca9f9c-6a8c-4b7b-bc78-cc5d079c3c9a"
     },
     {
       "away_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "away_score": 2,
-      "day": 6,
+      "match_date": "06072019",
       "home_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "home_score": 1,
-      "id": "9a340d02-b80b-4b5b-b23a-4ef92e4ba2fc",
-      "month": 7,
-      "year": 2019
+      "id": "9a340d02-b80b-4b5b-b23a-4ef92e4ba2fc"
     },
     {
       "away_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "away_score": 2,
-      "day": 6,
+      "match_date": "06072019",
       "home_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "home_score": 3,
-      "id": "a1a89e7d-689e-4588-9036-2f2379371786",
-      "month": 7,
-      "year": 2019
+      "id": "a1a89e7d-689e-4588-9036-2f2379371786"
     },
     {
       "away_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "away_score": 3,
-      "day": 6,
+      "match_date": "06072019",
       "home_id": "93eba939-30e6-4702-b854-87051111edbd",
       "home_score": 2,
-      "id": "9d709cb4-f323-4e73-bf01-f43d83951667",
-      "month": 7,
-      "year": 2019
+      "id": "9d709cb4-f323-4e73-bf01-f43d83951667"
     },
     {
       "away_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "away_score": 0,
-      "day": 4,
+      "match_date": "04072019",
       "home_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "home_score": 2,
-      "id": "3e9e9c44-4a61-494b-b0ca-2e5f3b76904d",
-      "month": 7,
-      "year": 2019
+      "id": "3e9e9c44-4a61-494b-b0ca-2e5f3b76904d"
     },
     {
       "away_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "away_score": 2,
-      "day": 4,
+      "match_date": "04072019",
       "home_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "home_score": 1,
-      "id": "6dab49a3-4521-4330-b5ea-e9f2b18baf8e",
-      "month": 7,
-      "year": 2019
+      "id": "6dab49a3-4521-4330-b5ea-e9f2b18baf8e"
     },
     {
       "away_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "away_score": 0,
-      "day": 4,
+      "match_date": "04072019",
       "home_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "home_score": 2,
-      "id": "284d0293-df69-42ed-99b8-885d4d255142",
-      "month": 7,
-      "year": 2019
+      "id": "284d0293-df69-42ed-99b8-885d4d255142"
     },
     {
       "away_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "away_score": 0,
-      "day": 3,
+      "match_date": "03072019",
       "home_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "home_score": 1,
-      "id": "70807404-1dd8-4cca-a974-cd5be33c9df4",
-      "month": 7,
-      "year": 2019
+      "id": "70807404-1dd8-4cca-a974-cd5be33c9df4"
     },
     {
       "away_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "away_score": 0,
-      "day": 3,
+      "match_date": "03072019",
       "home_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "home_score": 4,
-      "id": "c10318f8-3d0b-4e8b-b7d0-862b9b2429ff",
-      "month": 7,
-      "year": 2019
+      "id": "c10318f8-3d0b-4e8b-b7d0-862b9b2429ff"
     },
     {
       "away_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "away_score": 5,
-      "day": 3,
+      "match_date": "03072019",
       "home_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "home_score": 1,
-      "id": "40a04682-ae35-403b-ab43-9f2eb09589c9",
-      "month": 7,
-      "year": 2019
+      "id": "40a04682-ae35-403b-ab43-9f2eb09589c9"
     },
     {
       "away_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "away_score": 1,
-      "day": 3,
+      "match_date": "03072019",
       "home_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "home_score": 5,
-      "id": "854db6c6-0db5-4a4c-8551-f9f2c3fe0478",
-      "month": 7,
-      "year": 2019
+      "id": "854db6c6-0db5-4a4c-8551-f9f2c3fe0478"
     },
     {
       "away_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "away_score": 1,
-      "day": 3,
+      "match_date": "03072019",
       "home_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "home_score": 3,
-      "id": "e214f8f3-db1d-46b1-a417-a86706180373",
-      "month": 7,
-      "year": 2019
+      "id": "e214f8f3-db1d-46b1-a417-a86706180373"
     },
     {
       "away_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "away_score": 3,
-      "day": 3,
+      "match_date": "03072019",
       "home_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "home_score": 1,
-      "id": "4b3901d8-12ea-4fda-aa97-c74d6a05a8d5",
-      "month": 7,
-      "year": 2019
+      "id": "4b3901d8-12ea-4fda-aa97-c74d6a05a8d5"
     },
     {
       "away_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "away_score": 0,
-      "day": 3,
+      "match_date": "03072019",
       "home_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "home_score": 3,
-      "id": "7e6d7310-1543-4953-89c7-df19fade8569",
-      "month": 7,
-      "year": 2019
+      "id": "7e6d7310-1543-4953-89c7-df19fade8569"
     },
     {
       "away_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "away_score": 0,
-      "day": 30,
+      "match_date": "30062019",
       "home_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "home_score": 1,
-      "id": "8a4e76ab-8c5d-417b-a463-605fa352716f",
-      "month": 6,
-      "year": 2019
+      "id": "8a4e76ab-8c5d-417b-a463-605fa352716f"
     },
     {
       "away_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "away_score": 0,
-      "day": 29,
+      "match_date": "29062019",
       "home_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "home_score": 2,
-      "id": "f273c397-775c-49e4-9c7c-c4bda7f8c677",
-      "month": 6,
-      "year": 2019
+      "id": "f273c397-775c-49e4-9c7c-c4bda7f8c677"
     },
     {
       "away_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "away_score": 0,
-      "day": 29,
+      "match_date": "29062019",
       "home_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "home_score": 3,
-      "id": "18b0eaed-e49b-4cd5-bdc9-4136b4f6b0f3",
-      "month": 6,
-      "year": 2019
+      "id": "18b0eaed-e49b-4cd5-bdc9-4136b4f6b0f3"
     },
     {
       "away_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "away_score": 0,
-      "day": 29,
+      "match_date": "29062019",
       "home_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "home_score": 1,
-      "id": "cfa959b1-f770-48e3-a591-6c435ed07146",
-      "month": 6,
-      "year": 2019
+      "id": "cfa959b1-f770-48e3-a591-6c435ed07146"
     },
     {
       "away_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "away_score": 1,
-      "day": 29,
+      "match_date": "29062019",
       "home_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "home_score": 1,
-      "id": "9556acbb-71ea-4755-b932-f4fc8dbd1d62",
-      "month": 6,
-      "year": 2019
+      "id": "9556acbb-71ea-4755-b932-f4fc8dbd1d62"
     },
     {
       "away_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "away_score": 2,
-      "day": 29,
+      "match_date": "29062019",
       "home_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "home_score": 0,
-      "id": "d8a2f864-cbb4-4ada-a62b-b47d8af8e993",
-      "month": 6,
-      "year": 2019
+      "id": "d8a2f864-cbb4-4ada-a62b-b47d8af8e993"
     },
     {
       "away_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "away_score": 1,
-      "day": 29,
+      "match_date": "29062019",
       "home_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "home_score": 2,
-      "id": "a9690c9e-623b-44e4-ada8-c00a308714f3",
-      "month": 6,
-      "year": 2019
+      "id": "a9690c9e-623b-44e4-ada8-c00a308714f3"
     },
     {
       "away_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "away_score": 2,
-      "day": 29,
+      "match_date": "29062019",
       "home_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "home_score": 4,
-      "id": "459e7b53-e649-4820-9fe8-21400fd7904e",
-      "month": 6,
-      "year": 2019
+      "id": "459e7b53-e649-4820-9fe8-21400fd7904e"
     },
     {
       "away_id": "93eba939-30e6-4702-b854-87051111edbd",
       "away_score": 1,
-      "day": 29,
+      "match_date": "29062019",
       "home_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "home_score": 2,
-      "id": "db6607d4-38ab-4fb0-8bfc-7eb6e6d33f56",
-      "month": 6,
-      "year": 2019
+      "id": "db6607d4-38ab-4fb0-8bfc-7eb6e6d33f56"
     },
     {
       "away_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "away_score": 1,
-      "day": 29,
+      "match_date": "29062019",
       "home_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "home_score": 7,
-      "id": "7b058bbd-b4a9-480e-94ef-2c2e366bd81f",
-      "month": 6,
-      "year": 2019
+      "id": "7b058bbd-b4a9-480e-94ef-2c2e366bd81f"
     },
     {
       "away_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "away_score": 0,
-      "day": 28,
+      "match_date": "28062019",
       "home_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "home_score": 1,
-      "id": "02e6c343-52e7-43f6-a58e-bc51b9063bfa",
-      "month": 6,
-      "year": 2019
+      "id": "02e6c343-52e7-43f6-a58e-bc51b9063bfa"
     },
     {
       "away_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "away_score": 1,
-      "day": 28,
+      "match_date": "28062019",
       "home_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "home_score": 3,
-      "id": "6c22e4b4-f5ef-4deb-9b69-0a0c6ad3e664",
-      "month": 6,
-      "year": 2019
+      "id": "6c22e4b4-f5ef-4deb-9b69-0a0c6ad3e664"
     },
     {
       "away_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "away_score": 0,
-      "day": 26,
+      "match_date": "26062019",
       "home_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "home_score": 2,
-      "id": "7427ca46-8b06-426c-907f-e7ead093f06a",
-      "month": 6,
-      "year": 2019
+      "id": "7427ca46-8b06-426c-907f-e7ead093f06a"
     },
     {
       "away_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "away_score": 2,
-      "day": 26,
+      "match_date": "26062019",
       "home_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "home_score": 2,
-      "id": "8bf7949e-848e-462a-94a5-1b423d1325e7",
-      "month": 6,
-      "year": 2019
+      "id": "8bf7949e-848e-462a-94a5-1b423d1325e7"
     },
     {
       "away_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "away_score": 0,
-      "day": 26,
+      "match_date": "26062019",
       "home_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "home_score": 1,
-      "id": "c5d451bd-f56f-4324-b996-18e755f2e013",
-      "month": 6,
-      "year": 2019
+      "id": "c5d451bd-f56f-4324-b996-18e755f2e013"
     },
     {
       "away_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "away_score": 2,
-      "day": 26,
+      "match_date": "26062019",
       "home_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "home_score": 3,
-      "id": "4ea98637-b8d8-4785-86e0-70b2b890ac30",
-      "month": 6,
-      "year": 2019
+      "id": "4ea98637-b8d8-4785-86e0-70b2b890ac30"
     },
     {
       "away_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "away_score": 1,
-      "day": 26,
+      "match_date": "26062019",
       "home_id": "93eba939-30e6-4702-b854-87051111edbd",
       "home_score": 2,
-      "id": "21eaf5c0-225f-4f52-b859-3eb10766e1db",
-      "month": 6,
-      "year": 2019
+      "id": "21eaf5c0-225f-4f52-b859-3eb10766e1db"
     },
     {
       "away_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "away_score": 1,
-      "day": 26,
+      "match_date": "26062019",
       "home_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "home_score": 1,
-      "id": "f790c1a2-451a-43ff-a234-560495d36994",
-      "month": 6,
-      "year": 2019
+      "id": "f790c1a2-451a-43ff-a234-560495d36994"
     },
     {
       "away_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "away_score": 1,
-      "day": 23,
+      "match_date": "23062019",
       "home_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "home_score": 0,
-      "id": "9a6b2eed-5afa-4b5c-8bbb-ae1323f30b93",
-      "month": 6,
-      "year": 2019
+      "id": "9a6b2eed-5afa-4b5c-8bbb-ae1323f30b93"
     },
     {
       "away_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "away_score": 0,
-      "day": 22,
+      "match_date": "22062019",
       "home_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "home_score": 4,
-      "id": "dbc0a3ff-04b5-423e-9860-05ae628c11a2",
-      "month": 6,
-      "year": 2019
+      "id": "dbc0a3ff-04b5-423e-9860-05ae628c11a2"
     },
     {
       "away_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "away_score": 2,
-      "day": 22,
+      "match_date": "22062019",
       "home_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "home_score": 2,
-      "id": "3446f080-4b00-466a-bb46-addf99d1e2a8",
-      "month": 6,
-      "year": 2019
+      "id": "3446f080-4b00-466a-bb46-addf99d1e2a8"
     },
     {
       "away_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "away_score": 1,
-      "day": 22,
+      "match_date": "22062019",
       "home_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "home_score": 1,
-      "id": "1e9f32fd-844b-48e4-8e23-55ee7db270fd",
-      "month": 6,
-      "year": 2019
+      "id": "1e9f32fd-844b-48e4-8e23-55ee7db270fd"
     },
     {
       "away_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "away_score": 0,
-      "day": 22,
+      "match_date": "22062019",
       "home_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "home_score": 3,
-      "id": "07eceb36-cf09-4fce-948f-c296e38aa941",
-      "month": 6,
-      "year": 2019
+      "id": "07eceb36-cf09-4fce-948f-c296e38aa941"
     },
     {
       "away_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "away_score": 2,
-      "day": 22,
+      "match_date": "22062019",
       "home_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "home_score": 0,
-      "id": "f4f2d215-b952-4ee8-97d5-740e0357d0ba",
-      "month": 6,
-      "year": 2019
+      "id": "f4f2d215-b952-4ee8-97d5-740e0357d0ba"
     },
     {
       "away_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "away_score": 0,
-      "day": 8,
+      "match_date": "08062019",
       "home_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "home_score": 1,
-      "id": "c4b2d7d4-8574-46ef-8d0b-7a29a87e2513",
-      "month": 6,
-      "year": 2019
+      "id": "c4b2d7d4-8574-46ef-8d0b-7a29a87e2513"
     },
     {
       "away_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "away_score": 2,
-      "day": 8,
+      "match_date": "08062019",
       "home_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "home_score": 3,
-      "id": "54779cf7-53d7-4b8f-bf4d-7f7aebc8a73c",
-      "month": 6,
-      "year": 2019
+      "id": "54779cf7-53d7-4b8f-bf4d-7f7aebc8a73c"
     },
     {
       "away_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "away_score": 2,
-      "day": 8,
+      "match_date": "08062019",
       "home_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "home_score": 2,
-      "id": "5b5af670-0a12-4aed-97ff-c4adca1090c0",
-      "month": 6,
-      "year": 2019
+      "id": "5b5af670-0a12-4aed-97ff-c4adca1090c0"
     },
     {
       "away_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "away_score": 2,
-      "day": 7,
+      "match_date": "07062019",
       "home_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "home_score": 2,
-      "id": "a3662684-ea82-419b-892f-0023fbcca3b6",
-      "month": 6,
-      "year": 2019
+      "id": "a3662684-ea82-419b-892f-0023fbcca3b6"
     },
     {
       "away_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "away_score": 2,
-      "day": 6,
+      "match_date": "06062019",
       "home_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "home_score": 5,
-      "id": "9146c2dd-3207-4c13-9365-6313f74026d9",
-      "month": 6,
-      "year": 2019
+      "id": "9146c2dd-3207-4c13-9365-6313f74026d9"
     },
     {
       "away_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "away_score": 1,
-      "day": 5,
+      "match_date": "05062019",
       "home_id": "93eba939-30e6-4702-b854-87051111edbd",
       "home_score": 2,
-      "id": "4cbd9457-3c47-4641-bdd7-5363b3efc0ff",
-      "month": 6,
-      "year": 2019
+      "id": "4cbd9457-3c47-4641-bdd7-5363b3efc0ff"
     },
     {
       "away_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "away_score": 2,
-      "day": 2,
+      "match_date": "02062019",
       "home_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "home_score": 1,
-      "id": "90a97ade-6790-47d7-ae4f-602e8fcd8f9f",
-      "month": 6,
-      "year": 2019
+      "id": "90a97ade-6790-47d7-ae4f-602e8fcd8f9f"
     },
     {
       "away_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "away_score": 3,
-      "day": 2,
+      "match_date": "02062019",
       "home_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "home_score": 2,
-      "id": "07cb0b47-61d0-478d-9d4b-69d51e5daa45",
-      "month": 6,
-      "year": 2019
+      "id": "07cb0b47-61d0-478d-9d4b-69d51e5daa45"
     },
     {
       "away_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "away_score": 3,
-      "day": 1,
+      "match_date": "01062019",
       "home_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "home_score": 2,
-      "id": "4b6a85ec-00c2-4a2c-82ee-0d50eafc827d",
-      "month": 6,
-      "year": 2019
+      "id": "4b6a85ec-00c2-4a2c-82ee-0d50eafc827d"
     },
     {
       "away_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "away_score": 1,
-      "day": 1,
+      "match_date": "01062019",
       "home_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "home_score": 3,
-      "id": "d66ea354-68e3-4287-92d4-d1ef48f1579f",
-      "month": 6,
-      "year": 2019
+      "id": "d66ea354-68e3-4287-92d4-d1ef48f1579f"
     },
     {
       "away_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "away_score": 1,
-      "day": 1,
+      "match_date": "01062019",
       "home_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "home_score": 1,
-      "id": "ada60896-2411-444b-a4b0-9b8b77daff66",
-      "month": 6,
-      "year": 2019
+      "id": "ada60896-2411-444b-a4b0-9b8b77daff66"
     },
     {
       "away_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "away_score": 1,
-      "day": 1,
+      "match_date": "01062019",
       "home_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "home_score": 1,
-      "id": "292661a6-d14d-4d03-989c-8e470e88f9cb",
-      "month": 6,
-      "year": 2019
+      "id": "292661a6-d14d-4d03-989c-8e470e88f9cb"
     },
     {
       "away_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "away_score": 1,
-      "day": 1,
+      "match_date": "01062019",
       "home_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "home_score": 2,
-      "id": "56689345-25f7-4d75-a829-186957dc314c",
-      "month": 6,
-      "year": 2019
+      "id": "56689345-25f7-4d75-a829-186957dc314c"
     },
     {
       "away_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "away_score": 2,
-      "day": 1,
+      "match_date": "01062019",
       "home_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "home_score": 2,
-      "id": "4aa79c1b-3083-4eb2-9daf-896fe44365be",
-      "month": 6,
-      "year": 2019
+      "id": "4aa79c1b-3083-4eb2-9daf-896fe44365be"
     },
     {
       "away_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "away_score": 0,
-      "day": 1,
+      "match_date": "01062019",
       "home_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "home_score": 4,
-      "id": "5bdbf097-a638-4599-9569-7526baf8e1ef",
-      "month": 6,
-      "year": 2019
+      "id": "5bdbf097-a638-4599-9569-7526baf8e1ef"
     },
     {
       "away_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "away_score": 0,
-      "day": 1,
+      "match_date": "01062019",
       "home_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "home_score": 2,
-      "id": "838f9dd1-366a-4304-8f09-7c428bb4dade",
-      "month": 6,
-      "year": 2019
+      "id": "838f9dd1-366a-4304-8f09-7c428bb4dade"
     },
     {
       "away_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "away_score": 3,
-      "day": 1,
+      "match_date": "01062019",
       "home_id": "93eba939-30e6-4702-b854-87051111edbd",
       "home_score": 0,
-      "id": "0e21728f-6a19-41df-9d9b-3d042e976f83",
-      "month": 6,
-      "year": 2019
+      "id": "0e21728f-6a19-41df-9d9b-3d042e976f83"
     },
     {
       "away_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "away_score": 1,
-      "day": 31,
+      "match_date": "31052019",
       "home_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "home_score": 1,
-      "id": "1123c12e-3dbd-4a53-94de-a04fed0cac6e",
-      "month": 5,
-      "year": 2019
+      "id": "1123c12e-3dbd-4a53-94de-a04fed0cac6e"
     },
     {
       "away_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "away_score": 1,
-      "day": 29,
+      "match_date": "29052019",
       "home_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "home_score": 1,
-      "id": "2b18ae96-9f17-49f4-9069-68cd5698038a",
-      "month": 5,
-      "year": 2019
+      "id": "2b18ae96-9f17-49f4-9069-68cd5698038a"
     },
     {
       "away_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "away_score": 2,
-      "day": 29,
+      "match_date": "29052019",
       "home_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "home_score": 0,
-      "id": "356724b2-1395-4ba0-9d19-2b95b6a1ce84",
-      "month": 5,
-      "year": 2019
+      "id": "356724b2-1395-4ba0-9d19-2b95b6a1ce84"
     },
     {
       "away_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "away_score": 3,
-      "day": 29,
+      "match_date": "29052019",
       "home_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "home_score": 3,
-      "id": "c210d941-1d1d-45c4-82fc-5e07b84909b6",
-      "month": 5,
-      "year": 2019
+      "id": "c210d941-1d1d-45c4-82fc-5e07b84909b6"
     },
     {
       "away_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "away_score": 1,
-      "day": 29,
+      "match_date": "29052019",
       "home_id": "93eba939-30e6-4702-b854-87051111edbd",
       "home_score": 2,
-      "id": "3e1b0566-ebd2-422a-ae96-4d969110b671",
-      "month": 5,
-      "year": 2019
+      "id": "3e1b0566-ebd2-422a-ae96-4d969110b671"
     },
     {
       "away_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "away_score": 0,
-      "day": 29,
+      "match_date": "29052019",
       "home_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "home_score": 3,
-      "id": "b037fb5b-3676-4c19-b680-7132595312d4",
-      "month": 5,
-      "year": 2019
+      "id": "b037fb5b-3676-4c19-b680-7132595312d4"
     },
     {
       "away_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "away_score": 2,
-      "day": 26,
+      "match_date": "26052019",
       "home_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "home_score": 1,
-      "id": "b654d72e-8d6f-4ae0-baf7-93e57690c386",
-      "month": 5,
-      "year": 2019
+      "id": "b654d72e-8d6f-4ae0-baf7-93e57690c386"
     },
     {
       "away_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "away_score": 2,
-      "day": 26,
+      "match_date": "26052019",
       "home_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "home_score": 3,
-      "id": "9f45c44d-818d-40aa-97ef-b1076381a41c",
-      "month": 5,
-      "year": 2019
+      "id": "9f45c44d-818d-40aa-97ef-b1076381a41c"
     },
     {
       "away_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "away_score": 2,
-      "day": 25,
+      "match_date": "25052019",
       "home_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "home_score": 3,
-      "id": "8f8ecdf1-ab91-4c12-9d28-c8e6b94bd82f",
-      "month": 5,
-      "year": 2019
+      "id": "8f8ecdf1-ab91-4c12-9d28-c8e6b94bd82f"
     },
     {
       "away_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "away_score": 0,
-      "day": 25,
+      "match_date": "25052019",
       "home_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "home_score": 1,
-      "id": "bece22f8-0882-4611-aa6b-9f598f9f4f97",
-      "month": 5,
-      "year": 2019
+      "id": "bece22f8-0882-4611-aa6b-9f598f9f4f97"
     },
     {
       "away_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "away_score": 2,
-      "day": 25,
+      "match_date": "25052019",
       "home_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "home_score": 0,
-      "id": "f78fae8b-6022-482b-87a8-9b7d8a047907",
-      "month": 5,
-      "year": 2019
+      "id": "f78fae8b-6022-482b-87a8-9b7d8a047907"
     },
     {
       "away_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "away_score": 1,
-      "day": 25,
+      "match_date": "25052019",
       "home_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "home_score": 1,
-      "id": "a9c4d561-6944-4dfb-8a39-3ba593f1b169",
-      "month": 5,
-      "year": 2019
+      "id": "a9c4d561-6944-4dfb-8a39-3ba593f1b169"
     },
     {
       "away_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "away_score": 3,
-      "day": 25,
+      "match_date": "25052019",
       "home_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "home_score": 1,
-      "id": "683388be-439c-4097-ae57-123af872c315",
-      "month": 5,
-      "year": 2019
+      "id": "683388be-439c-4097-ae57-123af872c315"
     },
     {
       "away_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "away_score": 1,
-      "day": 25,
+      "match_date": "25052019",
       "home_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "home_score": 2,
-      "id": "68321212-a720-4b4f-ab00-9315be3966c8",
-      "month": 5,
-      "year": 2019
+      "id": "68321212-a720-4b4f-ab00-9315be3966c8"
     },
     {
       "away_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "away_score": 1,
-      "day": 25,
+      "match_date": "25052019",
       "home_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "home_score": 1,
-      "id": "7a7a56cb-87ac-44fc-84b4-69a5a8d3b068",
-      "month": 5,
-      "year": 2019
+      "id": "7a7a56cb-87ac-44fc-84b4-69a5a8d3b068"
     },
     {
       "away_id": "93eba939-30e6-4702-b854-87051111edbd",
       "away_score": 2,
-      "day": 24,
+      "match_date": "24052019",
       "home_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "home_score": 4,
-      "id": "cab56ccf-6647-4d86-a1cf-651e324d974b",
-      "month": 5,
-      "year": 2019
+      "id": "cab56ccf-6647-4d86-a1cf-651e324d974b"
     },
     {
       "away_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "away_score": 1,
-      "day": 24,
+      "match_date": "24052019",
       "home_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "home_score": 2,
-      "id": "35d7bc42-6949-438a-852b-b2aab83f3630",
-      "month": 5,
-      "year": 2019
+      "id": "35d7bc42-6949-438a-852b-b2aab83f3630"
     },
     {
       "away_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "away_score": 1,
-      "day": 24,
+      "match_date": "24052019",
       "home_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "home_score": 0,
-      "id": "6e0a18d1-2f81-4ea1-bbdb-ffa0b04be25e",
-      "month": 5,
-      "year": 2019
+      "id": "6e0a18d1-2f81-4ea1-bbdb-ffa0b04be25e"
     },
     {
       "away_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "away_score": 2,
-      "day": 22,
+      "match_date": "22052019",
       "home_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "home_score": 2,
-      "id": "3cd3170e-ef0c-4200-8114-ecdb3c6011c8",
-      "month": 5,
-      "year": 2019
+      "id": "3cd3170e-ef0c-4200-8114-ecdb3c6011c8"
     },
     {
       "away_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "away_score": 1,
-      "day": 19,
+      "match_date": "19052019",
       "home_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "home_score": 0,
-      "id": "1eaa0af9-469d-4e23-a5e5-4b0cfa934165",
-      "month": 5,
-      "year": 2019
+      "id": "1eaa0af9-469d-4e23-a5e5-4b0cfa934165"
     },
     {
       "away_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "away_score": 1,
-      "day": 19,
+      "match_date": "19052019",
       "home_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "home_score": 1,
-      "id": "86d9f14e-9c64-430c-8287-a8779884b5ca",
-      "month": 5,
-      "year": 2019
+      "id": "86d9f14e-9c64-430c-8287-a8779884b5ca"
     },
     {
       "away_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "away_score": 0,
-      "day": 19,
+      "match_date": "19052019",
       "home_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "home_score": 1,
-      "id": "67469392-2d00-43a7-960e-edc44f444350",
-      "month": 5,
-      "year": 2019
+      "id": "67469392-2d00-43a7-960e-edc44f444350"
     },
     {
       "away_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "away_score": 1,
-      "day": 19,
+      "match_date": "19052019",
       "home_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "home_score": 5,
-      "id": "c1705b48-7d0e-46b9-90e5-9b1e2db1e3bc",
-      "month": 5,
-      "year": 2019
+      "id": "c1705b48-7d0e-46b9-90e5-9b1e2db1e3bc"
     },
     {
       "away_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "away_score": 1,
-      "day": 18,
+      "match_date": "18052019",
       "home_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "home_score": 2,
-      "id": "a0744bd5-2d00-4b17-a480-00e4c6967cb1",
-      "month": 5,
-      "year": 2019
+      "id": "a0744bd5-2d00-4b17-a480-00e4c6967cb1"
     },
     {
       "away_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "away_score": 1,
-      "day": 18,
+      "match_date": "18052019",
       "home_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "home_score": 1,
-      "id": "f3cdfdf4-9108-4aed-a481-ad11f9af433f",
-      "month": 5,
-      "year": 2019
+      "id": "f3cdfdf4-9108-4aed-a481-ad11f9af433f"
     },
     {
       "away_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "away_score": 0,
-      "day": 18,
+      "match_date": "18052019",
       "home_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "home_score": 1,
-      "id": "858f5bad-03ee-4642-9a79-e58d65265c54",
-      "month": 5,
-      "year": 2019
+      "id": "858f5bad-03ee-4642-9a79-e58d65265c54"
     },
     {
       "away_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "away_score": 0,
-      "day": 18,
+      "match_date": "18052019",
       "home_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "home_score": 0,
-      "id": "871bad72-96dd-43c0-90cb-49bc0e2baf3a",
-      "month": 5,
-      "year": 2019
+      "id": "871bad72-96dd-43c0-90cb-49bc0e2baf3a"
     },
     {
       "away_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "away_score": 1,
-      "day": 18,
+      "match_date": "18052019",
       "home_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "home_score": 4,
-      "id": "a3dd63da-042a-4402-a305-eabebe5da126",
-      "month": 5,
-      "year": 2019
+      "id": "a3dd63da-042a-4402-a305-eabebe5da126"
     },
     {
       "away_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "away_score": 0,
-      "day": 18,
+      "match_date": "18052019",
       "home_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "home_score": 3,
-      "id": "ae256487-5c23-4874-85ba-4e2ea2715a50",
-      "month": 5,
-      "year": 2019
+      "id": "ae256487-5c23-4874-85ba-4e2ea2715a50"
     },
     {
       "away_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "away_score": 0,
-      "day": 18,
+      "match_date": "18052019",
       "home_id": "93eba939-30e6-4702-b854-87051111edbd",
       "home_score": 0,
-      "id": "0dd3d9ed-24b3-4599-a8f4-a46bf592621a",
-      "month": 5,
-      "year": 2019
+      "id": "0dd3d9ed-24b3-4599-a8f4-a46bf592621a"
     },
     {
       "away_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "away_score": 0,
-      "day": 16,
+      "match_date": "16052019",
       "home_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "home_score": 2,
-      "id": "402b9690-82b7-46eb-898f-8f389569f5a0",
-      "month": 5,
-      "year": 2019
+      "id": "402b9690-82b7-46eb-898f-8f389569f5a0"
     },
     {
       "away_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "away_score": 1,
-      "day": 15,
+      "match_date": "15052019",
       "home_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "home_score": 2,
-      "id": "e1ef637a-e17c-457d-9205-3055599c8dff",
-      "month": 5,
-      "year": 2019
+      "id": "e1ef637a-e17c-457d-9205-3055599c8dff"
     },
     {
       "away_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "away_score": 1,
-      "day": 15,
+      "match_date": "15052019",
       "home_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "home_score": 0,
-      "id": "3c2f8ca5-53d7-4bac-b141-1d39836fb244",
-      "month": 5,
-      "year": 2019
+      "id": "3c2f8ca5-53d7-4bac-b141-1d39836fb244"
     },
     {
       "away_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "away_score": 1,
-      "day": 15,
+      "match_date": "15052019",
       "home_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "home_score": 1,
-      "id": "e463167e-210c-495f-a46d-f45bb19eda0a",
-      "month": 5,
-      "year": 2019
+      "id": "e463167e-210c-495f-a46d-f45bb19eda0a"
     },
     {
       "away_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "away_score": 0,
-      "day": 15,
+      "match_date": "15052019",
       "home_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "home_score": 0,
-      "id": "74033b80-cd4a-40c7-9758-2b1027cefa7b",
-      "month": 5,
-      "year": 2019
+      "id": "74033b80-cd4a-40c7-9758-2b1027cefa7b"
     },
     {
       "away_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "away_score": 0,
-      "day": 12,
+      "match_date": "12052019",
       "home_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "home_score": 1,
-      "id": "7dbbf05b-0570-4612-b437-a70560090f46",
-      "month": 5,
-      "year": 2019
+      "id": "7dbbf05b-0570-4612-b437-a70560090f46"
     },
     {
       "away_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "away_score": 0,
-      "day": 12,
+      "match_date": "12052019",
       "home_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "home_score": 1,
-      "id": "85ed3bee-394e-42f7-b7a8-bbd14894cd60",
-      "month": 5,
-      "year": 2019
+      "id": "85ed3bee-394e-42f7-b7a8-bbd14894cd60"
     },
     {
       "away_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "away_score": 0,
-      "day": 11,
+      "match_date": "11052019",
       "home_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "home_score": 1,
-      "id": "eaf181eb-80cd-4325-bd9a-880cca1e2e5a",
-      "month": 5,
-      "year": 2019
+      "id": "eaf181eb-80cd-4325-bd9a-880cca1e2e5a"
     },
     {
       "away_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "away_score": 3,
-      "day": 11,
+      "match_date": "11052019",
       "home_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "home_score": 2,
-      "id": "044f0b6a-bf43-450b-8744-66541d90435f",
-      "month": 5,
-      "year": 2019
+      "id": "044f0b6a-bf43-450b-8744-66541d90435f"
     },
     {
       "away_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "away_score": 0,
-      "day": 11,
+      "match_date": "11052019",
       "home_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "home_score": 2,
-      "id": "5fbda493-74e1-4346-9ffa-8dd05fb81487",
-      "month": 5,
-      "year": 2019
+      "id": "5fbda493-74e1-4346-9ffa-8dd05fb81487"
     },
     {
       "away_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "away_score": 3,
-      "day": 11,
+      "match_date": "11052019",
       "home_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "home_score": 0,
-      "id": "fba2610f-d8ec-4344-9cbe-3603dd42021f",
-      "month": 5,
-      "year": 2019
+      "id": "fba2610f-d8ec-4344-9cbe-3603dd42021f"
     },
     {
       "away_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "away_score": 1,
-      "day": 11,
+      "match_date": "11052019",
       "home_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "home_score": 3,
-      "id": "c31c3fc9-bbed-4cf3-a76f-a59bd914f720",
-      "month": 5,
-      "year": 2019
+      "id": "c31c3fc9-bbed-4cf3-a76f-a59bd914f720"
     },
     {
       "away_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "away_score": 2,
-      "day": 11,
+      "match_date": "11052019",
       "home_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "home_score": 0,
-      "id": "765e21d5-43ed-4b84-b367-90bfe6b6735f",
-      "month": 5,
-      "year": 2019
+      "id": "765e21d5-43ed-4b84-b367-90bfe6b6735f"
     },
     {
       "away_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "away_score": 2,
-      "day": 11,
+      "match_date": "11052019",
       "home_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "home_score": 1,
-      "id": "5188a2da-bf9b-47d9-9d7a-f30913329634",
-      "month": 5,
-      "year": 2019
+      "id": "5188a2da-bf9b-47d9-9d7a-f30913329634"
     },
     {
       "away_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "away_score": 3,
-      "day": 11,
+      "match_date": "11052019",
       "home_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "home_score": 1,
-      "id": "86ffd2fe-d01e-410c-af2e-54f60241a72d",
-      "month": 5,
-      "year": 2019
+      "id": "86ffd2fe-d01e-410c-af2e-54f60241a72d"
     },
     {
       "away_id": "93eba939-30e6-4702-b854-87051111edbd",
       "away_score": 1,
-      "day": 11,
+      "match_date": "11052019",
       "home_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "home_score": 2,
-      "id": "3707b5a7-608b-4669-bc0e-af47004e702f",
-      "month": 5,
-      "year": 2019
+      "id": "3707b5a7-608b-4669-bc0e-af47004e702f"
     },
     {
       "away_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "away_score": 0,
-      "day": 10,
+      "match_date": "10052019",
       "home_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "home_score": 1,
-      "id": "d98c4434-fe49-4104-af23-7dddae62dff0",
-      "month": 5,
-      "year": 2019
+      "id": "d98c4434-fe49-4104-af23-7dddae62dff0"
     },
     {
       "away_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "away_score": 0,
-      "day": 8,
+      "match_date": "08052019",
       "home_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "home_score": 5,
-      "id": "fed9b264-ab0e-485b-b02f-b0453abaa0e0",
-      "month": 5,
-      "year": 2019
+      "id": "fed9b264-ab0e-485b-b02f-b0453abaa0e0"
     },
     {
       "away_id": "93eba939-30e6-4702-b854-87051111edbd",
       "away_score": 2,
-      "day": 8,
+      "match_date": "08052019",
       "home_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "home_score": 1,
-      "id": "625ecd32-1e1d-4497-a459-b4d1a5a4d379",
-      "month": 5,
-      "year": 2019
+      "id": "625ecd32-1e1d-4497-a459-b4d1a5a4d379"
     },
     {
       "away_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "away_score": 1,
-      "day": 8,
+      "match_date": "08052019",
       "home_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "home_score": 3,
-      "id": "ba8b1a6b-ddc3-4a47-abac-d5fca009db8c",
-      "month": 5,
-      "year": 2019
+      "id": "ba8b1a6b-ddc3-4a47-abac-d5fca009db8c"
     },
     {
       "away_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "away_score": 0,
-      "day": 8,
+      "match_date": "08052019",
       "home_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "home_score": 2,
-      "id": "d50b990a-3c41-498a-9cf3-bc23f8458088",
-      "month": 5,
-      "year": 2019
+      "id": "d50b990a-3c41-498a-9cf3-bc23f8458088"
     },
     {
       "away_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "away_score": 3,
-      "day": 5,
+      "match_date": "05052019",
       "home_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "home_score": 0,
-      "id": "b99165ef-b250-4dfd-9542-6c5c614c236e",
-      "month": 5,
-      "year": 2019
+      "id": "b99165ef-b250-4dfd-9542-6c5c614c236e"
     },
     {
       "away_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "away_score": 0,
-      "day": 4,
+      "match_date": "04052019",
       "home_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "home_score": 0,
-      "id": "fe1f5ac1-17b7-4fb7-904d-2b0e0ca1e2e7",
-      "month": 5,
-      "year": 2019
+      "id": "fe1f5ac1-17b7-4fb7-904d-2b0e0ca1e2e7"
     },
     {
       "away_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "away_score": 0,
-      "day": 4,
+      "match_date": "04052019",
       "home_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "home_score": 1,
-      "id": "52c0f038-3c02-4f47-9933-f7c6503edcbc",
-      "month": 5,
-      "year": 2019
+      "id": "52c0f038-3c02-4f47-9933-f7c6503edcbc"
     },
     {
       "away_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "away_score": 2,
-      "day": 4,
+      "match_date": "04052019",
       "home_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "home_score": 1,
-      "id": "ed70b61e-e8ce-4164-9361-c11d7b3745b4",
-      "month": 5,
-      "year": 2019
+      "id": "ed70b61e-e8ce-4164-9361-c11d7b3745b4"
     },
     {
       "away_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "away_score": 1,
-      "day": 4,
+      "match_date": "04052019",
       "home_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "home_score": 3,
-      "id": "50d1ddcb-2fa8-4007-88d6-386a118ae78a",
-      "month": 5,
-      "year": 2019
+      "id": "50d1ddcb-2fa8-4007-88d6-386a118ae78a"
     },
     {
       "away_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "away_score": 1,
-      "day": 4,
+      "match_date": "04052019",
       "home_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "home_score": 1,
-      "id": "27416989-f2c0-4d61-a643-4b4cb99af3ce",
-      "month": 5,
-      "year": 2019
+      "id": "27416989-f2c0-4d61-a643-4b4cb99af3ce"
     },
     {
       "away_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "away_score": 1,
-      "day": 4,
+      "match_date": "04052019",
       "home_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "home_score": 6,
-      "id": "fa1ed43a-a214-4eb4-bd0f-66ae4205023b",
-      "month": 5,
-      "year": 2019
+      "id": "fa1ed43a-a214-4eb4-bd0f-66ae4205023b"
     },
     {
       "away_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "away_score": 2,
-      "day": 4,
+      "match_date": "04052019",
       "home_id": "93eba939-30e6-4702-b854-87051111edbd",
       "home_score": 0,
-      "id": "7fe09f37-4eda-43ea-86a7-3ac7694e0903",
-      "month": 5,
-      "year": 2019
+      "id": "7fe09f37-4eda-43ea-86a7-3ac7694e0903"
     },
     {
       "away_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "away_score": 1,
-      "day": 4,
+      "match_date": "04052019",
       "home_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "home_score": 2,
-      "id": "588e8dc2-6b5b-4fa1-8ef1-7fb9c05a0570",
-      "month": 5,
-      "year": 2019
+      "id": "588e8dc2-6b5b-4fa1-8ef1-7fb9c05a0570"
     },
     {
       "away_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "away_score": 2,
-      "day": 4,
+      "match_date": "04052019",
       "home_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "home_score": 0,
-      "id": "70018f6e-4e89-40c9-8a57-5ed5cd243cdf",
-      "month": 5,
-      "year": 2019
+      "id": "70018f6e-4e89-40c9-8a57-5ed5cd243cdf"
     },
     {
       "away_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "away_score": 2,
-      "day": 4,
+      "match_date": "04052019",
       "home_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "home_score": 3,
-      "id": "0cb3cd5c-0eea-4a14-8000-836b9aec6533",
-      "month": 5,
-      "year": 2019
+      "id": "0cb3cd5c-0eea-4a14-8000-836b9aec6533"
     },
     {
       "away_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "away_score": 3,
-      "day": 3,
+      "match_date": "03052019",
       "home_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "home_score": 2,
-      "id": "ea340787-029f-42c6-8e65-f634db683e49",
-      "month": 5,
-      "year": 2019
+      "id": "ea340787-029f-42c6-8e65-f634db683e49"
     },
     {
       "away_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "away_score": 0,
-      "day": 1,
+      "match_date": "01052019",
       "home_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "home_score": 2,
-      "id": "db3338d8-7170-4e1d-803c-618cb208e2b2",
-      "month": 5,
-      "year": 2019
+      "id": "db3338d8-7170-4e1d-803c-618cb208e2b2"
     },
     {
       "away_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "away_score": 1,
-      "day": 28,
+      "match_date": "28042019",
       "home_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "home_score": 2,
-      "id": "d92fb978-7d55-46c7-9fca-3d3adeb576cd",
-      "month": 4,
-      "year": 2019
+      "id": "d92fb978-7d55-46c7-9fca-3d3adeb576cd"
     },
     {
       "away_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "away_score": 1,
-      "day": 28,
+      "match_date": "28042019",
       "home_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "home_score": 1,
-      "id": "46399fe5-54a3-4d74-a8aa-c548322c5fe7",
-      "month": 4,
-      "year": 2019
+      "id": "46399fe5-54a3-4d74-a8aa-c548322c5fe7"
     },
     {
       "away_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "away_score": 0,
-      "day": 28,
+      "match_date": "28042019",
       "home_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "home_score": 1,
-      "id": "3eec63f5-5dc4-4ba6-9bff-78d4a464216d",
-      "month": 4,
-      "year": 2019
+      "id": "3eec63f5-5dc4-4ba6-9bff-78d4a464216d"
     },
     {
       "away_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "away_score": 0,
-      "day": 28,
+      "match_date": "28042019",
       "home_id": "93eba939-30e6-4702-b854-87051111edbd",
       "home_score": 1,
-      "id": "c40d801c-5281-4e89-b8cb-e4ccd5e8425e",
-      "month": 4,
-      "year": 2019
+      "id": "c40d801c-5281-4e89-b8cb-e4ccd5e8425e"
     },
     {
       "away_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "away_score": 0,
-      "day": 27,
+      "match_date": "27042019",
       "home_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "home_score": 2,
-      "id": "b770368d-0d6f-4144-ad5c-88ce3c82d281",
-      "month": 4,
-      "year": 2019
+      "id": "b770368d-0d6f-4144-ad5c-88ce3c82d281"
     },
     {
       "away_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "away_score": 4,
-      "day": 27,
+      "match_date": "27042019",
       "home_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "home_score": 4,
-      "id": "37c65e1f-66de-46de-98aa-ec17304326f3",
-      "month": 4,
-      "year": 2019
+      "id": "37c65e1f-66de-46de-98aa-ec17304326f3"
     },
     {
       "away_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "away_score": 0,
-      "day": 27,
+      "match_date": "27042019",
       "home_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "home_score": 1,
-      "id": "22e970af-90b7-4f11-bc32-60c934ce14f9",
-      "month": 4,
-      "year": 2019
+      "id": "22e970af-90b7-4f11-bc32-60c934ce14f9"
     },
     {
       "away_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "away_score": 0,
-      "day": 27,
+      "match_date": "27042019",
       "home_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "home_score": 1,
-      "id": "6a67931f-952e-4b56-ab58-b57014a709c6",
-      "month": 4,
-      "year": 2019
+      "id": "6a67931f-952e-4b56-ab58-b57014a709c6"
     },
     {
       "away_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "away_score": 1,
-      "day": 27,
+      "match_date": "27042019",
       "home_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "home_score": 1,
-      "id": "e23febd7-83a6-4468-811a-43f67a4b9847",
-      "month": 4,
-      "year": 2019
+      "id": "e23febd7-83a6-4468-811a-43f67a4b9847"
     },
     {
       "away_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "away_score": 0,
-      "day": 27,
+      "match_date": "27042019",
       "home_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "home_score": 0,
-      "id": "056fa661-f6be-45a1-af12-1b9787de2820",
-      "month": 4,
-      "year": 2019
+      "id": "056fa661-f6be-45a1-af12-1b9787de2820"
     },
     {
       "away_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "away_score": 2,
-      "day": 27,
+      "match_date": "27042019",
       "home_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "home_score": 1,
-      "id": "d8b8106f-0da9-42c0-a134-0e47b46b8782",
-      "month": 4,
-      "year": 2019
+      "id": "d8b8106f-0da9-42c0-a134-0e47b46b8782"
     },
     {
       "away_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "away_score": 1,
-      "day": 27,
+      "match_date": "27042019",
       "home_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "home_score": 1,
-      "id": "57297a5d-9c2f-4d8f-a2a8-1c4ed570e6f5",
-      "month": 4,
-      "year": 2019
+      "id": "57297a5d-9c2f-4d8f-a2a8-1c4ed570e6f5"
     },
     {
       "away_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "away_score": 2,
-      "day": 24,
+      "match_date": "24042019",
       "home_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "home_score": 2,
-      "id": "b013ac98-4205-4896-8a4b-2f50e9b5e6b2",
-      "month": 4,
-      "year": 2019
+      "id": "b013ac98-4205-4896-8a4b-2f50e9b5e6b2"
     },
     {
       "away_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "away_score": 0,
-      "day": 24,
+      "match_date": "24042019",
       "home_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "home_score": 0,
-      "id": "2bbcab29-b8c8-4586-86d8-9123c603a977",
-      "month": 4,
-      "year": 2019
+      "id": "2bbcab29-b8c8-4586-86d8-9123c603a977"
     },
     {
       "away_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "away_score": 1,
-      "day": 24,
+      "match_date": "24042019",
       "home_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "home_score": 0,
-      "id": "0bb9ff4d-596f-4373-b814-63c88e4af909",
-      "month": 4,
-      "year": 2019
+      "id": "0bb9ff4d-596f-4373-b814-63c88e4af909"
     },
     {
       "away_id": "93eba939-30e6-4702-b854-87051111edbd",
       "away_score": 3,
-      "day": 24,
+      "match_date": "24042019",
       "home_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "home_score": 0,
-      "id": "33112b16-e837-407f-8004-242177e3fac9",
-      "month": 4,
-      "year": 2019
+      "id": "33112b16-e837-407f-8004-242177e3fac9"
     },
     {
       "away_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "away_score": 0,
-      "day": 24,
+      "match_date": "24042019",
       "home_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "home_score": 1,
-      "id": "15a37b5a-5acb-42ae-a5ef-9e40c34da82c",
-      "month": 4,
-      "year": 2019
+      "id": "15a37b5a-5acb-42ae-a5ef-9e40c34da82c"
     },
     {
       "away_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "away_score": 1,
-      "day": 21,
+      "match_date": "21042019",
       "home_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "home_score": 4,
-      "id": "c424fade-6cfc-4c56-a4be-7fe4a23b1f0e",
-      "month": 4,
-      "year": 2019
+      "id": "c424fade-6cfc-4c56-a4be-7fe4a23b1f0e"
     },
     {
       "away_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "away_score": 2,
-      "day": 21,
+      "match_date": "21042019",
       "home_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "home_score": 0,
-      "id": "81e5aae7-83b9-4d21-aa47-349c3d21b1f0",
-      "month": 4,
-      "year": 2019
+      "id": "81e5aae7-83b9-4d21-aa47-349c3d21b1f0"
     },
     {
       "away_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "away_score": 1,
-      "day": 20,
+      "match_date": "20042019",
       "home_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "home_score": 4,
-      "id": "2e72bdd8-4eac-410f-8481-59e519d15ccc",
-      "month": 4,
-      "year": 2019
+      "id": "2e72bdd8-4eac-410f-8481-59e519d15ccc"
     },
     {
       "away_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "away_score": 3,
-      "day": 20,
+      "match_date": "20042019",
       "home_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "home_score": 1,
-      "id": "f53411e0-1ffc-490d-97d9-5e3686ff81e5",
-      "month": 4,
-      "year": 2019
+      "id": "f53411e0-1ffc-490d-97d9-5e3686ff81e5"
     },
     {
       "away_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "away_score": 0,
-      "day": 20,
+      "match_date": "20042019",
       "home_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "home_score": 1,
-      "id": "1e2e0eda-99af-4355-a0ce-f4204cebfb22",
-      "month": 4,
-      "year": 2019
+      "id": "1e2e0eda-99af-4355-a0ce-f4204cebfb22"
     },
     {
       "away_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "away_score": 2,
-      "day": 20,
+      "match_date": "20042019",
       "home_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "home_score": 1,
-      "id": "2b2e82f8-4781-4775-81da-9735d9e9b15e",
-      "month": 4,
-      "year": 2019
+      "id": "2b2e82f8-4781-4775-81da-9735d9e9b15e"
     },
     {
       "away_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "away_score": 0,
-      "day": 20,
+      "match_date": "20042019",
       "home_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "home_score": 1,
-      "id": "a5a67f3c-fafe-4f5c-8588-d658e1276097",
-      "month": 4,
-      "year": 2019
+      "id": "a5a67f3c-fafe-4f5c-8588-d658e1276097"
     },
     {
       "away_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "away_score": 1,
-      "day": 20,
+      "match_date": "20042019",
       "home_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "home_score": 4,
-      "id": "97ed50ca-0d10-47e8-8427-4db4966a0b80",
-      "month": 4,
-      "year": 2019
+      "id": "97ed50ca-0d10-47e8-8427-4db4966a0b80"
     },
     {
       "away_id": "93eba939-30e6-4702-b854-87051111edbd",
       "away_score": 0,
-      "day": 20,
+      "match_date": "20042019",
       "home_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "home_score": 3,
-      "id": "685a08e7-1353-4d33-b6f5-58bedc861d22",
-      "month": 4,
-      "year": 2019
+      "id": "685a08e7-1353-4d33-b6f5-58bedc861d22"
     },
     {
       "away_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "away_score": 1,
-      "day": 19,
+      "match_date": "19042019",
       "home_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "home_score": 2,
-      "id": "f04abb81-d8ab-4ad0-9328-9d13cca49281",
-      "month": 4,
-      "year": 2019
+      "id": "f04abb81-d8ab-4ad0-9328-9d13cca49281"
     },
     {
       "away_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "away_score": 3,
-      "day": 19,
+      "match_date": "19042019",
       "home_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "home_score": 4,
-      "id": "98c93ed6-f7b3-4dc0-9b19-0c9cf03d4871",
-      "month": 4,
-      "year": 2019
+      "id": "98c93ed6-f7b3-4dc0-9b19-0c9cf03d4871"
     },
     {
       "away_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "away_score": 3,
-      "day": 19,
+      "match_date": "19042019",
       "home_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "home_score": 0,
-      "id": "77cc7575-2871-4e0f-a5b4-8e23c17a1e01",
-      "month": 4,
-      "year": 2019
+      "id": "77cc7575-2871-4e0f-a5b4-8e23c17a1e01"
     },
     {
       "away_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "away_score": 0,
-      "day": 17,
+      "match_date": "17042019",
       "home_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "home_score": 1,
-      "id": "6125e9be-ea3d-45df-a0c7-403e479aa2cb",
-      "month": 4,
-      "year": 2019
+      "id": "6125e9be-ea3d-45df-a0c7-403e479aa2cb"
     },
     {
       "away_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "away_score": 2,
-      "day": 14,
+      "match_date": "14042019",
       "home_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "home_score": 2,
-      "id": "6905a2d7-7610-48bc-8d88-fabb858fa486",
-      "month": 4,
-      "year": 2019
+      "id": "6905a2d7-7610-48bc-8d88-fabb858fa486"
     },
     {
       "away_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "away_score": 0,
-      "day": 13,
+      "match_date": "13042019",
       "home_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "home_score": 2,
-      "id": "3657b58d-9c16-427d-b401-331a175c3ad0",
-      "month": 4,
-      "year": 2019
+      "id": "3657b58d-9c16-427d-b401-331a175c3ad0"
     },
     {
       "away_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "away_score": 0,
-      "day": 13,
+      "match_date": "13042019",
       "home_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "home_score": 2,
-      "id": "84674f4e-d9df-4836-9ee5-c3e044551c19",
-      "month": 4,
-      "year": 2019
+      "id": "84674f4e-d9df-4836-9ee5-c3e044551c19"
     },
     {
       "away_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "away_score": 3,
-      "day": 13,
+      "match_date": "13042019",
       "home_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "home_score": 2,
-      "id": "e1f50cb8-bbc8-43ed-a381-46f9313ca60c",
-      "month": 4,
-      "year": 2019
+      "id": "e1f50cb8-bbc8-43ed-a381-46f9313ca60c"
     },
     {
       "away_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "away_score": 1,
-      "day": 13,
+      "match_date": "13042019",
       "home_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "home_score": 2,
-      "id": "2bb69a62-964f-47a8-87eb-4248331f6ce8",
-      "month": 4,
-      "year": 2019
+      "id": "2bb69a62-964f-47a8-87eb-4248331f6ce8"
     },
     {
       "away_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "away_score": 1,
-      "day": 13,
+      "match_date": "13042019",
       "home_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "home_score": 2,
-      "id": "6cbb6e42-b588-41a7-be0b-e8f1bd1755a7",
-      "month": 4,
-      "year": 2019
+      "id": "6cbb6e42-b588-41a7-be0b-e8f1bd1755a7"
     },
     {
       "away_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "away_score": 2,
-      "day": 13,
+      "match_date": "13042019",
       "home_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "home_score": 0,
-      "id": "21bbf846-34d4-4b8a-a657-08883188d604",
-      "month": 4,
-      "year": 2019
+      "id": "21bbf846-34d4-4b8a-a657-08883188d604"
     },
     {
       "away_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "away_score": 3,
-      "day": 13,
+      "match_date": "13042019",
       "home_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "home_score": 3,
-      "id": "a51a4c95-d4ba-4377-a5c9-b0f95990c121",
-      "month": 4,
-      "year": 2019
+      "id": "a51a4c95-d4ba-4377-a5c9-b0f95990c121"
     },
     {
       "away_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "away_score": 2,
-      "day": 13,
+      "match_date": "13042019",
       "home_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "home_score": 3,
-      "id": "fdbfdc3a-0dab-46bd-99c7-a9546c768fb7",
-      "month": 4,
-      "year": 2019
+      "id": "fdbfdc3a-0dab-46bd-99c7-a9546c768fb7"
     },
     {
       "away_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "away_score": 1,
-      "day": 13,
+      "match_date": "13042019",
       "home_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "home_score": 2,
-      "id": "37a60432-0089-4acd-807b-594fa881cab6",
-      "month": 4,
-      "year": 2019
+      "id": "37a60432-0089-4acd-807b-594fa881cab6"
     },
     {
       "away_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "away_score": 0,
-      "day": 13,
+      "match_date": "13042019",
       "home_id": "93eba939-30e6-4702-b854-87051111edbd",
       "home_score": 1,
-      "id": "c594edeb-d42c-45d5-a88d-b896834bf44d",
-      "month": 4,
-      "year": 2019
+      "id": "c594edeb-d42c-45d5-a88d-b896834bf44d"
     },
     {
       "away_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "away_score": 1,
-      "day": 12,
+      "match_date": "12042019",
       "home_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "home_score": 1,
-      "id": "70f778e2-fd80-4db8-90fd-ba90776a4fc6",
-      "month": 4,
-      "year": 2019
+      "id": "70f778e2-fd80-4db8-90fd-ba90776a4fc6"
     },
     {
       "away_id": "93eba939-30e6-4702-b854-87051111edbd",
       "away_score": 0,
-      "day": 9,
+      "match_date": "09042019",
       "home_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "home_score": 0,
-      "id": "ff7b5087-81aa-4b2b-8f5c-aa10945a5eec",
-      "month": 4,
-      "year": 2019
+      "id": "ff7b5087-81aa-4b2b-8f5c-aa10945a5eec"
     },
     {
       "away_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "away_score": 1,
-      "day": 7,
+      "match_date": "07042019",
       "home_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "home_score": 1,
-      "id": "0abebf36-ef54-44ba-95bd-96b7ff6d3a66",
-      "month": 4,
-      "year": 2019
+      "id": "0abebf36-ef54-44ba-95bd-96b7ff6d3a66"
     },
     {
       "away_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "away_score": 0,
-      "day": 6,
+      "match_date": "06042019",
       "home_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "home_score": 1,
-      "id": "f5b44cac-9d2d-4fe6-ac50-93f5eddbee4d",
-      "month": 4,
-      "year": 2019
+      "id": "f5b44cac-9d2d-4fe6-ac50-93f5eddbee4d"
     },
     {
       "away_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "away_score": 0,
-      "day": 6,
+      "match_date": "06042019",
       "home_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "home_score": 3,
-      "id": "cb967561-3042-4156-9f83-45c660939a8b",
-      "month": 4,
-      "year": 2019
+      "id": "cb967561-3042-4156-9f83-45c660939a8b"
     },
     {
       "away_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "away_score": 0,
-      "day": 6,
+      "match_date": "06042019",
       "home_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "home_score": 1,
-      "id": "8a26f9b4-4d77-4569-9395-f603b3afb335",
-      "month": 4,
-      "year": 2019
+      "id": "8a26f9b4-4d77-4569-9395-f603b3afb335"
     },
     {
       "away_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "away_score": 3,
-      "day": 6,
+      "match_date": "06042019",
       "home_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "home_score": 4,
-      "id": "321a9ee7-2659-462e-aa49-0384cbc58083",
-      "month": 4,
-      "year": 2019
+      "id": "321a9ee7-2659-462e-aa49-0384cbc58083"
     },
     {
       "away_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "away_score": 1,
-      "day": 6,
+      "match_date": "06042019",
       "home_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "home_score": 2,
-      "id": "b9428464-7025-4b69-9492-73412d4c5660",
-      "month": 4,
-      "year": 2019
+      "id": "b9428464-7025-4b69-9492-73412d4c5660"
     },
     {
       "away_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "away_score": 2,
-      "day": 6,
+      "match_date": "06042019",
       "home_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "home_score": 1,
-      "id": "566bd88e-8e47-4cb9-98d0-08c01fbe82aa",
-      "month": 4,
-      "year": 2019
+      "id": "566bd88e-8e47-4cb9-98d0-08c01fbe82aa"
     },
     {
       "away_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "away_score": 4,
-      "day": 6,
+      "match_date": "06042019",
       "home_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "home_score": 0,
-      "id": "aef32075-f467-4e9f-8c60-753e760512bc",
-      "month": 4,
-      "year": 2019
+      "id": "aef32075-f467-4e9f-8c60-753e760512bc"
     },
     {
       "away_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "away_score": 2,
-      "day": 6,
+      "match_date": "06042019",
       "home_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "home_score": 2,
-      "id": "750536ab-e5a6-48c9-bbbd-e93ddbaf6dc0",
-      "month": 4,
-      "year": 2019
+      "id": "750536ab-e5a6-48c9-bbbd-e93ddbaf6dc0"
     },
     {
       "away_id": "93eba939-30e6-4702-b854-87051111edbd",
       "away_score": 0,
-      "day": 6,
+      "match_date": "06042019",
       "home_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "home_score": 0,
-      "id": "f857ac8d-3b7b-47e8-ba91-88dcb540ae55",
-      "month": 4,
-      "year": 2019
+      "id": "f857ac8d-3b7b-47e8-ba91-88dcb540ae55"
     },
     {
       "away_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "away_score": 2,
-      "day": 5,
+      "match_date": "05042019",
       "home_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "home_score": 0,
-      "id": "7219d8cb-1f63-4317-8108-220f655995b8",
-      "month": 4,
-      "year": 2019
+      "id": "7219d8cb-1f63-4317-8108-220f655995b8"
     },
     {
       "away_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "away_score": 1,
-      "day": 31,
+      "match_date": "31032019",
       "home_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "home_score": 2,
-      "id": "cd9c3ac8-ca69-4af0-b7d9-c63e70d92ab9",
-      "month": 3,
-      "year": 2019
+      "id": "cd9c3ac8-ca69-4af0-b7d9-c63e70d92ab9"
     },
     {
       "away_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "away_score": 2,
-      "day": 31,
+      "match_date": "31032019",
       "home_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "home_score": 1,
-      "id": "5bc90095-5c6f-4c9b-a520-f62ad9a7197a",
-      "month": 3,
-      "year": 2019
+      "id": "5bc90095-5c6f-4c9b-a520-f62ad9a7197a"
     },
     {
       "away_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "away_score": 0,
-      "day": 30,
+      "match_date": "30032019",
       "home_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "home_score": 0,
-      "id": "234f06b1-1d70-4827-9dff-97a7d59ca91b",
-      "month": 3,
-      "year": 2019
+      "id": "234f06b1-1d70-4827-9dff-97a7d59ca91b"
     },
     {
       "away_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "away_score": 4,
-      "day": 30,
+      "match_date": "30032019",
       "home_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "home_score": 1,
-      "id": "5dd197ad-c22f-4c8a-a8dc-ff8006e75911",
-      "month": 3,
-      "year": 2019
+      "id": "5dd197ad-c22f-4c8a-a8dc-ff8006e75911"
     },
     {
       "away_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "away_score": 4,
-      "day": 30,
+      "match_date": "30032019",
       "home_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "home_score": 2,
-      "id": "30972cde-277f-415b-b917-b5797de37042",
-      "month": 3,
-      "year": 2019
+      "id": "30972cde-277f-415b-b917-b5797de37042"
     },
     {
       "away_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "away_score": 2,
-      "day": 30,
+      "match_date": "30032019",
       "home_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "home_score": 0,
-      "id": "e455ac93-705b-4732-8949-139dcc788146",
-      "month": 3,
-      "year": 2019
+      "id": "e455ac93-705b-4732-8949-139dcc788146"
     },
     {
       "away_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "away_score": 0,
-      "day": 30,
+      "match_date": "30032019",
       "home_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "home_score": 2,
-      "id": "7238a884-6527-445b-b194-72cce85f1c06",
-      "month": 3,
-      "year": 2019
+      "id": "7238a884-6527-445b-b194-72cce85f1c06"
     },
     {
       "away_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "away_score": 5,
-      "day": 30,
+      "match_date": "30032019",
       "home_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "home_score": 0,
-      "id": "f92e2896-a922-446b-863a-4945c12cf28a",
-      "month": 3,
-      "year": 2019
+      "id": "f92e2896-a922-446b-863a-4945c12cf28a"
     },
     {
       "away_id": "93eba939-30e6-4702-b854-87051111edbd",
       "away_score": 1,
-      "day": 30,
+      "match_date": "30032019",
       "home_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "home_score": 7,
-      "id": "15eb1e1e-f8d8-4ac6-805e-a77c4bd0a6dc",
-      "month": 3,
-      "year": 2019
+      "id": "15eb1e1e-f8d8-4ac6-805e-a77c4bd0a6dc"
     },
     {
       "away_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "away_score": 1,
-      "day": 30,
+      "match_date": "30032019",
       "home_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "home_score": 2,
-      "id": "82aa1b5c-f62d-450a-b867-b98ea7fa5956",
-      "month": 3,
-      "year": 2019
+      "id": "82aa1b5c-f62d-450a-b867-b98ea7fa5956"
     },
     {
       "away_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "away_score": 0,
-      "day": 30,
+      "match_date": "30032019",
       "home_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "home_score": 1,
-      "id": "ea992379-785a-47a0-955d-bcbb2e651992",
-      "month": 3,
-      "year": 2019
+      "id": "ea992379-785a-47a0-955d-bcbb2e651992"
     },
     {
       "away_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "away_score": 0,
-      "day": 29,
+      "match_date": "29032019",
       "home_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "home_score": 4,
-      "id": "92eefc11-a8ea-45df-841b-f5cadbf18d98",
-      "month": 3,
-      "year": 2019
+      "id": "92eefc11-a8ea-45df-841b-f5cadbf18d98"
     },
     {
       "away_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "away_score": 2,
-      "day": 24,
+      "match_date": "24032019",
       "home_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "home_score": 0,
-      "id": "855a58d5-764d-498d-993a-f059e8bff03a",
-      "month": 3,
-      "year": 2019
+      "id": "855a58d5-764d-498d-993a-f059e8bff03a"
     },
     {
       "away_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "away_score": 1,
-      "day": 23,
+      "match_date": "23032019",
       "home_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "home_score": 2,
-      "id": "5d29c700-c76f-4551-a763-084f54849bc2",
-      "month": 3,
-      "year": 2019
+      "id": "5d29c700-c76f-4551-a763-084f54849bc2"
     },
     {
       "away_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "away_score": 1,
-      "day": 23,
+      "match_date": "23032019",
       "home_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "home_score": 0,
-      "id": "378444c2-b59c-43ad-b287-c105c0694a03",
-      "month": 3,
-      "year": 2019
+      "id": "378444c2-b59c-43ad-b287-c105c0694a03"
     },
     {
       "away_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "away_score": 0,
-      "day": 23,
+      "match_date": "23032019",
       "home_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "home_score": 3,
-      "id": "a9cd0989-7eb7-4d97-b549-09e89614adc4",
-      "month": 3,
-      "year": 2019
+      "id": "a9cd0989-7eb7-4d97-b549-09e89614adc4"
     },
     {
       "away_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "away_score": 1,
-      "day": 23,
+      "match_date": "23032019",
       "home_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "home_score": 2,
-      "id": "76e97f61-728a-459c-b619-31e51742c682",
-      "month": 3,
-      "year": 2019
+      "id": "76e97f61-728a-459c-b619-31e51742c682"
     },
     {
       "away_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "away_score": 1,
-      "day": 17,
+      "match_date": "17032019",
       "home_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "home_score": 1,
-      "id": "b88f1e66-dbbb-42db-a1f4-3e87baedb850",
-      "month": 3,
-      "year": 2019
+      "id": "b88f1e66-dbbb-42db-a1f4-3e87baedb850"
     },
     {
       "away_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "away_score": 2,
-      "day": 17,
+      "match_date": "17032019",
       "home_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "home_score": 3,
-      "id": "5d2ee0ac-8fef-49d1-83bc-18c20ed0a69d",
-      "month": 3,
-      "year": 2019
+      "id": "5d2ee0ac-8fef-49d1-83bc-18c20ed0a69d"
     },
     {
       "away_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "away_score": 1,
-      "day": 17,
+      "match_date": "17032019",
       "home_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "home_score": 1,
-      "id": "335e67a2-850c-4da3-b6c6-982507ddfb64",
-      "month": 3,
-      "year": 2019
+      "id": "335e67a2-850c-4da3-b6c6-982507ddfb64"
     },
     {
       "away_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "away_score": 0,
-      "day": 17,
+      "match_date": "17032019",
       "home_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "home_score": 3,
-      "id": "b480b9a7-e401-451e-9099-c0ee49679b71",
-      "month": 3,
-      "year": 2019
+      "id": "b480b9a7-e401-451e-9099-c0ee49679b71"
     },
     {
       "away_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "away_score": 2,
-      "day": 17,
+      "match_date": "17032019",
       "home_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "home_score": 2,
-      "id": "ede4f572-dd88-4a74-bcb3-413c248b6a33",
-      "month": 3,
-      "year": 2019
+      "id": "ede4f572-dd88-4a74-bcb3-413c248b6a33"
     },
     {
       "away_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "away_score": 2,
-      "day": 16,
+      "match_date": "16032019",
       "home_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "home_score": 3,
-      "id": "847f4ad9-2dac-4478-bcf5-a61c4d70a63b",
-      "month": 3,
-      "year": 2019
+      "id": "847f4ad9-2dac-4478-bcf5-a61c4d70a63b"
     },
     {
       "away_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "away_score": 0,
-      "day": 16,
+      "match_date": "16032019",
       "home_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "home_score": 5,
-      "id": "d608203a-bf72-4d36-814a-28c532d84cf6",
-      "month": 3,
-      "year": 2019
+      "id": "d608203a-bf72-4d36-814a-28c532d84cf6"
     },
     {
       "away_id": "93eba939-30e6-4702-b854-87051111edbd",
       "away_score": 3,
-      "day": 16,
+      "match_date": "16032019",
       "home_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "home_score": 1,
-      "id": "8dce13fd-5d38-4764-93ce-fbc3a5312753",
-      "month": 3,
-      "year": 2019
+      "id": "8dce13fd-5d38-4764-93ce-fbc3a5312753"
     },
     {
       "away_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "away_score": 1,
-      "day": 16,
+      "match_date": "16032019",
       "home_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "home_score": 4,
-      "id": "7c9513aa-e3e1-4579-af3f-bf51aad030e6",
-      "month": 3,
-      "year": 2019
+      "id": "7c9513aa-e3e1-4579-af3f-bf51aad030e6"
     },
     {
       "away_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "away_score": 2,
-      "day": 16,
+      "match_date": "16032019",
       "home_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "home_score": 3,
-      "id": "9bf387d5-0fdd-49d0-8969-63af650b2fbb",
-      "month": 3,
-      "year": 2019
+      "id": "9bf387d5-0fdd-49d0-8969-63af650b2fbb"
     },
     {
       "away_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "away_score": 0,
-      "day": 16,
+      "match_date": "16032019",
       "home_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "home_score": 1,
-      "id": "74ed514c-3f68-4b8f-b6ee-81c721980d97",
-      "month": 3,
-      "year": 2019
+      "id": "74ed514c-3f68-4b8f-b6ee-81c721980d97"
     },
     {
       "away_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "away_score": 4,
-      "day": 16,
+      "match_date": "16032019",
       "home_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "home_score": 2,
-      "id": "695ae5a3-51b3-4366-8d19-202d56db8cce",
-      "month": 3,
-      "year": 2019
+      "id": "695ae5a3-51b3-4366-8d19-202d56db8cce"
     },
     {
       "away_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "away_score": 1,
-      "day": 10,
+      "match_date": "10032019",
       "home_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "home_score": 4,
-      "id": "d60d1657-a94a-4c1d-929f-8b1d1f692260",
-      "month": 3,
-      "year": 2019
+      "id": "d60d1657-a94a-4c1d-929f-8b1d1f692260"
     },
     {
       "away_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "away_score": 1,
-      "day": 10,
+      "match_date": "10032019",
       "home_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "home_score": 1,
-      "id": "ef2f01bf-10e7-440c-ae62-566ca8a3f051",
-      "month": 3,
-      "year": 2019
+      "id": "ef2f01bf-10e7-440c-ae62-566ca8a3f051"
     },
     {
       "away_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "away_score": 0,
-      "day": 10,
+      "match_date": "10032019",
       "home_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "home_score": 0,
-      "id": "42ea03eb-9a97-4035-bdbb-e2f7a714da0f",
-      "month": 3,
-      "year": 2019
+      "id": "42ea03eb-9a97-4035-bdbb-e2f7a714da0f"
     },
     {
       "away_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "away_score": 0,
-      "day": 10,
+      "match_date": "10032019",
       "home_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "home_score": 2,
-      "id": "c1dba257-60b7-4177-b629-9cddf456865d",
-      "month": 3,
-      "year": 2019
+      "id": "c1dba257-60b7-4177-b629-9cddf456865d"
     },
     {
       "away_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "away_score": 0,
-      "day": 9,
+      "match_date": "09032019",
       "home_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "home_score": 2,
-      "id": "57cdb537-1cd7-4569-9e2c-c9e126f11a2f",
-      "month": 3,
-      "year": 2019
+      "id": "57cdb537-1cd7-4569-9e2c-c9e126f11a2f"
     },
     {
       "away_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "away_score": 3,
-      "day": 9,
+      "match_date": "09032019",
       "home_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "home_score": 0,
-      "id": "c629254d-36a7-4607-b307-eb18a18223e4",
-      "month": 3,
-      "year": 2019
+      "id": "c629254d-36a7-4607-b307-eb18a18223e4"
     },
     {
       "away_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "away_score": 0,
-      "day": 9,
+      "match_date": "09032019",
       "home_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "home_score": 1,
-      "id": "f02ca71d-4617-47c5-842c-df3fa7712829",
-      "month": 3,
-      "year": 2019
+      "id": "f02ca71d-4617-47c5-842c-df3fa7712829"
     },
     {
       "away_id": "93eba939-30e6-4702-b854-87051111edbd",
       "away_score": 1,
-      "day": 9,
+      "match_date": "09032019",
       "home_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "home_score": 2,
-      "id": "dd3e306e-2dee-466e-bf1f-93980a69e1af",
-      "month": 3,
-      "year": 2019
+      "id": "dd3e306e-2dee-466e-bf1f-93980a69e1af"
     },
     {
       "away_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "away_score": 0,
-      "day": 9,
+      "match_date": "09032019",
       "home_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "home_score": 2,
-      "id": "0ae8e142-d6de-4d64-8ccb-694e6f6d6d73",
-      "month": 3,
-      "year": 2019
+      "id": "0ae8e142-d6de-4d64-8ccb-694e6f6d6d73"
     },
     {
       "away_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "away_score": 2,
-      "day": 9,
+      "match_date": "09032019",
       "home_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "home_score": 0,
-      "id": "f15e0e55-b44d-402f-872a-d78b680ec234",
-      "month": 3,
-      "year": 2019
+      "id": "f15e0e55-b44d-402f-872a-d78b680ec234"
     },
     {
       "away_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "away_score": 1,
-      "day": 9,
+      "match_date": "09032019",
       "home_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "home_score": 1,
-      "id": "15de9df1-b043-431a-85c3-c3d71d1841e8",
-      "month": 3,
-      "year": 2019
+      "id": "15de9df1-b043-431a-85c3-c3d71d1841e8"
     },
     {
       "away_id": "24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
       "away_score": 1,
-      "day": 3,
+      "match_date": "03032019",
       "home_id": "f0b354a2-f8db-4b52-a180-f23816cbd6ac",
       "home_score": 2,
-      "id": "df265f81-5321-450e-b365-d683c7f81870",
-      "month": 3,
-      "year": 2019
+      "id": "df265f81-5321-450e-b365-d683c7f81870"
     },
     {
       "away_id": "dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "away_score": 0,
-      "day": 3,
+      "match_date": "03032019",
       "home_id": "34e2f043-ca34-4743-847b-17f2000c8e16",
       "home_score": 2,
-      "id": "e016ac3e-ba5c-478d-98cc-da8d6a06de73",
-      "month": 3,
-      "year": 2019
+      "id": "e016ac3e-ba5c-478d-98cc-da8d6a06de73"
     },
     {
       "away_id": "93eba939-30e6-4702-b854-87051111edbd",
       "away_score": 2,
-      "day": 2,
+      "match_date": "02032019",
       "home_id": "07979bc9-ac85-47f7-9d98-d5275039d627",
       "home_score": 1,
-      "id": "9980dcd7-625d-415e-bdca-facc740b75ae",
-      "month": 3,
-      "year": 2019
+      "id": "9980dcd7-625d-415e-bdca-facc740b75ae"
     },
     {
       "away_id": "4de09cc0-c8b5-4651-a73a-68e05ffacc22",
       "away_score": 1,
-      "day": 2,
+      "match_date": "02032019",
       "home_id": "aa050628-4f65-4997-abef-e3fd6b80d07e",
       "home_score": 4,
-      "id": "cc06b9ec-f34a-4e8a-9ba4-9d4ffb5646ca",
-      "month": 3,
-      "year": 2019
+      "id": "cc06b9ec-f34a-4e8a-9ba4-9d4ffb5646ca"
     },
     {
       "away_id": "821e5563-bb3c-4a5e-8d56-79e25efb49cd",
       "away_score": 1,
-      "day": 2,
+      "match_date": "02032019",
       "home_id": "c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
       "home_score": 2,
-      "id": "c0fadb0b-e184-4c1d-a498-e823111acacd",
-      "month": 3,
-      "year": 2019
+      "id": "c0fadb0b-e184-4c1d-a498-e823111acacd"
     },
     {
       "away_id": "f021bbaf-ea80-468a-8cd0-b3674327dee5",
       "away_score": 3,
-      "day": 2,
+      "match_date": "02032019",
       "home_id": "85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
       "home_score": 3,
-      "id": "e38dd6ec-efc4-44c9-a0db-abeac5453d37",
-      "month": 3,
-      "year": 2019
+      "id": "e38dd6ec-efc4-44c9-a0db-abeac5453d37"
     },
     {
       "away_id": "52f41053-5060-4535-9aca-03c0a6a41a82",
       "away_score": 1,
-      "day": 2,
+      "match_date": "02032019",
       "home_id": "ee42400a-6bdf-4b68-ac30-437f50368b7e",
       "home_score": 1,
-      "id": "2c892686-3d5b-44ff-9c3d-63eb4ee37d2c",
-      "month": 3,
-      "year": 2019
+      "id": "2c892686-3d5b-44ff-9c3d-63eb4ee37d2c"
     },
     {
       "away_id": "b1ab1613-d652-403f-8c7f-8ca7dfd37804",
       "away_score": 3,
-      "day": 2,
+      "match_date": "02032019",
       "home_id": "ce6a772c-9a31-4b10-81b1-f59ec6346b31",
       "home_score": 2,
-      "id": "633f6a06-0e76-4d8d-bf5a-ca88185fef1a",
-      "month": 3,
-      "year": 2019
+      "id": "633f6a06-0e76-4d8d-bf5a-ca88185fef1a"
     },
     {
       "away_id": "9df3a517-2754-438b-bfe3-9d081aefa350",
       "away_score": 1,
-      "day": 2,
+      "match_date": "02032019",
       "home_id": "f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
       "home_score": 1,
-      "id": "42671511-1815-4c80-aacb-549e523e276a",
-      "month": 3,
-      "year": 2019
+      "id": "42671511-1815-4c80-aacb-549e523e276a"
     },
     {
       "away_id": "853ce6e8-987e-4cf0-846a-def18d96913a",
       "away_score": 1,
-      "day": 2,
+      "match_date": "02032019",
       "home_id": "028c0edc-b63e-4f72-8e4b-34d1a78e3671",
       "home_score": 1,
-      "id": "1388dae5-3a27-4d47-9087-583a9d276c53",
-      "month": 3,
-      "year": 2019
+      "id": "1388dae5-3a27-4d47-9087-583a9d276c53"
     },
     {
       "away_id": "431c60bd-c4ae-4253-b554-58af9cf46dd3",
       "away_score": 2,
-      "day": 2,
+      "match_date": "02032019",
       "home_id": "fd36043a-ce04-46e7-99ae-63406444834b",
       "home_score": 2,
-      "id": "d03c63b9-2552-472d-b09e-7e19d3fb58ea",
-      "month": 3,
-      "year": 2019
+      "id": "d03c63b9-2552-472d-b09e-7e19d3fb58ea"
     },
     {
       "away_id": "55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
       "away_score": 3,
-      "day": 2,
+      "match_date": "02032019",
       "home_id": "2313ec02-1e1d-4fd1-8278-57ed5bc64370",
       "home_score": 1,
-      "id": "92f26b71-b3f6-4c98-b235-4de304f74360",
-      "month": 3,
-      "year": 2019
+      "id": "92f26b71-b3f6-4c98-b235-4de304f74360"
     }
   ]
 }

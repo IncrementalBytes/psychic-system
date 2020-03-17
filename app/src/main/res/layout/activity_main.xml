@@ -23,13 +23,6 @@
       app:popupTheme="@style/AppTheme.PopupOverlay"
       app:titleTextColor="@color/primaryAccentText" />
 
-    <ProgressBar
-      android:id="@+id/main_progress"
-      style="?android:attr/progressBarStyleHorizontal"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:background="@color/primaryDark"
-      android:indeterminateTint="@color/primaryAccentText" />
   </com.google.android.material.appbar.AppBarLayout>
 
   <include

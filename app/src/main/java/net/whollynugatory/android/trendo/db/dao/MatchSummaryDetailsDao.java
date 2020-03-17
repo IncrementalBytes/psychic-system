@@ -16,28 +16,20 @@
 
 package net.whollynugatory.android.trendo.db.dao;
 
-import androidx.lifecycle.LiveData;
-import androidx.room.Dao;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
-import androidx.room.Query;
-
-import net.whollynugatory.android.trendo.db.entity.ConferenceEntity;
+import net.whollynugatory.android.trendo.db.views.MatchSummaryDetails;
 
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
+import androidx.room.Dao;
+import androidx.room.Query;
+
 @Dao
-public interface ConferenceDao {
+public interface MatchSummaryDetailsDao {
 
-  @Query("SELECT COUNT(*) FROM conference_table")
-  int count();
+  @Query("SELECT * FROM MatchSummaryDetails WHERE year == :year ORDER BY MatchDate ASC")
+  LiveData<List<MatchSummaryDetails>> getAll(int year);
 
-  @Query("SELECT * FROM conference_table")
-  LiveData<List<ConferenceEntity>> getAll();
-
-  @Insert(onConflict = OnConflictStrategy.IGNORE)
-  void insert(ConferenceEntity conference);
-
-  @Insert(onConflict = OnConflictStrategy.IGNORE)
-  void insertAll(List<ConferenceEntity> conferences);
+  @Query("SELECT * FROM MatchSummaryDetails WHERE (HomeId == :teamId OR AwayId == :teamId) AND year == :year ORDER BY MatchDate ASC")
+  LiveData<List<MatchSummaryDetails>> getAll(String teamId, int year);
 }

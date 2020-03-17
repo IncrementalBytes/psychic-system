@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import com.google.gson.annotations.SerializedName;
@@ -63,19 +64,19 @@ public class TeamEntity implements Serializable {
   @ColumnInfo(name = "defunct")
   public boolean Defunct;
 
-  @ColumnInfo(name = "goal_differential")
+  @Ignore
   public long GoalDifferential;
 
-  @ColumnInfo(name = "goals_scored")
+  @Ignore
   public long GoalsScored;
 
-  @ColumnInfo(name = "table_position")
+  @Ignore
   public int TablePosition;
 
-  @ColumnInfo(name = "total_points")
+  @Ignore
   public long TotalPoints;
 
-  @ColumnInfo(name = "total_wins")
+  @Ignore
   public long TotalWins;
 
   public TeamEntity() {

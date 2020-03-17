@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Ryan Ward
+ * Copyright 2020 Ryan Ward
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,12 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
 package net.whollynugatory.android.trendo.db.dao;
 
 import net.whollynugatory.android.trendo.db.entity.TeamEntity;
 
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -31,7 +33,7 @@ public interface TeamDao {
   int count();
 
   @Query("SELECT * FROM team_table")
-  List<TeamEntity> getAll();
+  LiveData<List<TeamEntity>> getAll();
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   void insert(TeamEntity team);

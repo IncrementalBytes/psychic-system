@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Ryan Ward
+ * Copyright 2020 Ryan Ward
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,12 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
 package net.whollynugatory.android.trendo.ui;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.fragment.app.Fragment;
@@ -28,42 +27,39 @@ import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ProgressBar;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
-import java.util.UUID;
+import java.util.Map;
 
 import net.whollynugatory.android.trendo.R;
 import net.whollynugatory.android.trendo.common.PackagedData;
-import net.whollynugatory.android.trendo.common.QueryDataAsync;
 import net.whollynugatory.android.trendo.common.Trend;
-import net.whollynugatory.android.trendo.db.TrendoRepository;
 import net.whollynugatory.android.trendo.db.entity.TeamEntity;
 import net.whollynugatory.android.trendo.db.entity.User;
 import net.whollynugatory.android.trendo.ui.fragments.CardSummaryFragment;
+import net.whollynugatory.android.trendo.ui.fragments.DataFragment;
 import net.whollynugatory.android.trendo.ui.fragments.LineChartFragment;
 import net.whollynugatory.android.trendo.ui.fragments.MatchListFragment;
 import net.whollynugatory.android.trendo.ui.fragments.UserPreferencesFragment;
 
 public class MainActivity extends BaseActivity implements
   CardSummaryFragment.OnCardSummaryListener,
+  DataFragment.OnDataListener,
   LineChartFragment.OnLineChartListener,
-  MatchListFragment.OnMatchListListener,
-  UserPreferencesFragment.OnPreferencesListener {
+  MatchListFragment.OnMatchListListener {
 
   private static final String TAG = BASE_TAG + "MainActivity";
 
-  private ProgressBar mProgressBar;
   private Snackbar mSnackbar;
 
   private PackagedData mPackagedData;
   private int mQueryAttempts;
+  private Map<String, Boolean> mSeasonalData = new HashMap<>();
   private User mUser;
 
   /*
@@ -81,15 +77,17 @@ public class MainActivity extends BaseActivity implements
     mQueryAttempts++;
     mUser = new User();
     mUser.Uid = getIntent().getStringExtra(BaseActivity.ARG_UID);
+    String[] seasons = getResources().getStringArray(R.array.seasons);
+    for (String season : seasons) {
+      mSeasonalData.put(season, false);
+    }
 
     // TODO: validate user?
 
-    mProgressBar = findViewById(R.id.main_progress);
+    replaceFragment(DataFragment.newInstance());
 
-    mProgressBar.setIndeterminate(true);
     Toolbar toolbar = findViewById(R.id.main_toolbar);
     setSupportActionBar(toolbar);
-
     getSupportFragmentManager().addOnBackStackChangedListener(() -> {
       Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_fragment_container);
       if (fragment != null) {
@@ -119,8 +117,6 @@ public class MainActivity extends BaseActivity implements
         }
       }
     });
-
-    queryData();
   }
 
   @Override
@@ -148,7 +144,6 @@ public class MainActivity extends BaseActivity implements
         replaceFragment(CardSummaryFragment.newInstance(mPackagedData.Trends));
         break;
       case R.id.navigation_menu_preferences:
-        mProgressBar.setVisibility(View.INVISIBLE);
         replaceFragment(UserPreferencesFragment.newInstance(new ArrayList<>(mPackagedData.Teams)));
         break;
       case R.id.navigation_menu_logout:
@@ -188,7 +183,7 @@ public class MainActivity extends BaseActivity implements
   public void onCardSummaryMatchListClicked() {
 
     Log.d(TAG, "++onCardSummaryItemClicked()");
-    replaceFragment(MatchListFragment.newInstance(mPackagedData.MatchDetails, mUser.TeamId));
+    replaceFragment(MatchListFragment.newInstance());
   }
 
   @Override
@@ -211,13 +206,40 @@ public class MainActivity extends BaseActivity implements
   }
 
   @Override
+  public void onConferenceDataExists() {
+
+    Log.d(TAG, "++onConferenceDataExists()");
+  }
+
+  @Override
+  public void onMatchesDataExists(String season) {
+
+    Log.d(TAG, "++onMatchesDataExists(String)");
+    if (!mSeasonalData.containsKey(season)) {
+      mSeasonalData.put(season, true);
+    }
+
+    if (mSeasonalData.containsValue(false)) {
+      // continue waiting
+    } else {
+      replaceFragment(MatchListFragment.newInstance());
+    }
+  }
+
+  @Override
+  public void onTeamDataExists() {
+
+    Log.d(TAG, "++onTeamDataExists()");
+    replaceFragment(MatchListFragment.newInstance());
+  }
+
+  @Override
   public void onLineChartInit(boolean isSuccessful) {
 
     Log.d(TAG, "++onLineChartInit(boolean)");
-    mProgressBar.setIndeterminate(false);
     if (!isSuccessful) {
       Snackbar.make(findViewById(R.id.main_fragment_container), getString(R.string.err_trend_data_load_failed), Snackbar.LENGTH_LONG);
-      replaceFragment(MatchListFragment.newInstance(mPackagedData.MatchDetails, mUser.TeamId));
+      replaceFragment(MatchListFragment.newInstance());
     }
   }
 
@@ -225,7 +247,6 @@ public class MainActivity extends BaseActivity implements
   public void onMatchListPopulated(int size) {
 
     Log.d(TAG, "++onMatchListPopulated(int)");
-    mProgressBar.setIndeterminate(false);
   }
 
   @Override
@@ -235,42 +256,9 @@ public class MainActivity extends BaseActivity implements
     // TODO: open line chart and highlight match?
   }
 
-  @Override
-  public void onPreferenceChanged() {
-
-    Log.d(TAG, "++onPreferenceChanged()");
-    queryData();
-  }
-
-  /*
-    Public methods
-   */
-  public void dataQueryComplete(PackagedData packagedData) {
-
-    Log.d(TAG, "++dataQueryComplete(PackageData)");
-    mPackagedData = packagedData;
-    if (mUser.TeamId.equals(BaseActivity.DEFAULT_ID)) {
-      mProgressBar.setIndeterminate(false);
-      mSnackbar = Snackbar.make(
-        findViewById(R.id.main_fragment_container),
-        getString(R.string.no_matches),
-        Snackbar.LENGTH_LONG);
-      mSnackbar.show();
-      replaceFragment(UserPreferencesFragment.newInstance(new ArrayList<>(mPackagedData.Teams)));
-    } else if (packagedData.Trends.size() == 0 && mQueryAttempts < 4) {
-      Log.w(TAG, "No trends data found for " + mUser.TeamId);
-      mQueryAttempts++;
-      new QueryDataAsync(this, TrendoRepository.getInstance(this), mUser).execute();
-    } else {
-      replaceFragment(CardSummaryFragment.newInstance(mPackagedData.Trends));
-    }
-  }
-
   /*
       Private Methods
    */
-
-
   private TeamEntity getTeam(String teamId) {
 
     for (TeamEntity team : mPackagedData.Teams) {
@@ -280,49 +268,6 @@ public class MainActivity extends BaseActivity implements
     }
 
     return new TeamEntity();
-  }
-
-  private void queryData() {
-
-    Log.d(TAG, "++queryData()");
-    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-    if (sharedPreferences.contains(UserPreferencesFragment.KEY_TEAM_PREFERENCE)) {
-      String preference = sharedPreferences.getString(UserPreferencesFragment.KEY_TEAM_PREFERENCE, getString(R.string.none));
-      if (preference != null) {
-        if (preference.equals(getString(R.string.none))) {
-          mUser.TeamId = BaseActivity.DEFAULT_ID;
-        } else {
-          try {
-            //noinspection ResultOfMethodCallIgnored
-            UUID.fromString(preference);
-            mUser.TeamId = preference;
-          } catch (Exception ex) {
-            mUser.TeamId = BaseActivity.DEFAULT_ID;
-          }
-        }
-      } else {
-        mUser.TeamId = BaseActivity.DEFAULT_ID;
-      }
-    }
-
-    if (sharedPreferences.contains(UserPreferencesFragment.KEY_YEAR_PREFERENCE)) {
-      String preference = sharedPreferences.getString(UserPreferencesFragment.KEY_YEAR_PREFERENCE, getString(R.string.none));
-      if (preference != null) {
-        if (preference.equals(getString(R.string.none))) {
-          mUser.Year = Calendar.getInstance().get(Calendar.YEAR);
-        } else {
-          try {
-            mUser.Year = Integer.parseInt(preference);
-          } catch (Exception ex) {
-            mUser.Year = Calendar.getInstance().get(Calendar.YEAR);
-          }
-        }
-      } else {
-        mUser.Year = Calendar.getInstance().get(Calendar.YEAR);
-      }
-    }
-
-    new QueryDataAsync(this, TrendoRepository.getInstance(this), mUser).execute();
   }
 
   private void replaceFragment(Fragment fragment) {

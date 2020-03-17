@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Ryan Ward
+ * Copyright 2020 Ryan Ward
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
 package net.whollynugatory.android.trendo.ui.fragments;
 
 import android.content.Context;
@@ -20,6 +21,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,16 +35,19 @@ import java.util.List;
 import java.util.Locale;
 
 import net.whollynugatory.android.trendo.R;
-import net.whollynugatory.android.trendo.db.views.MatchSummaryDetail;
+import net.whollynugatory.android.trendo.db.viewmodel.TrendoViewModel;
+import net.whollynugatory.android.trendo.db.views.MatchSummaryDetails;
 import net.whollynugatory.android.trendo.ui.BaseActivity;
+import net.whollynugatory.android.trendo.utils.PreferenceUtils;
 
 public class MatchListFragment extends Fragment {
 
-  private static final String TAG = BaseActivity.BASE_TAG + MatchListFragment.class.getSimpleName();
+  private static final String TAG = BaseActivity.BASE_TAG + "MatchListFragment";
 
   public interface OnMatchListListener {
 
     void onMatchListPopulated(int size);
+
     void onMatchListItemSelected();
   }
 
@@ -50,23 +55,28 @@ public class MatchListFragment extends Fragment {
 
   private RecyclerView mRecyclerView;
 
-  private ArrayList<MatchSummaryDetail> mMatchSummaries;
+  private TrendoViewModel mTrendViewModel;
+
   private String mTeamId;
 
-  public static MatchListFragment newInstance(ArrayList<MatchSummaryDetail> matchSummaries, String teamId) {
+  public static MatchListFragment newInstance() {
 
-    Log.d(TAG, "++newInstance(ArrayList<>)");
-    MatchListFragment fragment = new MatchListFragment();
-    Bundle args = new Bundle();
-    args.putSerializable(BaseActivity.ARG_MATCH_SUMMARIES, matchSummaries);
-    args.putString(BaseActivity.ARG_TEAM_ID, teamId);
-    fragment.setArguments(args);
-    return fragment;
+    Log.d(TAG, "++newInstance()");
+    return new MatchListFragment();
   }
 
   /*
       Fragment Override(s)
    */
+  @Override
+  public void onActivityCreated(Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+
+    Log.d(TAG, "++onActivityCreated(Bundle)");
+    mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    updateUI();
+  }
+
   @Override
   public void onAttach(@NonNull Context context) {
     super.onAttach(context);
@@ -78,14 +88,15 @@ public class MatchListFragment extends Fragment {
       throw new ClassCastException(
         String.format(Locale.ENGLISH, "Missing interface implementations for %s", context.toString()));
     }
+  }
 
-    Bundle arguments = getArguments();
-    if (arguments != null) {
-      mMatchSummaries = (ArrayList<MatchSummaryDetail>)arguments.getSerializable(BaseActivity.ARG_MATCH_SUMMARIES);
-      mTeamId = arguments.getString(BaseActivity.ARG_TEAM_ID);
-    } else {
-      Log.e(TAG, "Arguments were null.");
-    }
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    Log.d(TAG, "++onCreate(Bundle)");
+    mTeamId = PreferenceUtils.getTeam(getContext());
+    mTrendViewModel = new ViewModelProvider(this).get(TrendoViewModel.class);
   }
 
   @Override
@@ -93,13 +104,16 @@ public class MatchListFragment extends Fragment {
 
     Log.d(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
     final View view = inflater.inflate(R.layout.fragment_match_list, container, false);
-
     mRecyclerView = view.findViewById(R.id.match_list_view);
-
-    final LinearLayoutManager manager = new LinearLayoutManager(getActivity());
-    mRecyclerView.setLayoutManager(manager);
-
     return view;
+  }
+
+  @Override
+  public void onDetach() {
+    super.onDetach();
+
+    Log.d(TAG, "++onDetach()");
+    mCallback = null;
   }
 
   @Override
@@ -107,7 +121,6 @@ public class MatchListFragment extends Fragment {
     super.onDestroy();
 
     Log.d(TAG, "++onDestroy()");
-    mMatchSummaries = null;
   }
 
   @Override
@@ -115,7 +128,6 @@ public class MatchListFragment extends Fragment {
     super.onResume();
 
     Log.d(TAG, "++onResume()");
-    updateUI();
   }
 
   /*
@@ -123,100 +135,126 @@ public class MatchListFragment extends Fragment {
    */
   private void updateUI() {
 
-    if (mMatchSummaries != null && mMatchSummaries.size() > 0) {
-      Log.d(TAG, "++updateUI()");
-      MatchSummaryAdapter matchAdapter = new MatchSummaryAdapter(mMatchSummaries);
-      mRecyclerView.setAdapter(matchAdapter);
-      mCallback.onMatchListPopulated(matchAdapter.getItemCount());
-    } else {
-      mCallback.onMatchListPopulated(0);
-    }
+    MatchSummaryAdapter matchSummaryAdapter = new MatchSummaryAdapter(getContext());
+    mRecyclerView.setAdapter(matchSummaryAdapter);
+    mTrendViewModel.getAllMatchSummaryDetails(mTeamId, PreferenceUtils.getSeason(getContext())).observe(
+      getViewLifecycleOwner(),
+      matchSummaryAdapter::setMatchSummaryDetailsList);
   }
 
-  /**
-   * Adapter class for MatchSummary objects
+  /*
+    Adapter class for MatchSummary objects
    */
-  private class MatchSummaryAdapter extends RecyclerView.Adapter<MatchSummaryHolder> {
+  private class MatchSummaryAdapter extends RecyclerView.Adapter<MatchSummaryAdapter.MatchSummaryHolder> {
 
-    private final List<MatchSummaryDetail> mMatchSummaries;
+    /*
+      Holder class for MatchSummaryDetails
+     */
+    private class MatchSummaryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    MatchSummaryAdapter(List<MatchSummaryDetail> matchSummaries) {
+      private final TextView mTitleTextView;
+      private final TextView mMatchDateTextView;
+      private final TextView mMatchScoreTextView;
 
-      mMatchSummaries = matchSummaries;
+      private MatchSummaryDetails mMatchSummaryDetails;
+
+      MatchSummaryHolder(View itemView) {
+        super(itemView);
+
+        mTitleTextView = itemView.findViewById(R.id.match_item_title);
+        mMatchDateTextView = itemView.findViewById(R.id.match_item_date);
+        mMatchScoreTextView = itemView.findViewById(R.id.match_item_score);
+
+        itemView.setOnClickListener(this);
+      }
+
+      void bind(MatchSummaryDetails matchSummaryDetails) {
+
+        mMatchSummaryDetails = matchSummaryDetails;
+
+        mTitleTextView.setText(
+          String.format(
+            Locale.getDefault(),
+            "%1s vs %2s",
+            mMatchSummaryDetails.HomeName,
+            mMatchSummaryDetails.AwayName));
+        mMatchDateTextView.setText(
+          String.format(
+            Locale.US,
+            "%d-%02d-%02d",
+            mMatchSummaryDetails.Year,
+            mMatchSummaryDetails.Month,
+            mMatchSummaryDetails.Day));
+        mMatchScoreTextView.setText(
+          String.format(
+            Locale.getDefault(),
+            "%1d - %2d",
+            mMatchSummaryDetails.HomeScore,
+            mMatchSummaryDetails.AwayScore));
+        if (getContext() != null && !mTeamId.equals(BaseActivity.DEFAULT_ID)) {
+          if ((mTeamId.equals(mMatchSummaryDetails.HomeId) && mMatchSummaryDetails.HomeScore > mMatchSummaryDetails.AwayScore) ||
+            (mTeamId.equals(mMatchSummaryDetails.AwayId) && mMatchSummaryDetails.AwayScore > mMatchSummaryDetails.HomeScore)) {
+            mMatchScoreTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.favorite));
+          } else if ((mTeamId.equals(mMatchSummaryDetails.HomeId) && mMatchSummaryDetails.HomeScore < mMatchSummaryDetails.AwayScore) ||
+            (mTeamId.equals(mMatchSummaryDetails.AwayId) && mMatchSummaryDetails.AwayScore < mMatchSummaryDetails.HomeScore)) {
+            mMatchScoreTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.ahead));
+          } else {
+            mMatchScoreTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.behind));
+          }
+        }
+      }
+
+      @Override
+      public void onClick(View view) {
+
+        Log.d(TAG, "++MatchSummaryHolder::onClick(View)");
+        mCallback.onMatchListItemSelected();
+      }
+    }
+
+    private final LayoutInflater mInflater;
+    private List<MatchSummaryDetails> mMatchSummaryDetailsList;
+
+    MatchSummaryAdapter(Context context) {
+
+      mInflater = LayoutInflater.from(context);
     }
 
     @NonNull
     @Override
     public MatchSummaryHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-      LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-      return new MatchSummaryHolder(layoutInflater, parent);
+      View itemView = mInflater.inflate(R.layout.match_item, parent, false);
+      return new MatchSummaryHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MatchSummaryHolder holder, int position) {
 
-      MatchSummaryDetail matchSummary = mMatchSummaries.get(position);
-      holder.bind(matchSummary);
-    }
-
-    @Override
-    public int getItemCount() {
-      return mMatchSummaries.size();
-    }
-  }
-
-  /**
-   * Holder class for MatchSummary objects
-   */
-  private class MatchSummaryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-    private final TextView mTitleTextView;
-    private final TextView mMatchDateTextView;
-    private final TextView mMatchScoreTextView;
-
-    MatchSummaryHolder(LayoutInflater inflater, ViewGroup parent) {
-      super(inflater.inflate(R.layout.match_item, parent, false));
-
-      itemView.setOnClickListener(this);
-      mTitleTextView = itemView.findViewById(R.id.match_item_title);
-      mMatchDateTextView = itemView.findViewById(R.id.match_item_date);
-      mMatchScoreTextView = itemView.findViewById(R.id.match_item_score);
-    }
-
-    void bind(MatchSummaryDetail matchSummary) {
-
-      mTitleTextView.setText(
-          String.format(
-              Locale.getDefault(),
-              "%1s vs %2s",
-              matchSummary.HomeName,
-              matchSummary.AwayName));
-      mMatchDateTextView.setText(String.format(Locale.US, "%d-%02d-%02d", matchSummary.Year, matchSummary.Month, matchSummary.Day));
-      mMatchScoreTextView.setText(
-        String.format(
-          Locale.getDefault(),
-          "%1d - %2d",
-          matchSummary.HomeScore,
-          matchSummary.AwayScore));
-      if (getContext() != null && !mTeamId.equals(BaseActivity.DEFAULT_ID)) {
-        if ((mTeamId.equals(matchSummary.HomeId) && matchSummary.HomeScore > matchSummary.AwayScore) ||
-          (mTeamId.equals(matchSummary.AwayId) && matchSummary.AwayScore > matchSummary.HomeScore)) {
-          mMatchScoreTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.favorite));
-        } else if ((mTeamId.equals(matchSummary.HomeId) && matchSummary.HomeScore < matchSummary.AwayScore) ||
-          (mTeamId.equals(matchSummary.AwayId) && matchSummary.AwayScore < matchSummary.HomeScore)) {
-          mMatchScoreTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.ahead));
-        } else {
-          mMatchScoreTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.behind));
-        }
+      if (mMatchSummaryDetailsList != null) {
+        MatchSummaryDetails matchSummaryDetails = mMatchSummaryDetailsList.get(position);
+        holder.bind(matchSummaryDetails);
+      } else {
+        // No books!
       }
     }
 
     @Override
-    public void onClick(View view) {
+    public int getItemCount() {
 
-      Log.d(TAG, "++MatchSummaryHolder::onClick(View)");
-      mCallback.onMatchListItemSelected();
+      if (mMatchSummaryDetailsList != null) {
+        return mMatchSummaryDetailsList.size();
+      } else {
+        return 0;
+      }
+    }
+
+    void setMatchSummaryDetailsList(List<MatchSummaryDetails> matchSummaryDetailsList) {
+
+      Log.d(TAG, "++setMatchSummaryDetailsList(List<MatchSummaryDetails>)");
+      mMatchSummaryDetailsList = new ArrayList<>(matchSummaryDetailsList);
+      mCallback.onMatchListPopulated(mMatchSummaryDetailsList.size());
+      notifyDataSetChanged();
     }
   }
 }

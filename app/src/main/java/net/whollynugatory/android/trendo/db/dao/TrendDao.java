@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Ryan Ward
+ * Copyright 2020 Ryan Ward
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,12 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
 package net.whollynugatory.android.trendo.db.dao;
 
 import net.whollynugatory.android.trendo.db.entity.TrendEntity;
-import net.whollynugatory.android.trendo.db.views.TrendDetails;
-
-import java.util.List;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -33,9 +31,6 @@ public interface TrendDao {
 
   @Query("SELECT COUNT(*) FROM trend_table WHERE year == :year")
   int count(int year);
-
-  @Query("SELECT * FROM TrendDetails WHERE TeamId == :teamId AND Year == :year ORDER BY MatchNumber")
-  List<TrendDetails> getAll(String teamId, int year);
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   void insert(TrendEntity trend);

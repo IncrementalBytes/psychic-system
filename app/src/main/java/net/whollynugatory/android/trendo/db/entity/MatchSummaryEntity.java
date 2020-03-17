@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Ryan Ward
+ * Copyright 2020 Ryan Ward
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
 package net.whollynugatory.android.trendo.db.entity;
 
 import androidx.annotation.NonNull;
@@ -37,12 +38,9 @@ import java.io.Serializable;
     @ForeignKey(entity = TeamEntity.class, parentColumns = "id", childColumns = "home_id")
   },
   indices = {
-    @Index(value = {"away_id"}),
-    @Index(value = {"home_id"})
+    @Index(value = {"match_date", "away_id", "home_id"})
   })
 public class MatchSummaryEntity implements Serializable {
-
-  public static final String ROOT = "MatchSummaries";
 
   /**
    * Unique string of match date
@@ -83,38 +81,14 @@ public class MatchSummaryEntity implements Serializable {
   public long HomeScore;
 
   /**
-   * Month of year match took place.
-   */
-  @ColumnInfo(name = "month")
-  @SerializedName("month")
-  public int Month;
-
-  /**
-   * Day of month match took place.
-   */
-  @ColumnInfo(name = "day")
-  @SerializedName("day")
-  public int Day;
-
-  /**
-   * Year match took place.
-   */
-  @ColumnInfo(name = "year")
-  @SerializedName("year")
-  public int Year;
-
-  /**
    * Constructs a new MatchSummary object with default values.
    */
   public MatchSummaryEntity() {
 
-    MatchDate = "";
+    MatchDate = BaseActivity.DEFAULT_DATE;
+    HomeId = BaseActivity.DEFAULT_ID;
     AwayId = BaseActivity.DEFAULT_ID;
     AwayScore = 0;
-    HomeId = BaseActivity.DEFAULT_ID;
     HomeScore = 0;
-    Month = 1;
-    Day = 1;
-    Year = 1990;
   }
 }

@@ -39,7 +39,7 @@ import net.whollynugatory.android.trendo.R;
 
 public class SignInActivity extends BaseActivity implements OnClickListener {
 
-  private static final String TAG = BASE_TAG + SignInActivity.class.getSimpleName();
+  private static final String TAG = BASE_TAG + "SignInActivity";
 
   private static final int RC_SIGN_IN = 4701;
 
@@ -164,7 +164,7 @@ public class SignInActivity extends BaseActivity implements OnClickListener {
   private void onAuthenticateSuccess(FirebaseUser user) {
 
     Log.d(TAG, "++onAuthenticateSuccess(FirebaseUser)");
-    Intent intent = new Intent(SignInActivity.this, DataActivity.class);
+    Intent intent = new Intent(SignInActivity.this, MainActivity.class);
     intent.putExtra(ARG_UID, user.getUid());
     startActivity(intent);
     finish();
