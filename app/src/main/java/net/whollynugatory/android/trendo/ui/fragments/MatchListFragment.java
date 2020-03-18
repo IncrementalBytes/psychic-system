@@ -178,13 +178,7 @@ public class MatchListFragment extends Fragment {
             "%1s vs %2s",
             mMatchSummaryDetails.HomeName,
             mMatchSummaryDetails.AwayName));
-        mMatchDateTextView.setText(
-          String.format(
-            Locale.US,
-            "%d-%02d-%02d",
-            mMatchSummaryDetails.Year,
-            mMatchSummaryDetails.Month,
-            mMatchSummaryDetails.Day));
+        mMatchDateTextView.setText(mMatchSummaryDetails.MatchDate);
         mMatchScoreTextView.setText(
           String.format(
             Locale.getDefault(),

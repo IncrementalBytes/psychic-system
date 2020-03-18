@@ -17,8 +17,6 @@
   <string name="goal_differential">Goal Differential</string>
   <string name="total_points">Total Points</string>
   <string name="points_per_game">Points Per Game</string>
-  <string name="preferences_team">Select the team you wish to view trends for.</string>
-  <string name="preferences_year">Select the year to view trends for.</string>
   <string name="desc_match_list">List of matches for selected team.</string>
   <string name="desc_data_list">List of data for review.</string>
   <string name="upcoming">Upcoming</string>
@@ -61,8 +59,18 @@
   <string name="title_summary">Summary</string>
   <string name="pending">Pending</string>
 
+  <string name="pref_category_season">Season</string>
   <string name="pref_key_season" translatable="false">selected_season</string>
+  <string name="pref_summary_season">Select the year to view trends for.</string>
+  <string name="pref_title_season">Season</string>
+  <string name="pref_category_team">Team</string>
   <string name="pref_key_team" translatable="false">selected_team</string>
+  <string name="pref_summary_team">Select the team you wish to view trends for.</string>
+  <string name="pref_title_team">Teams</string>
+  <string name="pref_category_about">About</string>
+  <string name="pref_key_app_version" translatable="false">app_version</string>
+  <string name="pref_title_app_version">Application Version</string>
+
   <string-array name="seasons">
     <item>2017</item>
     <item>2018</item>

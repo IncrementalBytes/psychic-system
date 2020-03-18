@@ -20,11 +20,9 @@ import android.util.Log;
 
 import net.whollynugatory.android.trendo.db.entity.MatchSummaryEntity;
 import net.whollynugatory.android.trendo.db.entity.TeamEntity;
-import net.whollynugatory.android.trendo.db.entity.TrendEntity;
 import net.whollynugatory.android.trendo.db.repository.TrendRepository;
 import net.whollynugatory.android.trendo.ui.BaseActivity;
 import net.whollynugatory.android.trendo.ui.MainActivity;
-import net.whollynugatory.android.trendo.utils.SortUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.List;

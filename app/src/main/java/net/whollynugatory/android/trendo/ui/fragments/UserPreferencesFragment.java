@@ -17,7 +17,6 @@
 package net.whollynugatory.android.trendo.ui.fragments;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -25,9 +24,10 @@ import androidx.annotation.NonNull;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SeekBarPreference;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import net.whollynugatory.android.trendo.BuildConfig;
 import net.whollynugatory.android.trendo.R;
@@ -35,103 +35,95 @@ import net.whollynugatory.android.trendo.ui.BaseActivity;
 import net.whollynugatory.android.trendo.db.entity.TeamEntity;
 import net.whollynugatory.android.trendo.utils.SortUtils;
 
-public class UserPreferencesFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class UserPreferencesFragment extends PreferenceFragmentCompat {
 
-    private static final String TAG = BaseActivity.BASE_TAG + "UserPreferencesFragment";
+  private static final String TAG = BaseActivity.BASE_TAG + "UserPreferencesFragment";
 
-    public static final String KEY_YEAR_PREFERENCE = "preference_list_year";
-    public static final String KEY_TEAM_PREFERENCE = "preference_list_team";
-    private static final String KEY_VERSION_PREFERENCE = "preference_edit_version";
+  private ArrayList<TeamEntity> mTeams;
 
-    public interface OnPreferencesListener {
+  public static UserPreferencesFragment newInstance(ArrayList<TeamEntity> teamEntities) {
 
-        void onPreferenceChanged();
+    Log.d(TAG, "++newInstance()");
+    UserPreferencesFragment fragment = new UserPreferencesFragment();
+    Bundle arguments = new Bundle();
+    arguments.putSerializable(BaseActivity.ARG_TEAMS, teamEntities);
+    fragment.setArguments(arguments);
+    return fragment;
+  }
+
+  /*
+      Fragment Override(s)
+   */
+  @Override
+  public void onAttach(@NonNull Context context) {
+    super.onAttach(context);
+
+    Log.d(TAG, "++onAttach(Context)");
+    Bundle arguments = getArguments();
+    if (arguments != null && arguments.containsKey(BaseActivity.ARG_TEAMS)) {
+      mTeams = (ArrayList<TeamEntity>)arguments.getSerializable(BaseActivity.ARG_TEAMS);
+    } else {
+      mTeams = new ArrayList<>();
+    }
+  }
+
+  @Override
+  public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+
+    Log.d(TAG, "++onCreatePreferences(Bundle, String)");
+    addPreferencesFromResource(R.xml.app_preferences);
+    setupAppVersionPreference();
+    setupAvailableTeamsPreference();
+    setupSeasonsPreference();
+  }
+
+  /*
+    Private Method(s)
+   */
+  private void setupAppVersionPreference() {
+
+    Log.d(TAG, "++setupAppVersionPreference()");
+    EditTextPreference editTextPreference = findPreference(getString(R.string.pref_key_app_version));
+    if (editTextPreference != null) {
+      editTextPreference.setSummary(BuildConfig.VERSION_NAME);
+    }
+  }
+
+  private void setupAvailableTeamsPreference() {
+
+    Log.d(TAG, "++setupAvailableTeamsPreference()");
+    ListPreference teamsPreference = findPreference(getString(R.string.pref_key_team));
+    if (teamsPreference == null) {
+      Log.e(TAG, "Could not find the team list preference object.");
+      return;
     }
 
-    private OnPreferencesListener mCallback;
-
-    private ArrayList<TeamEntity> mTeams;
-
-    public static UserPreferencesFragment newInstance(ArrayList<TeamEntity> teamList) {
-
-        Log.d(TAG, "++newInstance()");
-        UserPreferencesFragment fragment = new UserPreferencesFragment();
-        Bundle args = new Bundle();
-        args.putSerializable(BaseActivity.ARG_TEAMS, teamList);
-        fragment.setArguments(args);
-        return fragment;
+    List<String> entries = new ArrayList<>();
+    List<String> entryValues = new ArrayList<>();
+    if (mTeams != null && mTeams.size() > 0) {
+      mTeams.sort(new SortUtils.ByTeamName());
+      for (TeamEntity team : mTeams) {
+        entries.add(team.Name);
+        entryValues.add(team.Id);
+      }
     }
 
-    /*
-        Fragment Override(s)
-     */
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
+    teamsPreference.setEntries(entries.toArray(new String[0]));
+    teamsPreference.setEntryValues(entryValues.toArray(new String[0]));
+  }
 
-        Log.d(TAG, "++onAttach(Context)");
-        try {
-            mCallback = (OnPreferencesListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(
-                String.format(Locale.ENGLISH, "Missing interface implementations for %s", context.toString()));
-        }
+  private void setupSeasonsPreference() {
 
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            mTeams = (ArrayList<TeamEntity>)arguments.getSerializable(BaseActivity.ARG_TEAMS);
-        }
+    Log.d(TAG, "++setupSeasonsPreference()");
+    SeekBarPreference seasonsPreference = findPreference(getString(R.string.pref_key_season));
+    if (seasonsPreference == null) {
+      Log.e(TAG, "Could not find the seasons preference object.");
+      return;
     }
 
-    @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-
-        Log.d(TAG, "++onCreatePreferences(Bundle, String)");
-        addPreferencesFromResource(R.xml.app_preferences);
-
-        EditTextPreference editTextPreference = findPreference(KEY_VERSION_PREFERENCE);
-        if (editTextPreference != null) {
-            editTextPreference.setSummary(BuildConfig.VERSION_NAME);
-        }
-
-        List<String> entries = new ArrayList<>();
-        List<String> entryValues = new ArrayList<>();
-        if (mTeams != null && mTeams.size() > 0) {
-            mTeams.sort(new SortUtils.ByTeamName());
-            for (TeamEntity team : mTeams) {
-                entries.add(team.Name);
-                entryValues.add(team.Id);
-            }
-        }
-
-        final ListPreference listPreference = findPreference(KEY_TEAM_PREFERENCE);
-        if (listPreference != null) {
-            listPreference.setEntries(entries.toArray(new String[0]));
-            listPreference.setEntryValues(entryValues.toArray(new String[0]));
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        Log.d(TAG, "++onPause()");
-        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        Log.d(TAG, "++onResume()");
-        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String keyName) {
-
-        Log.d(TAG, "++onSharedPreferenceChanged(SharedPreferences, String)");
-        getPreferenceScreen().getSharedPreferences().edit().apply();
-        mCallback.onPreferenceChanged();
-    }
+    String[] seasons = getResources().getStringArray(R.array.seasons);
+    seasonsPreference.setMin(Integer.parseInt(seasons[0]));
+    seasonsPreference.setMax(Integer.parseInt(seasons[seasons.length - 1]));
+    seasonsPreference.setDefaultValue(Integer.parseInt(seasons[seasons.length - 1]));
+  }
 }

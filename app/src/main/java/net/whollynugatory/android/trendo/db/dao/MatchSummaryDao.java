@@ -19,19 +19,12 @@ package net.whollynugatory.android.trendo.db.dao;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
-import androidx.room.Query;
 
 import java.util.List;
 import net.whollynugatory.android.trendo.db.entity.MatchSummaryEntity;
 
 @Dao
 public interface MatchSummaryDao {
-
-  @Query("SELECT COUNT(*) FROM match_summary_table WHERE (home_id == :teamId OR away_id == :teamId) AND Year == :year")
-  int count(String teamId, int year);
-
-  @Query("SELECT COUNT(*) FROM match_summary_table WHERE Year == :year")
-  int count(int year);
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   void insert(MatchSummaryEntity matchSummary);

@@ -30,7 +30,6 @@ import net.whollynugatory.android.trendo.db.repository.TeamRepository;
 import net.whollynugatory.android.trendo.db.repository.TrendDetailsRepository;
 import net.whollynugatory.android.trendo.db.repository.TrendRepository;
 import net.whollynugatory.android.trendo.db.views.MatchSummaryDetails;
-import net.whollynugatory.android.trendo.db.views.MatchSummaryDetails;
 import net.whollynugatory.android.trendo.db.views.TrendDetails;
 
 import java.util.List;
@@ -78,24 +77,14 @@ public class TrendoViewModel extends AndroidViewModel {
     TrendoDatabase.databaseWriteExecutor.execute(() -> mConferenceRepository.insertAll(conferences));
   }
 
-  public LiveData<List<MatchSummaryDetails>> getAllMatchSummaryDetails(int year) {
+  public LiveData<List<MatchSummaryDetails>> getAllMatchSummaryDetails(String bySeason) {
 
-    return mMatchSummaryDetailsRepository.getAll(year);
+    return mMatchSummaryDetailsRepository.getAll(bySeason);
   }
 
-  public LiveData<List<MatchSummaryDetails>> getAllMatchSummaryDetails(String teamId, int year) {
+  public LiveData<List<MatchSummaryDetails>> getAllMatchSummaryDetails(String teamId, String bySeason) {
 
-    return mMatchSummaryDetailsRepository.getAll(teamId, year);
-  }
-
-  public int countMatchSummaries(String teamId, int year) {
-
-    return mMatchSummaryRepository.count(teamId, year);
-  }
-
-  public int countMatchSummaries(int year) {
-
-    return mMatchSummaryRepository.count(year);
+    return mMatchSummaryDetailsRepository.getAll(teamId, bySeason);
   }
 
   public void insertMatchSummary(MatchSummaryEntity matchSummary) {

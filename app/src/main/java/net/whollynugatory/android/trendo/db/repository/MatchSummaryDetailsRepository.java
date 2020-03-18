@@ -19,7 +19,6 @@ package net.whollynugatory.android.trendo.db.repository;
 import android.util.Log;
 
 import net.whollynugatory.android.trendo.db.dao.MatchSummaryDetailsDao;
-import net.whollynugatory.android.trendo.db.dao.MatchSummaryDetailsDao;
 import net.whollynugatory.android.trendo.db.views.MatchSummaryDetails;
 import net.whollynugatory.android.trendo.ui.BaseActivity;
 
@@ -54,13 +53,13 @@ public class MatchSummaryDetailsRepository {
     return sInstance;
   }
 
-  public LiveData<List<MatchSummaryDetails>> getAll(int year) {
+  public LiveData<List<MatchSummaryDetails>> getAll(String bySeason) {
 
-    return mMatchSummaryDetailsDao.getAll(year);
+    return mMatchSummaryDetailsDao.getAll(bySeason);
   }
 
-  public LiveData<List<MatchSummaryDetails>> getAll(String teamId, int year) {
+  public LiveData<List<MatchSummaryDetails>> getAll(String teamId, String bySeason) {
 
-    return mMatchSummaryDetailsDao.getAll(teamId, year);
+    return mMatchSummaryDetailsDao.getAll(teamId, bySeason);
   }
 }

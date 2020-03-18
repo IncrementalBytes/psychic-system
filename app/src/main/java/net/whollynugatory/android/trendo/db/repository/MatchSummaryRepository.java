@@ -52,16 +52,6 @@ public class MatchSummaryRepository {
     return sInstance;
   }
 
-  public int count(String teamId, int year) {
-
-    return mMatchSummaryDao.count(teamId, year);
-  }
-
-  public int count(int year) {
-
-    return mMatchSummaryDao.count(year);
-  }
-
   public void insert(MatchSummaryEntity matchSummary) {
 
     TrendoDatabase.databaseWriteExecutor.execute(() -> mMatchSummaryDao.insert(matchSummary));

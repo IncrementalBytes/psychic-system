@@ -1,23 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ListPreference
-        android:key="preference_list_team"
-        android:title="Team"
-        android:summary="@string/preferences_team"
-        android:defaultValue="@string/none"/>
-    <ListPreference
-        android:key="preference_list_year"
-        android:title="Season"
-        android:summary="@string/preferences_year"
-        android:defaultValue="@string/none"
-        android:entries="@array/year_list_entries"
-        android:entryValues="@array/year_list_values"/>
-    <EditTextPreference
-      android:defaultValue="@string/placeholder"
-      android:key="preference_edit_version"
+  <ListPreference
+    android:key="@string/pref_key_team"
+    android:title="@string/pref_title_team"
+    android:summary="@string/pref_summary_team"
+    android:defaultValue="@string/none"/>
+
+  <androidx.preference.SeekBarPreference
+    android:key="@string/pref_key_season"
+    android:persistent="true"
+    android:summary="@string/pref_summary_season"
+    android:title="@string/pref_title_season"
+    app:showSeekBarValue="true"/>
+<!--    <ListPreference-->
+<!--      android:key="@string/pref_key_season"-->
+<!--      android:title="@string/pref_title_season"-->
+<!--      android:summary="@string/pref_title_season"-->
+<!--      android:defaultValue="@string/none"-->
+<!--      android:entries="@array/year_list_entries"-->
+<!--      android:entryValues="@array/year_list_values"/>-->
+
+  <androidx.preference.PreferenceCategory android:title="@string/pref_category_about">
+    <androidx.preference.EditTextPreference
+      android:key="@string/pref_key_app_version"
       android:singleLine="true"
-      android:title="App Version"
+      android:title="@string/pref_title_app_version"
+      android:summary=""
       android:enabled="false"/>
+  </androidx.preference.PreferenceCategory>
 
 </PreferenceScreen>

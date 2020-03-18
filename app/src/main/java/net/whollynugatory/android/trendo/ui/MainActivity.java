@@ -33,6 +33,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -41,6 +42,7 @@ import net.whollynugatory.android.trendo.common.PackagedData;
 import net.whollynugatory.android.trendo.common.Trend;
 import net.whollynugatory.android.trendo.db.entity.TeamEntity;
 import net.whollynugatory.android.trendo.db.entity.User;
+import net.whollynugatory.android.trendo.ui.fragments.BrokerageFragment;
 import net.whollynugatory.android.trendo.ui.fragments.CardSummaryFragment;
 import net.whollynugatory.android.trendo.ui.fragments.DataFragment;
 import net.whollynugatory.android.trendo.ui.fragments.LineChartFragment;
@@ -48,6 +50,7 @@ import net.whollynugatory.android.trendo.ui.fragments.MatchListFragment;
 import net.whollynugatory.android.trendo.ui.fragments.UserPreferencesFragment;
 
 public class MainActivity extends BaseActivity implements
+  BrokerageFragment.OnBrokerageListener,
   CardSummaryFragment.OnCardSummaryListener,
   DataFragment.OnDataListener,
   LineChartFragment.OnLineChartListener,
@@ -144,7 +147,7 @@ public class MainActivity extends BaseActivity implements
         replaceFragment(CardSummaryFragment.newInstance(mPackagedData.Trends));
         break;
       case R.id.navigation_menu_preferences:
-        replaceFragment(UserPreferencesFragment.newInstance(new ArrayList<>(mPackagedData.Teams)));
+        replaceFragment(BrokerageFragment.newInstance());
         break;
       case R.id.navigation_menu_logout:
         AlertDialog dialog = new AlertDialog.Builder(this)
@@ -179,6 +182,13 @@ public class MainActivity extends BaseActivity implements
   /*
       Fragment Callback Overrides
    */
+  @Override
+  public void onBrokerageTeamsRetrieved(List<TeamEntity> teamEntityList) {
+
+    Log.d(TAG, "++onBrokerageTeamsRetrieved(List<TeamEntity>)");
+    replaceFragment(UserPreferencesFragment.newInstance(new ArrayList<>(teamEntityList)));
+  }
+
   @Override
   public void onCardSummaryMatchListClicked() {
 

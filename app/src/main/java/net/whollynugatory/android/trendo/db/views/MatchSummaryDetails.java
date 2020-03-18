@@ -29,10 +29,7 @@ import java.util.Locale;
     "Summary.home_score AS HomeScore, " +
     "AwayTeam.Name AS AwayName, " +
     "AwayTeam.Id AS AwayId, " +
-    "Summary.away_score AS AwayScore, " +
-    "Summary.month AS Month, " +
-    "Summary.day AS Day, " +
-    "Summary.year AS Year " +
+    "Summary.away_score AS AwayScore " +
   "FROM match_summary_table AS Summary " +
   "INNER JOIN team_table AS AwayTeam ON Summary.away_id = AwayTeam.id " +
   "INNER JOIN team_table AS HomeTeam ON Summary.home_id = HomeTeam.id")
@@ -45,9 +42,6 @@ public class MatchSummaryDetails implements Serializable {
   public String AwayName;
   public String AwayId;
   public int AwayScore;
-  public int Month;
-  public int Day;
-  public int Year;
 
   public MatchSummaryDetails() {
 
@@ -58,9 +52,6 @@ public class MatchSummaryDetails implements Serializable {
     AwayName = "";
     AwayId = BaseActivity.DEFAULT_ID;
     AwayScore = 0;
-    Month = 1;
-    Day = 1;
-    Year = 1990;
   }
 
   /*

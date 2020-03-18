@@ -32,9 +32,9 @@ import androidx.annotation.StringRes;
  **/
 public class PreferenceUtils {
 
-  public static int getSeason(Context context) {
+  public static String getSeason(Context context) {
 
-    return getIntPref(context, R.string.pref_key_season, Calendar.getInstance().get(Calendar.YEAR));
+    return getStringPref(context, R.string.pref_key_season, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
   }
 
   public static String getTeam(Context context) {
@@ -45,13 +45,6 @@ public class PreferenceUtils {
   /*
     Private Method(s)
    */
-  private static int getIntPref(Context context, @StringRes int prefKeyId, int defaultValue) {
-
-    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-    String prefKey = context.getString(prefKeyId);
-    return sharedPreferences.getInt(prefKey, defaultValue);
-  }
-
   private static String getStringPref(Context context, @StringRes int prefKeyId, String defaultValue) {
 
     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
