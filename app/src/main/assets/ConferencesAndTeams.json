@@ -1,6 +1,11 @@
 {
   "conferences": [
     {
+      "id": "00000000-0000-0000-0000-000000000000",
+      "name": "Unknown",
+      "defunct": false
+    },
+    {
       "id": "59b2bb04-8736-484f-a2e3-6fca89560770",
       "name": "Eastern Conference",
       "defunct": false
@@ -12,6 +17,14 @@
     }
   ],
   "teams": [
+    {
+      "id":"00000000-0000-0000-0000-000000000000",
+      "conference_id":"00000000-0000-0000-0000-000000000000",
+      "name":"Unknown",
+      "short_name":"UNK",
+      "established":1995,
+      "defunct":false
+    },
     {
       "id":"dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
       "conference_id":"59b2bb04-8736-484f-a2e3-6fca89560770",

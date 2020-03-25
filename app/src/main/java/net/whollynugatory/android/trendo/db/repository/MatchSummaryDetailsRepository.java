@@ -53,13 +53,13 @@ public class MatchSummaryDetailsRepository {
     return sInstance;
   }
 
-  public LiveData<List<MatchSummaryDetails>> getAll(String bySeason) {
+  public LiveData<List<MatchSummaryDetails>> getAll(int season) {
 
-    return mMatchSummaryDetailsDao.getAll(bySeason);
+    return mMatchSummaryDetailsDao.getAll(season);
   }
 
-  public LiveData<List<MatchSummaryDetails>> getAll(String teamId, String bySeason) {
+  public LiveData<List<MatchSummaryDetails>> getAll(String teamId, int season) {
 
-    return mMatchSummaryDetailsDao.getAll(teamId, bySeason);
+    return mMatchSummaryDetailsDao.getAll(teamId, season);
   }
 }

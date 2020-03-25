@@ -1,26 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <ListPreference
+  <androidx.preference.ListPreference
     android:key="@string/pref_key_team"
     android:title="@string/pref_title_team"
-    android:summary="@string/pref_summary_team"
-    android:defaultValue="@string/none"/>
+    android:summary="@string/pref_summary_team_missing"/>
 
-  <androidx.preference.SeekBarPreference
+  <androidx.preference.ListPreference
     android:key="@string/pref_key_season"
-    android:persistent="true"
-    android:summary="@string/pref_summary_season"
+    android:summary="@string/pref_summary_season_missing"
     android:title="@string/pref_title_season"
-    app:showSeekBarValue="true"/>
-<!--    <ListPreference-->
-<!--      android:key="@string/pref_key_season"-->
-<!--      android:title="@string/pref_title_season"-->
-<!--      android:summary="@string/pref_title_season"-->
-<!--      android:defaultValue="@string/none"-->
-<!--      android:entries="@array/year_list_entries"-->
-<!--      android:entryValues="@array/year_list_values"/>-->
+    android:entries="@array/year_list_entries"
+    android:entryValues="@array/year_list_values"/>
 
   <androidx.preference.PreferenceCategory android:title="@string/pref_category_about">
     <androidx.preference.EditTextPreference

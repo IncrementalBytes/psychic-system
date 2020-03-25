@@ -31,28 +31,32 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import net.whollynugatory.android.trendo.R;
-import net.whollynugatory.android.trendo.common.PackagedData;
+import net.whollynugatory.android.trendo.common.MatchSummaryTableAsync;
 import net.whollynugatory.android.trendo.common.Trend;
+import net.whollynugatory.android.trendo.common.TrendTableAsync;
+import net.whollynugatory.android.trendo.db.TrendoDatabase;
 import net.whollynugatory.android.trendo.db.entity.TeamEntity;
-import net.whollynugatory.android.trendo.db.entity.User;
+import net.whollynugatory.android.trendo.db.repository.MatchDateDimRepository;
+import net.whollynugatory.android.trendo.db.repository.MatchSummaryRepository;
+import net.whollynugatory.android.trendo.db.repository.TrendRepository;
+import net.whollynugatory.android.trendo.db.views.MatchSummaryDetails;
 import net.whollynugatory.android.trendo.ui.fragments.BrokerageFragment;
 import net.whollynugatory.android.trendo.ui.fragments.CardSummaryFragment;
 import net.whollynugatory.android.trendo.ui.fragments.DataFragment;
 import net.whollynugatory.android.trendo.ui.fragments.LineChartFragment;
 import net.whollynugatory.android.trendo.ui.fragments.MatchListFragment;
 import net.whollynugatory.android.trendo.ui.fragments.UserPreferencesFragment;
+import net.whollynugatory.android.trendo.utils.PreferenceUtils;
 
 public class MainActivity extends BaseActivity implements
   BrokerageFragment.OnBrokerageListener,
   CardSummaryFragment.OnCardSummaryListener,
-  DataFragment.OnDataListener,
   LineChartFragment.OnLineChartListener,
   MatchListFragment.OnMatchListListener {
 
@@ -60,13 +64,11 @@ public class MainActivity extends BaseActivity implements
 
   private Snackbar mSnackbar;
 
-  private PackagedData mPackagedData;
-  private int mQueryAttempts;
-  private Map<String, Boolean> mSeasonalData = new HashMap<>();
-  private User mUser;
+  private List<MatchSummaryDetails> mMatchSummaryDetails;
+  private List<TeamEntity> mTeams;
 
   /*
-      AppCompatActivity Override(s)
+    AppCompatActivity Override(s)
    */
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -75,20 +77,8 @@ public class MainActivity extends BaseActivity implements
     Log.d(TAG, "++onCreate(Bundle)");
     setContentView(R.layout.activity_main);
 
-    // get parameters from previous activity
-    mPackagedData = new PackagedData();
-    mQueryAttempts++;
-    mUser = new User();
-    mUser.Uid = getIntent().getStringExtra(BaseActivity.ARG_UID);
-    String[] seasons = getResources().getStringArray(R.array.seasons);
-    for (String season : seasons) {
-      mSeasonalData.put(season, false);
-    }
-
-    // TODO: validate user?
-
-    replaceFragment(DataFragment.newInstance());
-
+    mMatchSummaryDetails = new ArrayList<>();
+    mTeams = new ArrayList<>();
     Toolbar toolbar = findViewById(R.id.main_toolbar);
     setSupportActionBar(toolbar);
     getSupportFragmentManager().addOnBackStackChangedListener(() -> {
@@ -96,30 +86,40 @@ public class MainActivity extends BaseActivity implements
       if (fragment != null) {
         String fragmentClassName = fragment.getClass().getName();
         if (fragmentClassName.equals(MatchListFragment.class.getName())) {
-          if (mUser != null && mUser.Year > 0) {
-            setTitle(String.format(Locale.ENGLISH, "%s - %d", getTeam(mUser.TeamId).Name, mUser.Year));
-          } else {
-            setTitle(getString(R.string.title_match_summaries));
-          }
+          setTitle(
+            String.format(
+              Locale.ENGLISH,
+              "%s - %d",
+              getTeam(PreferenceUtils.getTeam(this)).ShortName,
+              PreferenceUtils.getSeason(this)));
         } else if (fragmentClassName.equals(UserPreferencesFragment.class.getName())) {
           setTitle(getString(R.string.title_preferences));
         } else if (fragmentClassName.equals(LineChartFragment.class.getName())) {
-          if (mUser != null && mUser.Year > 0) {
-            setTitle(String.format(Locale.ENGLISH, "%s - %d", getTeam(mUser.TeamId).Name, mUser.Year));
-          } else {
-            setTitle(getString(R.string.title_trend_chart));
-          }
+          setTitle(
+            String.format(
+              Locale.ENGLISH,
+              "%s - %d",
+              getTeam(PreferenceUtils.getTeam(this)).ShortName,
+              PreferenceUtils.getSeason(this)));
         } else if (fragmentClassName.equals(CardSummaryFragment.class.getName())) {
-          if (mUser != null && mUser.Year > 0) {
-            setTitle(String.format(Locale.ENGLISH, "%s - %d", getTeam(mUser.TeamId).Name, mUser.Year));
-          } else {
-            setTitle(getString(R.string.title_summary));
-          }
+          setTitle(
+            String.format(
+              Locale.ENGLISH,
+              "%s - %d",
+              getTeam(PreferenceUtils.getTeam(this)).ShortName,
+              PreferenceUtils.getSeason(this)));
         } else {
           setTitle(getString(R.string.app_name));
         }
       }
     });
+
+    String teamId = PreferenceUtils.getTeam(this);
+    if (teamId == null || teamId.equals(BaseActivity.DEFAULT_ID) || teamId.length() != BaseActivity.DEFAULT_ID.length()) {
+      replaceFragment(BrokerageFragment.newInstance(BrokerageFragment.BrokerageType.Teams));
+    } else {
+      replaceFragment(BrokerageFragment.newInstance(BrokerageFragment.BrokerageType.Matches));
+    }
   }
 
   @Override
@@ -135,7 +135,13 @@ public class MainActivity extends BaseActivity implements
     super.onDestroy();
 
     Log.d(TAG, "++onDestroy()");
-    mPackagedData = null;
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+
+    Log.d(TAG, "++onResume()");
   }
 
   @Override
@@ -144,10 +150,10 @@ public class MainActivity extends BaseActivity implements
     Log.d(TAG, "++onOptionsItemSelected(MenuItem)");
     switch (item.getItemId()) {
       case R.id.navigation_menu_home:
-        replaceFragment(CardSummaryFragment.newInstance(mPackagedData.Trends));
+        replaceFragment(BrokerageFragment.newInstance(BrokerageFragment.BrokerageType.Matches));
         break;
       case R.id.navigation_menu_preferences:
-        replaceFragment(BrokerageFragment.newInstance());
+        replaceFragment(BrokerageFragment.newInstance(BrokerageFragment.BrokerageType.Teams));
         break;
       case R.id.navigation_menu_logout:
         AlertDialog dialog = new AlertDialog.Builder(this)
@@ -183,10 +189,37 @@ public class MainActivity extends BaseActivity implements
       Fragment Callback Overrides
    */
   @Override
+  public void onBrokerageMatchesMissing() {
+
+    Log.d(TAG, "++onBrokerageMatchesMissing()");
+    replaceFragment(DataFragment.newInstance());
+    new MatchSummaryTableAsync(
+      this,
+      MatchSummaryRepository.getInstance(TrendoDatabase.getInstance(this).matchSummaryDao()),
+      MatchDateDimRepository.getInstance(TrendoDatabase.getInstance(this).matchDateDimDao()),
+      PreferenceUtils.getSeason(this)).execute();
+  }
+
+  @Override
+  public void onBrokerageMatchesRetrieved(List<MatchSummaryDetails> matchSummaryDetailsList) {
+
+    Log.d(TAG, "++onBrokerageMatchesRetrieved(List<MatchSummaryDetails>)");
+    mMatchSummaryDetails = new ArrayList<>(matchSummaryDetailsList);
+    replaceFragment(CardSummaryFragment.newInstance());
+  }
+
+  @Override
   public void onBrokerageTeamsRetrieved(List<TeamEntity> teamEntityList) {
 
     Log.d(TAG, "++onBrokerageTeamsRetrieved(List<TeamEntity>)");
+    mTeams = new ArrayList<>(teamEntityList);
     replaceFragment(UserPreferencesFragment.newInstance(new ArrayList<>(teamEntityList)));
+  }
+
+  @Override
+  public void onCardSummaryLoaded() {
+
+    Log.d(TAG, "++onCardSummaryLoaded()");
   }
 
   @Override
@@ -196,51 +229,31 @@ public class MainActivity extends BaseActivity implements
     replaceFragment(MatchListFragment.newInstance());
   }
 
+
   @Override
   public void onCardSummaryTrendClicked(Trend selectedTrend) {
 
     Log.d(TAG, "++onCardSummaryTrendClicked(Trend)");
-    replaceFragment(
-      LineChartFragment.newInstance(
-        mPackagedData.Trends,
-        mPackagedData.TrendsAhead,
-        mPackagedData.TrendsBehind,
-        selectedTrend));
+    // TODO:
+//    replaceFragment(
+//      LineChartFragment.newInstance(
+//        mPackagedData.Trends,
+//        mPackagedData.TrendsAhead,
+//        mPackagedData.TrendsBehind,
+//        selectedTrend));
   }
 
   @Override
-  public void onCardSummaryLoaded() {
+  public void onCardSummaryTrendsMissing() {
 
-    Log.d(TAG, "++onCardSummaryLoaded()");
-    setTitle(String.format(Locale.US, "%s - %d", getTeam(mUser.TeamId).Name, mUser.Year));
-  }
-
-  @Override
-  public void onConferenceDataExists() {
-
-    Log.d(TAG, "++onConferenceDataExists()");
-  }
-
-  @Override
-  public void onMatchesDataExists(String season) {
-
-    Log.d(TAG, "++onMatchesDataExists(String)");
-    if (!mSeasonalData.containsKey(season)) {
-      mSeasonalData.put(season, true);
-    }
-
-    if (mSeasonalData.containsValue(false)) {
-      // continue waiting
-    } else {
-      replaceFragment(MatchListFragment.newInstance());
-    }
-  }
-
-  @Override
-  public void onTeamDataExists() {
-
-    Log.d(TAG, "++onTeamDataExists()");
-    replaceFragment(MatchListFragment.newInstance());
+    Log.d(TAG, "++onCardSummaryTrendsMissing()");
+    replaceFragment(DataFragment.newInstance());
+    new TrendTableAsync(
+      this,
+      TrendRepository.getInstance(TrendoDatabase.getInstance(this).trendDao()),
+      mMatchSummaryDetails,
+      PreferenceUtils.getTeam(this),
+      PreferenceUtils.getSeason(this)).execute();
   }
 
   @Override
@@ -248,7 +261,7 @@ public class MainActivity extends BaseActivity implements
 
     Log.d(TAG, "++onLineChartInit(boolean)");
     if (!isSuccessful) {
-      Snackbar.make(findViewById(R.id.main_fragment_container), getString(R.string.err_trend_data_load_failed), Snackbar.LENGTH_LONG);
+      showSnackbar(getString(R.string.err_trend_data_load_failed));
       replaceFragment(MatchListFragment.newInstance());
     }
   }
@@ -267,11 +280,30 @@ public class MainActivity extends BaseActivity implements
   }
 
   /*
-      Private Methods
+    Public Method(s)
+   */
+  public void matchSummaryTableSynced(Integer matchCount) {
+
+    Log.d(TAG, "++matchSummaryTableSynced(Integer)");
+    if (matchCount == 0) {
+      showSnackbar(getString(R.string.no_matches));
+    } else {
+      replaceFragment(BrokerageFragment.newInstance(BrokerageFragment.BrokerageType.Matches));
+    }
+  }
+
+  public void trendTableSynced() {
+
+    Log.d(TAG, "++trendTableSynced()");
+    replaceFragment(CardSummaryFragment.newInstance());
+  }
+
+  /*
+    Private Methods
    */
   private TeamEntity getTeam(String teamId) {
 
-    for (TeamEntity team : mPackagedData.Teams) {
+    for (TeamEntity team : mTeams) {
       if (team.Id.equals(teamId)) {
         return team;
       }
@@ -288,5 +320,15 @@ public class MainActivity extends BaseActivity implements
       .replace(R.id.main_fragment_container, fragment)
       .addToBackStack(null)
       .commit();
+  }
+
+  private void showSnackbar(String message) {
+
+    mSnackbar = Snackbar.make(
+      findViewById(R.id.main_fragment_container),
+      message,
+      Snackbar.LENGTH_INDEFINITE);
+    mSnackbar.setAction(R.string.dismiss, v -> mSnackbar.dismiss());
+    mSnackbar.show();
   }
 }

@@ -1,6 +1,7 @@
 <resources>
   <string name="app_name">Trends</string>
   <string name="placeholder">TBD</string> <!-- if this string is shown, something needs updating -->
+  <string name="please_wait">Please wait…</string> <!-- if this string is shown, something needs updating -->
   <string name="logout">Logout</string>
   <string name="desc_locked">App requires authentication before continuing</string>
   <string name="home">Home</string>
@@ -61,15 +62,16 @@
 
   <string name="pref_category_season">Season</string>
   <string name="pref_key_season" translatable="false">selected_season</string>
-  <string name="pref_summary_season">Select the year to view trends for.</string>
-  <string name="pref_title_season">Season</string>
+  <string name="pref_summary_season_missing">No season selected!</string>
+  <string name="pref_title_season">Selected Season</string>
   <string name="pref_category_team">Team</string>
   <string name="pref_key_team" translatable="false">selected_team</string>
-  <string name="pref_summary_team">Select the team you wish to view trends for.</string>
-  <string name="pref_title_team">Teams</string>
+  <string name="pref_summary_team_missing">No team selected!</string>
+  <string name="pref_title_team">Selected Team</string>
   <string name="pref_category_about">About</string>
   <string name="pref_key_app_version" translatable="false">app_version</string>
   <string name="pref_title_app_version">Application Version</string>
+  <string name="dismiss">Dismiss</string>
 
   <string-array name="seasons">
     <item>2017</item>

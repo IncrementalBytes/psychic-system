@@ -33,9 +33,10 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import net.whollynugatory.android.trendo.R;
+import net.whollynugatory.android.trendo.db.dao.MatchDateDimDao;
 import net.whollynugatory.android.trendo.db.dao.TrendDetailsDao;
 import net.whollynugatory.android.trendo.db.dao.MatchSummaryDetailsDao;
+import net.whollynugatory.android.trendo.db.entity.MatchDateDim;
 import net.whollynugatory.android.trendo.db.entity.RemoteData;
 import net.whollynugatory.android.trendo.db.views.MatchSummaryDetails;
 import net.whollynugatory.android.trendo.db.views.TrendDetails;
@@ -63,7 +64,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Database(
-  entities = {ConferenceEntity.class, MatchSummaryEntity.class, TeamEntity.class, TrendEntity.class},
+  entities = {ConferenceEntity.class, MatchDateDim.class, MatchSummaryEntity.class, TeamEntity.class, TrendEntity.class},
   views = {MatchSummaryDetails.class, TrendDetails.class},
   version = 1,
   exportSchema = false)
@@ -75,6 +76,8 @@ public abstract class TrendoDatabase extends RoomDatabase {
   public static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
   public abstract ConferenceDao conferenceDao();
+
+  public abstract MatchDateDimDao matchDateDimDao();
 
   public abstract MatchSummaryDao matchSummaryDao();
 
@@ -89,7 +92,6 @@ public abstract class TrendoDatabase extends RoomDatabase {
   private static TrendoDatabase sInstance;
 
   private static volatile AssetManager sAssetManager;
-  private static String[] sSeasons;
 
   public static TrendoDatabase getInstance(final Context context) {
 
@@ -97,7 +99,6 @@ public abstract class TrendoDatabase extends RoomDatabase {
       synchronized (TrendoDatabase.class) {
         if (sInstance == null) {
           sAssetManager = context.getAssets();
-          sSeasons = context.getResources().getStringArray(R.array.seasons);
           sInstance = Room.databaseBuilder(context.getApplicationContext(), TrendoDatabase.class, BaseActivity.DATABASE_NAME)
             .addCallback(sRoomDatabaseCallback)
             .build();
@@ -123,14 +124,12 @@ public abstract class TrendoDatabase extends RoomDatabase {
 
     private final AssetManager mAssetManager;
     private final ConferenceDao mConferenceDao;
-    private final MatchSummaryDao mMatchSummaryDao;
     private final TeamDao mTeamDao;
 
     PopulateDbAsync(TrendoDatabase db, AssetManager assetManager) {
 
       mAssetManager = assetManager;
       mConferenceDao = db.conferenceDao();
-      mMatchSummaryDao = db.matchSummaryDao();
       mTeamDao = db.teamDao();
     }
 
@@ -178,44 +177,6 @@ public abstract class TrendoDatabase extends RoomDatabase {
         }
       } catch (IOException ioe) {
         Log.w(TAG, "Could not get asset manager.", ioe);
-      }
-
-      // process each season (but don't generate trends)
-      for (String season : sSeasons) {
-        String seasonData = String.format(Locale.US, "%s.json", season);
-        try (InputStream inputStream = mAssetManager.open(seasonData)) {
-          File tempFile = File.createTempFile(UUID.randomUUID().toString(), ".json");
-          try (FileOutputStream outputStream = new FileOutputStream(tempFile)) {
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = inputStream.read(buf)) > 0) {
-              outputStream.write(buf, 0, len);
-            }
-
-            RemoteData remoteData = null;
-            try (Reader reader = new FileReader(tempFile.getAbsolutePath())) {
-              Gson gson = new Gson();
-              Type collectionType = new TypeToken<RemoteData>() {
-              }.getType();
-              remoteData = gson.fromJson(reader, collectionType);
-            } catch (FileNotFoundException e) {
-              Log.w(TAG, "Source data from server not found locally.");
-            } catch (IOException e) {
-              Log.w(TAG, "Could not read the source data.");
-            }
-
-            if (remoteData != null) {
-              try {
-                mMatchSummaryDao.insertAll(remoteData.Matches);
-                Log.d(TAG, String.format(Locale.US, "%s Season data processing: %d...", season, remoteData.Matches.size()));
-              } catch (Exception e) {
-                Log.w(TAG, "Could not process conference data.", e);
-              }
-            }
-          }
-        } catch (IOException ioe) {
-          Log.w(TAG, "Could not get asset manager.", ioe);
-        }
       }
 
       return null;

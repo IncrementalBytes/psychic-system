@@ -26,7 +26,9 @@ import android.view.ViewGroup;
 import net.whollynugatory.android.trendo.R;
 import net.whollynugatory.android.trendo.db.entity.TeamEntity;
 import net.whollynugatory.android.trendo.db.viewmodel.TrendoViewModel;
+import net.whollynugatory.android.trendo.db.views.MatchSummaryDetails;
 import net.whollynugatory.android.trendo.ui.BaseActivity;
+import net.whollynugatory.android.trendo.utils.PreferenceUtils;
 
 import java.util.List;
 import java.util.Locale;
@@ -39,17 +41,30 @@ public class BrokerageFragment extends Fragment {
 
   private static final String TAG = BaseActivity.BASE_TAG + "BrokerageFragment";
 
+  public enum BrokerageType {
+    Matches,
+    Teams
+  }
+
   public interface OnBrokerageListener {
 
+    void onBrokerageMatchesMissing();
+    void onBrokerageMatchesRetrieved(List<MatchSummaryDetails> matchSummaryDetailsList);
     void onBrokerageTeamsRetrieved(List<TeamEntity> teamEntityList);
   }
 
   private OnBrokerageListener mCallback;
 
-  public static BrokerageFragment newInstance() {
+  private BrokerageType mBrokerageType;
+
+  public static BrokerageFragment newInstance(BrokerageType brokerageType) {
 
     Log.d(TAG, "++newInstance()");
-    return new BrokerageFragment();
+    BrokerageFragment fragment = new BrokerageFragment();
+    Bundle arguments = new Bundle();
+    arguments.putSerializable(BaseActivity.ARG_BROKERAGE_TYPE, brokerageType);
+    fragment.setArguments(arguments);
+    return fragment;
   }
 
   /*
@@ -61,12 +76,34 @@ public class BrokerageFragment extends Fragment {
 
     Log.d(TAG, "++onActivityCreated(Bundle)");
     TrendoViewModel trendoViewModel = new ViewModelProvider(this).get(TrendoViewModel.class);
-    trendoViewModel.getAllTeams().observe(getViewLifecycleOwner(), teamEntities -> {
+    switch (mBrokerageType) {
+      case Matches:
+        trendoViewModel.getAllMatchSummaryDetails(PreferenceUtils.getSeason(getContext())).observe(
+          getViewLifecycleOwner(),
+          matchSummaryDetails -> {
+            if (matchSummaryDetails != null && matchSummaryDetails.size() > 0) {
+              Log.d(TAG, "Match data found in local database.");
+              mCallback.onBrokerageMatchesRetrieved(matchSummaryDetails);
+            } else {
+              Log.w(TAG, "No match data found in local database.");
+              mCallback.onBrokerageMatchesMissing();
+            }
+          });
 
-      if (teamEntities != null && teamEntities.size() > 0) {
-        mCallback.onBrokerageTeamsRetrieved(teamEntities);
-      }
-    });
+        break;
+      case Teams:
+        trendoViewModel.getAllTeams().observe(getViewLifecycleOwner(), teamEntities -> {
+
+          if (teamEntities != null && teamEntities.size() > 0) {
+            Log.d(TAG, "Team data found in local database.");
+            mCallback.onBrokerageTeamsRetrieved(teamEntities);
+          } else { // TODO: are we still populating the db?
+            Log.w(TAG, "No team data found in local database.");
+          }
+        });
+
+        break;
+    }
   }
 
   @Override
@@ -87,6 +124,12 @@ public class BrokerageFragment extends Fragment {
     super.onCreate(savedInstanceState);
 
     Log.d(TAG, "++onCreate(Bundle)");
+    Bundle arguments = getArguments();
+    if (arguments != null) {
+      if (arguments.containsKey(BaseActivity.ARG_BROKERAGE_TYPE)) {
+        mBrokerageType = (BrokerageType)arguments.getSerializable(BaseActivity.ARG_BROKERAGE_TYPE);
+      }
+    }
   }
 
   @Override

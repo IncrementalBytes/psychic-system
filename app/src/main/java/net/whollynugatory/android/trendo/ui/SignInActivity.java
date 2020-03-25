@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Ryan Ward
+ * Copyright 2020 Ryan Ward
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
 package net.whollynugatory.android.trendo.ui;
 
 import android.content.Intent;
@@ -32,7 +33,6 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import net.whollynugatory.android.trendo.R;
@@ -96,7 +96,7 @@ public class SignInActivity extends BaseActivity implements OnClickListener {
 
     Log.d(TAG, "++onStart()");
     if (mAuth.getCurrentUser() != null) {
-      onAuthenticateSuccess(mAuth.getCurrentUser());
+      onAuthenticateSuccess();
     }
   }
 
@@ -140,7 +140,7 @@ public class SignInActivity extends BaseActivity implements OnClickListener {
     mAuth.signInWithCredential(credential)
       .addOnCompleteListener(this, task -> {
         if (task.isSuccessful() && mAuth.getCurrentUser() != null) {
-          onAuthenticateSuccess(mAuth.getCurrentUser());
+          onAuthenticateSuccess();
         } else {
           Log.e(
             TAG,
@@ -161,11 +161,10 @@ public class SignInActivity extends BaseActivity implements OnClickListener {
     startActivityForResult(signInIntent, RC_SIGN_IN);
   }
 
-  private void onAuthenticateSuccess(FirebaseUser user) {
+  private void onAuthenticateSuccess() {
 
-    Log.d(TAG, "++onAuthenticateSuccess(FirebaseUser)");
+    Log.d(TAG, "++onAuthenticateSuccess()");
     Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-    intent.putExtra(ARG_UID, user.getUid());
     startActivity(intent);
     finish();
   }

@@ -77,14 +77,14 @@ public class TrendoViewModel extends AndroidViewModel {
     TrendoDatabase.databaseWriteExecutor.execute(() -> mConferenceRepository.insertAll(conferences));
   }
 
-  public LiveData<List<MatchSummaryDetails>> getAllMatchSummaryDetails(String bySeason) {
+  public LiveData<List<MatchSummaryDetails>> getAllMatchSummaryDetails(int season) {
 
-    return mMatchSummaryDetailsRepository.getAll(bySeason);
+    return mMatchSummaryDetailsRepository.getAll(season);
   }
 
-  public LiveData<List<MatchSummaryDetails>> getAllMatchSummaryDetails(String teamId, String bySeason) {
+  public LiveData<List<MatchSummaryDetails>> getAllMatchSummaryDetails(String teamId, int season) {
 
-    return mMatchSummaryDetailsRepository.getAll(teamId, bySeason);
+    return mMatchSummaryDetailsRepository.getAll(teamId, season);
   }
 
   public void insertMatchSummary(MatchSummaryEntity matchSummary) {

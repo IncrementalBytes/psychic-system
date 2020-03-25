@@ -16,20 +16,15 @@
 
 package net.whollynugatory.android.trendo.db.dao;
 
-import net.whollynugatory.android.trendo.db.views.MatchSummaryDetails;
+import net.whollynugatory.android.trendo.db.entity.MatchDateDim;
 
-import java.util.List;
-
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
-import androidx.room.Query;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 
 @Dao
-public interface MatchSummaryDetailsDao {
+public interface MatchDateDimDao {
 
-  @Query("SELECT * FROM MatchSummaryDetails WHERE Year == :year ORDER BY MatchDate ASC")
-  LiveData<List<MatchSummaryDetails>> getAll(int year);
-
-  @Query("SELECT * FROM MatchSummaryDetails WHERE (HomeId == :teamId OR AwayId == :teamId) AND Year == :year ORDER BY MatchDate ASC")
-  LiveData<List<MatchSummaryDetails>> getAll(String teamId, int year);
+  @Insert(onConflict = OnConflictStrategy.IGNORE)
+  void insert(MatchDateDim matchDate);
 }

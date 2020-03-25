@@ -24,15 +24,16 @@ import androidx.annotation.NonNull;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.SeekBarPreference;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.whollynugatory.android.trendo.BuildConfig;
 import net.whollynugatory.android.trendo.R;
 import net.whollynugatory.android.trendo.ui.BaseActivity;
 import net.whollynugatory.android.trendo.db.entity.TeamEntity;
+import net.whollynugatory.android.trendo.utils.PreferenceUtils;
 import net.whollynugatory.android.trendo.utils.SortUtils;
 
 public class UserPreferencesFragment extends PreferenceFragmentCompat {
@@ -98,32 +99,53 @@ public class UserPreferencesFragment extends PreferenceFragmentCompat {
       return;
     }
 
-    List<String> entries = new ArrayList<>();
-    List<String> entryValues = new ArrayList<>();
+    Map<String, String> teamEntries = new HashMap<>();
     if (mTeams != null && mTeams.size() > 0) {
       mTeams.sort(new SortUtils.ByTeamName());
       for (TeamEntity team : mTeams) {
-        entries.add(team.Name);
-        entryValues.add(team.Id);
+        teamEntries.put(team.Id, team.Name);
       }
     }
 
-    teamsPreference.setEntries(entries.toArray(new String[0]));
-    teamsPreference.setEntryValues(entryValues.toArray(new String[0]));
+    String team = PreferenceUtils.getTeam(getContext());
+    if (team != null && !team.equals(BaseActivity.DEFAULT_ID) && team.length() == BaseActivity.DEFAULT_ID.length()) {
+      teamsPreference.setSummary(teamEntries.get(team));
+    }
+
+    teamsPreference.setEntries(teamEntries.values().toArray(new String[0]));
+    teamsPreference.setEntryValues(teamEntries.keySet().toArray(new String[0]));
+    teamsPreference.setOnPreferenceChangeListener(
+      (preference, newValue) -> {
+        String newTeamValue = (String) newValue;
+        teamsPreference.setSummary(teamEntries.get(newTeamValue));
+        PreferenceUtils.saveStringPreference(getActivity(), R.string.pref_key_team, newTeamValue);
+        return true;
+      });
   }
 
   private void setupSeasonsPreference() {
 
     Log.d(TAG, "++setupSeasonsPreference()");
-    SeekBarPreference seasonsPreference = findPreference(getString(R.string.pref_key_season));
+    ListPreference seasonsPreference = findPreference(getString(R.string.pref_key_season));
     if (seasonsPreference == null) {
       Log.e(TAG, "Could not find the seasons preference object.");
       return;
     }
 
+    int season = PreferenceUtils.getSeason(getContext());
+    if (season > 0) {
+      seasonsPreference.setSummary(String.valueOf(season));
+    }
+
     String[] seasons = getResources().getStringArray(R.array.seasons);
-    seasonsPreference.setMin(Integer.parseInt(seasons[0]));
-    seasonsPreference.setMax(Integer.parseInt(seasons[seasons.length - 1]));
-    seasonsPreference.setDefaultValue(Integer.parseInt(seasons[seasons.length - 1]));
+    seasonsPreference.setEntries(seasons);
+    seasonsPreference.setEntryValues(seasons);
+    seasonsPreference.setOnPreferenceChangeListener(
+      (preference, newValue) -> {
+        String newSeasonValue = (String) newValue;
+        seasonsPreference.setSummary(newSeasonValue);
+        PreferenceUtils.saveStringPreference(getActivity(), R.string.pref_key_season, newSeasonValue);
+        return true;
+      });
   }
 }

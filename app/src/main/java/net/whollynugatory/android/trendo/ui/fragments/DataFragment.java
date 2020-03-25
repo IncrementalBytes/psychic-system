@@ -22,32 +22,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import net.whollynugatory.android.trendo.R;
-import net.whollynugatory.android.trendo.db.viewmodel.TrendoViewModel;
 import net.whollynugatory.android.trendo.ui.BaseActivity;
-
-import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 public class DataFragment extends Fragment {
 
   private static final String TAG = BaseActivity.BASE_TAG + "DataFragment";
-
-  public interface OnDataListener {
-
-    void onConferenceDataExists();
-    void onMatchesDataExists(String season);
-    void onTeamDataExists();
-  }
-
-  private OnDataListener mCallback;
-
-  private TextView mStatusText;
 
   public static DataFragment newInstance() {
 
@@ -63,7 +47,6 @@ public class DataFragment extends Fragment {
     super.onActivityCreated(savedInstanceState);
 
     Log.d(TAG, "++onActivityCreated(Bundle)");
-    checkConferenceData();
   }
 
   @Override
@@ -71,12 +54,6 @@ public class DataFragment extends Fragment {
     super.onAttach(context);
 
     Log.d(TAG, "++onAttach(Context)");
-    try {
-      mCallback = (OnDataListener) context;
-    } catch (ClassCastException e) {
-      throw new ClassCastException(
-        String.format(Locale.ENGLISH, "Missing interface implementations for %s", context.toString()));
-    }
   }
 
   @Override
@@ -90,9 +67,7 @@ public class DataFragment extends Fragment {
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
     Log.d(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
-    final View view = inflater.inflate(R.layout.fragment_data, container, false);
-    mStatusText = view.findViewById(R.id.data_text);
-    return view;
+    return inflater.inflate(R.layout.fragment_data, container, false);
   }
 
   @Override
@@ -100,7 +75,6 @@ public class DataFragment extends Fragment {
     super.onDetach();
 
     Log.d(TAG, "++onDetach()");
-    mCallback = null;
   }
 
   @Override
@@ -115,53 +89,5 @@ public class DataFragment extends Fragment {
     super.onResume();
 
     Log.d(TAG, "++onResume()");
-  }
-
-  /*
-    Private Method(s)
-   */
-  private void checkConferenceData() {
-
-    Log.d(TAG, "++checkConferenceData()");
-    mStatusText.setText("Checking conference data...");
-    TrendoViewModel trendViewModel = new ViewModelProvider(this).get(TrendoViewModel.class);
-    trendViewModel.getAllConferences().observe(getViewLifecycleOwner(), conferenceEntities -> {
-
-      if (conferenceEntities != null && conferenceEntities.size() > 0) {
-        mCallback.onConferenceDataExists();
-        checkTeamData();
-      }
-    });
-  }
-
-  private void checkMatchData() {
-
-    Log.d(TAG, "++checkMatchData()");
-    mStatusText.setText("Checking match data...");
-    String[] seasons = getResources().getStringArray(R.array.seasons);
-    TrendoViewModel trendoViewModel = new ViewModelProvider(this).get(TrendoViewModel.class);
-    for (String season : seasons) {
-      String seasonToCheck = String.format(Locale.US, "%%%s%%", season);
-      trendoViewModel.getAllMatchSummaryDetails(seasonToCheck).observe(getViewLifecycleOwner(), matchSummaryDetails -> {
-
-        if (matchSummaryDetails != null && matchSummaryDetails.size() > 0) {
-          mCallback.onMatchesDataExists(season);
-        }
-      });
-    }
-  }
-
-  private void checkTeamData() {
-
-    Log.d(TAG, "++checkTeamData()");
-    mStatusText.setText("Checking team data...");
-    TrendoViewModel trendViewModel = new ViewModelProvider(this).get(TrendoViewModel.class);
-    trendViewModel.getAllTeams().observe(getViewLifecycleOwner(), teamEntities -> {
-
-      if (teamEntities != null && teamEntities.size() > 0) {
-        mCallback.onTeamDataExists();
-        checkMatchData();
-      }
-    });
   }
 }

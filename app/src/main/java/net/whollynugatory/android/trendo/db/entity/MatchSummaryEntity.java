@@ -34,13 +34,20 @@ import java.io.Serializable;
     "match_date", "home_id", "away_id"
   },
   foreignKeys = {
+    @ForeignKey(entity = MatchDateDim.class, parentColumns = "id", childColumns = "match_date"),
     @ForeignKey(entity = TeamEntity.class, parentColumns = "id", childColumns = "away_id"),
     @ForeignKey(entity = TeamEntity.class, parentColumns = "id", childColumns = "home_id")
   },
-  indices = {
-    @Index(value = {"match_date", "away_id", "home_id"})
-  })
+  indices = @Index(value = {"id"}))
 public class MatchSummaryEntity implements Serializable {
+
+  /**
+   * Unique match identifier
+   */
+  @NonNull
+  @ColumnInfo(name = "id")
+  @SerializedName("id")
+  public String Id;
 
   /**
    * Unique string of match date
@@ -85,6 +92,7 @@ public class MatchSummaryEntity implements Serializable {
    */
   public MatchSummaryEntity() {
 
+    Id = BaseActivity.DEFAULT_ID;
     MatchDate = BaseActivity.DEFAULT_DATE;
     HomeId = BaseActivity.DEFAULT_ID;
     AwayId = BaseActivity.DEFAULT_ID;

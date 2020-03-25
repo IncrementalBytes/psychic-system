@@ -25,6 +25,7 @@ import net.whollynugatory.android.trendo.ui.BaseActivity;
 
 import java.util.Calendar;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 /**
@@ -32,9 +33,11 @@ import androidx.annotation.StringRes;
  **/
 public class PreferenceUtils {
 
-  public static String getSeason(Context context) {
+  public static int getSeason(Context context) {
 
-    return getStringPref(context, R.string.pref_key_season, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+    int defaultSeason = Calendar.getInstance().get(Calendar.YEAR);
+    String season = getStringPref(context, R.string.pref_key_season, String.valueOf(defaultSeason));
+    return Integer.parseInt(season);
   }
 
   public static String getTeam(Context context) {
@@ -50,5 +53,14 @@ public class PreferenceUtils {
     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     String prefKey = context.getString(prefKeyId);
     return sharedPreferences.getString(prefKey, defaultValue);
+  }
+
+  public static void saveStringPreference(
+
+    Context context, @StringRes int prefKeyId, @Nullable String value) {
+    PreferenceManager.getDefaultSharedPreferences(context)
+      .edit()
+      .putString(context.getString(prefKeyId), value)
+      .apply();
   }
 }

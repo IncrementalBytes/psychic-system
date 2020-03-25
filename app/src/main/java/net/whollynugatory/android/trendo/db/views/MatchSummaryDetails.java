@@ -19,11 +19,15 @@ package net.whollynugatory.android.trendo.db.views;
 import net.whollynugatory.android.trendo.ui.BaseActivity;
 
 import androidx.room.DatabaseView;
+
 import java.io.Serializable;
 import java.util.Locale;
 
 @DatabaseView(
   "SELECT Summary.match_date AS MatchDate, " +
+    "MatchDateDim.Day AS Day, " +
+    "MatchDateDim.Month AS Month, " +
+    "MatchDateDim.Year AS Year, " +
     "HomeTeam.Name AS HomeName, " +
     "HomeTeam.Id AS HomeId, " +
     "Summary.home_score AS HomeScore, " +
@@ -31,11 +35,15 @@ import java.util.Locale;
     "AwayTeam.Id AS AwayId, " +
     "Summary.away_score AS AwayScore " +
   "FROM match_summary_table AS Summary " +
+  "INNER JOIN matchdatedim AS MatchDateDim ON Summary.match_date = MatchDateDim.Id " +
   "INNER JOIN team_table AS AwayTeam ON Summary.away_id = AwayTeam.id " +
   "INNER JOIN team_table AS HomeTeam ON Summary.home_id = HomeTeam.id")
 public class MatchSummaryDetails implements Serializable {
 
   public String MatchDate;
+  public int Day;
+  public int Month;
+  public int Year;
   public String HomeName;
   public String HomeId;
   public int HomeScore;
@@ -46,6 +54,9 @@ public class MatchSummaryDetails implements Serializable {
   public MatchSummaryDetails() {
 
     MatchDate = BaseActivity.DEFAULT_DATE;
+    Day = 1;
+    Month = 1;
+    Year = 0;
     HomeName = "";
     HomeId = BaseActivity.DEFAULT_ID;
     HomeScore = 0;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Ryan Ward
+ * Copyright 2020 Ryan Ward
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
 package net.whollynugatory.android.trendo.ui.fragments;
 
 import android.content.Context;
@@ -25,8 +26,10 @@ import android.widget.TextView;
 
 import net.whollynugatory.android.trendo.R;
 import net.whollynugatory.android.trendo.common.Trend;
+import net.whollynugatory.android.trendo.db.viewmodel.TrendoViewModel;
 import net.whollynugatory.android.trendo.db.views.TrendDetails;
 import net.whollynugatory.android.trendo.ui.BaseActivity;
+import net.whollynugatory.android.trendo.utils.PreferenceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +38,7 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 public class CardSummaryFragment extends Fragment {
 
@@ -45,6 +49,7 @@ public class CardSummaryFragment extends Fragment {
     void onCardSummaryMatchListClicked();
     void onCardSummaryTrendClicked(Trend selectedTrend);
     void onCardSummaryLoaded();
+    void onCardSummaryTrendsMissing();
   }
 
   private OnCardSummaryListener mCallback;
@@ -68,19 +73,33 @@ public class CardSummaryFragment extends Fragment {
 
   private List<TrendDetails> mTrends;
 
-  public static CardSummaryFragment newInstance(ArrayList<TrendDetails> trends) {
+  public static CardSummaryFragment newInstance() {
 
-    Log.d(TAG, "++newInstance(ArrayList<>)");
-    CardSummaryFragment fragment = new CardSummaryFragment();
-    Bundle args = new Bundle();
-    args.putSerializable(BaseActivity.ARG_TRENDS, trends);
-    fragment.setArguments(args);
-    return fragment;
+    Log.d(TAG, "++newInstance()");
+    return new CardSummaryFragment();
   }
 
   /*
       Fragment Override(s)
    */
+  @Override
+  public void onActivityCreated(Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+
+    Log.d(TAG, "++onActivityCreated(Bundle)");
+    TrendoViewModel trendoViewModel = new ViewModelProvider(this).get(TrendoViewModel.class);
+    trendoViewModel.getAllTrends(PreferenceUtils.getTeam(getContext()), PreferenceUtils.getSeason(getContext())).observe(
+      getViewLifecycleOwner(),
+      trendDetailsList -> {
+        if (trendDetailsList != null && trendDetailsList.size() > 0) {
+          mTrends = new ArrayList<>(trendDetailsList);
+          updateUI();
+        } else {
+          mCallback.onCardSummaryTrendsMissing();
+        }
+      });
+  }
+
   @Override
   public void onAttach(@NonNull Context context) {
     super.onAttach(context);
@@ -99,12 +118,6 @@ public class CardSummaryFragment extends Fragment {
     super.onCreate(savedInstanceState);
 
     Log.d(TAG, "++onCreate(Bundle)");
-    Bundle arguments = getArguments();
-    if (arguments != null) {
-      mTrends = (ArrayList<TrendDetails>)arguments.getSerializable(BaseActivity.ARG_TRENDS);
-    } else {
-      Log.e(TAG, "Arguments were null.");
-    }
   }
 
   @Override
@@ -151,8 +164,6 @@ public class CardSummaryFragment extends Fragment {
     mPointsPerGameText = view.findViewById(R.id.summary_text_points_per_game_value);
     mTotalPointsCard = view.findViewById(R.id.summary_card_total_points);
     mTotalPointsText = view.findViewById(R.id.summary_text_total_points_value);
-
-    updateUI();
   }
 
   /*
