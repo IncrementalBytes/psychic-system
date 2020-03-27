@@ -26,9 +26,7 @@ import android.view.ViewGroup;
 import net.whollynugatory.android.trendo.R;
 import net.whollynugatory.android.trendo.db.entity.TeamEntity;
 import net.whollynugatory.android.trendo.db.viewmodel.TrendoViewModel;
-import net.whollynugatory.android.trendo.db.views.MatchSummaryDetails;
 import net.whollynugatory.android.trendo.ui.BaseActivity;
-import net.whollynugatory.android.trendo.utils.PreferenceUtils;
 
 import java.util.List;
 import java.util.Locale;
@@ -42,29 +40,22 @@ public class BrokerageFragment extends Fragment {
   private static final String TAG = BaseActivity.BASE_TAG + "BrokerageFragment";
 
   public enum BrokerageType {
-    Matches,
     Teams
   }
 
   public interface OnBrokerageListener {
 
-    void onBrokerageMatchesMissing();
-    void onBrokerageMatchesRetrieved(List<MatchSummaryDetails> matchSummaryDetailsList);
     void onBrokerageTeamsRetrieved(List<TeamEntity> teamEntityList);
   }
 
   private OnBrokerageListener mCallback;
 
-  private BrokerageType mBrokerageType;
+  private TrendoViewModel mTrendoViewModel;
 
-  public static BrokerageFragment newInstance(BrokerageType brokerageType) {
+  public static BrokerageFragment newInstance() {
 
     Log.d(TAG, "++newInstance()");
-    BrokerageFragment fragment = new BrokerageFragment();
-    Bundle arguments = new Bundle();
-    arguments.putSerializable(BaseActivity.ARG_BROKERAGE_TYPE, brokerageType);
-    fragment.setArguments(arguments);
-    return fragment;
+    return new BrokerageFragment();
   }
 
   /*
@@ -75,35 +66,7 @@ public class BrokerageFragment extends Fragment {
     super.onActivityCreated(savedInstanceState);
 
     Log.d(TAG, "++onActivityCreated(Bundle)");
-    TrendoViewModel trendoViewModel = new ViewModelProvider(this).get(TrendoViewModel.class);
-    switch (mBrokerageType) {
-      case Matches:
-        trendoViewModel.getAllMatchSummaryDetails(PreferenceUtils.getSeason(getContext())).observe(
-          getViewLifecycleOwner(),
-          matchSummaryDetails -> {
-            if (matchSummaryDetails != null && matchSummaryDetails.size() > 0) {
-              Log.d(TAG, "Match data found in local database.");
-              mCallback.onBrokerageMatchesRetrieved(matchSummaryDetails);
-            } else {
-              Log.w(TAG, "No match data found in local database.");
-              mCallback.onBrokerageMatchesMissing();
-            }
-          });
-
-        break;
-      case Teams:
-        trendoViewModel.getAllTeams().observe(getViewLifecycleOwner(), teamEntities -> {
-
-          if (teamEntities != null && teamEntities.size() > 0) {
-            Log.d(TAG, "Team data found in local database.");
-            mCallback.onBrokerageTeamsRetrieved(teamEntities);
-          } else { // TODO: are we still populating the db?
-            Log.w(TAG, "No team data found in local database.");
-          }
-        });
-
-        break;
-    }
+    mTrendoViewModel = new ViewModelProvider(this).get(TrendoViewModel.class);
   }
 
   @Override
@@ -116,19 +79,6 @@ public class BrokerageFragment extends Fragment {
     } catch (ClassCastException e) {
       throw new ClassCastException(
         String.format(Locale.ENGLISH, "Missing interface implementations for %s", context.toString()));
-    }
-  }
-
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-
-    Log.d(TAG, "++onCreate(Bundle)");
-    Bundle arguments = getArguments();
-    if (arguments != null) {
-      if (arguments.containsKey(BaseActivity.ARG_BROKERAGE_TYPE)) {
-        mBrokerageType = (BrokerageType)arguments.getSerializable(BaseActivity.ARG_BROKERAGE_TYPE);
-      }
     }
   }
 
@@ -148,16 +98,18 @@ public class BrokerageFragment extends Fragment {
   }
 
   @Override
-  public void onDestroy() {
-    super.onDestroy();
-
-    Log.d(TAG, "++onDestroy()");
-  }
-
-  @Override
   public void onResume() {
     super.onResume();
 
     Log.d(TAG, "++onResume()");
+    mTrendoViewModel.getAllTeams().observe(getViewLifecycleOwner(), teamEntities -> {
+
+      if (teamEntities != null && teamEntities.size() > 0) {
+        Log.d(TAG, "Team data found in local database.");
+        mCallback.onBrokerageTeamsRetrieved(teamEntities);
+      } else { // TODO: are we still populating the db?
+        Log.w(TAG, "No team data found in local database.");
+      }
+    });
   }
 }

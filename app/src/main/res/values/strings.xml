@@ -24,7 +24,7 @@
   <string name="delayed">Results Delayed</string>
   <string name="not_available">N/A</string>
   <string name="title_preferences">Preferences</string>
-  <string name="title_match_summaries">Match Summaries</string>
+  <string name="title_match_summaries">Match Summaries:</string>
   <string name="no_trends">Unable to display trends for team.</string>
   <string name="total_points_by_ppg">Total Points by PPG</string>
   <string name="max_points_possible">Max Points Possible</string>
@@ -72,6 +72,10 @@
   <string name="pref_key_app_version" translatable="false">app_version</string>
   <string name="pref_title_app_version">Application Version</string>
   <string name="dismiss">Dismiss</string>
+  <string name="save">Save</string>
+  <string name="title_conferences">Conferences:</string>
+  <string name="title_teams">Teams:</string>
+  <string name="title_trends">Trends:</string>
 
   <string-array name="seasons">
     <item>2017</item>

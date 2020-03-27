@@ -22,6 +22,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import net.whollynugatory.android.trendo.R;
 import net.whollynugatory.android.trendo.ui.BaseActivity;
@@ -32,6 +34,16 @@ import androidx.fragment.app.Fragment;
 public class DataFragment extends Fragment {
 
   private static final String TAG = BaseActivity.BASE_TAG + "DataFragment";
+
+  // TODO: add specific property changers instead of exposing whole control
+  public ImageView ConferencesStatusImage;
+  public TextView ConferencesStatusText;
+  public ImageView MatchSummariesStatusImage;
+  public TextView MatchSummariesStatusText;
+  public ImageView TeamsStatusImage;
+  public TextView TeamsStatusText;
+  public ImageView TrendsStatusImage;
+  public TextView TrendsStatusText;
 
   public static DataFragment newInstance() {
 
@@ -67,7 +79,16 @@ public class DataFragment extends Fragment {
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
     Log.d(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
-    return inflater.inflate(R.layout.fragment_data, container, false);
+    View view = inflater.inflate(R.layout.fragment_data, container, false);
+    ConferencesStatusImage = view.findViewById(R.id.data_image_conferences);
+    MatchSummariesStatusImage = view.findViewById(R.id.data_image_match_summaries);
+    TeamsStatusImage = view.findViewById(R.id.data_image_teams);
+    TrendsStatusImage = view.findViewById(R.id.data_image_trends);
+    ConferencesStatusText = view.findViewById(R.id.data_text_conferences_status);
+    MatchSummariesStatusText = view.findViewById(R.id.data_text_match_summaries_status);
+    TeamsStatusText = view.findViewById(R.id.data_text_teams_status);
+    TrendsStatusText = view.findViewById(R.id.data_text_trends_status);
+    return view;
   }
 
   @Override

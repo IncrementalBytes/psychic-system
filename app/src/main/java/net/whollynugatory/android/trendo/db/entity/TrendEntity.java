@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Ryan Ward
+ * Copyright 2020 Ryan Ward
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
 package net.whollynugatory.android.trendo.db.entity;
 
 import com.google.gson.annotations.SerializedName;
@@ -77,21 +78,38 @@ public class TrendEntity implements Serializable {
   @SerializedName("points_per_game")
   public double PointsPerGame;
 
+  @ColumnInfo(name = "total_draws")
+  @SerializedName("total_draws")
+  public long TotalDraws;
+
+  @ColumnInfo(name = "total_losses")
+  @SerializedName("total_losses")
+  public long TotalLosses;
+
+  @ColumnInfo(name = "total_wins")
+  @SerializedName("total_wins")
+  public long TotalWins;
+
   @ColumnInfo(name = "total_points")
   @SerializedName("total_points")
   public long TotalPoints;
 
   public TrendEntity() {
 
+    TeamId = BaseActivity.DEFAULT_ID;
+    Year = 1990;
+    MatchNumber = 0;
+
     GoalsAgainst = 0;
     GoalDifferential = 0;
     GoalsFor = 0;
-    MatchNumber = 0;
     MaxPointsPossible = 0;
     PointsByAverage = 0;
     PointsPerGame = 0.0;
-    TeamId = BaseActivity.DEFAULT_ID;
+
+    TotalWins = 0;
+    TotalDraws = 0;
+    TotalLosses = 0;
     TotalPoints = 0;
-    Year = 1990;
   }
 }

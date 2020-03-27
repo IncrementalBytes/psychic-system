@@ -20,12 +20,7 @@
 package net.whollynugatory.android.trendo.db;
 
 import android.content.Context;
-import android.content.res.AssetManager;
-import android.os.AsyncTask;
 import android.util.Log;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -37,7 +32,6 @@ import net.whollynugatory.android.trendo.db.dao.MatchDateDimDao;
 import net.whollynugatory.android.trendo.db.dao.TrendDetailsDao;
 import net.whollynugatory.android.trendo.db.dao.MatchSummaryDetailsDao;
 import net.whollynugatory.android.trendo.db.entity.MatchDateDim;
-import net.whollynugatory.android.trendo.db.entity.RemoteData;
 import net.whollynugatory.android.trendo.db.views.MatchSummaryDetails;
 import net.whollynugatory.android.trendo.db.views.TrendDetails;
 import net.whollynugatory.android.trendo.ui.BaseActivity;
@@ -50,16 +44,6 @@ import net.whollynugatory.android.trendo.db.entity.MatchSummaryEntity;
 import net.whollynugatory.android.trendo.db.entity.TeamEntity;
 import net.whollynugatory.android.trendo.db.entity.TrendEntity;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.lang.reflect.Type;
-import java.util.Locale;
-import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -91,14 +75,11 @@ public abstract class TrendoDatabase extends RoomDatabase {
 
   private static TrendoDatabase sInstance;
 
-  private static volatile AssetManager sAssetManager;
-
   public static TrendoDatabase getInstance(final Context context) {
 
     if (sInstance == null) {
       synchronized (TrendoDatabase.class) {
         if (sInstance == null) {
-          sAssetManager = context.getAssets();
           sInstance = Room.databaseBuilder(context.getApplicationContext(), TrendoDatabase.class, BaseActivity.DATABASE_NAME)
             .addCallback(sRoomDatabaseCallback)
             .build();
@@ -116,70 +97,6 @@ public abstract class TrendoDatabase extends RoomDatabase {
       super.onCreate(db);
 
       Log.d(TAG, "++onCreate(SupportSQLiteDatabase)");
-      new PopulateDbAsync(sInstance, sAssetManager).execute();
     }
   };
-
-  private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
-
-    private final AssetManager mAssetManager;
-    private final ConferenceDao mConferenceDao;
-    private final TeamDao mTeamDao;
-
-    PopulateDbAsync(TrendoDatabase db, AssetManager assetManager) {
-
-      mAssetManager = assetManager;
-      mConferenceDao = db.conferenceDao();
-      mTeamDao = db.teamDao();
-    }
-
-    @Override
-    protected Void doInBackground(final Void... params) {
-
-      try (InputStream inputStream = mAssetManager.open(BaseActivity.DEFAULT_DATA_FILE)) {
-        File tempFile = File.createTempFile(UUID.randomUUID().toString(), ".json");
-        try (FileOutputStream outputStream = new FileOutputStream(tempFile)) {
-          byte[] buf = new byte[1024];
-          int len;
-          while ((len = inputStream.read(buf)) > 0) {
-            outputStream.write(buf, 0, len);
-          }
-
-          RemoteData remoteData = null;
-          try (Reader reader = new FileReader(tempFile.getAbsolutePath())) {
-            Gson gson = new Gson();
-            Type collectionType = new TypeToken<RemoteData>() {
-            }.getType();
-            remoteData = gson.fromJson(reader, collectionType);
-          } catch (FileNotFoundException e) {
-            Log.w(TAG, "Source data from server not found locally.");
-          } catch (IOException e) {
-            Log.w(TAG, "Could not read the source data.");
-          }
-
-          if (remoteData != null) {
-            try {
-              mConferenceDao.insertAll(remoteData.Conferences);
-              Log.d(TAG, String.format(Locale.US, "Conference data processing: %d", remoteData.Conferences.size()));
-            } catch (Exception e) {
-              Log.w(TAG, "Could not process conference data.", e);
-            }
-
-            try {
-              mTeamDao.insertAll(remoteData.Teams);
-              Log.d(TAG, String.format(Locale.US, "Team data processed: %d", remoteData.Teams.size()));
-            } catch (Exception e) {
-              Log.w(TAG, "Could not process teams data.", e);
-            }
-          } else {
-            Log.e(TAG, "Source data was incomplete.");
-          }
-        }
-      } catch (IOException ioe) {
-        Log.w(TAG, "Could not get asset manager.", ioe);
-      }
-
-      return null;
-    }
-  }
 }

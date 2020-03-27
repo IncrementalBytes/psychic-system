@@ -19,11 +19,12 @@ package net.whollynugatory.android.trendo.common;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import net.whollynugatory.android.trendo.db.entity.MatchDateDim;
+import net.whollynugatory.android.trendo.db.entity.MatchSummaryEntity;
 import net.whollynugatory.android.trendo.db.entity.TrendEntity;
 import net.whollynugatory.android.trendo.db.repository.TrendRepository;
-import net.whollynugatory.android.trendo.db.views.MatchSummaryDetails;
 import net.whollynugatory.android.trendo.ui.BaseActivity;
-import net.whollynugatory.android.trendo.ui.MainActivity;
+import net.whollynugatory.android.trendo.ui.DataActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -32,19 +33,19 @@ public class TrendTableAsync extends AsyncTask<Void, Void, Void> {
 
   private static final String TAG = BaseActivity.BASE_TAG + "TrendTableAsync";
 
-  private List<MatchSummaryDetails> mMatchSummaryDetailsList;
+  private List<MatchSummaryEntity> mMatchSummaryEntityList;
   private String mTeamId;
   private TrendRepository mTrendRepository;
-  private WeakReference<MainActivity> mWeakReference;
+  private WeakReference<DataActivity> mWeakReference;
 
   public TrendTableAsync(
-    MainActivity context,
+    DataActivity context,
     TrendRepository repository,
-    List<MatchSummaryDetails> matchSummaryDetailsList,
+    List<MatchSummaryEntity> matchSummaryEntityList,
     String teamId,
     int season) {
 
-    mMatchSummaryDetailsList = matchSummaryDetailsList;
+    mMatchSummaryEntityList = matchSummaryEntityList;
     mTeamId = teamId;
     mTrendRepository = repository;
     mWeakReference = new WeakReference<>(context);
@@ -61,47 +62,52 @@ public class TrendTableAsync extends AsyncTask<Void, Void, Void> {
     long totalMatches = 34;
     long matchesRemaining = totalMatches;
     int matchNumber = 0;
+    long totalWins = 0;
+    long totalDraws = 0;
+    long totalLosses = 0;
 
-    for (MatchSummaryDetails details : mMatchSummaryDetailsList) {
+    for (MatchSummaryEntity entity : mMatchSummaryEntityList) {
       long pointsFromMatch;
       long goalsAgainst;
       long goalDifferential;
       long goalsFor;
-      if (details.HomeId.equals(mTeamId)) { // targetTeam is the home team
+      if (entity.HomeId.equals(mTeamId)) { // targetTeam is the home team
         Log.d(
           TAG,
-          String.format("Processing match for %s on %s", mTeamId, details.MatchDate));
-        goalsAgainst = details.AwayScore;
-        goalDifferential = details.HomeScore - details.AwayScore;
-        goalsFor = details.HomeScore;
-        if (details.HomeScore > details.AwayScore) {
+          String.format("Processing match for %s on %s", mTeamId, entity.MatchDate));
+        goalsAgainst = entity.AwayScore;
+        goalDifferential = entity.HomeScore - entity.AwayScore;
+        goalsFor = entity.HomeScore;
+        if (entity.HomeScore > entity.AwayScore) {
           pointsFromMatch = (long) 3;
-          // TODO:
-//          team.TotalWins++;
-          Log.d(TAG, String.format("%s won: %d", details.HomeName, pointsFromMatch));
-        } else if (details.HomeScore < details.AwayScore) {
+          totalWins++;
+          Log.d(TAG, String.format("%s won: %d", mTeamId, pointsFromMatch));
+        } else if (entity.HomeScore < entity.AwayScore) {
           pointsFromMatch = (long) 0;
-          Log.d(TAG, String.format("%s lost: %d", details.AwayName, pointsFromMatch));
+          totalLosses++;
+          Log.d(TAG, String.format("%s lost: %d", mTeamId, pointsFromMatch));
         } else {
           pointsFromMatch = (long) 1;
-          Log.d(TAG, String.format("%s tied: %d", details.HomeName, pointsFromMatch));
+          totalDraws++;
+          Log.d(TAG, String.format("%s tied: %d", mTeamId, pointsFromMatch));
         }
-      } else if (details.AwayId.equals(mTeamId)) { // targetTeam is the away team
-        Log.d(TAG, String.format("Processing match for %s on %s", details.AwayName, details.MatchDate));
-        goalsAgainst = details.HomeScore;
-        goalDifferential = details.AwayScore - details.HomeScore;
-        goalsFor = details.AwayScore;
-        if (details.AwayScore > details.HomeScore) {
+      } else if (entity.AwayId.equals(mTeamId)) { // targetTeam is the away team
+        Log.d(TAG, String.format("Processing match for %s on %s", mTeamId, entity.MatchDate));
+        goalsAgainst = entity.HomeScore;
+        goalDifferential = entity.AwayScore - entity.HomeScore;
+        goalsFor = entity.AwayScore;
+        if (entity.AwayScore > entity.HomeScore) {
           pointsFromMatch = (long) 3;
-          // TODO:
-//          team.TotalWins++;
-          Log.d(TAG, String.format("%s won: %d", details.AwayName, pointsFromMatch));
-        } else if (details.AwayScore < details.HomeScore) {
+          totalWins++;
+          Log.d(TAG, String.format("%s won: %d", mTeamId, pointsFromMatch));
+        } else if (entity.AwayScore < entity.HomeScore) {
           pointsFromMatch = (long) 0;
-          Log.d(TAG, String.format("%s lost: %d", details.AwayName, pointsFromMatch));
+          totalLosses++;
+          Log.d(TAG, String.format("%s lost: %d", mTeamId, pointsFromMatch));
         } else {
           pointsFromMatch = (long) 1;
-          Log.d(TAG, String.format("%s tied: %d", details.AwayName, pointsFromMatch));
+          totalDraws++;
+          Log.d(TAG, String.format("%s tied: %d", mTeamId, pointsFromMatch));
         }
       } else { // not a match where team.Id played
         continue;
@@ -110,16 +116,13 @@ public class TrendTableAsync extends AsyncTask<Void, Void, Void> {
       matchNumber++;
       TrendEntity newTrend = new TrendEntity();
       newTrend.TeamId = mTeamId;
-      newTrend.Year = details.Year;
+      MatchDateDim matchDateDim = MatchDateDim.generate(entity.MatchDate);
+      newTrend.Year = matchDateDim.Year;
       newTrend.MatchNumber = matchNumber;
       newTrend.GoalsAgainst = goalsAgainst + prevGoalAgainst;
-      Log.d(
-        TAG,
-        String.format("Calculating Goals Against, was %d, now %d", prevGoalAgainst, newTrend.GoalsAgainst));
+      Log.d(TAG, String.format("Calculating Goals Against, was %d, now %d", prevGoalAgainst, newTrend.GoalsAgainst));
       newTrend.GoalDifferential = goalDifferential + prevGoalDifferential;
-      Log.d(
-        TAG,
-        String.format("Calculating Goal Differential, was %d, now %d", prevGoalDifferential, newTrend.GoalDifferential));
+      Log.d(TAG, String.format("Calculating Goal Differential, was %d, now %d", prevGoalDifferential, newTrend.GoalDifferential));
       newTrend.GoalsFor = goalsFor + prevGoalFor;
       Log.d(TAG, String.format("Calculating Goals For, was %d, now %d", prevGoalFor, newTrend.GoalsFor));
       newTrend.TotalPoints = pointsFromMatch + prevTotalPoints;
@@ -127,6 +130,9 @@ public class TrendTableAsync extends AsyncTask<Void, Void, Void> {
       long remainingMatches = --matchesRemaining;
       newTrend.MaxPointsPossible = (pointsFromMatch + prevTotalPoints) + (remainingMatches * 3);
       Log.d(TAG, String.format("Calculating Max Possible Points, was %d, now %d", prevTotalPoints, newTrend.MaxPointsPossible));
+      newTrend.TotalWins = totalWins;
+      newTrend.TotalDraws = totalDraws;
+      newTrend.TotalLosses = totalLosses;
 
       double totalPoints = (double) pointsFromMatch + prevTotalPoints;
       if (totalPoints > 0) {
@@ -164,9 +170,9 @@ public class TrendTableAsync extends AsyncTask<Void, Void, Void> {
   protected void onPostExecute(Void nothingReally) {
 
     Log.d(TAG, "++onPostExecute()");
-    MainActivity activity = mWeakReference.get();
+    DataActivity activity = mWeakReference.get();
     if (activity == null) {
-      Log.e(TAG, "MainActivity is null or detached.");
+      Log.e(TAG, "DataActivity is null or detached.");
       return;
     }
 

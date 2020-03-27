@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Ryan Ward
+ * Copyright 2020 Ryan Ward
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,165 +13,197 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
 package net.whollynugatory.android.trendo.ui;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.firebase.auth.FirebaseAuth;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+
+import net.whollynugatory.android.trendo.R;
+import net.whollynugatory.android.trendo.common.ConferenceTableAsync;
+import net.whollynugatory.android.trendo.common.MatchSummaryTableAsync;
+import net.whollynugatory.android.trendo.common.TeamTableAsync;
+import net.whollynugatory.android.trendo.common.TrendTableAsync;
+import net.whollynugatory.android.trendo.db.TrendoDatabase;
 import net.whollynugatory.android.trendo.db.entity.MatchSummaryEntity;
 import net.whollynugatory.android.trendo.db.entity.TeamEntity;
+import net.whollynugatory.android.trendo.db.repository.ConferenceRepository;
+import net.whollynugatory.android.trendo.db.repository.MatchDateDimRepository;
+import net.whollynugatory.android.trendo.db.repository.MatchSummaryRepository;
+import net.whollynugatory.android.trendo.db.repository.TeamRepository;
+import net.whollynugatory.android.trendo.db.repository.TrendRepository;
+import net.whollynugatory.android.trendo.ui.fragments.DataFragment;
+import net.whollynugatory.android.trendo.ui.fragments.UserPreferencesFragment;
+import net.whollynugatory.android.trendo.utils.PreferenceUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 public class DataActivity extends BaseActivity {
 
   private static final String TAG = BASE_TAG + "DataActivity";
 
-//  private ImageView mConferencesStatusImage;
-//  private ImageView mMatchSummariesStatusImage;
-//  private ImageView mTeamsStatusImage;
-//  private ImageView mTrendsStatusImage;
-//  private TextView mConferencesStatusText;
-//  private TextView mMatchSummariesStatusText;
-//  private TextView mTeamsStatusText;
-//  private TextView mTrendsStatusText;
-//
-//  private List<MatchSummaryEntity> mMatchSummaryList;
-//  private List<TeamEntity> mTeamList;
-//  private int mYear;
-//  private String mUserId;
+  private DataFragment mDataFragment;
 
+  /*
+  AppCompatActivity Override(s)
+ */
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
     Log.d(TAG, "++onCreate(Bundle)");
-//    setContentView(R.layout.activity_data);
-//
-//    mConferencesStatusImage = findViewById(R.id.data_image_conferences);
-//    mMatchSummariesStatusImage = findViewById(R.id.data_image_match_summaries);
-//    mTeamsStatusImage = findViewById(R.id.data_image_teams);
-//    mTrendsStatusImage = findViewById(R.id.data_image_trends);
-//    mConferencesStatusText = findViewById(R.id.data_text_conferences_status);
-//    mMatchSummariesStatusText = findViewById(R.id.data_text_match_summaries_status);
-//    mTeamsStatusText = findViewById(R.id.data_text_teams_status);
-//    mTrendsStatusText = findViewById(R.id.data_text_trends_status);
-//
-//    mMatchSummaryList = new ArrayList<>();
-//    mTeamList = new ArrayList<>();
-//    mUserId = getIntent().getStringExtra(BaseActivity.ARG_UID);
-//
-//    File conferenceData = new File(getCacheDir(), BaseActivity.DEFAULT_CONFERENCE_DATA);
-//    try {
-//      Log.d(TAG, "Using " + BaseActivity.DEFAULT_CONFERENCE_DATA);
-//      try (InputStream inputStream = getAssets().open(BaseActivity.DEFAULT_CONFERENCE_DATA)) {
-//        try (FileOutputStream outputStream = new FileOutputStream(conferenceData)) {
-//          byte[] buf = new byte[1024];
-//          int len;
-//          while ((len = inputStream.read(buf)) > 0) {
-//            outputStream.write(buf, 0, len);
-//          }
-//        }
-//      }
-//
-//      mConferencesStatusImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_success_dark));
-//      mConferencesStatusText.setText(getString(R.string.complete));
-//    } catch (IOException ioe) {
-//      Log.w(TAG, "Could not get assets.", ioe);
-//    }
-//
-//    new ConferenceTableAsync(this, TrendoRepository.getInstance(this), conferenceData).execute();
+    setContentView(R.layout.activity_data);
+
+    Toolbar toolbar = findViewById(R.id.data_toolbar);
+    setSupportActionBar(toolbar);
+    getSupportFragmentManager().addOnBackStackChangedListener(() -> {
+      Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.data_fragment_container);
+      if (fragment != null) {
+        setTitle(getString(R.string.please_wait));
+      }
+    });
+
+    mDataFragment = DataFragment.newInstance();
+    replaceFragment(mDataFragment);
+    new ConferenceTableAsync(this, ConferenceRepository.getInstance(TrendoDatabase.getInstance(this).conferenceDao())).execute();
   }
 
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+
+    Log.d(TAG, "++onCreateOptionsMenu(Menu)");
+    getMenuInflater().inflate(R.menu.data, menu);
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+    Log.d(TAG, "++onOptionsItemSelected(MenuItem)");
+    switch (item.getItemId()) {
+      case R.id.navigation_menu_save:
+        replaceFragment(mDataFragment);
+        processMatchSummaries();
+        break;
+      case R.id.navigation_menu_logout:
+        AlertDialog dialog = new AlertDialog.Builder(this)
+          .setMessage(R.string.logout_message)
+          .setPositiveButton(android.R.string.yes, (dialog1, which) -> {
+
+            // sign out of firebase
+            FirebaseAuth.getInstance().signOut();
+
+            // sign out of google, if necessary
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+              .requestIdToken(getString(R.string.default_web_client_id))
+              .requestEmail()
+              .build();
+            GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, gso);
+            googleSignInClient.signOut().addOnCompleteListener(this, task -> {
+
+              // return to sign-in activity
+              startActivity(new Intent(getApplicationContext(), SignInActivity.class));
+              finish();
+            });
+          })
+          .setNegativeButton(android.R.string.no, null)
+          .create();
+        dialog.show();
+        break;
+    }
+
+    return true;
+  }
+
+  /*
+    Public Method(s)
+   */
   public void conferenceTableSynced() {
 
     Log.d(TAG, "++conferenceTableSynced()");
-//    mConferencesStatusText.setText(getString(R.string.complete));
-//    mConferencesStatusImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_success_dark, getTheme()));
-//
-//    File teamData = new File(getCacheDir(), BaseActivity.DEFAULT_TEAM_DATA);
-//    try {
-//      Log.d(TAG, "Using " + BaseActivity.DEFAULT_TEAM_DATA);
-//      try (InputStream inputStream = getAssets().open(BaseActivity.DEFAULT_TEAM_DATA)) {
-//        try (FileOutputStream outputStream = new FileOutputStream(teamData)) {
-//          byte[] buf = new byte[1024];
-//          int len;
-//          while ((len = inputStream.read(buf)) > 0) {
-//            outputStream.write(buf, 0, len);
-//          }
-//        }
-//      }
-//
-//      mTeamsStatusImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_success_dark));
-//      mTeamsStatusText.setText(getString(R.string.complete));
-//    } catch (IOException ioe) {
-//      Log.w(TAG, "Could not get assets.", ioe);
-//    }
-//
-//    new TeamTableAsync(this, TrendoRepository.getInstance(this), teamData).execute();
+    mDataFragment.ConferencesStatusText.setText(getString(R.string.complete));
+    mDataFragment.ConferencesStatusImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_success_dark, getTheme()));
+    mDataFragment.TeamsStatusText.setText(getString(R.string.pending));
+    mDataFragment.TeamsStatusImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_progress_dark));
+
+    new TeamTableAsync(this, TeamRepository.getInstance(TrendoDatabase.getInstance(this).teamDao())).execute();
   }
 
   public void matchSummaryTableSynced(List<MatchSummaryEntity> matchSummaries) {
 
-    Log.d(TAG, "++matchSummaryTableSynced()");
-//    mMatchSummaryList = matchSummaries;
-//    mMatchSummariesStatusText.setText(getString(R.string.complete));
-//    mMatchSummariesStatusImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_success_dark, getTheme()));
-//    new TrendTableAsync(this, TrendoRepository.getInstance(this), mMatchSummaryList, mTeamList, mYear).execute();
+    Log.d(TAG, "++matchSummaryTableSynced(List<MatchSummaryEntity>)");
+    mDataFragment.MatchSummariesStatusText.setText(getString(R.string.complete));
+    mDataFragment.MatchSummariesStatusImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_success_dark, getTheme()));
+    mDataFragment.TrendsStatusText.setText(getString(R.string.pending));
+    mDataFragment.TrendsStatusImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_progress_dark, getTheme()));
+
+    new TrendTableAsync(
+      this,
+      TrendRepository.getInstance(TrendoDatabase.getInstance(this).trendDao()),
+      matchSummaries,
+      PreferenceUtils.getTeam(this),
+      PreferenceUtils.getSeason(this)).execute();
   }
 
   public void teamTableSynced(List<TeamEntity> teamList) {
 
-    Log.d(TAG, "++teamTableSynced()");
-//    mTeamList = teamList;
-//    mTeamsStatusText.setText(getString(R.string.complete));
-//    mTeamsStatusImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_success_dark, getTheme()));
-//    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//    mYear = Calendar.getInstance().get(Calendar.YEAR);
-//    if (sharedPreferences.contains(UserPreferencesFragment.KEY_YEAR_PREFERENCE)) {
-//      String preference = sharedPreferences.getString(UserPreferencesFragment.KEY_YEAR_PREFERENCE, getString(R.string.none));
-//      if (preference != null && !preference.equals(getString(R.string.none))) {
-//        try {
-//          mYear = Integer.parseInt(preference);
-//        } catch (Exception ex) {
-//          mYear = Calendar.getInstance().get(Calendar.YEAR);
-//        }
-//      } else {
-//        mYear = Calendar.getInstance().get(Calendar.YEAR);
-//      }
-//    }
-//
-//    String dataFileName = String.format(Locale.US, "%d.json", mYear);
-//    File seasonalData = new File(getCacheDir(), dataFileName);
-//    try {
-//      Log.d(TAG, "Using " + dataFileName);
-//      try (InputStream inputStream = getAssets().open(dataFileName)) {
-//        try (FileOutputStream outputStream = new FileOutputStream(seasonalData)) {
-//          byte[] buf = new byte[1024];
-//          int len;
-//          while ((len = inputStream.read(buf)) > 0) {
-//            outputStream.write(buf, 0, len);
-//          }
-//        }
-//      }
-//
-//      mMatchSummariesStatusImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_success_dark));
-//      mMatchSummariesStatusText.setText(getString(R.string.complete));
-//    } catch (IOException ioe) {
-//      Log.w(TAG, "Could not get assets.", ioe);
-//    }
-//
-//    new MatchSummaryTableAsync(this, TrendoRepository.getInstance(this), seasonalData, mYear).execute();
+    Log.d(TAG, "++teamTableSynced(List<TeamEntity>)");
+    if (PreferenceUtils.getTeam(this).equals(BaseActivity.DEFAULT_ID) ||
+      PreferenceUtils.getTeam(this).length() != BaseActivity.DEFAULT_ID.length()) {
+      replaceFragment(UserPreferencesFragment.newInstance(new ArrayList<>(teamList)));
+    } else {
+      processMatchSummaries();
+    }
   }
 
   public void trendTableSynced() {
 
     Log.d(TAG, "++trendTableSynced()");
-//    mTrendsStatusText.setText(getString(R.string.complete));
-//    mTrendsStatusImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_success_dark, getTheme()));
-//    Intent intent = new Intent(DataActivity.this, MainActivity.class);
-//    intent.putExtra(BaseActivity.ARG_UID, mUserId);
-//    startActivity(intent);
-//    finish();
+    mDataFragment.TrendsStatusText.setText(getString(R.string.complete));
+    mDataFragment.TrendsStatusImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_success_dark, getTheme()));
+    Intent intent = new Intent(DataActivity.this, MainActivity.class);
+    startActivity(intent);
+    finish();
+  }
+
+  private void processMatchSummaries() {
+
+    Log.d(TAG, "++processMatchSummaries()");
+    mDataFragment.TeamsStatusText.setText(getString(R.string.complete));
+    mDataFragment.TeamsStatusImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_success_dark, getTheme()));
+    mDataFragment.MatchSummariesStatusText.setText(getString(R.string.pending));
+    mDataFragment.MatchSummariesStatusImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_progress_dark, getTheme()));
+
+    new MatchSummaryTableAsync(
+      this,
+      MatchSummaryRepository.getInstance(TrendoDatabase.getInstance(this).matchSummaryDao()),
+      MatchDateDimRepository.getInstance(TrendoDatabase.getInstance(this).matchDateDimDao()),
+      PreferenceUtils.getSeason(this)).execute();
+  }
+
+  private void replaceFragment(Fragment fragment) {
+
+    Log.d(TAG, "++replaceFragment()");
+    getSupportFragmentManager()
+      .beginTransaction()
+      .replace(R.id.data_fragment_container, fragment)
+      .addToBackStack(null)
+      .commit();
   }
 }

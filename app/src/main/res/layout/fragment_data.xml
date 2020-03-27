@@ -5,26 +5,143 @@
   android:layout_height="match_parent">
 
   <TextView
-    android:id="@+id/data_text"
-    android:layout_width="match_parent"
+    android:id="@+id/data_text_conferences"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/default_view_margin"
-    android:text="@string/please_wait"
-    android:textAlignment="center"
-    app:layout_constraintBottom_toTopOf="@id/data_progress"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent" />
-
-  <ProgressBar
-    android:id="@+id/data_progress"
-    style="?android:attr/progressBarStyleHorizontal"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/default_view_margin"
-    android:indeterminate="true"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
+    android:text="@string/title_conferences"
+    android:textSize="24sp"
+    android:textStyle="bold"
+    app:layout_constraintBottom_toBottomOf="@id/data_image_conferences"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    app:layout_constraintTop_toTopOf="@id/data_image_conferences" />
+
+  <TextView
+    android:id="@+id/data_text_conferences_status"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    android:text="@string/pending"
+    android:textSize="18sp"
+    android:textStyle="italic"
+    app:layout_constraintBottom_toBottomOf="@id/data_text_conferences"
+    app:layout_constraintStart_toEndOf="@id/data_text_conferences"
+    app:layout_constraintTop_toTopOf="@id/data_text_conferences" />
+
+  <ImageView
+    android:id="@+id/data_image_conferences"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toTopOf="@id/data_image_teams"
+    app:srcCompat="@drawable/ic_pending_dark"
+    android:contentDescription="@string/pending" />
+
+  <TextView
+    android:id="@+id/data_text_teams"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    android:text="@string/title_teams"
+    android:textSize="24sp"
+    android:textStyle="bold"
+    app:layout_constraintBottom_toBottomOf="@id/data_image_teams"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@id/data_image_teams" />
+
+  <TextView
+    android:id="@+id/data_text_teams_status"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    android:text="@string/pending"
+    android:textSize="18sp"
+    android:textStyle="italic"
+    app:layout_constraintBottom_toBottomOf="@id/data_text_teams"
+    app:layout_constraintStart_toEndOf="@id/data_text_teams"
+    app:layout_constraintTop_toTopOf="@id/data_text_teams" />
+
+  <ImageView
+    android:id="@+id/data_image_teams"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/data_image_conferences"
+    app:layout_constraintBottom_toTopOf="@id/data_image_match_summaries"
+    app:srcCompat="@drawable/ic_pending_dark"
+    android:contentDescription="@string/pending" />
+
+  <TextView
+    android:id="@+id/data_text_match_summaries"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    android:text="@string/title_match_summaries"
+    android:textSize="24sp"
+    android:textStyle="bold"
+    app:layout_constraintBottom_toBottomOf="@id/data_image_match_summaries"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@id/data_image_match_summaries" />
+
+  <TextView
+    android:id="@+id/data_text_match_summaries_status"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    android:text="@string/pending"
+    android:textSize="18sp"
+    android:textStyle="italic"
+    app:layout_constraintBottom_toBottomOf="@id/data_text_match_summaries"
+    app:layout_constraintStart_toEndOf="@id/data_text_match_summaries"
+    app:layout_constraintTop_toTopOf="@id/data_text_match_summaries" />
+
+  <ImageView
+    android:id="@+id/data_image_match_summaries"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/data_image_teams"
+    app:layout_constraintBottom_toTopOf="@id/data_image_trends"
+    app:srcCompat="@drawable/ic_pending_dark"
+    android:contentDescription="@string/pending" />
+
+  <TextView
+    android:id="@+id/data_text_trends"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    android:text="@string/title_trends"
+    android:textSize="24sp"
+    android:textStyle="bold"
+    app:layout_constraintBottom_toBottomOf="@id/data_image_trends"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@id/data_image_trends" />
+
+  <TextView
+    android:id="@+id/data_text_trends_status"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    android:text="@string/pending"
+    android:textSize="18sp"
+    android:textStyle="italic"
+    app:layout_constraintBottom_toBottomOf="@id/data_text_trends"
+    app:layout_constraintStart_toEndOf="@id/data_text_trends"
+    app:layout_constraintTop_toTopOf="@id/data_text_trends" />
+
+  <ImageView
+    android:id="@+id/data_image_trends"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_view_margin"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/data_image_match_summaries"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:srcCompat="@drawable/ic_pending_dark"
+    android:contentDescription="@string/pending" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

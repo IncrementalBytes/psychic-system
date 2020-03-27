@@ -27,7 +27,7 @@ import net.whollynugatory.android.trendo.db.entity.MatchSummaryEntity;
 import net.whollynugatory.android.trendo.db.repository.MatchDateDimRepository;
 import net.whollynugatory.android.trendo.db.repository.MatchSummaryRepository;
 import net.whollynugatory.android.trendo.ui.BaseActivity;
-import net.whollynugatory.android.trendo.ui.MainActivity;
+import net.whollynugatory.android.trendo.ui.DataActivity;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -38,20 +38,22 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-public class MatchSummaryTableAsync extends AsyncTask<Void, Void, Integer> {
+public class MatchSummaryTableAsync extends AsyncTask<Void, Void, List<MatchSummaryEntity>> {
 
   private static final String TAG = BaseActivity.BASE_TAG + "MatchSummaryTableAsync";
 
-  private WeakReference<MainActivity> mWeakReference;
+  private WeakReference<DataActivity> mWeakReference;
 
   private final MatchDateDimRepository mMatchDateDimRepository;
   private final MatchSummaryRepository mMatchSummaryRepository;
   private File mMatchSummaryData;
 
-  public MatchSummaryTableAsync(MainActivity context, MatchSummaryRepository repository, MatchDateDimRepository dimRepository, int season) {
+  public MatchSummaryTableAsync(DataActivity context, MatchSummaryRepository repository, MatchDateDimRepository dimRepository, int season) {
 
     mWeakReference = new WeakReference<>(context);
     mMatchDateDimRepository = dimRepository;
@@ -73,9 +75,9 @@ public class MatchSummaryTableAsync extends AsyncTask<Void, Void, Integer> {
   }
 
   @Override
-  protected Integer doInBackground(final Void... params) {
+  protected List<MatchSummaryEntity> doInBackground(final Void... params) {
 
-    int count = 0;
+    List<MatchSummaryEntity> matchSummaryEntityList = new ArrayList<>();
     PackagedData packagedData = new PackagedData();
     if (mMatchSummaryData != null && mMatchSummaryData.exists() && mMatchSummaryData.canRead()) {
       Log.d(TAG, "Loading " + mMatchSummaryData.getAbsolutePath());
@@ -96,10 +98,10 @@ public class MatchSummaryTableAsync extends AsyncTask<Void, Void, Integer> {
           for (MatchSummaryEntity matchSummary : packagedData.MatchSummaries) {
             mMatchDateDimRepository.insert(MatchDateDim.generate(matchSummary.MatchDate));
             mMatchSummaryRepository.insert(matchSummary);
-            count++;
+            matchSummaryEntityList.add(matchSummary);
           }
 
-          Log.d(TAG, String.format(Locale.US, "%s %d...", message, count));
+          Log.d(TAG, String.format(Locale.US, "%s %d...", message, matchSummaryEntityList.size()));
         } catch (Exception e) {
           Log.w(TAG, "Could not process MatchSummary data.", e);
         }
@@ -110,18 +112,18 @@ public class MatchSummaryTableAsync extends AsyncTask<Void, Void, Integer> {
       Log.w(TAG, "Could not find data to process.");
     }
 
-    return count;
+    return matchSummaryEntityList;
   }
 
-  protected void onPostExecute(Integer matchCount) {
+  protected void onPostExecute(List<MatchSummaryEntity> matchSummaryEntityList) {
 
-    Log.d(TAG, "++onPostExecute(Integer)");
-    MainActivity activity = mWeakReference.get();
+    Log.d(TAG, "++onPostExecute(List<MatchSummaryEntity>)");
+    DataActivity activity = mWeakReference.get();
     if (activity == null) {
-      Log.e(TAG, "MainActivity is null or detached.");
+      Log.e(TAG, "DataActivity is null or detached.");
       return;
     }
 
-    activity.matchSummaryTableSynced(matchCount);
+    activity.matchSummaryTableSynced(matchSummaryEntityList);
   }
 }

@@ -31,7 +31,6 @@ import net.whollynugatory.android.trendo.db.views.TrendDetails;
 import net.whollynugatory.android.trendo.ui.BaseActivity;
 import net.whollynugatory.android.trendo.utils.PreferenceUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -49,7 +48,6 @@ public class CardSummaryFragment extends Fragment {
     void onCardSummaryMatchListClicked();
     void onCardSummaryTrendClicked(Trend selectedTrend);
     void onCardSummaryLoaded();
-    void onCardSummaryTrendsMissing();
   }
 
   private OnCardSummaryListener mCallback;
@@ -71,11 +69,9 @@ public class CardSummaryFragment extends Fragment {
   private CardView mTotalPointsCard;
   private TextView mTotalPointsText;
 
-  private List<TrendDetails> mTrends;
-
   public static CardSummaryFragment newInstance() {
 
-    Log.d(TAG, "++newInstance()");
+    Log.d(TAG, "++newInstance(List<TrendDetails>)");
     return new CardSummaryFragment();
   }
 
@@ -90,14 +86,8 @@ public class CardSummaryFragment extends Fragment {
     TrendoViewModel trendoViewModel = new ViewModelProvider(this).get(TrendoViewModel.class);
     trendoViewModel.getAllTrends(PreferenceUtils.getTeam(getContext()), PreferenceUtils.getSeason(getContext())).observe(
       getViewLifecycleOwner(),
-      trendDetailsList -> {
-        if (trendDetailsList != null && trendDetailsList.size() > 0) {
-          mTrends = new ArrayList<>(trendDetailsList);
-          updateUI();
-        } else {
-          mCallback.onCardSummaryTrendsMissing();
-        }
-      });
+      this::updateUI
+    );
   }
 
   @Override
@@ -140,7 +130,6 @@ public class CardSummaryFragment extends Fragment {
     super.onDestroy();
 
     Log.d(TAG, "++onDestroy()");
-    mTrends = null;
   }
 
   @Override
@@ -169,11 +158,11 @@ public class CardSummaryFragment extends Fragment {
   /*
       Private Method(s)
    */
-  private void updateUI() {
+  private void updateUI(List<TrendDetails> trendDetailsList) {
 
-    if (mTrends != null && mTrends.size() > 0) {
+    if (trendDetailsList != null && trendDetailsList.size() > 0) {
       Log.d(TAG, "++updateUI()");
-      TrendDetails valueTrend = mTrends.get(mTrends.size() - 1);
+      TrendDetails valueTrend = trendDetailsList.get(trendDetailsList.size() - 1);
 
       mGoalDifferentialCard.setOnClickListener(v -> mCallback.onCardSummaryTrendClicked(Trend.GoalDifferential));
       mGoalDifferentialText.setText(String.valueOf(valueTrend.GoalDifferential));
@@ -188,7 +177,7 @@ public class CardSummaryFragment extends Fragment {
       mPointsPerGameCard.setOnClickListener(v -> mCallback.onCardSummaryTrendClicked(Trend.PointsPerGame));
       mPointsPerGameText.setText(String.format(Locale.US, "%.03f", valueTrend.PointsPerGame));
       mMatchesCard.setOnClickListener(v -> mCallback.onCardSummaryMatchListClicked());
-      mMatchesText.setText(String.valueOf(mTrends.size()));
+      mMatchesText.setText(String.valueOf(trendDetailsList.size()));
       mTotalPointsCard.setOnClickListener(v -> mCallback.onCardSummaryTrendClicked(Trend.TotalPoints));
       mTotalPointsText.setText(String.valueOf(valueTrend.TotalPoints));
       mCallback.onCardSummaryLoaded();

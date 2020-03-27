@@ -23,8 +23,6 @@ import android.preference.PreferenceManager;
 import net.whollynugatory.android.trendo.R;
 import net.whollynugatory.android.trendo.ui.BaseActivity;
 
-import java.util.Calendar;
-
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
@@ -35,8 +33,7 @@ public class PreferenceUtils {
 
   public static int getSeason(Context context) {
 
-    int defaultSeason = Calendar.getInstance().get(Calendar.YEAR);
-    String season = getStringPref(context, R.string.pref_key_season, String.valueOf(defaultSeason));
+    String season = getStringPref(context, R.string.pref_key_season, String.valueOf(BaseActivity.DEFAULT_SEASON));
     return Integer.parseInt(season);
   }
 

@@ -164,7 +164,7 @@ public class SignInActivity extends BaseActivity implements OnClickListener {
   private void onAuthenticateSuccess() {
 
     Log.d(TAG, "++onAuthenticateSuccess()");
-    Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+    Intent intent = new Intent(SignInActivity.this, DataActivity.class);
     startActivity(intent);
     finish();
   }

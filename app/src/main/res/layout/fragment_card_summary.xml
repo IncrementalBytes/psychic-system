@@ -109,7 +109,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_line_chart_dark" />
+        app:srcCompat="@drawable/ic_chart_dark" />
     </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.cardview.widget.CardView>
 
@@ -163,7 +163,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_line_chart_dark" />
+        app:srcCompat="@drawable/ic_chart_dark" />
     </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.cardview.widget.CardView>
 
@@ -217,7 +217,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_line_chart_dark" />
+        app:srcCompat="@drawable/ic_chart_dark" />
     </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.cardview.widget.CardView>
 
@@ -271,7 +271,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_line_chart_dark" />
+        app:srcCompat="@drawable/ic_chart_dark" />
     </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.cardview.widget.CardView>
 
@@ -327,7 +327,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_line_chart_dark" />
+        app:srcCompat="@drawable/ic_chart_dark" />
     </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.cardview.widget.CardView>
 
@@ -381,7 +381,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_line_chart_dark" />
+        app:srcCompat="@drawable/ic_chart_dark" />
     </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.cardview.widget.CardView>
 
@@ -435,7 +435,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_line_chart_dark" />
+        app:srcCompat="@drawable/ic_chart_dark" />
     </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

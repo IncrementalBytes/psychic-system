@@ -1,0 +1,204 @@
+{
+  "teams": [
+    {
+      "id":"00000000-0000-0000-0000-000000000000",
+      "conference_id":"00000000-0000-0000-0000-000000000000",
+      "name":"Unknown",
+      "short_name":"UNK",
+      "established":1995,
+      "defunct":false
+    },
+    {
+      "id":"dcf07e65-0570-4bbf-9eb4-743d1cd52e36",
+      "conference_id":"59b2bb04-8736-484f-a2e3-6fca89560770",
+      "name":"Atlanta United FC",
+      "short_name":"ATL",
+      "established":2017,
+      "defunct":false
+    },
+    {
+      "id":"821e5563-bb3c-4a5e-8d56-79e25efb49cd",
+      "conference_id":"59b2bb04-8736-484f-a2e3-6fca89560770",
+      "name":"Chicago Fire",
+      "short_name":"CHI",
+      "established":1996,
+      "defunct":false
+    },
+    {
+      "id":"f2a09e6a-0cfd-48b4-bc0d-f98c614809fd",
+      "conference_id":"59b2bb04-8736-484f-a2e3-6fca89560770",
+      "name":"Columbus Crew SC",
+      "short_name":"CLB",
+      "established":1996,
+      "defunct":false
+    },
+    {
+      "id":"34e2f043-ca34-4743-847b-17f2000c8e16",
+      "conference_id":"59b2bb04-8736-484f-a2e3-6fca89560770",
+      "name":"D.C. United",
+      "short_name":"DC",
+      "established":1996,
+      "defunct":false
+    },
+    {
+      "id":"4de09cc0-c8b5-4651-a73a-68e05ffacc22",
+      "conference_id":"59b2bb04-8736-484f-a2e3-6fca89560770",
+      "name":"FC Cincinnati",
+      "short_name":"CIN",
+      "established":2019,
+      "defunct":false
+    },
+    {
+      "id":"93eba939-30e6-4702-b854-87051111edbd",
+      "conference_id":"59b2bb04-8736-484f-a2e3-6fca89560770",
+      "name":"Montreal Impact",
+      "short_name":"MON",
+      "established":2012,
+      "defunct":false
+    },
+    {
+      "id":"853ce6e8-987e-4cf0-846a-def18d96913a",
+      "conference_id":"59b2bb04-8736-484f-a2e3-6fca89560770",
+      "name":"New England Revolution",
+      "short_name":"NE",
+      "established":1996,
+      "defunct":false
+    },
+    {
+      "id":"431c60bd-c4ae-4253-b554-58af9cf46dd3",
+      "conference_id":"59b2bb04-8736-484f-a2e3-6fca89560770",
+      "name":"New York City FC",
+      "short_name":"NYC",
+      "established":2015,
+      "defunct":false
+    },
+    {
+      "id":"9df3a517-2754-438b-bfe3-9d081aefa350",
+      "conference_id":"59b2bb04-8736-484f-a2e3-6fca89560770",
+      "name":"New York Red Bulls",
+      "short_name":"RBNY",
+      "established":1996,
+      "defunct":false
+    },
+    {
+      "id":"fd36043a-ce04-46e7-99ae-63406444834b",
+      "conference_id":"59b2bb04-8736-484f-a2e3-6fca89560770",
+      "name":"Orlando City SC",
+      "short_name":"ORL",
+      "established":2015,
+      "defunct":false
+    },
+    {
+      "id":"2313ec02-1e1d-4fd1-8278-57ed5bc64370",
+      "conference_id":"59b2bb04-8736-484f-a2e3-6fca89560770",
+      "name":"Philadelphia Union",
+      "short_name":"PHI",
+      "established":2010,
+      "defunct":false
+    },
+    {
+      "id":"55f7f5fd-29d2-4a76-b497-5ca4baef5fa1",
+      "conference_id":"59b2bb04-8736-484f-a2e3-6fca89560770",
+      "name":"Toronto FC",
+      "short_name":"TOR",
+      "established":2007,
+      "defunct":false
+    },
+    {
+      "id":"85f9cdc1-0d91-41bf-b37b-7d91c98c7e34",
+      "conference_id":"78b1b08b-2237-420c-adc2-9c3b26ace530",
+      "name":"Colorado Rapids",
+      "short_name":"COL",
+      "established":1996,
+      "defunct":false
+    },
+    {
+      "id":"028c0edc-b63e-4f72-8e4b-34d1a78e3671",
+      "conference_id":"78b1b08b-2237-420c-adc2-9c3b26ace530",
+      "name":"FC Dallas",
+      "short_name":"DAL",
+      "established":1996,
+      "defunct":false
+    },
+    {
+      "id":"ee42400a-6bdf-4b68-ac30-437f50368b7e",
+      "conference_id":"78b1b08b-2237-420c-adc2-9c3b26ace530",
+      "name":"Houston Dynamo",
+      "short_name":"HOU",
+      "established":2006,
+      "defunct":false
+    },
+    {
+      "id":"c5a068cc-70cb-420d-ae6c-da7d8d6f96c7",
+      "conference_id":"78b1b08b-2237-420c-adc2-9c3b26ace530",
+      "name":"LA Galaxy",
+      "short_name":"LA",
+      "established":1996,
+      "defunct":false
+    },
+    {
+      "id":"f0b354a2-f8db-4b52-a180-f23816cbd6ac",
+      "conference_id":"78b1b08b-2237-420c-adc2-9c3b26ace530",
+      "name":"Los Angeles Football Club",
+      "short_name":"LAFC",
+      "established":2018,
+      "defunct":false
+    },
+    {
+      "id":"b1ab1613-d652-403f-8c7f-8ca7dfd37804",
+      "conference_id":"78b1b08b-2237-420c-adc2-9c3b26ace530",
+      "name":"Minnesota United FC",
+      "short_name":"MIN",
+      "established":2017,
+      "defunct":false
+    },
+    {
+      "id":"f021bbaf-ea80-468a-8cd0-b3674327dee5",
+      "conference_id":"78b1b08b-2237-420c-adc2-9c3b26ace530",
+      "name":"Portland Timbers",
+      "short_name":"POR",
+      "established":2011,
+      "defunct":false
+    },
+    {
+      "id":"52f41053-5060-4535-9aca-03c0a6a41a82",
+      "conference_id":"78b1b08b-2237-420c-adc2-9c3b26ace530",
+      "name":"Real Salt Lake",
+      "short_name":"RSL",
+      "established":2005,
+      "defunct":false
+    },
+    {
+      "id":"07979bc9-ac85-47f7-9d98-d5275039d627",
+      "conference_id":"78b1b08b-2237-420c-adc2-9c3b26ace530",
+      "name":"San Jose Earthquakes",
+      "short_name":"SJ",
+      "established":2008,
+      "defunct":false
+    },
+    {
+      "id":"aa050628-4f65-4997-abef-e3fd6b80d07e",
+      "conference_id":"78b1b08b-2237-420c-adc2-9c3b26ace530",
+      "name":"Seattle Sounders FC",
+      "short_name":"SEA",
+      "established":2009,
+      "defunct":false
+    },
+    {
+      "id":"24f4602c-2a47-4bb3-9a5d-a801f61aeb05",
+      "conference_id":"78b1b08b-2237-420c-adc2-9c3b26ace530",
+      "name":"Sporting Kansas City",
+      "short_name":"SKC",
+      "established":1996,
+      "defunct":false
+    },
+    {
+      "id":"ce6a772c-9a31-4b10-81b1-f59ec6346b31",
+      "conference_id":"78b1b08b-2237-420c-adc2-9c3b26ace530",
+      "name":"Vancouver Whitecaps FC",
+      "short_name":"VAN",
+      "established":2011,
+      "defunct":false
+    }
+  ]
+}
