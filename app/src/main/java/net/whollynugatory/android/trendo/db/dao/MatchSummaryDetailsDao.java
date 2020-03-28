@@ -27,9 +27,9 @@ import androidx.room.Query;
 @Dao
 public interface MatchSummaryDetailsDao {
 
-  @Query("SELECT * FROM MatchSummaryDetails WHERE Year == :year ORDER BY MatchDate ASC")
+  @Query("SELECT * FROM MatchSummaryDetails WHERE Year == :year ORDER BY Month ASC, Day ASC")
   LiveData<List<MatchSummaryDetails>> getAll(int year);
 
-  @Query("SELECT * FROM MatchSummaryDetails WHERE (HomeId == :teamId OR AwayId == :teamId) AND Year == :year ORDER BY MatchDate ASC")
+  @Query("SELECT * FROM MatchSummaryDetails WHERE (HomeId == :teamId OR AwayId == :teamId) AND Year == :year ORDER BY Month ASC, Day ASC")
   LiveData<List<MatchSummaryDetails>> getAll(String teamId, int year);
 }

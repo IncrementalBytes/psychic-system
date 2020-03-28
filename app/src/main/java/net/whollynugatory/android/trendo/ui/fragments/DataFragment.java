@@ -17,6 +17,7 @@
 package net.whollynugatory.android.trendo.ui.fragments;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,15 +36,14 @@ public class DataFragment extends Fragment {
 
   private static final String TAG = BaseActivity.BASE_TAG + "DataFragment";
 
-  // TODO: add specific property changers instead of exposing whole control
-  public ImageView ConferencesStatusImage;
-  public TextView ConferencesStatusText;
-  public ImageView MatchSummariesStatusImage;
-  public TextView MatchSummariesStatusText;
-  public ImageView TeamsStatusImage;
-  public TextView TeamsStatusText;
-  public ImageView TrendsStatusImage;
-  public TextView TrendsStatusText;
+  private ImageView mConferencesStatusImage;
+  private TextView mConferencesStatusText;
+  private ImageView mMatchSummariesStatusImage;
+  private TextView mMatchSummariesStatusText;
+  private ImageView mTeamsStatusImage;
+  private TextView mTeamsStatusText;
+  private ImageView mTrendsStatusImage;
+  private TextView mTrendsStatusText;
 
   public static DataFragment newInstance() {
 
@@ -80,14 +80,14 @@ public class DataFragment extends Fragment {
 
     Log.d(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
     View view = inflater.inflate(R.layout.fragment_data, container, false);
-    ConferencesStatusImage = view.findViewById(R.id.data_image_conferences);
-    MatchSummariesStatusImage = view.findViewById(R.id.data_image_match_summaries);
-    TeamsStatusImage = view.findViewById(R.id.data_image_teams);
-    TrendsStatusImage = view.findViewById(R.id.data_image_trends);
-    ConferencesStatusText = view.findViewById(R.id.data_text_conferences_status);
-    MatchSummariesStatusText = view.findViewById(R.id.data_text_match_summaries_status);
-    TeamsStatusText = view.findViewById(R.id.data_text_teams_status);
-    TrendsStatusText = view.findViewById(R.id.data_text_trends_status);
+    mConferencesStatusImage = view.findViewById(R.id.data_image_conferences);
+    mConferencesStatusText = view.findViewById(R.id.data_text_conferences_status);
+    mMatchSummariesStatusImage = view.findViewById(R.id.data_image_match_summaries);
+    mMatchSummariesStatusText = view.findViewById(R.id.data_text_match_summaries_status);
+    mTeamsStatusImage = view.findViewById(R.id.data_image_teams);
+    mTeamsStatusText = view.findViewById(R.id.data_text_teams_status);
+    mTrendsStatusImage = view.findViewById(R.id.data_image_trends);
+    mTrendsStatusText = view.findViewById(R.id.data_text_trends_status);
     return view;
   }
 
@@ -110,5 +110,61 @@ public class DataFragment extends Fragment {
     super.onResume();
 
     Log.d(TAG, "++onResume()");
+  }
+
+  public void setConferencesStatusImage(Drawable drawable) {
+
+    if (mConferencesStatusImage != null) {
+      mConferencesStatusImage.setImageDrawable(drawable);
+    }
+  }
+
+  public void setConferencesStatusText(String statusText) {
+
+    if (mConferencesStatusText != null) {
+      mConferencesStatusText.setText(statusText);
+    }
+  }
+
+  public void setMatchSummariesStatusImage(Drawable drawable) {
+
+    if (mMatchSummariesStatusImage != null) {
+      mMatchSummariesStatusImage.setImageDrawable(drawable);
+    }
+  }
+
+  public void setMatchSummariesStatusText(String statusText) {
+
+    if (mMatchSummariesStatusText != null) {
+      mMatchSummariesStatusText.setText(statusText);
+    }
+  }
+
+  public void setTeamStatusImage(Drawable drawable) {
+
+    if (mTeamsStatusImage != null) {
+      mTeamsStatusImage.setImageDrawable(drawable);
+    }
+  }
+
+  public void setTeamStatusText(String statusText) {
+
+    if (mTeamsStatusText != null) {
+      mTeamsStatusText.setText(statusText);
+    }
+  }
+
+  public void setTrendsStatusImage(Drawable drawable) {
+
+    if (mTrendsStatusImage != null) {
+      mTrendsStatusImage.setImageDrawable(drawable);
+    }
+  }
+
+  public void setTrendsStatusText(String statusText) {
+
+    if (mTeamsStatusText != null) {
+      mTrendsStatusText.setText(statusText);
+    }
   }
 }

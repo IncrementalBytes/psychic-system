@@ -51,7 +51,6 @@ import net.whollynugatory.android.trendo.utils.PreferenceUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 public class DataActivity extends BaseActivity {
@@ -81,6 +80,8 @@ public class DataActivity extends BaseActivity {
 
     mDataFragment = DataFragment.newInstance();
     replaceFragment(mDataFragment);
+    mDataFragment.setConferencesStatusImage(getResources().getDrawable(R.drawable.ic_progress_dark, getTheme()));
+    mDataFragment.setConferencesStatusText(getString(R.string.in_progress));
     new ConferenceTableAsync(this, ConferenceRepository.getInstance(TrendoDatabase.getInstance(this).conferenceDao())).execute();
   }
 
@@ -99,6 +100,12 @@ public class DataActivity extends BaseActivity {
     switch (item.getItemId()) {
       case R.id.navigation_menu_save:
         replaceFragment(mDataFragment);
+        mDataFragment.setConferencesStatusImage(getResources().getDrawable(R.drawable.ic_success_dark, getTheme()));
+        mDataFragment.setConferencesStatusText(getString(R.string.complete));
+        mDataFragment.setTeamStatusImage(getResources().getDrawable(R.drawable.ic_success_dark, getTheme()));
+        mDataFragment.setTeamStatusText(getString(R.string.complete));
+        mDataFragment.setMatchSummariesStatusImage(getResources().getDrawable(R.drawable.ic_progress_dark, getTheme()));
+        mDataFragment.setMatchSummariesStatusText(getString(R.string.in_progress));
         processMatchSummaries();
         break;
       case R.id.navigation_menu_logout:
@@ -137,10 +144,10 @@ public class DataActivity extends BaseActivity {
   public void conferenceTableSynced() {
 
     Log.d(TAG, "++conferenceTableSynced()");
-    mDataFragment.ConferencesStatusText.setText(getString(R.string.complete));
-    mDataFragment.ConferencesStatusImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_success_dark, getTheme()));
-    mDataFragment.TeamsStatusText.setText(getString(R.string.pending));
-    mDataFragment.TeamsStatusImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_progress_dark));
+    mDataFragment.setConferencesStatusImage(getResources().getDrawable(R.drawable.ic_success_dark, getTheme()));
+    mDataFragment.setConferencesStatusText(getString(R.string.complete));
+    mDataFragment.setTeamStatusImage(getResources().getDrawable(R.drawable.ic_progress_dark, getTheme()));
+    mDataFragment.setTeamStatusText(getString(R.string.pending));
 
     new TeamTableAsync(this, TeamRepository.getInstance(TrendoDatabase.getInstance(this).teamDao())).execute();
   }
@@ -148,10 +155,10 @@ public class DataActivity extends BaseActivity {
   public void matchSummaryTableSynced(List<MatchSummaryEntity> matchSummaries) {
 
     Log.d(TAG, "++matchSummaryTableSynced(List<MatchSummaryEntity>)");
-    mDataFragment.MatchSummariesStatusText.setText(getString(R.string.complete));
-    mDataFragment.MatchSummariesStatusImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_success_dark, getTheme()));
-    mDataFragment.TrendsStatusText.setText(getString(R.string.pending));
-    mDataFragment.TrendsStatusImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_progress_dark, getTheme()));
+    mDataFragment.setMatchSummariesStatusImage(getResources().getDrawable(R.drawable.ic_success_dark, getTheme()));
+    mDataFragment.setMatchSummariesStatusText(getString(R.string.complete));
+    mDataFragment.setTrendsStatusImage(getResources().getDrawable(R.drawable.ic_progress_dark, getTheme()));
+    mDataFragment.setTrendsStatusText(getString(R.string.pending));
 
     new TrendTableAsync(
       this,
@@ -164,10 +171,14 @@ public class DataActivity extends BaseActivity {
   public void teamTableSynced(List<TeamEntity> teamList) {
 
     Log.d(TAG, "++teamTableSynced(List<TeamEntity>)");
+    mDataFragment.setTeamStatusImage(getResources().getDrawable(R.drawable.ic_success_dark, getTheme()));
+    mDataFragment.setTeamStatusText(getString(R.string.complete));
     if (PreferenceUtils.getTeam(this).equals(BaseActivity.DEFAULT_ID) ||
       PreferenceUtils.getTeam(this).length() != BaseActivity.DEFAULT_ID.length()) {
       replaceFragment(UserPreferencesFragment.newInstance(new ArrayList<>(teamList)));
     } else {
+      mDataFragment.setMatchSummariesStatusImage(getResources().getDrawable(R.drawable.ic_progress_dark, getTheme()));
+      mDataFragment.setMatchSummariesStatusText(getString(R.string.in_progress));
       processMatchSummaries();
     }
   }
@@ -175,8 +186,8 @@ public class DataActivity extends BaseActivity {
   public void trendTableSynced() {
 
     Log.d(TAG, "++trendTableSynced()");
-    mDataFragment.TrendsStatusText.setText(getString(R.string.complete));
-    mDataFragment.TrendsStatusImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_success_dark, getTheme()));
+    mDataFragment.setTrendsStatusImage(getResources().getDrawable(R.drawable.ic_success_dark, getTheme()));
+    mDataFragment.setTrendsStatusText(getString(R.string.complete));
     Intent intent = new Intent(DataActivity.this, MainActivity.class);
     startActivity(intent);
     finish();
@@ -185,10 +196,10 @@ public class DataActivity extends BaseActivity {
   private void processMatchSummaries() {
 
     Log.d(TAG, "++processMatchSummaries()");
-    mDataFragment.TeamsStatusText.setText(getString(R.string.complete));
-    mDataFragment.TeamsStatusImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_success_dark, getTheme()));
-    mDataFragment.MatchSummariesStatusText.setText(getString(R.string.pending));
-    mDataFragment.MatchSummariesStatusImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_progress_dark, getTheme()));
+    mDataFragment.setTeamStatusImage(getResources().getDrawable(R.drawable.ic_success_dark, getTheme()));
+    mDataFragment.setTeamStatusText(getString(R.string.complete));
+    mDataFragment.setMatchSummariesStatusImage(getResources().getDrawable(R.drawable.ic_progress_dark, getTheme()));
+    mDataFragment.setMatchSummariesStatusText(getString(R.string.pending));
 
     new MatchSummaryTableAsync(
       this,

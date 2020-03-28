@@ -55,7 +55,7 @@ public class MatchListFragment extends Fragment {
 
   private RecyclerView mRecyclerView;
 
-  private TrendoViewModel mTrendViewModel;
+  private TrendoViewModel mTrendoViewModel;
 
   private String mTeamId;
 
@@ -96,7 +96,7 @@ public class MatchListFragment extends Fragment {
 
     Log.d(TAG, "++onCreate(Bundle)");
     mTeamId = PreferenceUtils.getTeam(getContext());
-    mTrendViewModel = new ViewModelProvider(this).get(TrendoViewModel.class);
+    mTrendoViewModel = new ViewModelProvider(this).get(TrendoViewModel.class);
   }
 
   @Override
@@ -137,7 +137,7 @@ public class MatchListFragment extends Fragment {
 
     MatchSummaryAdapter matchSummaryAdapter = new MatchSummaryAdapter(getContext());
     mRecyclerView.setAdapter(matchSummaryAdapter);
-    mTrendViewModel.getAllMatchSummaryDetails(mTeamId, PreferenceUtils.getSeason(getContext())).observe(
+    mTrendoViewModel.getAllMatchSummaryDetails(mTeamId, PreferenceUtils.getSeason(getContext())).observe(
       getViewLifecycleOwner(),
       matchSummaryAdapter::setMatchSummaryDetailsList);
   }
@@ -178,7 +178,7 @@ public class MatchListFragment extends Fragment {
             "%1s vs %2s",
             mMatchSummaryDetails.HomeName,
             mMatchSummaryDetails.AwayName));
-        mMatchDateTextView.setText(mMatchSummaryDetails.MatchDate);
+        mMatchDateTextView.setText(mMatchSummaryDetails.matchDateForDisplay());
         mMatchScoreTextView.setText(
           String.format(
             Locale.getDefault(),

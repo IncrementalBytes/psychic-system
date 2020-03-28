@@ -161,13 +161,7 @@ public class MainActivity extends BaseActivity implements
   public void onCardSummaryTrendClicked(Trend selectedTrend) {
 
     Log.d(TAG, "++onCardSummaryTrendClicked(Trend)");
-    // TODO:
-//    replaceFragment(
-//      LineChartFragment.newInstance(
-//        mPackagedData.Trends,
-//        mPackagedData.TrendsAhead,
-//        mPackagedData.TrendsBehind,
-//        selectedTrend));
+    replaceFragment(LineChartFragment.newInstance(selectedTrend));
   }
 
   @Override
@@ -176,7 +170,7 @@ public class MainActivity extends BaseActivity implements
     Log.d(TAG, "++onLineChartInit(boolean)");
     if (!isSuccessful) {
       showSnackbar(getString(R.string.err_trend_data_load_failed));
-      replaceFragment(MatchListFragment.newInstance());
+      replaceFragment(CardSummaryFragment.newInstance());
     }
   }
 

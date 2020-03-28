@@ -39,10 +39,6 @@ public class BrokerageFragment extends Fragment {
 
   private static final String TAG = BaseActivity.BASE_TAG + "BrokerageFragment";
 
-  public enum BrokerageType {
-    Teams
-  }
-
   public interface OnBrokerageListener {
 
     void onBrokerageTeamsRetrieved(List<TeamEntity> teamEntityList);

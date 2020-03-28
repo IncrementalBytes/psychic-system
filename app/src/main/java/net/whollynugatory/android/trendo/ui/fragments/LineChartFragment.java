@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Ryan Ward
+ * Copyright 2020 Ryan Ward
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
 package net.whollynugatory.android.trendo.ui.fragments;
 
 import android.content.Context;
@@ -21,6 +22,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,8 +43,10 @@ import java.util.Locale;
 
 import net.whollynugatory.android.trendo.R;
 import net.whollynugatory.android.trendo.common.Trend;
+import net.whollynugatory.android.trendo.db.viewmodel.TrendoViewModel;
 import net.whollynugatory.android.trendo.db.views.TrendDetails;
 import net.whollynugatory.android.trendo.ui.BaseActivity;
+import net.whollynugatory.android.trendo.utils.PreferenceUtils;
 
 public class LineChartFragment extends Fragment {
 
@@ -55,32 +59,20 @@ public class LineChartFragment extends Fragment {
 
   private OnLineChartListener mCallback;
 
+  private TrendoViewModel mTrendoViewModel;
+
   private LineChart mLineChart;
 
-  private LineDataSet mAheadDataSet;
-  private List<Entry> mAheadEntries;
-  private LineDataSet mBehindDataSet;
-  private List<Entry> mBehindEntries;
   private LineDataSet mMainDataSet;
   private List<Entry> mMainEntries;
 
-  private ArrayList<TrendDetails> mTrendsAhead;
-  private ArrayList<TrendDetails> mTrendsBehind;
-  private ArrayList<TrendDetails> mTrends;
   private Trend mSelectedTrend;
 
-  public static LineChartFragment newInstance(
-    ArrayList<TrendDetails> trends,
-    ArrayList<TrendDetails> trendsAhead,
-    ArrayList<TrendDetails> trendsBehind,
-    Trend selectedTrend) {
+  public static LineChartFragment newInstance(Trend selectedTrend) {
 
-    Log.d(TAG, "++newInstance(ArrayList<TrendEntity>, ArrayList<TrendEntity>, ArrayList<TrendEntity>, Trend)");
+    Log.d(TAG, "++newInstance(Trend)");
     LineChartFragment fragment = new LineChartFragment();
     Bundle args = new Bundle();
-    args.putSerializable(BaseActivity.ARG_TRENDS, trends);
-    args.putSerializable(BaseActivity.ARG_TRENDS_AHEAD, trendsAhead);
-    args.putSerializable(BaseActivity.ARG_TRENDS_BEHIND, trendsBehind);
     args.putSerializable(BaseActivity.ARG_TREND, selectedTrend);
     fragment.setArguments(args);
     return fragment;
@@ -90,14 +82,18 @@ public class LineChartFragment extends Fragment {
       Fragment Override(s)
    */
   @Override
+  public void onActivityCreated(Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+
+    Log.d(TAG, "++onActivityCreated()");
+    updateUI();
+  }
+
+  @Override
   public void onAttach(@NonNull Context context) {
     super.onAttach(context);
 
     Log.d(TAG, "++onAttach(Context)");
-    mAheadEntries = new ArrayList<>();
-    mBehindEntries = new ArrayList<>();
-    mMainEntries = new ArrayList<>();
-
     try {
       mCallback = (OnLineChartListener) context;
     } catch (ClassCastException e) {
@@ -112,148 +108,13 @@ public class LineChartFragment extends Fragment {
 
     Log.d(TAG, "++onCreate(Bundle)");
     Bundle arguments = getArguments();
-    if (arguments == null) {
-      Log.w(TAG, "Did not receive details about match.");
-      mCallback.onLineChartInit(false);
-      return;
-    }
-
-    if (arguments.containsKey(BaseActivity.ARG_TRENDS_AHEAD)) {
-      mTrendsAhead = new ArrayList<>();
-      try {
-        if (arguments.getSerializable(BaseActivity.ARG_TRENDS_AHEAD) != null) {
-          mTrendsAhead = (ArrayList<TrendDetails>) arguments.getSerializable(BaseActivity.ARG_TRENDS_AHEAD);
-        }
-      } catch (ClassCastException cce) {
-        Log.d(TAG, cce.getMessage());
-      }
-
-      if (mTrendsAhead == null) {
-        Log.w(TAG, "Ahead Trend data unexpected.");
-      }
-    }
-
-    if (arguments.containsKey(BaseActivity.ARG_TRENDS_BEHIND)) {
-      mTrendsBehind = new ArrayList<>();
-      try {
-        if (arguments.getSerializable(BaseActivity.ARG_TRENDS_BEHIND) != null) {
-          mTrendsBehind = (ArrayList<TrendDetails>) arguments.getSerializable(BaseActivity.ARG_TRENDS_BEHIND);
-        }
-      } catch (ClassCastException cce) {
-        Log.d(TAG, cce.getMessage());
-      }
-
-      if (mTrendsBehind == null) {
-        Log.w(TAG, "Trend data unexpected.");
-        return;
-      }
-    }
-
-    if (!arguments.containsKey(BaseActivity.ARG_TRENDS)) {
-      Log.e(TAG, "Did not receive trend data.");
-      return;
-    }
-
-    mTrends = new ArrayList<>();
-    try {
-      if (arguments.getSerializable(BaseActivity.ARG_TREND) != null) {
-        mTrends = (ArrayList<TrendDetails>) arguments.getSerializable(BaseActivity.ARG_TRENDS);
+    if (arguments != null) {
+      if (arguments.containsKey(BaseActivity.ARG_TREND)) {
         mSelectedTrend = (Trend) arguments.getSerializable(BaseActivity.ARG_TREND);
       }
-    } catch (ClassCastException cce) {
-      Log.d(TAG, cce.getMessage());
     }
 
-    if (mTrends == null || mSelectedTrend == null) {
-      Log.e(TAG, "Trend data unexpected.");
-      return;
-    }
-
-    // build the entries based on trend keys
-    for (TrendDetails trend : mTrends) {
-      switch (mSelectedTrend) {
-        case GoalDifferential:
-          mMainEntries.add(new Entry(trend.MatchNumber, trend.GoalDifferential));
-          break;
-        case GoalsAgainst:
-          mMainEntries.add(new Entry(trend.MatchNumber, trend.GoalsAgainst));
-          break;
-        case GoalsFor:
-          mMainEntries.add(new Entry(trend.MatchNumber, trend.GoalsFor));
-          break;
-        case MaxPointsPossible:
-          mMainEntries.add(new Entry(trend.MatchNumber, trend.MaxPointsPossible));
-          break;
-        case PointsByAverage:
-          mMainEntries.add(new Entry(trend.MatchNumber, trend.PointsByAverage));
-          break;
-        case PointsPerGame:
-          double temp = trend.PointsPerGame;
-          mMainEntries.add(new Entry(trend.MatchNumber, (float) temp));
-          break;
-        case TotalPoints:
-          mMainEntries.add(new Entry(trend.MatchNumber, trend.TotalPoints));
-          break;
-      }
-    }
-
-    if (mTrendsAhead != null) {
-      for (TrendDetails trendAhead : mTrendsAhead) {
-        switch (mSelectedTrend) {
-          case GoalDifferential:
-            mAheadEntries.add(new Entry(trendAhead.MatchNumber, trendAhead.GoalDifferential));
-            break;
-          case GoalsAgainst:
-            mAheadEntries.add(new Entry(trendAhead.MatchNumber, trendAhead.GoalsAgainst));
-            break;
-          case GoalsFor:
-            mAheadEntries.add(new Entry(trendAhead.MatchNumber, trendAhead.GoalsFor));
-            break;
-          case MaxPointsPossible:
-            mAheadEntries.add(new Entry(trendAhead.MatchNumber, trendAhead.MaxPointsPossible));
-            break;
-          case PointsByAverage:
-            mAheadEntries.add(new Entry(trendAhead.MatchNumber, trendAhead.PointsByAverage));
-            break;
-          case PointsPerGame:
-            double temp = trendAhead.PointsPerGame;
-            mAheadEntries.add(new Entry(trendAhead.MatchNumber, (float) temp));
-            break;
-          case TotalPoints:
-            mAheadEntries.add(new Entry(trendAhead.MatchNumber, trendAhead.TotalPoints));
-            break;
-        }
-      }
-    }
-
-    if (mTrendsBehind != null) {
-      for (TrendDetails trendBehind : mTrendsBehind) {
-        switch (mSelectedTrend) {
-          case GoalDifferential:
-            mBehindEntries.add(new Entry(trendBehind.MatchNumber, trendBehind.GoalDifferential));
-            break;
-          case GoalsAgainst:
-            mBehindEntries.add(new Entry(trendBehind.MatchNumber, trendBehind.GoalsAgainst));
-            break;
-          case GoalsFor:
-            mBehindEntries.add(new Entry(trendBehind.MatchNumber, trendBehind.GoalsFor));
-            break;
-          case MaxPointsPossible:
-            mBehindEntries.add(new Entry(trendBehind.MatchNumber, trendBehind.MaxPointsPossible));
-            break;
-          case PointsByAverage:
-            mBehindEntries.add(new Entry(trendBehind.MatchNumber, trendBehind.PointsByAverage));
-            break;
-          case PointsPerGame:
-            double temp = trendBehind.PointsPerGame;
-            mBehindEntries.add(new Entry(trendBehind.MatchNumber, (float) temp));
-            break;
-          case TotalPoints:
-            mBehindEntries.add(new Entry(trendBehind.MatchNumber, trendBehind.TotalPoints));
-            break;
-        }
-      }
-    }
+    mTrendoViewModel = new ViewModelProvider(this).get(TrendoViewModel.class);
   }
 
   @Override
@@ -262,133 +123,6 @@ public class LineChartFragment extends Fragment {
     Log.d(TAG, "++onCreateView(LayoutInflater, ViewGroup, Bundle)");
     View view = inflater.inflate(R.layout.fragment_line_chart, container, false);
     mLineChart = view.findViewById(R.id.line_chart);
-
-    if (mAheadEntries.size() > 0) { // add data and customize line with team ahead of target
-      mAheadDataSet = new LineDataSet(
-        mAheadEntries,
-        String.format(
-          Locale.ENGLISH,
-          "%d. %s",
-//          mTrendsAhead.get(0).TablePosition,
-          0, // TODO: replace
-          mTrendsAhead.get(0).ShortName));
-      mAheadDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
-      if (getContext() != null) {
-        mAheadDataSet.setColor(ContextCompat.getColor(getContext(), R.color.ahead));
-      } else {
-        mAheadDataSet.setColor(Color.GREEN);
-      }
-
-      mAheadDataSet.setLineWidth(2.0f);
-      mAheadDataSet.disableDashedLine();
-      mAheadDataSet.setDrawCircles(false);
-      mAheadDataSet.setDrawValues(false);
-      mAheadDataSet.setHighlightEnabled(true);
-      mAheadDataSet.setDrawHighlightIndicators(true);
-      mAheadDataSet.setDrawHorizontalHighlightIndicator(false);
-    }
-
-    if (mBehindEntries.size() > 0) { // add data and customize line with team behind target
-      mBehindDataSet = new LineDataSet(
-        mBehindEntries,
-        String.format(
-          Locale.ENGLISH,
-          "%d. %s",
-//          mTrendsBehind.get(0).TablePosition,
-          0, // TODO: replace
-          mTrendsBehind.get(0).ShortName));
-      mBehindDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
-      if (getContext() != null) {
-        mBehindDataSet.setColor(ContextCompat.getColor(getContext(), R.color.behind));
-      } else {
-        mBehindDataSet.setColor(Color.YELLOW);
-      }
-
-      mBehindDataSet.setLineWidth(2.0f);
-      mBehindDataSet.disableDashedLine();
-      mBehindDataSet.setDrawCircles(false);
-      mBehindDataSet.setDrawValues(false);
-      mBehindDataSet.setHighlightEnabled(true);
-      mBehindDataSet.setDrawHighlightIndicators(true);
-      mBehindDataSet.setDrawHorizontalHighlightIndicator(false);
-    }
-
-    mMainDataSet = new LineDataSet(
-      mMainEntries,
-      String.format(
-        Locale.ENGLISH,
-        "%d. %s",
-//        mTrends.get(0).TablePosition,
-        0, // TODO: replace
-        mTrends.get(0).ShortName));
-    mMainDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
-    if (getContext() != null) {
-      mMainDataSet.setColor(ContextCompat.getColor(getContext(), R.color.favorite));
-    } else {
-      mMainDataSet.setColor(Color.YELLOW);
-    }
-
-    mMainDataSet = new LineDataSet(
-      mMainEntries,
-      String.format(
-        Locale.ENGLISH,
-        "%d. %s",
-//        mTrends.get(0).TablePosition,
-        0, // TODO: replace
-        mTrends.get(0).ShortName));
-    mMainDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
-    if (getContext() != null) {
-      mMainDataSet.setColor(ContextCompat.getColor(getContext(), R.color.favorite));
-    } else {
-      mMainDataSet.setColor(Color.YELLOW);
-    }
-
-    mMainDataSet.setLineWidth(2.0f);
-    mMainDataSet.disableDashedLine();
-    mMainDataSet.setDrawCircles(false);
-    mMainDataSet.setDrawValues(false);
-    mMainDataSet.setHighlightEnabled(true);
-    mMainDataSet.setDrawHighlightIndicators(true);
-    mMainDataSet.setDrawHorizontalHighlightIndicator(false);
-
-    mLineChart.getDescription().setEnabled(false);
-
-    YAxis leftAxis = mLineChart.getAxisLeft();
-    if (getContext() != null) {
-      leftAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.primaryText));
-      leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-      leftAxis.setDrawGridLines(false);
-      leftAxis.setDrawZeroLine(true);
-
-      YAxis rightAxis = mLineChart.getAxisRight();
-      rightAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.primaryText));
-      rightAxis.setEnabled(true);
-
-      XAxis bottomAxis = mLineChart.getXAxis();
-      bottomAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.primaryText));
-      bottomAxis.setDrawGridLines(false);
-      bottomAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-      bottomAxis.setEnabled(false);
-
-      Legend legend = mLineChart.getLegend();
-      legend.setDrawInside(false);
-      legend.setEnabled(true);
-      legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
-      legend.setMaxSizePercent(.80f);
-      legend.setOrientation(Legend.LegendOrientation.VERTICAL);
-      legend.setTextColor(ContextCompat.getColor(getContext(), R.color.primaryText));
-      legend.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
-      legend.setWordWrapEnabled(true);
-      legend.setXEntrySpace(10f);
-      legend.setYEntrySpace(10f);
-
-      mCallback.onLineChartInit(true);
-      updateUI();
-    } else {
-      Log.e(TAG, "Could not set chart resources; context is null.");
-      mCallback.onLineChartInit(false);
-    }
-
     return view;
   }
 
@@ -397,38 +131,111 @@ public class LineChartFragment extends Fragment {
     super.onDestroy();
 
     Log.d(TAG, "++onDestroy()");
-    mAheadDataSet = null;
-    mAheadEntries = null;
-    mBehindDataSet = null;
-    mBehindEntries = null;
     mMainEntries = null;
     mMainDataSet = null;
-    mTrends = null;
-    mTrendsAhead = null;
-    mTrendsBehind = null;
   }
 
   /*
-      Private Method(s)
+    Private Method(s)
    */
   private void updateUI() {
 
     Log.d(TAG, "++updateUI()");
-    List<ILineDataSet> dataSets = new ArrayList<>();
-    if (mAheadEntries.size() > 0) {
-      dataSets.add(mAheadDataSet);
-    }
+    mTrendoViewModel.getAllTrends(PreferenceUtils.getTeam(getContext()), PreferenceUtils.getSeason(getContext())).observe(
+      getViewLifecycleOwner(),
+      trendDetailsList -> {
+        mMainEntries = new ArrayList<>();
 
-    if (mMainEntries.size() > 0) {
-      dataSets.add(mMainDataSet);
-    }
+        // build the entries based on trend keys
+        for (TrendDetails trend : trendDetailsList) {
+          switch (mSelectedTrend) {
+            case GoalDifferential:
+              mMainEntries.add(new Entry(trend.MatchNumber, trend.GoalDifferential));
+              break;
+            case GoalsAgainst:
+              mMainEntries.add(new Entry(trend.MatchNumber, trend.GoalsAgainst));
+              break;
+            case GoalsFor:
+              mMainEntries.add(new Entry(trend.MatchNumber, trend.GoalsFor));
+              break;
+            case MaxPointsPossible:
+              mMainEntries.add(new Entry(trend.MatchNumber, trend.MaxPointsPossible));
+              break;
+            case PointsByAverage:
+              mMainEntries.add(new Entry(trend.MatchNumber, trend.PointsByAverage));
+              break;
+            case PointsPerGame:
+              double temp = trend.PointsPerGame;
+              mMainEntries.add(new Entry(trend.MatchNumber, (float) temp));
+              break;
+            case TotalPoints:
+              mMainEntries.add(new Entry(trend.MatchNumber, trend.TotalPoints));
+              break;
+          }
+        }
 
-    if (mBehindEntries.size() > 0) {
-      dataSets.add(mBehindDataSet);
-    }
+        mMainDataSet = new LineDataSet(mMainEntries, trendDetailsList.get(0).ShortName);
+        mMainDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+        if (getContext() != null) {
+          mMainDataSet.setColor(ContextCompat.getColor(getContext(), R.color.favorite));
+        } else {
+          mMainDataSet.setColor(Color.YELLOW);
+        }
 
-    LineData lineData = new LineData(dataSets);
-    mLineChart.setData(lineData);
-    mLineChart.invalidate(); // refresh
+        mMainDataSet.setLineWidth(2.0f);
+        mMainDataSet.disableDashedLine();
+        mMainDataSet.setDrawCircles(false);
+        mMainDataSet.setDrawValues(false);
+        mMainDataSet.setHighlightEnabled(true);
+        mMainDataSet.setDrawHighlightIndicators(true);
+        mMainDataSet.setDrawHorizontalHighlightIndicator(false);
+
+        mLineChart.getDescription().setEnabled(false);
+
+        YAxis leftAxis = mLineChart.getAxisLeft();
+        if (getContext() != null) {
+          leftAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.primaryText));
+          leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+          leftAxis.setDrawGridLines(false);
+          leftAxis.setDrawZeroLine(true);
+
+          YAxis rightAxis = mLineChart.getAxisRight();
+          rightAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.primaryText));
+          rightAxis.setEnabled(true);
+
+          XAxis bottomAxis = mLineChart.getXAxis();
+          bottomAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.primaryText));
+          bottomAxis.setDrawGridLines(false);
+          bottomAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+          bottomAxis.setEnabled(false);
+
+          Legend legend = mLineChart.getLegend();
+          legend.setDrawInside(false);
+          legend.setEnabled(true);
+          legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+          legend.setMaxSizePercent(.80f);
+          legend.setOrientation(Legend.LegendOrientation.VERTICAL);
+          legend.setTextColor(ContextCompat.getColor(getContext(), R.color.primaryText));
+          legend.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
+          legend.setWordWrapEnabled(true);
+          legend.setXEntrySpace(10f);
+          legend.setYEntrySpace(10f);
+
+          mCallback.onLineChartInit(true);
+        } else {
+          Log.e(TAG, "Could not set chart resources; context is null.");
+          mCallback.onLineChartInit(false);
+        }
+
+        List<ILineDataSet> dataSets = new ArrayList<>();
+
+        if (mMainEntries.size() > 0) {
+          dataSets.add(mMainDataSet);
+        }
+
+        LineData lineData = new LineData(dataSets);
+        mLineChart.setData(lineData);
+        mLineChart.invalidate(); // refresh
+      });
   }
 }

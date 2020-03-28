@@ -21,6 +21,7 @@ import net.whollynugatory.android.trendo.ui.BaseActivity;
 import androidx.room.DatabaseView;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Locale;
 
 @DatabaseView(
@@ -78,5 +79,20 @@ public class MatchSummaryDetails implements Serializable {
       AwayName,
       HomeScore,
       AwayScore);
+  }
+
+  /*
+    Public Method(s)
+   */
+  public String matchDateForDisplay() {
+
+    Calendar temp = Calendar.getInstance();
+    temp.set(Calendar.MONTH, Month - 1);
+    return String.format(
+      Locale.US,
+      "%s %d, %d",
+      temp.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.US),
+      Day,
+      Year);
   }
 }
