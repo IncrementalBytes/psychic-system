@@ -49,6 +49,14 @@
       "defunct":false
     },
     {
+      "id":"d60e2357-333b-4690-a4c2-ff9e3b4d02f9",
+      "conference_id":"59b2bb04-8736-484f-a2e3-6fca89560770",
+      "name":"Inter Miami CF",
+      "short_name":"MIA",
+      "established":2020,
+      "defunct":false
+    },
+    {
       "id":"93eba939-30e6-4702-b854-87051111edbd",
       "conference_id":"59b2bb04-8736-484f-a2e3-6fca89560770",
       "name":"Montreal Impact",
@@ -150,6 +158,14 @@
       "name":"Minnesota United FC",
       "short_name":"MIN",
       "established":2017,
+      "defunct":false
+    },
+    {
+      "id":"324fb475-b10b-4e7f-a51d-40f3e78ee0d8",
+      "conference_id":"78b1b08b-2237-420c-adc2-9c3b26ace530",
+      "name":"Nashville SC",
+      "short_name":"NSH",
+      "established":2020,
       "defunct":false
     },
     {

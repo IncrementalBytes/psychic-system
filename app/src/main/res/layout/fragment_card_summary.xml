@@ -83,6 +83,7 @@
         android:textColor="@color/primaryAccentText"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:elevation="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
       <TextView
@@ -94,6 +95,7 @@
         android:textSize="18sp"
         android:textStyle="italic"
         android:gravity="center"
+        android:elevation="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
@@ -137,6 +139,7 @@
         android:textColor="@color/primaryAccentText"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:elevation="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
       <TextView
@@ -148,6 +151,7 @@
         android:textSize="18sp"
         android:textStyle="italic"
         android:gravity="center"
+        android:elevation="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
@@ -192,6 +196,7 @@
         android:textColor="@color/primaryAccentText"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:elevation="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
       <TextView
@@ -203,6 +208,7 @@
         android:textSize="18sp"
         android:textStyle="italic"
         android:gravity="center"
+        android:elevation="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
@@ -247,6 +253,7 @@
         android:textColor="@color/primaryAccentText"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:elevation="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
       <TextView
@@ -258,6 +265,7 @@
         android:textSize="18sp"
         android:textStyle="italic"
         android:gravity="center"
+        android:elevation="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
@@ -302,6 +310,7 @@
         android:textColor="@color/primaryAccentText"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:elevation="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
       <TextView
@@ -313,6 +322,7 @@
         android:textSize="18sp"
         android:textStyle="italic"
         android:gravity="center"
+        android:elevation="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
@@ -356,6 +366,7 @@
         android:textColor="@color/primaryAccentText"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:elevation="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
       <TextView
@@ -367,6 +378,7 @@
         android:textSize="18sp"
         android:textStyle="italic"
         android:gravity="center"
+        android:elevation="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
@@ -410,6 +422,7 @@
         android:textColor="@color/primaryAccentText"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:elevation="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
       <TextView
@@ -421,6 +434,7 @@
         android:textSize="18sp"
         android:textStyle="italic"
         android:gravity="center"
+        android:elevation="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

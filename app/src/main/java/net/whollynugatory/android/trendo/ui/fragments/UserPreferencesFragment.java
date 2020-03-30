@@ -138,7 +138,7 @@ public class UserPreferencesFragment extends PreferenceFragmentCompat {
       seasonsPreference.setSummary(String.valueOf(season));
     }
 
-    String[] seasons = getResources().getStringArray(R.array.year_list_values);
+    String[] seasons = getResources().getStringArray(R.array.seasons);
     seasonsPreference.setEntries(seasons);
     seasonsPreference.setEntryValues(seasons);
     seasonsPreference.setOnPreferenceChangeListener(

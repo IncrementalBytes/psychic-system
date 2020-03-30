@@ -9,9 +9,7 @@
   <androidx.preference.ListPreference
     android:key="@string/pref_key_season"
     android:summary="@string/pref_summary_season_missing"
-    android:title="@string/pref_title_season"
-    android:entries="@array/year_list_entries"
-    android:entryValues="@array/year_list_values"/>
+    android:title="@string/pref_title_season"/>
 
   <androidx.preference.PreferenceCategory android:title="@string/pref_category_about">
     <androidx.preference.EditTextPreference

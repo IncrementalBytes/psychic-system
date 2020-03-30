@@ -66,7 +66,7 @@ public class TrendTableAsync extends AsyncTask<Void, Void, Void> {
     long prevGoalDifferential = 0;
     long prevGoalFor = 0;
     long prevTotalPoints = 0;
-    long totalMatches = 34;
+    long totalMatches = 34; // TODO: this might change in the future
     long matchesRemaining = totalMatches;
     int matchNumber = 0;
     long totalWins = 0;

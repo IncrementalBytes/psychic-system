@@ -22,17 +22,12 @@ public class BaseActivity extends AppCompatActivity {
 
     public static final String BASE_TAG = "Trendo::";
 
-    public static final String ARG_BROKERAGE_TYPE = "brokerage_type";
     public static final String ARG_TEAMS = "teams";
     public static final String ARG_TREND = "trend";
-    public static final String ARG_TRENDS = "trends";
-    public static final String ARG_TRENDS_AHEAD = "ahead";
-    public static final String ARG_TRENDS_BEHIND = "behind";
 
     public static final String DEFAULT_CONFERENCE_DATA = "Conferences.json";
     public static final String DEFAULT_DATE = "00000101";
     public static final String DEFAULT_ID = "00000000-0000-0000-0000-000000000000";
-    public static final String DEFAULT_UID = "0000000000000000000000000000";
     public static final int DEFAULT_SEASON = 2019;
     public static final String DEFAULT_TEAM_DATA = "Teams.json";
 
