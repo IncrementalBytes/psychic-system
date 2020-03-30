@@ -33,10 +33,11 @@ public class TrendTableAsync extends AsyncTask<Void, Void, Void> {
 
   private static final String TAG = BaseActivity.BASE_TAG + "TrendTableAsync";
 
-  private List<MatchSummaryEntity> mMatchSummaryEntityList;
-  private String mTeamId;
-  private TrendRepository mTrendRepository;
-  private WeakReference<DataActivity> mWeakReference;
+  private final List<MatchSummaryEntity> mMatchSummaryEntityList;
+  private final int mSeason;
+  private final String mTeamId;
+  private final TrendRepository mTrendRepository;
+  private final WeakReference<DataActivity> mWeakReference;
 
   public TrendTableAsync(
     DataActivity context,
@@ -46,6 +47,7 @@ public class TrendTableAsync extends AsyncTask<Void, Void, Void> {
     int season) {
 
     mMatchSummaryEntityList = matchSummaryEntityList;
+    mSeason = season;
     mTeamId = teamId;
     mTrendRepository = repository;
     mWeakReference = new WeakReference<>(context);
@@ -55,6 +57,11 @@ public class TrendTableAsync extends AsyncTask<Void, Void, Void> {
   protected Void doInBackground(final Void... params) {
 
     Log.d(TAG, "Generating trends");
+    if (mTrendRepository.count(mTeamId, mSeason) > 0) {
+      Log.d(TAG, "Trend data exists.");
+      return null;
+    }
+
     long prevGoalAgainst = 0;
     long prevGoalDifferential = 0;
     long prevGoalFor = 0;
@@ -79,15 +86,15 @@ public class TrendTableAsync extends AsyncTask<Void, Void, Void> {
         goalDifferential = entity.HomeScore - entity.AwayScore;
         goalsFor = entity.HomeScore;
         if (entity.HomeScore > entity.AwayScore) {
-          pointsFromMatch = (long) 3;
+          pointsFromMatch = 3;
           totalWins++;
           Log.d(TAG, String.format("%s won: %d", mTeamId, pointsFromMatch));
         } else if (entity.HomeScore < entity.AwayScore) {
-          pointsFromMatch = (long) 0;
+          pointsFromMatch = 0;
           totalLosses++;
           Log.d(TAG, String.format("%s lost: %d", mTeamId, pointsFromMatch));
         } else {
-          pointsFromMatch = (long) 1;
+          pointsFromMatch = 1;
           totalDraws++;
           Log.d(TAG, String.format("%s tied: %d", mTeamId, pointsFromMatch));
         }
@@ -97,15 +104,15 @@ public class TrendTableAsync extends AsyncTask<Void, Void, Void> {
         goalDifferential = entity.AwayScore - entity.HomeScore;
         goalsFor = entity.AwayScore;
         if (entity.AwayScore > entity.HomeScore) {
-          pointsFromMatch = (long) 3;
+          pointsFromMatch = 3;
           totalWins++;
           Log.d(TAG, String.format("%s won: %d", mTeamId, pointsFromMatch));
         } else if (entity.AwayScore < entity.HomeScore) {
-          pointsFromMatch = (long) 0;
+          pointsFromMatch = 0;
           totalLosses++;
           Log.d(TAG, String.format("%s lost: %d", mTeamId, pointsFromMatch));
         } else {
-          pointsFromMatch = (long) 1;
+          pointsFromMatch = 1;
           totalDraws++;
           Log.d(TAG, String.format("%s tied: %d", mTeamId, pointsFromMatch));
         }

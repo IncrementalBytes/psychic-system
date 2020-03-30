@@ -33,7 +33,7 @@ public class ConferenceRepository {
 
   private static ConferenceRepository sInstance;
 
-  private ConferenceDao mConferenceDao;
+  private final ConferenceDao mConferenceDao;
 
   private ConferenceRepository(ConferenceDao conferenceDao) {
 

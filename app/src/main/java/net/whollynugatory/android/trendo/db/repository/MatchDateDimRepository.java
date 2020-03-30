@@ -28,7 +28,7 @@ public class MatchDateDimRepository {
 
   private static MatchDateDimRepository sInstance;
 
-  private MatchDateDimDao mMatchDateDimDao;
+  private final MatchDateDimDao mMatchDateDimDao;
 
   private MatchDateDimRepository(MatchDateDimDao matchDateDimDao) {
 

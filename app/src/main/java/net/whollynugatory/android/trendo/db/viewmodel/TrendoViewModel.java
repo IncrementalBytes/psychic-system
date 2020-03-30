@@ -35,10 +35,10 @@ import androidx.lifecycle.LiveData;
 
 public class TrendoViewModel extends AndroidViewModel {
 
-  private ConferenceRepository mConferenceRepository;
-  private MatchSummaryDetailsRepository mMatchSummaryDetailsRepository;
-  private TeamRepository mTeamRepository;
-  private TrendDetailsRepository mTrendDetailsRepository;
+  private final ConferenceRepository mConferenceRepository;
+  private final MatchSummaryDetailsRepository mMatchSummaryDetailsRepository;
+  private final TeamRepository mTeamRepository;
+  private final TrendDetailsRepository mTrendDetailsRepository;
 
   public TrendoViewModel(Application application) {
     super(application);

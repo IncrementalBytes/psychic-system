@@ -65,19 +65,19 @@ public class TeamEntity implements Serializable {
   public boolean Defunct;
 
   @Ignore
-  public long GoalDifferential;
+  public final long GoalDifferential;
 
   @Ignore
-  public long GoalsScored;
+  public final long GoalsScored;
 
   @Ignore
-  public int TablePosition;
+  public final int TablePosition;
 
   @Ignore
-  public long TotalPoints;
+  public final long TotalPoints;
 
   @Ignore
-  public long TotalWins;
+  public final long TotalWins;
 
   public TeamEntity() {
 

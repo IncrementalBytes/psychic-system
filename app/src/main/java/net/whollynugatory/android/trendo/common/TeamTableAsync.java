@@ -44,7 +44,7 @@ public class TeamTableAsync extends AsyncTask<Void, Void, List<TeamEntity>> {
 
   private static final String TAG = BaseActivity.BASE_TAG + "TeamTableAsync";
 
-  private WeakReference<DataActivity> mWeakReference;
+  private final WeakReference<DataActivity> mWeakReference;
 
   private File mTeamData;
   private final TeamRepository mRepository;

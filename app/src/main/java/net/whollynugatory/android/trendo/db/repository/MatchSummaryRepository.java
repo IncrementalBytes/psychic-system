@@ -31,7 +31,7 @@ public class MatchSummaryRepository {
 
   private static MatchSummaryRepository sInstance;
 
-  private MatchSummaryDao mMatchSummaryDao;
+  private final MatchSummaryDao mMatchSummaryDao;
 
   private MatchSummaryRepository(MatchSummaryDao matchSummaryDao) {
 
@@ -50,6 +50,11 @@ public class MatchSummaryRepository {
     }
 
     return sInstance;
+  }
+
+  public int count(int season) {
+
+    return mMatchSummaryDao.count(season);
   }
 
   public void insert(MatchSummaryEntity matchSummary) {

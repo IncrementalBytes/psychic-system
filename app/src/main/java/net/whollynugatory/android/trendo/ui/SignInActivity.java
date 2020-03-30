@@ -18,6 +18,10 @@ package net.whollynugatory.android.trendo.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.util.Log;
@@ -25,12 +29,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ProgressBar;
 
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -46,7 +47,7 @@ public class SignInActivity extends BaseActivity implements OnClickListener {
   private ProgressBar mProgressBar;
 
   private FirebaseAuth mAuth;
-  private GoogleApiClient mGoogleApiClient;
+  private GoogleSignInClient mGoogleSignInClient;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -63,24 +64,12 @@ public class SignInActivity extends BaseActivity implements OnClickListener {
 
     mAuth = FirebaseAuth.getInstance();
 
-    GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+    GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
       .requestIdToken(getString(R.string.default_web_client_id))
       .requestEmail()
       .build();
 
-    mGoogleApiClient = new GoogleApiClient.Builder(this)
-      .enableAutoManage(this, connectionResult -> {
-        Log.d(TAG, "++onConnectionFailed(ConnectionResult)");
-        Log.d(
-          TAG,
-          connectionResult.getErrorMessage() != null ? connectionResult.getErrorMessage() : "Connection result was null.");
-        Snackbar.make(
-          findViewById(R.id.activity_sign_in),
-          connectionResult.getErrorMessage() != null ? connectionResult.getErrorMessage() : "Connection result was null.",
-          Snackbar.LENGTH_LONG).show();
-      })
-      .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-      .build();
+    mGoogleSignInClient = GoogleSignIn.getClient(this, options);
   }
 
   @Override
@@ -115,9 +104,9 @@ public class SignInActivity extends BaseActivity implements OnClickListener {
 
     Log.d(TAG, "++onActivityResult(int, int, Intent)");
     if (requestCode == RC_SIGN_IN) {
-      GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-      if (result.isSuccess()) {
-        GoogleSignInAccount account = result.getSignInAccount();
+      Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+      if (task.isSuccessful()) {
+        GoogleSignInAccount account = task.getResult();
         if (account != null) {
           firebaseAuthenticateWithGoogle(account);
         } else {
@@ -125,7 +114,7 @@ public class SignInActivity extends BaseActivity implements OnClickListener {
           Snackbar.make(findViewById(R.id.activity_sign_in), "Could not get sign-in account.", Snackbar.LENGTH_LONG).show();
         }
       } else {
-        Log.e(TAG, "Getting task result failed " + result.getStatus());
+        Log.e(TAG, "Sign-in task failed. ", task.getException());
         Snackbar.make(findViewById(R.id.activity_sign_in), "Could not sign-in with Google.", Snackbar.LENGTH_SHORT).show();
       }
     }
@@ -157,7 +146,7 @@ public class SignInActivity extends BaseActivity implements OnClickListener {
   private void signInWithGoogle() {
 
     Log.d(TAG, "++signInWithGoogle()");
-    Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+    Intent signInIntent = mGoogleSignInClient.getSignInIntent();
     startActivityForResult(signInIntent, RC_SIGN_IN);
   }
 

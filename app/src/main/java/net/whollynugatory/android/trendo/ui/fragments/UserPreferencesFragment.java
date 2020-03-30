@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Ryan Ward
+ * Copyright 2020 Ryan Ward
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -55,6 +55,7 @@ public class UserPreferencesFragment extends PreferenceFragmentCompat {
   /*
       Fragment Override(s)
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void onAttach(@NonNull Context context) {
     super.onAttach(context);
@@ -137,7 +138,7 @@ public class UserPreferencesFragment extends PreferenceFragmentCompat {
       seasonsPreference.setSummary(String.valueOf(season));
     }
 
-    String[] seasons = getResources().getStringArray(R.array.seasons);
+    String[] seasons = getResources().getStringArray(R.array.year_list_values);
     seasonsPreference.setEntries(seasons);
     seasonsPreference.setEntryValues(seasons);
     seasonsPreference.setOnPreferenceChangeListener(

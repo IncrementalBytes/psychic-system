@@ -32,7 +32,7 @@ public class MatchSummaryDetailsRepository {
 
   private static MatchSummaryDetailsRepository sInstance;
 
-  private MatchSummaryDetailsDao mMatchSummaryDetailsDao;
+  private final MatchSummaryDetailsDao mMatchSummaryDetailsDao;
 
   private MatchSummaryDetailsRepository(MatchSummaryDetailsDao matchSummaryDetailDao) {
 

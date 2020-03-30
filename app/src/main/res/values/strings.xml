@@ -37,9 +37,4 @@
   <string name="title_teams">Teams:</string>
   <string name="title_trends">Trends:</string>
 
-  <string-array name="seasons">
-    <item>2017</item>
-    <item>2018</item>
-    <item>2019</item>
-  </string-array>
 </resources>

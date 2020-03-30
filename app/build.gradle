@@ -55,12 +55,10 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-            buildConfigField 'Boolean', 'enableCrashlytics', 'true'
         }
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField 'Boolean', 'enableCrashlytics', 'false'
         }
     }
     packagingOptions {
@@ -121,9 +119,6 @@ dependencies {
     // Lifecycle
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
     annotationProcessor "androidx.lifecycle:lifecycle-common-java8:2.2.0"
-
-    // Crashlytics
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
     // Testing dependencies
     testImplementation 'org.robolectric:robolectric:4.2.1'

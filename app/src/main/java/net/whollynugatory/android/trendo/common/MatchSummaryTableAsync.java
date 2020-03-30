@@ -47,18 +47,24 @@ public class MatchSummaryTableAsync extends AsyncTask<Void, Void, List<MatchSumm
 
   private static final String TAG = BaseActivity.BASE_TAG + "MatchSummaryTableAsync";
 
-  private WeakReference<DataActivity> mWeakReference;
-
   private final MatchDateDimRepository mMatchDateDimRepository;
   private final MatchSummaryRepository mMatchSummaryRepository;
-  private File mMatchSummaryData;
 
-  public MatchSummaryTableAsync(DataActivity context, MatchSummaryRepository repository, MatchDateDimRepository dimRepository, int season) {
+  private File mMatchSummaryData;
+  private final int mSeason;
+  private final WeakReference<DataActivity> mWeakReference;
+
+  public MatchSummaryTableAsync(
+    DataActivity context,
+    MatchSummaryRepository repository,
+    MatchDateDimRepository dimRepository,
+    int season) {
 
     mWeakReference = new WeakReference<>(context);
     mMatchDateDimRepository = dimRepository;
     mMatchSummaryRepository = repository;
-    try (InputStream inputStream = context.getAssets().open(season + ".json")) {
+    mSeason = season;
+    try (InputStream inputStream = context.getAssets().open(mSeason + ".json")) {
       mMatchSummaryData = File.createTempFile(UUID.randomUUID().toString(), ".json");
       try (FileOutputStream outputStream = new FileOutputStream(mMatchSummaryData)) {
         byte[] buf = new byte[1024];
@@ -70,7 +76,7 @@ public class MatchSummaryTableAsync extends AsyncTask<Void, Void, List<MatchSumm
         Log.w(TAG, "Could not get output stream.", ioe);
       }
     } catch (IOException ioe) {
-      Log.w(TAG, "Could not access data for: " + season);
+      Log.w(TAG, "Could not access data for: " + mSeason);
     }
   }
 
@@ -92,24 +98,28 @@ public class MatchSummaryTableAsync extends AsyncTask<Void, Void, List<MatchSumm
         Log.w(TAG, "Could not read the source data.");
       }
 
-      if (packagedData.MatchSummaries != null) {
-        String message = "MatchSummary data processing:";
-        try {
-          for (MatchSummaryEntity matchSummary : packagedData.MatchSummaries) {
-            mMatchDateDimRepository.insert(MatchDateDim.generate(matchSummary.MatchDate));
-            mMatchSummaryRepository.insert(matchSummary);
-            matchSummaryEntityList.add(matchSummary);
-          }
+      if (packagedData != null && packagedData.MatchSummaries != null) {
+        if (packagedData.MatchSummaries.size() != mMatchSummaryRepository.count(mSeason)) {
+          String message = "MatchSummary data processing:";
+          try {
+            for (MatchSummaryEntity matchSummary : packagedData.MatchSummaries) {
+              mMatchDateDimRepository.insert(MatchDateDim.generate(matchSummary.MatchDate));
+              mMatchSummaryRepository.insert(matchSummary);
+              matchSummaryEntityList.add(matchSummary);
+            }
 
-          Log.d(TAG, String.format(Locale.US, "%s %d...", message, matchSummaryEntityList.size()));
-        } catch (Exception e) {
-          Log.w(TAG, "Could not process MatchSummary data.", e);
+            Log.d(TAG, String.format(Locale.US, "%s %d...", message, matchSummaryEntityList.size()));
+          } catch (Exception e) {
+            Log.w(TAG, "Could not process MatchSummary data.", e);
+          }
+        } else {
+          Log.d(TAG, "MatchSummary data exists.");
         }
       } else {
-        Log.d(TAG, "MatchSummary data does not exists.");
+        Log.e(TAG, "MatchSummary source data was incomplete.");
       }
     } else {
-      Log.w(TAG, "Could not find data to process.");
+      Log.w(TAG, "Could not find MatchSummary data to process.");
     }
 
     return matchSummaryEntityList;

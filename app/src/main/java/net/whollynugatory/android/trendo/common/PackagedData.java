@@ -29,21 +29,21 @@ import java.util.ArrayList;
 public class PackagedData {
 
   @SerializedName("conferences")
-  public ArrayList<ConferenceEntity> Conferences;
+  public final ArrayList<ConferenceEntity> Conferences;
 
-  public ArrayList<MatchSummaryDetails> MatchDetails;
+  public final ArrayList<MatchSummaryDetails> MatchDetails;
 
   @SerializedName("match_summaries")
-  public ArrayList<MatchSummaryEntity> MatchSummaries;
+  public final ArrayList<MatchSummaryEntity> MatchSummaries;
 
   @SerializedName("teams")
-  public ArrayList<TeamEntity> Teams;
+  public final ArrayList<TeamEntity> Teams;
 
-  public ArrayList<TrendDetails> Trends;
+  public final ArrayList<TrendDetails> Trends;
 
-  public ArrayList<TrendDetails> TrendsAhead;
+  public final ArrayList<TrendDetails> TrendsAhead;
 
-  public ArrayList<TrendDetails> TrendsBehind;
+  public final ArrayList<TrendDetails> TrendsBehind;
 
   public PackagedData() {
 

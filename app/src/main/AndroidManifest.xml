@@ -13,6 +13,10 @@
     android:fullBackupContent="@xml/backup_descriptor"
     tools:ignore="GoogleAppIndexingWarning">
     <activity
+      android:name="com.google.firebase.auth.internal.FederatedSignInActivity"
+      tools:replace="android:launchMode"
+      android:launchMode="standard" />
+    <activity
       android:name=".ui.DataActivity"
       android:label="@string/app_name">
       <meta-data

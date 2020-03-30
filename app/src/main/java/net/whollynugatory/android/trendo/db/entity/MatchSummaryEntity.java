@@ -21,6 +21,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
+import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -30,24 +31,26 @@ import java.io.Serializable;
 
 @Entity(
   tableName = "match_summary_table",
-  primaryKeys = {
-    "match_date", "home_id", "away_id"
-  },
   foreignKeys = {
     @ForeignKey(entity = MatchDateDim.class, parentColumns = "id", childColumns = "match_date"),
     @ForeignKey(entity = TeamEntity.class, parentColumns = "id", childColumns = "away_id"),
     @ForeignKey(entity = TeamEntity.class, parentColumns = "id", childColumns = "home_id")
   },
-  indices = @Index(value = {"id"}))
+  indices = {
+    @Index(value = {"away_id"}),
+    @Index(value = {"home_id"}),
+    @Index(value = {"match_date"})
+  })
 public class MatchSummaryEntity implements Serializable {
 
   /**
    * Unique match identifier
    */
   @NonNull
+  @PrimaryKey
   @ColumnInfo(name = "id")
   @SerializedName("id")
-  public String Id;
+  public final String Id;
 
   /**
    * Unique string of match date
@@ -55,7 +58,7 @@ public class MatchSummaryEntity implements Serializable {
   @NonNull
   @ColumnInfo(name = "match_date")
   @SerializedName("match_date")
-  public String MatchDate;
+  public final String MatchDate;
 
   /**
    * Unique identifier for home team.
@@ -63,7 +66,7 @@ public class MatchSummaryEntity implements Serializable {
   @NonNull
   @ColumnInfo(name = "home_id")
   @SerializedName("home_id")
-  public String HomeId;
+  public final String HomeId;
 
   /**
    * Unique identifier for away team.
@@ -71,21 +74,21 @@ public class MatchSummaryEntity implements Serializable {
   @NonNull
   @ColumnInfo(name = "away_id")
   @SerializedName("away_id")
-  public String AwayId;
+  public final String AwayId;
 
   /**
    * Goals scored by the away team.
    */
   @ColumnInfo(name = "away_score")
   @SerializedName("away_score")
-  public long AwayScore;
+  public final long AwayScore;
 
   /**
    * Goals scored by the home team.
    */
   @ColumnInfo(name = "home_score")
   @SerializedName("home_score")
-  public long HomeScore;
+  public final long HomeScore;
 
   /**
    * Constructs a new MatchSummary object with default values.

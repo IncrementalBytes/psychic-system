@@ -48,7 +48,7 @@ public class MatchListFragment extends Fragment {
 
     void onMatchListPopulated(int size);
 
-    void onMatchListItemSelected();
+    void onMatchListItemSelected(MatchSummaryDetails matchSummaryDetails);
   }
 
   private OnMatchListListener mCallback;
@@ -202,7 +202,7 @@ public class MatchListFragment extends Fragment {
       public void onClick(View view) {
 
         Log.d(TAG, "++MatchSummaryHolder::onClick(View)");
-        mCallback.onMatchListItemSelected();
+        mCallback.onMatchListItemSelected(mMatchSummaryDetails);
       }
     }
 

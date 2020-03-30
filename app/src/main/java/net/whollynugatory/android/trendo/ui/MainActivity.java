@@ -38,6 +38,7 @@ import java.util.List;
 import net.whollynugatory.android.trendo.R;
 import net.whollynugatory.android.trendo.common.Trend;
 import net.whollynugatory.android.trendo.db.entity.TeamEntity;
+import net.whollynugatory.android.trendo.db.views.MatchSummaryDetails;
 import net.whollynugatory.android.trendo.ui.fragments.BrokerageFragment;
 import net.whollynugatory.android.trendo.ui.fragments.CardSummaryFragment;
 import net.whollynugatory.android.trendo.ui.fragments.LineChartFragment;
@@ -181,9 +182,9 @@ public class MainActivity extends BaseActivity implements
   }
 
   @Override
-  public void onMatchListItemSelected() {
+  public void onMatchListItemSelected(MatchSummaryDetails matchSummaryDetails) {
 
-    Log.d(TAG, "++onMatchListItemSelected()");
+    Log.d(TAG, "++onMatchListItemSelected(MatchSummaryDetails)");
     // TODO: open line chart and highlight match?
   }
 

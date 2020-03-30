@@ -33,7 +33,7 @@ public class TeamRepository {
 
   private static TeamRepository sInstance;
 
-  private TeamDao mTeamDao;
+  private final TeamDao mTeamDao;
 
   private TeamRepository(final TeamDao teamDao) {
 

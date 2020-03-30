@@ -42,10 +42,10 @@ public class ConferenceTableAsync  extends AsyncTask<Void, Void, Void> {
 
   private static final String TAG = BaseActivity.BASE_TAG + "ConferenceTableAsync";
 
-  private WeakReference<DataActivity> mWeakReference;
+  private final WeakReference<DataActivity> mWeakReference;
 
   private File mConferenceData;
-  private ConferenceRepository mRepository;
+  private final ConferenceRepository mRepository;
 
   public ConferenceTableAsync(DataActivity context, ConferenceRepository repository) {
 

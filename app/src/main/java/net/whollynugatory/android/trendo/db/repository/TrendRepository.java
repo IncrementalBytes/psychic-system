@@ -29,7 +29,7 @@ public class TrendRepository {
 
   private static TrendRepository sInstance;
 
-  private TrendDao mTrendDao;
+  private final TrendDao mTrendDao;
 
   private TrendRepository(TrendDao trendDao) {
 

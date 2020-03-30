@@ -19,12 +19,16 @@ package net.whollynugatory.android.trendo.db.dao;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
 
 import java.util.List;
 import net.whollynugatory.android.trendo.db.entity.MatchSummaryEntity;
 
 @Dao
 public interface MatchSummaryDao {
+
+  @Query("SELECT COUNT(*) FROM MatchSummaryDetails WHERE Year == :season")
+  int count(int season);
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   void insert(MatchSummaryEntity matchSummary);

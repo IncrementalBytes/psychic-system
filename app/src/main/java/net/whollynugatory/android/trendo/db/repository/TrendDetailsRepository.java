@@ -32,7 +32,7 @@ public class TrendDetailsRepository {
 
   private static TrendDetailsRepository sInstance;
 
-  private TrendDetailsDao mTrendDetailsDao;
+  private final TrendDetailsDao mTrendDetailsDao;
 
   private TrendDetailsRepository(TrendDetailsDao trendDetailsDao) {
 
